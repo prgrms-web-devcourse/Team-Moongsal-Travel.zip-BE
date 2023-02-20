@@ -9,6 +9,11 @@ spring:
     username: sa
     password:
 
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+
   jpa:
     hibernate:
       ddl-auto: create

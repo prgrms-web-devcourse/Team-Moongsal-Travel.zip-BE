@@ -1,0 +1,2 @@
+GET localhost:8080/api/travelogues?page=1&size=10
+Content-Type: application/json
