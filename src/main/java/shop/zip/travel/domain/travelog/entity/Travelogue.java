@@ -18,7 +18,6 @@ import shop.zip.travel.global.entity.BaseTimeEntity;
 public class Travelogue extends BaseTimeEntity {
 
 	private static final String KOREAN = "ko";
-	private static final int ZERO = 0;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +32,9 @@ public class Travelogue extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String country;
 
+	@Embedded
 	@Column(nullable = false)
-	private Long totalCost;
+	private Cost cost;
 
 	@Column(nullable = false)
 	private String thumbnail;
@@ -42,12 +42,12 @@ public class Travelogue extends BaseTimeEntity {
 	protected Travelogue() {
 	}
 
-	public Travelogue(Period period, String title, String country, Long totalCost, String thumbnail) {
-		valid(country, totalCost);
+	public Travelogue(Period period, String title, String country, Cost cost, String thumbnail) {
+		verifyCountry(country);
 		this.period = period;
 		this.title = title;
 		this.country = country;
-		this.totalCost = totalCost;
+		this.cost = cost;
 		this.thumbnail = thumbnail;
 	}
 
@@ -67,28 +67,19 @@ public class Travelogue extends BaseTimeEntity {
 		return country;
 	}
 
-	public Long getTotalCost() {
-		return totalCost;
+	public Cost getCost() {
+		return cost;
 	}
 
 	public String getThumbnail() {
 		return thumbnail;
 	}
 
-	private void valid(String inputCountryName, Long totalCost) {
-		validCost(totalCost);
-		validCountry(inputCountryName);
-	}
-
-	private void validCountry(String inputCountryName) {
+	private void verifyCountry(String inputCountryName) {
 		List<String> countries = Arrays.stream(Locale.getISOCountries())
 			.map(country -> new Locale(KOREAN, country).getDisplayCountry())
 			.toList();
 		Assert.isTrue(countries.contains(inputCountryName), "국가명을 확인해주세요");
-	}
-
-	private void validCost(Long totalCost) {
-		Assert.isTrue(totalCost > ZERO, "총 금액을 확인해주세요");
 	}
 
 }
