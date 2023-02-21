@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.travelog.entity;
+package shop.zip.travel.domain.post.travelog.entity;
 
 import java.util.Set;
 
@@ -15,7 +15,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import shop.zip.travel.global.entity.BaseTimeEntity;
+import shop.zip.travel.domain.post.travelog.entity.type.Transportation;
+import shop.zip.travel.domain.post.travelog.entity.type.Address;
+import shop.zip.travel.domain.base.BaseTimeEntity;
 
 @Entity
 public class SubTravelogue extends BaseTimeEntity {

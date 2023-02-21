@@ -1,4 +1,4 @@
-package shop.zip.travel.global.entity;
+package shop.zip.travel.domain.base;
 
 public interface BaseImage {
 

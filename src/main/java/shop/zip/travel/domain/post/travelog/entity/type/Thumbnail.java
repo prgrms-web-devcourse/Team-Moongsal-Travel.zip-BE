@@ -1,8 +1,8 @@
-package shop.zip.travel.domain.travelog.entity;
+package shop.zip.travel.domain.post.travelog.entity.type;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import shop.zip.travel.global.entity.BaseImage;
+import shop.zip.travel.domain.base.BaseImage;
 
 @Embeddable
 public class Thumbnail implements BaseImage {

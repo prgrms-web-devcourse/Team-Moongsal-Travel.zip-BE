@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.travelog.entity;
+package shop.zip.travel.domain.post.travelog.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -9,7 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import shop.zip.travel.global.entity.BaseTimeEntity;
+import shop.zip.travel.domain.post.travelog.entity.type.Cost;
+import shop.zip.travel.domain.post.travelog.entity.type.Country;
+import shop.zip.travel.domain.post.travelog.entity.type.Period;
+import shop.zip.travel.domain.post.travelog.entity.type.Thumbnail;
+import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.member.entity.Member;
 
 @Entity

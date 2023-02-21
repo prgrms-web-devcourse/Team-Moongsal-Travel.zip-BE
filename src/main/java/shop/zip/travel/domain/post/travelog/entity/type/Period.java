@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.travelog.entity;
+package shop.zip.travel.domain.post.travelog.entity.type;
 
 import java.time.LocalDateTime;
 
