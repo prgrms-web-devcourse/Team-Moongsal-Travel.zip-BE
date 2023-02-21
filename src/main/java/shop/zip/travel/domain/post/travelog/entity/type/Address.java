@@ -7,6 +7,9 @@ import jakarta.persistence.Embeddable;
 public class Address {
 
 	@Column(nullable = false)
+	private Country country;
+
+	@Column(nullable = false)
 	private String city;
 
 	@Column(nullable = false)
@@ -20,5 +23,16 @@ public class Address {
 		this.spot = spot;
 	}
 
+	public Country getCountry() {
+		return country;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getSpot() {
+		return spot;
+	}
 }
 
