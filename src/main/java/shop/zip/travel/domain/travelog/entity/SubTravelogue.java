@@ -1,6 +1,10 @@
 package shop.zip.travel.domain.travelog.entity;
 
+import java.util.Set;
+
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,9 +15,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import shop.zip.travel.global.entity.BaseTimeEntity;
 
 @Entity
-public class SubTravelogue {
+public class SubTravelogue extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +33,11 @@ public class SubTravelogue {
 	@Embedded
 	private Address address;
 
+	@ElementCollection
+	@CollectionTable(name = "transportation", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private Transportation transportation;
+	private Set<Transportation> transportations;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "travelogue_id")
@@ -39,12 +46,12 @@ public class SubTravelogue {
 	protected SubTravelogue() {
 	}
 
-	public SubTravelogue(String title, String content, Address address, Transportation transportation,
+	public SubTravelogue(String title, String content, Address address, Set<Transportation> transportations,
 		Travelogue travelogue) {
 		this.title = title;
 		this.content = content;
 		this.address = address;
-		this.transportation = transportation;
+		this.transportations = transportations;
 		this.travelogue = travelogue;
 	}
 
@@ -64,11 +71,12 @@ public class SubTravelogue {
 		return address;
 	}
 
-	public Transportation getTransportation() {
-		return transportation;
+	public Set<Transportation> getTransportations() {
+		return transportations;
 	}
 
 	public Travelogue getTravelogue() {
 		return travelogue;
 	}
+
 }
