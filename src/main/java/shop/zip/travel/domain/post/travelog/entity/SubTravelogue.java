@@ -1,11 +1,11 @@
 package shop.zip.travel.domain.post.travelog.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -15,9 +15,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import shop.zip.travel.domain.post.travelog.entity.type.Transportation;
-import shop.zip.travel.domain.post.travelog.entity.type.Address;
 import shop.zip.travel.domain.base.BaseTimeEntity;
+import shop.zip.travel.domain.post.travelog.entity.type.Address;
+import shop.zip.travel.domain.post.travelog.entity.type.Transportation;
 
 @Entity
 public class SubTravelogue extends BaseTimeEntity {
@@ -32,8 +32,9 @@ public class SubTravelogue extends BaseTimeEntity {
 	@Column(columnDefinition = "LONGTEXT", nullable = false)
 	private String content;
 
-	@Embedded
-	private Address address;
+	@ElementCollection
+	@CollectionTable(name = "address", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
+	private List<Address> address;
 
 	@ElementCollection
 	@CollectionTable(name = "transportation", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
@@ -48,7 +49,7 @@ public class SubTravelogue extends BaseTimeEntity {
 	protected SubTravelogue() {
 	}
 
-	public SubTravelogue(String title, String content, Address address, Set<Transportation> transportations,
+	public SubTravelogue(String title, String content, List<Address> address, Set<Transportation> transportations,
 		Travelogue travelogue) {
 		this.title = title;
 		this.content = content;
@@ -69,7 +70,7 @@ public class SubTravelogue extends BaseTimeEntity {
 		return content;
 	}
 
-	public Address getAddress() {
+	public List<Address> getAddress() {
 		return address;
 	}
 
