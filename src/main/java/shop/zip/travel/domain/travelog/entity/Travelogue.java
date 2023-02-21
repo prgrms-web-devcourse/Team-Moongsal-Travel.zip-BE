@@ -1,23 +1,19 @@
 package shop.zip.travel.domain.travelog.entity;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
-import org.springframework.util.Assert;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import shop.zip.travel.global.entity.BaseTimeEntity;
+import shop.zip.travel.domain.member.entity.Member;
 
 @Entity
 public class Travelogue extends BaseTimeEntity {
-
-	private static final String KOREAN = "ko";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,26 +25,32 @@ public class Travelogue extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String title;
 
+	@Embedded
 	@Column(nullable = false)
-	private String country;
+	private Country country;
 
 	@Embedded
 	@Column(nullable = false)
 	private Cost cost;
 
+	@Embedded
 	@Column(nullable = false)
-	private String thumbnail;
+	private Thumbnail thumbnail;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private Member member;
 
 	protected Travelogue() {
 	}
 
-	public Travelogue(Period period, String title, String country, Cost cost, String thumbnail) {
-		verifyCountry(country);
+	public Travelogue(Period period, String title, Country country, Cost cost, Thumbnail thumbnail, Member member) {
 		this.period = period;
 		this.title = title;
 		this.country = country;
 		this.cost = cost;
 		this.thumbnail = thumbnail;
+		this.member = member;
 	}
 
 	public Long getId() {
@@ -63,7 +65,7 @@ public class Travelogue extends BaseTimeEntity {
 		return title;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
 
@@ -71,15 +73,12 @@ public class Travelogue extends BaseTimeEntity {
 		return cost;
 	}
 
-	public String getThumbnail() {
+	public Thumbnail getThumbnail() {
 		return thumbnail;
 	}
 
-	private void verifyCountry(String inputCountryName) {
-		List<String> countries = Arrays.stream(Locale.getISOCountries())
-			.map(country -> new Locale(KOREAN, country).getDisplayCountry())
-			.toList();
-		Assert.isTrue(countries.contains(inputCountryName), "국가명을 확인해주세요");
+	public Member getMember() {
+		return member;
 	}
 
 }
