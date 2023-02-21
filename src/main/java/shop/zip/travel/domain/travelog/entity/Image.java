@@ -8,9 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import shop.zip.travel.global.entity.BaseImage;
 
 @Entity
-public class Image {
+public class Image implements BaseImage {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +36,7 @@ public class Image {
 		return id;
 	}
 
+	@Override
 	public String getUrl() {
 		return url;
 	}
