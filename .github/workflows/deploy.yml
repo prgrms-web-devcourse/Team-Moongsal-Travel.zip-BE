@@ -23,6 +23,17 @@ jobs:
       - name: Show structure of artifact files
         run: ls -ahl ./build/libs/*.jar
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Add Github Actions IP to Security group
+        run: |
+          aws ec2 authorize-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
       - name: Deploy Prod use SCP
         uses: appleboy/scp-action@master
         with:
@@ -50,3 +61,7 @@ jobs:
           key: ${{ secrets.AWS_EC2_PEM }}
           script_stop: true
           script: chmod +x /home/ubuntu/deploy.sh && sh /home/ubuntu/deploy.sh
+
+      - name: Remove Github Actions IP From Security Group
+        run: |
+          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
