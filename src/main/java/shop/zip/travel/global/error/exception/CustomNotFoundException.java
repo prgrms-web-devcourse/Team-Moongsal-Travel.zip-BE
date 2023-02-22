@@ -1,17 +1,12 @@
 package shop.zip.travel.global.error.exception;
 
+import shop.zip.travel.global.error.BusinessException;
 import shop.zip.travel.global.error.ErrorCode;
 
-public class CustomNotFoundException extends RuntimeException {
-
-	private final ErrorCode errorCode;
+public class CustomNotFoundException extends BusinessException {
 
 	public CustomNotFoundException(ErrorCode errorCode) {
-		this.errorCode = errorCode;
-	}
-
-	public ErrorCode getErrorCode() {
-		return errorCode;
+		super(errorCode);
 	}
 
 }
