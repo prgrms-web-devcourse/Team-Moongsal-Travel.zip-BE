@@ -14,29 +14,27 @@ public class GlobalExceptionHandler {
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity handleIllegalArgumentException(IllegalArgumentException e) {
+	public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
 		log.info("IllegalArgumentException : ", e);
-		return ResponseEntity.badRequest()
-			.body(e.getMessage());
+		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 
 	@ExceptionHandler(CustomNotFoundException.class)
-	public ResponseEntity handleCustomNotFoundException(CustomNotFoundException e) {
+	public ResponseEntity<String> handleCustomNotFoundException(CustomNotFoundException e) {
 		log.info("CustomNotFoundException : ", e);
-		return ResponseEntity.status(e.getErrorCode().getStatusValue())
-			.body(e.getMessage());
+		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
 	}
 
 	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity handleRuntimeException(RuntimeException e) {
+	public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
 		log.error("RuntimeException : ", e);
-		return ResponseEntity.internalServerError().body(e);
+		return ResponseEntity.internalServerError().body(e.getMessage());
 	}
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity handleException(Exception e) {
+	public ResponseEntity<String> handleException(Exception e) {
 		log.error("Exception : ", e);
-		return ResponseEntity.internalServerError().body(e);
+		return ResponseEntity.internalServerError().body(e.getMessage());
 	}
 
 }
