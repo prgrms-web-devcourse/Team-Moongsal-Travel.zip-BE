@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.springframework.util.Assert;
-import shop.zip.travel.global.entity.BaseTimeEntity;
+import shop.zip.travel.domain.base.BaseTimeEntity;
 
 
 @Entity

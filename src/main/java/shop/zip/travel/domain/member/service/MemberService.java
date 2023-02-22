@@ -20,4 +20,10 @@ public class MemberService {
     Member member = toMember(memberSignupRequest);
     memberRepository.save(member);
   }
+
+//  public void validateDuplicateEmail(String email) {
+//    if (memberRepository.findByEmail(email).isPresent()) {
+//      throw new DuplicatedEmailException();
+//    }
+//  }
 }
