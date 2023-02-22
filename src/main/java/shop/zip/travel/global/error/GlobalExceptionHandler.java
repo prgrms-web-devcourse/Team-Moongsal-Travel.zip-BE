@@ -16,15 +16,13 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity handleIllegalArgumentException(IllegalArgumentException e) {
 		log.info("IllegalArgumentException : ", e);
-		return ResponseEntity.badRequest()
-			.body(e.getMessage());
+		return ResponseEntity.badRequest().body(e.getMessage());
 	}
 
 	@ExceptionHandler(CustomNotFoundException.class)
 	public ResponseEntity handleCustomNotFoundException(CustomNotFoundException e) {
 		log.info("CustomNotFoundException : ", e);
-		return ResponseEntity.status(e.getErrorCode().getStatusValue())
-			.body(e.getMessage());
+		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
 	}
 
 	@ExceptionHandler(RuntimeException.class)
