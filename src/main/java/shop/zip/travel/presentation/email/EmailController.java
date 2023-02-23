@@ -31,8 +31,4 @@ public class EmailController {
     return ResponseEntity.noContent().build();
   }
 
-//  @PostMapping("/api/valid/email")
-//  public ResponseEntity<Void> validateEmail(@RequestBody CodeValidateRequest codeValidateRequest) {
-//
-//  }
 }
