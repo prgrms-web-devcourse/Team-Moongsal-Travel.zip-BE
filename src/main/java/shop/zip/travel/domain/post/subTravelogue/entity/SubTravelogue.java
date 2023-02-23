@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.subTravelog.entity;
+package shop.zip.travel.domain.post.subTravelogue.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
-import shop.zip.travel.domain.post.subTravelog.data.Address;
-import shop.zip.travel.domain.post.subTravelog.data.Transportation;
+import shop.zip.travel.domain.post.subTravelogue.data.Address;
+import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 
 @Entity
 public class SubTravelogue extends BaseTimeEntity {

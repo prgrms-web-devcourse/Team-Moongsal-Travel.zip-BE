@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.travelog.entity;
+package shop.zip.travel.domain.post.travelogue.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +16,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.member.entity.Member;
-import shop.zip.travel.domain.post.subTravelog.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.data.Country;
-import shop.zip.travel.domain.post.travelog.data.Cost;
-import shop.zip.travel.domain.post.travelog.data.Period;
+import shop.zip.travel.domain.post.travelogue.data.Cost;
+import shop.zip.travel.domain.post.travelogue.data.Period;
 
 @Entity
 public class Travelogue extends BaseTimeEntity {

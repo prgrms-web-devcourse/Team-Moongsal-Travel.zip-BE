@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.travelog.data;
+package shop.zip.travel.domain.post.travelogue.data;
 
 import java.time.LocalDateTime;
 
