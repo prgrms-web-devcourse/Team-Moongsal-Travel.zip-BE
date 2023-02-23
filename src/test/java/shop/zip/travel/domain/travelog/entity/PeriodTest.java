@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import shop.zip.travel.domain.post.travelog.entity.type.Period;
+import shop.zip.travel.domain.post.travelogue.data.Period;
 
 class PeriodTest {
 

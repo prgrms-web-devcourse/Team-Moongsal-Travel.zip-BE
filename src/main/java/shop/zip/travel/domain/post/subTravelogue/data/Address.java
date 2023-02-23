@@ -1,7 +1,8 @@
-package shop.zip.travel.domain.post.travelog.entity.type;
+package shop.zip.travel.domain.post.subTravelogue.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import shop.zip.travel.domain.post.data.Country;
 
 @Embeddable
 public class Address {

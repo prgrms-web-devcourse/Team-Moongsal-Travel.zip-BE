@@ -1,8 +1,10 @@
-package shop.zip.travel.domain.post.travelog.entity;
+package shop.zip.travel.domain.post.subTravelogue.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -14,10 +16,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import shop.zip.travel.domain.base.BaseTimeEntity;
-import shop.zip.travel.domain.post.travelog.entity.type.Address;
-import shop.zip.travel.domain.post.travelog.entity.type.Transportation;
+import shop.zip.travel.domain.post.image.entity.TravelPhoto;
+import shop.zip.travel.domain.post.subTravelogue.data.Address;
+import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 
 @Entity
 public class SubTravelogue extends BaseTimeEntity {
@@ -34,28 +37,28 @@ public class SubTravelogue extends BaseTimeEntity {
 
 	@ElementCollection
 	@CollectionTable(name = "address", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
-	private List<Address> address;
+	private List<Address> addresses;
 
 	@ElementCollection
 	@CollectionTable(name = "transportation", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private Set<Transportation> transportations;
+	private Set<Transportation> transportationSet;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "travelogue_id")
-	private Travelogue travelogue;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "sub_travelogue_id")
+	private List<TravelPhoto> photos = new ArrayList<>();
 
 	protected SubTravelogue() {
 	}
 
-	public SubTravelogue(String title, String content, List<Address> address, Set<Transportation> transportations,
-		Travelogue travelogue) {
+	public SubTravelogue(String title, String content, List<Address> addresses, Set<Transportation> transportationSet,
+		List<TravelPhoto> photos) {
 		this.title = title;
 		this.content = content;
-		this.address = address;
-		this.transportations = transportations;
-		this.travelogue = travelogue;
+		this.addresses = addresses;
+		this.transportationSet = transportationSet;
+		this.photos = photos;
 	}
 
 	public Long getId() {
@@ -70,16 +73,15 @@ public class SubTravelogue extends BaseTimeEntity {
 		return content;
 	}
 
-	public List<Address> getAddress() {
-		return address;
+	public List<Address> getAddresses() {
+		return addresses;
 	}
 
-	public Set<Transportation> getTransportations() {
-		return transportations;
+	public Set<Transportation> getTransportationSet() {
+		return transportationSet;
 	}
 
-	public Travelogue getTravelogue() {
-		return travelogue;
+	public List<TravelPhoto> getPhotos() {
+		return new ArrayList<>(photos);
 	}
-
 }

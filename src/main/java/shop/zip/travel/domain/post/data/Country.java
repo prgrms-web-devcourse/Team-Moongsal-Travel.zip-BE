@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.travelog.entity.type;
+package shop.zip.travel.domain.post.data;
 
 import java.util.Arrays;
 import java.util.List;
