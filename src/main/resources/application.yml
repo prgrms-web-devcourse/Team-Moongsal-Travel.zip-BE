@@ -16,8 +16,15 @@ spring:
       hibernate:
         show-sql: true
         format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+
   mail:
-    username: travelzip
-    password: dugodwhgdk!
+    username:
+    password:
     host: smtp.naver.com
     port: '465'
+
