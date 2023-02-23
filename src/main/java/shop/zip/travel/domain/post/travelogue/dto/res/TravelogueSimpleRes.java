@@ -1,8 +1,9 @@
-package shop.zip.travel.domain.post.travelogue.dto;
+package shop.zip.travel.domain.post.travelogue.dto.res;
 
 import java.time.temporal.ChronoUnit;
 
 import shop.zip.travel.domain.member.dto.MemberSimpleRes;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 
 public record TravelogueSimpleRes(
 	String title,
