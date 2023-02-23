@@ -80,6 +80,10 @@ public class Member extends BaseTimeEntity {
     return password;
   }
 
+  public String getProfileImageUrl() {
+    return profileImageUrl;
+  }
+
   public String getNickname() {
     return nickname;
   }
