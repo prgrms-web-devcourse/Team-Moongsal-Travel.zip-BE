@@ -4,11 +4,22 @@ import shop.zip.travel.domain.member.dto.MemberSimpleRes;
 
 public record TravelogueSimpleRes(
 	String title,
-	int nights,
-	int days,
+	Long nights,
+	Long days,
 	Long totalCost,
 	String country,
 	String thumbnail,
 	MemberSimpleRes member
 ) {
+	public static TravelogueSimpleRes toDto(TravelogueSimple travelogueSimple, Long nights){
+		return new TravelogueSimpleRes(
+			travelogueSimple.title(),
+			nights,
+			nights + 1,
+			travelogueSimple.totalCost(),
+			travelogueSimple.country(),
+			travelogueSimple.thumbnail(),
+			MemberSimpleRes.toDto(travelogueSimple)
+		);
+	}
 }
