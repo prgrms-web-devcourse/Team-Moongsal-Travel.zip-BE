@@ -12,8 +12,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import shop.zip.travel.domain.base.BaseTimeEntity;
+import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.subTravelog.entity.SubTravelogue;
 import shop.zip.travel.domain.post.data.Country;
 import shop.zip.travel.domain.post.travelog.data.Cost;
@@ -47,17 +49,22 @@ public class Travelogue extends BaseTimeEntity {
 	@JoinColumn(name = "travelogue_id")
 	private List<SubTravelogue> subTravelogues = new ArrayList<>();
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "member_id")
+	private Member member;
+
 	protected Travelogue() {
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-		List<SubTravelogue> subTravelogues) {
+		List<SubTravelogue> subTravelogues, Member member) {
 		this.period = period;
 		this.title = title;
 		this.country = country;
 		this.thumbnail = thumbnail;
 		this.cost = cost;
 		this.subTravelogues = subTravelogues;
+		this.member = member;
 	}
 
 	public Long getId() {
@@ -86,5 +93,13 @@ public class Travelogue extends BaseTimeEntity {
 
 	public List<SubTravelogue> getSubTravelogue() {
 		return new ArrayList<>(subTravelogues);
+	}
+
+	public List<SubTravelogue> getSubTravelogues() {
+		return subTravelogues;
+	}
+
+	public Member getMember() {
+		return member;
 	}
 }
