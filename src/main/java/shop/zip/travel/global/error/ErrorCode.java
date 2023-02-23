@@ -4,17 +4,18 @@ import org.springframework.http.HttpStatus;
 
 public enum ErrorCode {
 
-	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물을 찾을 수 없습니다");
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물을 찾을 수 없습니다"),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "회원을 찾을 수 없습니다");
 
-	private final HttpStatus status;
-	private final String message;
+    private final HttpStatus status;
+    private final String message;
 
-	ErrorCode(HttpStatus status, String message) {
-		this.status = status;
-		this.message = message;
-	}
+    ErrorCode(HttpStatus status, String message) {
+        this.status = status;
+        this.message = message;
+    }
 
-	public HttpStatus getStatus() {
+    public HttpStatus getStatus() {
 		return this.status;
 	}
 
