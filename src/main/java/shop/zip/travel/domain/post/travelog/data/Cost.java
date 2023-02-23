@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.travelog.entity.type;
+package shop.zip.travel.domain.post.travelog.data;
 
 import org.springframework.util.Assert;
 
