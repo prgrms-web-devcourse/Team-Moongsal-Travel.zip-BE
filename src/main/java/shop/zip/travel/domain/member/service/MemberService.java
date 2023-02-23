@@ -5,7 +5,10 @@ import static shop.zip.travel.domain.member.dto.request.MemberSignupRequest.toMe
 import org.springframework.stereotype.Service;
 import shop.zip.travel.domain.member.dto.request.MemberSignupRequest;
 import shop.zip.travel.domain.member.entity.Member;
+import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
+import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
 import shop.zip.travel.domain.member.repository.MemberRepository;
+import shop.zip.travel.global.error.ErrorCode;
 
 @Service
 public class MemberService {
@@ -21,9 +24,15 @@ public class MemberService {
     memberRepository.save(member);
   }
 
-//  public void validateDuplicateEmail(String email) {
-//    if (memberRepository.findByEmail(email).isPresent()) {
-//      throw new DuplicatedEmailException();
-//    }
-//  }
+  public void validateDuplicatedEmail(String email) {
+    if (memberRepository.existsByEmail(email)) {
+      throw new DuplicatedEmailException(ErrorCode.DUPLICATED_EMAIL);
+    }
+  }
+
+  public void validateDuplicatedNickname(String nickname) {
+    if (memberRepository.existsByNickname(nickname)) {
+      throw new DuplicatedNicknameException(ErrorCode.DUPLICATED_NICKNAME);
+    }
+  }
 }

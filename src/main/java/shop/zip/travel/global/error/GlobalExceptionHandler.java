@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import shop.zip.travel.global.error.exception.CustomNotFoundException;
+import shop.zip.travel.global.error.exception.DuplicatedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -22,6 +23,12 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(CustomNotFoundException.class)
 	public ResponseEntity<String> handleCustomNotFoundException(CustomNotFoundException e) {
 		log.info("CustomNotFoundException : ", e);
+		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+	}
+
+	@ExceptionHandler(DuplicatedException.class)
+	public ResponseEntity<String> handleDuplicatedException(DuplicatedException e) {
+		log.info("DuplicatedException : ", e);
 		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
 	}
 
