@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import org.springframework.util.Assert;
-import shop.zip.travel.global.entity.BaseTimeEntity;
+import shop.zip.travel.domain.base.BaseTimeEntity;
 
 
 @Entity
@@ -21,6 +21,9 @@ public class Member extends BaseTimeEntity {
 
   @Column(nullable = false)
   private String password;
+
+  @Column
+  private String profileImageUrl;
 
   @Column(unique = true, nullable = false)
   private String nickname;
