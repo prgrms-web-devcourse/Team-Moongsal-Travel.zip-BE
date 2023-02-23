@@ -4,6 +4,12 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 group = 'shop.zip'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
@@ -13,14 +19,35 @@ repositories {
 }
 
 dependencies {
+    // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // valid
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    // h2
     runtimeOnly 'com.h2database:h2'
+
+    // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
     useJUnitPlatform()
+}
+
+clean {
+    delete file('src/main/generated')
 }
