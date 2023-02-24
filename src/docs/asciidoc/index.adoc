@@ -1,0 +1,20 @@
+= Spring REST Docs
+backtony.github.io(Rest Docs)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[검색-API]]
+= 검색 API
+
+=== Request
+include::{snippets}/TravelogueController/search/http-request.adoc[]
+=== RequestParam
+include::{snippets}/TravelogueController/search/query-parameters.adoc[]
+=== Response
+include::{snippets}/TravelogueController/search/http-response.adoc[]
+=== ResponseBody
+include::{snippets}/TravelogueController/search/response-body.adoc[]
