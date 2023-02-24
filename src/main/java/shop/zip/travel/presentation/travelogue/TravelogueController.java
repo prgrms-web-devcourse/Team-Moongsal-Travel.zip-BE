@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import shop.zip.travel.domain.post.travelogue.dto.TravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
 
 @RestController
@@ -22,11 +22,13 @@ public class TravelogueController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Long> create(@RequestBody @Valid TravelogueCreateReq createReq,
+	public ResponseEntity<Long> create(
+		@RequestBody @Valid TravelogueCreateReq createReq,
 		@RequestParam Long memberId) {
-		Long travelogueId = travelogueService.createTravelogue(createReq, memberId);
 
+		Long travelogueId = travelogueService.save(createReq, memberId);
 		return ResponseEntity.ok(travelogueId);
 	}
 
 }
+

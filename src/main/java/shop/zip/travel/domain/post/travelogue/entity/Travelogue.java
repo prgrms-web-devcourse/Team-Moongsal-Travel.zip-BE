@@ -1,11 +1,5 @@
 package shop.zip.travel.domain.post.travelogue.entity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.springframework.util.Assert;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -17,6 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
@@ -118,6 +116,10 @@ public class Travelogue extends BaseTimeEntity {
 		Assert.notNull(cost, "경비를 확인해주세요");
 		Assert.notNull(subTravelogues, "썸네일 url 을 확인해주세요");
 		Assert.notNull(member, "사용자를 확인해주세요");
+	}
+
+	public void add(SubTravelogue subTravelogue) {
+		this.subTravelogues.add(subTravelogue);
 	}
 
 }
