@@ -69,7 +69,7 @@ public class Member extends BaseTimeEntity {
 
   private void validateBirthYear(int birthYear) {
     int currentYear = LocalDate.now().getYear();
-    Assert.isTrue(currentYear - 119 <= birthYear && birthYear <= currentYear - 5, "탄생년이 올바르지 않습니다");
+    Assert.isTrue(currentYear - 87 <= birthYear && birthYear <= currentYear - 7, "탄생년이 올바르지 않습니다");
   }
 
   public Long getId() {
