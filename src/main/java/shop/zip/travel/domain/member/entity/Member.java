@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 
+
 @Entity
 public class Member extends BaseTimeEntity {
 
@@ -23,6 +24,10 @@ public class Member extends BaseTimeEntity {
   private String password;
 
   @Column(unique = true, nullable = false, length = 12)
+  @Column
+  private String profileImageUrl;
+
+  @Column(unique = true, nullable = false)
   private String nickname;
 
   @Column(nullable = false)
@@ -78,6 +83,10 @@ public class Member extends BaseTimeEntity {
 
   public String getPassword() {
     return password;
+  }
+
+  public String getProfileImageUrl() {
+    return profileImageUrl;
   }
 
   public String getNickname() {
