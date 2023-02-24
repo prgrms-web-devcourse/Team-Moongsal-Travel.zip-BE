@@ -23,15 +23,14 @@ public class Member extends BaseTimeEntity {
   @Column(nullable = false)
   private String password;
 
-  @Column(unique = true, nullable = false, length = 12)
-  @Column
-  private String profileImageUrl;
-
   @Column(unique = true, nullable = false)
   private String nickname;
 
   @Column(nullable = false)
   private int birthYear;
+
+  @Column
+  private String profileImageUrl = "default";
 
   protected Member() {
 
@@ -85,15 +84,15 @@ public class Member extends BaseTimeEntity {
     return password;
   }
 
-  public String getProfileImageUrl() {
-    return profileImageUrl;
-  }
-
   public String getNickname() {
     return nickname;
   }
 
   public int getBirthYear() {
     return birthYear;
+  }
+
+  public String getProfileImageUrl() {
+    return profileImageUrl;
   }
 }
