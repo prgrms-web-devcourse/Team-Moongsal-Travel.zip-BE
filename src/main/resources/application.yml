@@ -16,11 +16,12 @@ spring:
       hibernate:
         show-sql: true
         format_sql: true
+    open-in-view: false
+
   data:
     redis:
       host: localhost
       port: 6379
-
 
   mail:
     username:
