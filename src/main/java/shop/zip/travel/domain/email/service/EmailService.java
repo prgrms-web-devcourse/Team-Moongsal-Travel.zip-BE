@@ -41,14 +41,13 @@ public class EmailService {
     return message;
   }
 
-  public String sendMail(String toAddress)
+  public void sendMail(String toAddress)
       throws MessagingException, UnsupportedEncodingException {
     String code = createVerificationCode();
     MimeMessage message = createMail(toAddress, code);
     redisUtil.setDataWithExpire(toAddress, code, 180L);
     javaMailSender.send(message);
     // TODO 구체적 예외처리 필요
-    return code;
   }
 
   public String createVerificationCode() {

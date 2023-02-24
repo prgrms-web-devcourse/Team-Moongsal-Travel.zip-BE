@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import shop.zip.travel.domain.email.dto.request.EmailValidateRequest;
+import shop.zip.travel.domain.email.dto.request.EmailValidateReq;
 import shop.zip.travel.domain.email.service.EmailService;
 import shop.zip.travel.domain.member.service.MemberService;
 
@@ -23,11 +23,11 @@ public class EmailController {
   }
 
   @PostMapping("/api/auth/email")
-  public ResponseEntity<Void> requestVerificationCode(@RequestBody @Valid EmailValidateRequest emailValidateRequest)
+  public ResponseEntity<Void> requestVerificationCode(@RequestBody @Valid EmailValidateReq emailValidateReq)
       throws MessagingException, UnsupportedEncodingException {
-    String email = emailValidateRequest.email();
+    String email = emailValidateReq.email();
     memberService.validateDuplicatedEmail(email);
-    String code = emailService.sendMail(email);
+    emailService.sendMail(email);
     return ResponseEntity.noContent().build();
   }
 

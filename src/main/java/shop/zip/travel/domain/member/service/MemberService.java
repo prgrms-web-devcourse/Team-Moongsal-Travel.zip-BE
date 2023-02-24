@@ -1,9 +1,9 @@
 package shop.zip.travel.domain.member.service;
 
-import static shop.zip.travel.domain.member.dto.request.MemberSignupRequest.toMember;
+import static shop.zip.travel.domain.member.dto.request.MemberSignupReq.toMember;
 
 import org.springframework.stereotype.Service;
-import shop.zip.travel.domain.member.dto.request.MemberSignupRequest;
+import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
@@ -23,8 +23,8 @@ public class MemberService {
     this.redisUtil = redisUtil;
   }
 
-  public void createMember(MemberSignupRequest memberSignupRequest) {
-    Member member = toMember(memberSignupRequest);
+  public void createMember(MemberSignupReq memberSignupReq) {
+    Member member = toMember(memberSignupReq);
     memberRepository.save(member);
   }
 
