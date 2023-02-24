@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import shop.zip.travel.domain.email.dto.request.CodeValidateRequest;
-import shop.zip.travel.domain.member.dto.request.MemberSignupRequest;
+import shop.zip.travel.domain.email.dto.request.CodeValidateReq;
+import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.service.MemberService;
 
 @RestController
@@ -21,8 +21,8 @@ public class MemberController {
   }
 
   @PostMapping("/api/auth/signup")
-  public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignupRequest memberSignupRequest) {
-    memberService.createMember(memberSignupRequest);
+  public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignupReq memberSignupReq) {
+    memberService.createMember(memberSignupReq);
     return ResponseEntity.noContent().build();
   }
 
@@ -34,8 +34,8 @@ public class MemberController {
 
   @PostMapping("/api/valid/code")
   public ResponseEntity<Void> validateVerificationCode(
-      @RequestBody @Valid CodeValidateRequest codeValidateRequest) {
-    memberService.verifyCode(codeValidateRequest.email(), codeValidateRequest.code());
+      @RequestBody @Valid CodeValidateReq codeValidateReq) {
+    memberService.verifyCode(codeValidateReq.email(), codeValidateReq.code());
     return ResponseEntity.noContent().build();
   }
 }
