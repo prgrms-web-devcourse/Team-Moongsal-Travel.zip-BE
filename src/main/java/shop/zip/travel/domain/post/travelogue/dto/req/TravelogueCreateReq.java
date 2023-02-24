@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.travelogue.dto;
+package shop.zip.travel.domain.post.travelogue.dto.req;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,3 +32,4 @@ public record TravelogueCreateReq(
         );
     }
 }
+
