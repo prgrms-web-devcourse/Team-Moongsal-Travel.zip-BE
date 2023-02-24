@@ -1,8 +1,12 @@
 spring:
+  profiles:
+    default: local
+
   h2:
     console:
       enabled: true
       path: /h2-console
+
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:~/travelzip/test
@@ -24,8 +28,8 @@ spring:
       port: 6379
 
   mail:
-    username:
-    password:
+    username: ${NAVER_ID}
+    password: ${NAVER_PASSWORD}
     host: smtp.naver.com
     port: '465'
 
