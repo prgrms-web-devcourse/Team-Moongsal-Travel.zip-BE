@@ -9,7 +9,7 @@ public record MemberSignupReq(
     @NotBlank @Email String email,
     @NotBlank @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*])[A-Za-z\\d~!@#$%^&*]{8,}$") String password,
     @NotBlank @Pattern(regexp = "^[가-힣|a-zA-Z]{2,12}$") String nickname,
-    @NotBlank @Pattern(regexp = "[0-9]{4}") int birthYear) {
+    @NotBlank @Pattern(regexp = "^[0-9]{4}$") String birthYear) {
 
   public static Member toMember(MemberSignupReq memberSignupReq) {
     return new Member(
