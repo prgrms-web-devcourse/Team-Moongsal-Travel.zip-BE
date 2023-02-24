@@ -8,14 +8,17 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import shop.zip.travel.global.util.RedisUtil;
 
 @Service
 public class EmailService {
 
   private final JavaMailSender javaMailSender;
+  private final RedisUtil redisUtil;
 
-  public EmailService(JavaMailSender javaMailSender) {
+  public EmailService(JavaMailSender javaMailSender, RedisUtil redisUtil) {
     this.javaMailSender = javaMailSender;
+    this.redisUtil = redisUtil;
   }
 
   public MimeMessage createMail(String toAddress, String verificationCode)
@@ -42,6 +45,7 @@ public class EmailService {
       throws MessagingException, UnsupportedEncodingException {
     String code = createVerificationCode();
     MimeMessage message = createMail(toAddress, code);
+    redisUtil.setDataWithExpire(toAddress, code, 180L);
     javaMailSender.send(message);
     // TODO 구체적 예외처리 필요
     return code;
