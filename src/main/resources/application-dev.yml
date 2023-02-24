@@ -5,7 +5,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${AWS_RDS_URL}
+    url: jdbc:mysql://travelzip-db.czvbgr7hie3i.ap-northeast-2.rds.amazonaws.com:3306/travelzip-db
     username: ${AWS_MASTER_USER_NAME}
     password: ${AWS_MASTER_USER_PASSWORD}
 
