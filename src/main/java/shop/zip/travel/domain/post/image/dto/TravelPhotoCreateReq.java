@@ -11,4 +11,10 @@ public record TravelPhotoCreateReq(
     public TravelPhoto toEntity() {
         return new TravelPhoto(url);
     }
+
+    public static TravelPhotoCreateReq toDto(TravelPhoto travelPhoto) {
+        return new TravelPhotoCreateReq(
+            travelPhoto.getUrl()
+        );
+    }
 }
