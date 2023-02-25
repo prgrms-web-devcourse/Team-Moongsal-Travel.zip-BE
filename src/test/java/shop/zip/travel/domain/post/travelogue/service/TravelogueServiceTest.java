@@ -107,7 +107,8 @@ class TravelogueServiceTest {
 			.thenReturn(travelogue);
 
 		// when
-		long expectedId = travelogueService.save(travelogueCreateReq, 1L);
+		long expectedId = travelogueService.save(travelogueCreateReq, 1L)
+			.id();
 
 		// then
 		long actualId = travelogue.getId();

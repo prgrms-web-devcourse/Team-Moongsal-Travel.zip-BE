@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
 
@@ -25,12 +26,12 @@ public class TravelogueController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Long> create(
+	public ResponseEntity<TravelogueCreateRes> create(
 		@RequestBody @Valid TravelogueCreateReq createReq,
 		@RequestParam Long memberId) {
 
-		Long travelogueId = travelogueService.save(createReq, memberId);
-		return ResponseEntity.ok(travelogueId);
+		TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq, memberId);
+		return ResponseEntity.ok(travelogueCreateRes);
 	}
 
 	@GetMapping

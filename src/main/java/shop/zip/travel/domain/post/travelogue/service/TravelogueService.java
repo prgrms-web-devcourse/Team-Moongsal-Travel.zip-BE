@@ -11,6 +11,7 @@ import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
@@ -30,12 +31,13 @@ public class TravelogueService {
         this.memberService = memberService;
     }
 
-    @Transactional
-    public Long save(TravelogueCreateReq createReq, Long memberId) {
-        Member findMember = memberService.getMember(memberId);
-        return travelogueRepository.save(createReq.toEntity(findMember))
-            .getId();
-    }
+	@Transactional
+	public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
+		Member findMember = memberService.getMember(memberId);
+		Long id = travelogueRepository.save(createReq.toEntity(findMember))
+			.getId();
+		return new TravelogueCreateRes(id);
+	}
 
 	public CustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createDate"));
