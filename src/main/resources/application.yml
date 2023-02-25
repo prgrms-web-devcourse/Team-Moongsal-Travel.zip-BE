@@ -1,4 +1,4 @@
 spring:
 
   profiles:
-    default: local
+    default: dev
