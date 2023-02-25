@@ -65,6 +65,7 @@ public class Travelogue extends BaseTimeEntity {
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
 		List<SubTravelogue> subTravelogues, Member member) {
 		nullCheck(period, title, country, thumbnail, cost, subTravelogues, member);
+		valid(title, thumbnail);
 		this.period = period;
 		this.title = title;
 		this.country = country;
@@ -118,7 +119,25 @@ public class Travelogue extends BaseTimeEntity {
 		Assert.notNull(member, "사용자를 확인해주세요");
 	}
 
-	public void add(SubTravelogue subTravelogue) {
+	private void valid(String title, String thumbnail){
+		validTitle(title);
+		validThumbnail(thumbnail);
+	}
+
+
+	private void validTitle(String inputTitle){
+		if(inputTitle.isBlank()){
+			throw new IllegalArgumentException("제목은 비어있을 수 없습니다.");
+		}
+	}
+
+	private void validThumbnail(String thumbnail){
+		if(thumbnail.isBlank()){
+			throw new IllegalArgumentException("썸네일은 빈 값으로 들어올 수 없습니다. 정확한 url이 필요합니다.");
+		}
+	}
+
+	public void addSubTravelogue(SubTravelogue subTravelogue) {
 		this.subTravelogues.add(subTravelogue);
 	}
 
