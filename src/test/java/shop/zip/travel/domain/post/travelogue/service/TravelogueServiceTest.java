@@ -17,8 +17,10 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 
 import shop.zip.travel.domain.member.entity.Member;
+import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -32,6 +34,9 @@ class TravelogueServiceTest {
 
 	@Mock
 	private TravelogueRepository travelogueRepository;
+
+	@Mock
+	private MemberService memberService;
 
 	@Test
 	@DisplayName("페이지로 가져온 게시글 목록을 TravelogueSimpleRes로 변경해서 전달할 수 있다.")
@@ -74,5 +79,38 @@ class TravelogueServiceTest {
 
 		assertThat(travelogueSimpleRes.content().get(0).days())
 			.isEqualTo(expectedDays);
+	}
+
+	@Test
+	@DisplayName("메인 게시물을 저장할 수 있다.")
+	void test_save_travelogue() {
+		// given
+		TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
+			DummyGenerator.createPeriod(),
+			"메인 게시물 제목",
+			DummyGenerator.createCountry(),
+			"www.naver.com",
+			DummyGenerator.createCost()
+		);
+
+		Member member = DummyGenerator.createMember();
+		Travelogue travelogue = new FakeTravelogue(
+			1L,
+			DummyGenerator.createTravelogue(member),
+			member
+		);
+
+		doReturn(member).when(memberService)
+			.getMember(1L);
+
+		when(travelogueRepository.save(any(Travelogue.class)))
+			.thenReturn(travelogue);
+
+		// when
+		long expectedId = travelogueService.save(travelogueCreateReq, 1L);
+
+		// then
+		long actualId = travelogue.getId();
+		assertThat(actualId).isEqualTo(expectedId);
 	}
 }
