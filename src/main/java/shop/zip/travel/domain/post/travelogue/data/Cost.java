@@ -33,7 +33,7 @@ public class Cost {
     }
 
     public Cost(Long total) {
-        this(null, null, null, total);
+        this(0L, 0L, 0L, total);
     }
 
     private void verify(Long total) {
