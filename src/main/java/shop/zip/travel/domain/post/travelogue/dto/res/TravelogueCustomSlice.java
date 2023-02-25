@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
-public record CustomSlice<T> (
+public record TravelogueCustomSlice<T>(
 	List<T> content,
 	Pageable pageable,
 	int size,
@@ -15,9 +15,9 @@ public record CustomSlice<T> (
 	boolean first,
 	boolean last,
 	boolean empty
-){
-	public static <T> CustomSlice<T> toDto(Slice<T> slice){
-		return new CustomSlice<>(
+) {
+	public static <T> TravelogueCustomSlice<T> toDto(Slice<T> slice) {
+		return new TravelogueCustomSlice<>(
 			slice.getContent(),
 			slice.getPageable(),
 			slice.getSize(),

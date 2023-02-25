@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
-import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
 
@@ -34,8 +34,9 @@ public class TravelogueController {
 	}
 
 	@GetMapping
-	public ResponseEntity<CustomSlice<TravelogueSimpleRes>> getAll(@RequestParam int size, @RequestParam int page){
-		CustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(page,size);
+	public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(@RequestParam int size,
+		@RequestParam int page) {
+		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(page, size);
 
 		return ResponseEntity.ok(travelogueSimpleRes);
 	}

@@ -10,7 +10,7 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
-import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
@@ -37,12 +37,12 @@ public class TravelogueService {
             .getId();
     }
 
-	public CustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size) {
+	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createDate"));
 
 		Slice<TravelogueSimple> travelogues = travelogueRepository.findAllBySlice(pageRequest);
 
-		return CustomSlice.toDto(
+		return TravelogueCustomSlice.toDto(
 			travelogues.map(TravelogueSimpleRes::toDto)
 		);
 	}

@@ -19,7 +19,7 @@ import org.springframework.data.domain.Sort;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
-import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
@@ -61,7 +61,7 @@ class TravelogueServiceTest {
 			.findAllBySlice(pageRequest);
 
 		// when
-		CustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
+		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
 			pageRequest.getPageNumber(), pageRequest.getPageSize()
 		);
 
