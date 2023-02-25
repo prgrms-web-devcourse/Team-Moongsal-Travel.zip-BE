@@ -61,8 +61,9 @@ class TravelogueServiceTest {
 			.findAllBySlice(pageRequest);
 
 		// when
+		String sortField = "createDate";
 		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
-			pageRequest.getPageNumber(), pageRequest.getPageSize()
+			pageRequest.getPageNumber(), pageRequest.getPageSize(), sortField
 		);
 
 		// then

@@ -27,18 +27,18 @@ public class TravelogueService {
     public TravelogueService(TravelogueRepository travelogueRepository,
         MemberService memberService) {
         this.travelogueRepository = travelogueRepository;
-        this.memberService = memberService;
-    }
+		this.memberService = memberService;
+	}
 
-    @Transactional
-    public Long save(TravelogueCreateReq createReq, Long memberId) {
-        Member findMember = memberService.getMember(memberId);
-        return travelogueRepository.save(createReq.toEntity(findMember))
-            .getId();
-    }
+	@Transactional
+	public Long save(TravelogueCreateReq createReq, Long memberId) {
+		Member findMember = memberService.getMember(memberId);
+		return travelogueRepository.save(createReq.toEntity(findMember))
+			.getId();
+	}
 
-	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size) {
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createDate"));
+	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
 
 		Slice<TravelogueSimple> travelogues = travelogueRepository.findAllBySlice(pageRequest);
 
@@ -47,8 +47,8 @@ public class TravelogueService {
 		);
 	}
 
-    public Travelogue findBy(Long id) {
-        return travelogueRepository.findById(id)
+	public Travelogue findBy(Long id) {
+		return travelogueRepository.findById(id)
             .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
     }
 
