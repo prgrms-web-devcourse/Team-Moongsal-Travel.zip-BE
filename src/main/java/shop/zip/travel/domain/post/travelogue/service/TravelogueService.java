@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
@@ -33,6 +34,10 @@ public class TravelogueService {
     public Travelogue findBy(Long id) {
         return travelogueRepository.findById(id)
             .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+    }
+
+    public TravelogueDetailRes getTravelogueDetail(Long id) {
+        return TravelogueDetailRes.toDto(travelogueRepository.getTravelogueDetail(id));
     }
 
 }
