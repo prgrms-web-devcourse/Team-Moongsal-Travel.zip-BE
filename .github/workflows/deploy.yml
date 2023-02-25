@@ -18,7 +18,7 @@ jobs:
           distribution: 'temurin'
 
       - name: Gradle build
-        run: ./gradlew clean build -Dspring.profiles.default=dev
+        run: ./gradlew clean build
 
       - name: Show structure of artifact files
         run: ls -ahl ./build/libs/*.jar
