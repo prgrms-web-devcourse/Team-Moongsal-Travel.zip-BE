@@ -34,8 +34,9 @@ public class TravelogueController {
 	}
 
 	@GetMapping
-	public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(@RequestParam int size,
-		@RequestParam int page) {
+	public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
+		@RequestParam(required = false, defaultValue = "5") int size,
+		@RequestParam(required = false, defaultValue = "0") int page) {
 		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(page, size);
 
 		return ResponseEntity.ok(travelogueSimpleRes);
