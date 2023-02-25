@@ -1,9 +1,5 @@
 package shop.zip.travel.domain.post.subTravelogue.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -17,6 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
@@ -25,63 +26,91 @@ import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 @Entity
 public class SubTravelogue extends BaseTimeEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    private static final int MIN_LENGTH = 0;
+    private static final int MAX_LENGTH = 51;
 
-	@Column(nullable = false, length = 50)
-	private String title;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(columnDefinition = "LONGTEXT", nullable = false)
-	private String content;
+    @Column(nullable = false, length = 50)
+    private String title;
 
-	@ElementCollection
-	@CollectionTable(name = "address", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
-	private List<Address> addresses;
+    @Column(columnDefinition = "LONGTEXT", nullable = false)
+    private String content;
 
-	@ElementCollection
-	@CollectionTable(name = "transportation", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private Set<Transportation> transportationSet;
+    @ElementCollection
+    @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
+    private List<Address> addresses = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "sub_travelogue_id")
-	private List<TravelPhoto> photos = new ArrayList<>();
+    @ElementCollection
+    @CollectionTable(name = "transportation", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Set<Transportation> transportationSet = new HashSet<>();
 
-	protected SubTravelogue() {
-	}
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "sub_travelogue_id")
+    private List<TravelPhoto> photos = new ArrayList<>();
 
-	public SubTravelogue(String title, String content, List<Address> addresses, Set<Transportation> transportationSet,
-		List<TravelPhoto> photos) {
-		this.title = title;
-		this.content = content;
-		this.addresses = addresses;
-		this.transportationSet = transportationSet;
-		this.photos = photos;
-	}
+    protected SubTravelogue() {
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public SubTravelogue(String title, String content, List<Address> addresses,
+        Set<Transportation> transportationSet, List<TravelPhoto> photos) {
+        this.title = title;
+        this.content = content;
+        this.addresses = addresses;
+        this.transportationSet = transportationSet;
+        this.photos = photos;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public List<Address> getAddresses() {
-		return addresses;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public Set<Transportation> getTransportationSet() {
-		return transportationSet;
-	}
+    public List<Address> getAddresses() {
+        return new ArrayList<>(addresses);
+    }
 
-	public List<TravelPhoto> getPhotos() {
-		return new ArrayList<>(photos);
-	}
+    public Set<Transportation> getTransportationSet() {
+        return new HashSet<>(transportationSet);
+    }
+
+    public List<TravelPhoto> getPhotos() {
+        return new ArrayList<>(photos);
+    }
+
+    public void verify(String title, String content, List<Address> addresses,
+        Set<Transportation> transportationSet, List<TravelPhoto> photos) {
+        verifyTitle(title);
+        verifyContent(content);
+        nullCheck(title, content, addresses, transportationSet, photos);
+    }
+
+    public void verifyTitle(String title) {
+        Assert.isTrue(title.length() < MAX_LENGTH && title.length() > MIN_LENGTH,
+            "제목의 길이는 1글자 이상 50글자 이하여야 합니다");
+    }
+
+    public void verifyContent(String content) {
+        Assert.isTrue(content.length() > MIN_LENGTH, "내용을 확인해주세요");
+    }
+
+    public void nullCheck(String title, String content, List<Address> addresses,
+        Set<Transportation> transportationSet, List<TravelPhoto> photos) {
+        Assert.notNull(title, "제목을 확인해주세요");
+        Assert.notNull(content, "내용을 확인해주세요");
+        Assert.notNull(addresses, "주소를 확인해주세요");
+        Assert.notNull(transportationSet, "이동수단을 확인해주세요");
+        Assert.notNull(photos, "이미지를 확인해주세요");
+    }
 }
