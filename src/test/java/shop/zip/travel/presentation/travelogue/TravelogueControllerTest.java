@@ -15,13 +15,18 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
+import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 import shop.zip.travel.global.config.QuerydslConfig;
 
@@ -42,10 +47,13 @@ class TravelogueControllerTest {
 	@Autowired
 	private MemberRepository memberRepository;
 
+	private final ObjectMapper objectMapper = new ObjectMapper();
+
+	private Member member;
 
 	@BeforeEach
-	void setUp(){
-		Member member = new Member("user@gmail.com", "password123!", "nickname");
+	void setUp() {
+		member = new Member("user@gmail.com", "password123!", "nickname");
 		memberRepository.save(member);
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
@@ -85,6 +93,42 @@ class TravelogueControllerTest {
 					fieldWithPath("first").description("첫번째 페이지인지의 여부"),
 					fieldWithPath("last").description("마지막 페이지인지의 여부"),
 					fieldWithPath("empty").description("데이터가 없는지의 여부")
+				)));
+	}
+
+	@Test
+	@DisplayName("메인 게시물을 저장할 수 있다.")
+	public void test_save_travelogue() throws Exception {
+		// given
+		TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
+			DummyGenerator.createPeriod(),
+			"메인 게시물 제목",
+			DummyGenerator.createCountry(),
+			"www.naver.com",
+			DummyGenerator.createCost()
+		);
+
+		mockMvc.perform(post("/api/travelogues")
+				.queryParam("memberId", member.getId().toString())
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(objectMapper.registerModule(new JavaTimeModule()).writeValueAsString(travelogueCreateReq)))
+			.andExpect(status().isOk())
+			.andDo(print())
+			.andDo(document("save-travelogue",
+				requestFields(
+					fieldWithPath("period.startDate").description("여행 시작 날짜"),
+					fieldWithPath("period.endDate").description("여행 종료 날짜"),
+					fieldWithPath("period.nights").description("여행 숙박 횟수"),
+					fieldWithPath("title").description("게시물 제목"),
+					fieldWithPath("country.name").description("여행한 나라 이름"),
+					fieldWithPath("thumbnail").description("게시물 썸네일 URL"),
+					fieldWithPath("cost.transportation").description("이동 수단 경비"),
+					fieldWithPath("cost.lodge").description("숙박 비용"),
+					fieldWithPath("cost.etc").description("기타 비용"),
+					fieldWithPath("cost.total").description("전체 경비")
+				),
+				responseFields(
+					fieldWithPath("id").description("생성된 게시물의 pk 값")
 				)));
 	}
 }
