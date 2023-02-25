@@ -114,7 +114,7 @@ public class Travelogue extends BaseTimeEntity {
 		Assert.notNull(country, "나라를 확인해주세요");
 		Assert.notNull(thumbnail, "썸네일 url 을 확인해주세요");
 		Assert.notNull(cost, "경비를 확인해주세요");
-		Assert.notNull(subTravelogues, "썸네일 url 을 확인해주세요");
+		Assert.notNull(subTravelogues, "서브 게시물을 확인해주세요");
 		Assert.notNull(member, "사용자를 확인해주세요");
 	}
 
