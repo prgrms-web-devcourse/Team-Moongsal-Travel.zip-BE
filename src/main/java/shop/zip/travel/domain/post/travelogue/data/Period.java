@@ -1,6 +1,7 @@
 package shop.zip.travel.domain.post.travelogue.data;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.util.Assert;
 
@@ -45,5 +46,9 @@ public class Period {
 
 	public LocalDateTime getEndDate() {
 		return endDate;
+	}
+
+	public int getNights(){
+		return (int)ChronoUnit.DAYS.between(this.startDate, this.endDate);
 	}
 }

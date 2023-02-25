@@ -1,7 +1,5 @@
 package shop.zip.travel.domain.post.travelogue.dto.res;
 
-import java.time.temporal.ChronoUnit;
-
 import shop.zip.travel.domain.member.dto.MemberSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 
@@ -15,7 +13,7 @@ public record TravelogueSimpleRes(
 	MemberSimpleRes member
 ) {
 	public static TravelogueSimpleRes toDto(TravelogueSimple travelogueSimple){
-		long nights = ChronoUnit.DAYS.between(travelogueSimple.startDate(), travelogueSimple.endDate());
+		long nights = travelogueSimple.period().getNights();
 		return new TravelogueSimpleRes(
 			travelogueSimple.title(),
 			nights,
