@@ -1,11 +1,10 @@
 package shop.zip.travel.domain.post.travelogue.dto;
 
-import java.time.LocalDateTime;
+import shop.zip.travel.domain.post.travelogue.data.Period;
 
 public record TravelogueSimple(
 	String title,
-	LocalDateTime startDate,
-	LocalDateTime endDate,
+	Period period,
 	Long totalCost,
 	String country,
 	String thumbnail,
