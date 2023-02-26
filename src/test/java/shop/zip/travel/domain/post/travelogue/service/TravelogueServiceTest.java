@@ -62,8 +62,8 @@ class TravelogueServiceTest {
 			pageRequest.next().isPaged()
 		);
 
-		doReturn(travelogueSimples).when(travelogueRepository)
-			.findAllBySlice(pageRequest);
+		when(travelogueRepository.findAllBySlice(pageRequest))
+			.thenReturn(travelogueSimples);
 
 		// when
 		CustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
@@ -100,8 +100,8 @@ class TravelogueServiceTest {
 			member
 		);
 
-		doReturn(member).when(memberService)
-			.getMember(1L);
+		when(memberService.getMember(1L))
+			.thenReturn(member);
 
 		when(travelogueRepository.save(any(Travelogue.class)))
 			.thenReturn(travelogue);
