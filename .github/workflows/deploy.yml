@@ -2,7 +2,7 @@ name: Build and Deploy to EC2
 
 on:
   push:
-    branches: [ feature/#15 ]
+    branches: [  ]
 
 jobs:
   build:
@@ -18,6 +18,10 @@ jobs:
           distribution: 'temurin'
 
       - name: Gradle build
+        env:
+          AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
+          AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
+          AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
         run: ./gradlew clean build
 
       - name: Show structure of artifact files
