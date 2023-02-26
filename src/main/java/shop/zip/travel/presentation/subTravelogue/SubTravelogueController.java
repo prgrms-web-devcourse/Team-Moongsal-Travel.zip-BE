@@ -12,7 +12,7 @@ import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueCreateRes;
 import shop.zip.travel.domain.post.subTravelogue.service.SubTravelogueService;
 
 @RestController
-@RequestMapping("/api/subTravelogues")
+@RequestMapping("/api/travelogues")
 public class SubTravelogueController {
 
     private final SubTravelogueService subTravelogueService;
@@ -21,7 +21,7 @@ public class SubTravelogueController {
         this.subTravelogueService = subTravelogueService;
     }
 
-    @PostMapping("/{travelogueId}")
+    @PostMapping("/{travelogueId}/subTravelogues")
     public ResponseEntity<SubTravelogueCreateRes> create(
         @RequestBody @Valid SubTravelogueCreateReq createReq,
         @PathVariable Long travelogueId) {
