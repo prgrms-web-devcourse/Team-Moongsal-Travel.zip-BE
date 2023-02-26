@@ -7,8 +7,10 @@ backtony.github.io(Rest Docs)
 :toclevels: 2
 :sectlinks:
 
+= post
+
 [[검색-API]]
-= 검색 API
+== 검색 API
 
 === Request
 include::{snippets}/TravelogueController/search/http-request.adoc[]
