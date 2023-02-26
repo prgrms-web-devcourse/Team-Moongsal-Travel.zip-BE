@@ -1,11 +1,12 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
@@ -27,13 +28,18 @@ public class TravelogueService {
     @Transactional
     public Long save(TravelogueCreateReq createReq, Long memberId) {
         Member findMember = memberService.getMember(memberId);
-        return travelogueRepository.save(createReq.toEntity(findMember))
+        return travelogueRepository.save(createReq.toTravelogue(findMember))
             .getId();
     }
 
     public Travelogue findBy(Long id) {
         return travelogueRepository.findById(id)
             .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+    }
+
+    public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
+        int size) {
+        return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
     }
 
     public TravelogueDetailRes getTravelogueDetail(Long id) {
