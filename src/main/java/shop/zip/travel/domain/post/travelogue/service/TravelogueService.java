@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
