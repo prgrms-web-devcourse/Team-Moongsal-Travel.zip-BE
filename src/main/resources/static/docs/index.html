@@ -449,6 +449,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel0">
+<li><a href="#_post">post</a>
+<ul class="sectlevel1">
 <li><a href="#검색-API">검색 API</a>
 <ul class="sectlevel2">
 <li><a href="#_request">Request</a></li>
@@ -458,15 +460,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 </ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="content">
-<h1 id="검색-API" class="sect0"><a class="link" href="#검색-API">검색 API</a></h1>
+<h1 id="_post" class="sect0"><a class="link" href="#_post">post</a></h1>
+<div class="sect1">
+<h2 id="검색-API"><a class="link" href="#검색-API">검색 API</a></h2>
+<div class="sectionbody">
 <div class="sect2">
 <h3 id="_request"><a class="link" href="#_request">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/travelogues/search?page=0&amp;size=10&amp;lastTravelogueId=0&amp;keyword=%EC%A0%9C%EB%AA%A9&amp;orderType=%EB%AA%B0%EB%9D%BC HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/travelogues/search?keyword=%EC%A0%9C%EB%AA%A9&amp;lastTravelogue=0&amp;orderType=%EB%82%98%EC%A4%91%EC%97%90+%EC%B6%94%EA%B0%80&amp;size=10 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Host: localhost:8080</code></pre>
 </div>
@@ -487,24 +494,20 @@ Host: localhost:8080</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>page</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 사이즈</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lastTravelogueId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">마지막 Travelogue의 id</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">검색 키워드</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lastTravelogue</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">마지막 조회 된 travelogusId</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>orderType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">정렬 타입</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">조회 옵션</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색 사이즈</p></td>
 </tr>
 </tbody>
 </table>
@@ -514,6 +517,11 @@ Host: localhost:8080</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: *
+Access-Control-Max-Age: 3600
+Access-Control-Allow-Headers: *
 Content-Type: application/json
 Content-Length: 3
 
@@ -530,10 +538,12 @@ Content-Length: 3
 </div>
 </div>
 </div>
+</div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-02-24 13:20:20 +0900
+Last updated 2023-02-26 00:08:45 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

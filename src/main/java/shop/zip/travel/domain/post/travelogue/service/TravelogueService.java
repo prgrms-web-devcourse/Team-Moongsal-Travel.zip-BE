@@ -1,5 +1,7 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -54,5 +56,9 @@ public class TravelogueService {
             .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
     }
 
+    public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
+        int size) {
+        return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
+    }
 }
 

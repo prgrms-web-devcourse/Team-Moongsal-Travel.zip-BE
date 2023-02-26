@@ -12,6 +12,7 @@ import jakarta.persistence.MappedSuperclass;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
 
+
 	@CreatedDate
 	private LocalDateTime createDate;
 
