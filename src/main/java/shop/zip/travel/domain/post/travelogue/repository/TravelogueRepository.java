@@ -13,9 +13,10 @@ import shop.zip.travel.domain.post.travelogue.repository.querydsl.TravelogueRepo
 
 @Repository
 public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
-    TravelogueRepositoryQuerydsl {
+	TravelogueRepositoryQuerydsl {
 
-	@Query("select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple(t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
+	@Query("select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
+		+ "t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
 		+ "from Travelogue t "
 		+ "inner join Member m "
 		+ "on m.id = t.member.id ")
