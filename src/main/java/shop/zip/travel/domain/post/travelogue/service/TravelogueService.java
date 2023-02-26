@@ -28,7 +28,7 @@ public class TravelogueService {
     @Transactional
     public Long save(TravelogueCreateReq createReq, Long memberId) {
         Member findMember = memberService.getMember(memberId);
-        return travelogueRepository.save(createReq.toEntity(findMember))
+        return travelogueRepository.save(createReq.toTravelogue(findMember))
             .getId();
     }
 
@@ -41,5 +41,6 @@ public class TravelogueService {
         int size) {
         return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
     }
+
 }
 

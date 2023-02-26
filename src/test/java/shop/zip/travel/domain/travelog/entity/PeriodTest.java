@@ -3,7 +3,7 @@ package shop.zip.travel.domain.travelog.entity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,8 +15,8 @@ class PeriodTest {
     @DisplayName("startDate 가 endDate 보다 나중일 경우 IllegalArgumentException 을 던진다")
     @Test
     void verifyFailTest() {
-        LocalDateTime startDate = LocalDateTime.of(2023, 2, 20, 6, 10);
-        LocalDateTime endDate = LocalDateTime.of(2023, 2, 19, 6, 10);
+        LocalDate startDate = LocalDate.of(2023, 2, 10);
+        LocalDate endDate = LocalDate.of(2023, 2, 1);
 
         assertThatThrownBy(() -> new Period(startDate, endDate))
             .isInstanceOf(IllegalArgumentException.class);
@@ -27,13 +27,23 @@ class PeriodTest {
     @ValueSource(ints = {10, 19})
     void verifySuccessTest(int dayOfMonth) {
 
-        LocalDateTime startDate = LocalDateTime.of(2023, 2, dayOfMonth, 6, 10);
-        LocalDateTime endDate = LocalDateTime.of(2023, 2, 19, 6, 10);
+        LocalDate startDate = LocalDate.of(2023, 2, dayOfMonth);
+        LocalDate endDate = LocalDate.of(2023, 2, 19);
 
         Period period = new Period(startDate, endDate);
 
         assertThat(period.getStartDate()).isEqualTo(startDate);
         assertThat(period.getEndDate()).isEqualTo(endDate);
+    }
+
+    @DisplayName("여행 마지막 날짜가 현재날짜보다 나중일 경우 IllegalArgumentException 을 던진다")
+    @Test
+    void verifyEndDateIsBeforeToday() {
+        LocalDate startDate = LocalDate.now().minusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(1);
+
+        assertThatThrownBy(() -> new Period(startDate, endDate))
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
 }
