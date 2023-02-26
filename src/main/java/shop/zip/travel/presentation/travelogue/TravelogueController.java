@@ -37,7 +37,8 @@ public class TravelogueController {
 	public ResponseEntity<List<TravelogueSimpleRes>> search(
 			@RequestParam(name = "keyword", required = false) String keyword,
 			@RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
-			@RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
+			@RequestParam(name = "orderType", required = false) String orderType,
+			@RequestParam(name = "size") int size) {
 		List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
 				keyword, orderType, size);
 
