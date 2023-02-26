@@ -23,12 +23,6 @@ jobs:
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        env:
-          AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
-          AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
-          AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
-          NAVER_ID: ${{ secrets.NAVER_ID }}
-          NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
         with:
           arguments: build
 
