@@ -2,7 +2,7 @@ name: Build and Deploy to EC2
 
 on:
   push:
-    branches: [  ]
+    branches: [ feature/#17 ]
 
 jobs:
   build:
