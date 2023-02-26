@@ -2,6 +2,7 @@ package shop.zip.travel.domain.post.subTravelogue.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import shop.zip.travel.domain.post.image.dto.TravelPhotoCreateReq;
 import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueCreateReq;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
@@ -32,7 +33,7 @@ public class SubTravelogueService {
                 .stream()
                 .map(TravelPhotoCreateReq::toEntity)
                 .toList());
-        travelogue.add(subTravelogue);
+        travelogue.addSubTravelogue(subTravelogue);
 
         return subTravelogue.getId();
     }
