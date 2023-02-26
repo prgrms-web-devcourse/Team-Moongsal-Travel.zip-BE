@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
-import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
