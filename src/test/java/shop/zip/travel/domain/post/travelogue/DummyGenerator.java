@@ -43,7 +43,7 @@ public class DummyGenerator {
 		return new Address(
 			createCountry(),
 			"오사카",
-			"유니버셜 스튜디오 재팬"
+			"유니버셜 스튜디오"
 		);
 	}
 

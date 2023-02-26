@@ -52,8 +52,8 @@ class TravelogueControllerTest {
 	private Member member;
 
 	@BeforeEach
-	void setUp() {
-		member = new Member("user@gmail.com", "password123!", "nickname", 1998);
+	void setUp(){
+		Member member = new Member("user@gmail.com", "password123!", "nickname", 1998);
 		memberRepository.save(member);
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
@@ -63,7 +63,7 @@ class TravelogueControllerTest {
 
 	@Test
 	@DisplayName("전체 게시물 리스트를 페이지별로 가져올 수 있다.")
-	void test_get_all_travelogue() throws Exception {
+	public void test_get_all_travelogue() throws Exception {
 		mockMvc.perform(get("/api/travelogues")
 				.queryParam("size", "2")
 				.queryParam("page", "0"))
@@ -98,7 +98,7 @@ class TravelogueControllerTest {
 
 	@Test
 	@DisplayName("메인 게시물을 저장할 수 있다.")
-	void test_save_travelogue() throws Exception {
+	public void test_save_travelogue() throws Exception {
 		// given
 		TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
 			DummyGenerator.createPeriod(),

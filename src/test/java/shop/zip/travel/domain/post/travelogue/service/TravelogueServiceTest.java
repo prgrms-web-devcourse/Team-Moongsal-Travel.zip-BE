@@ -20,6 +20,7 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -40,7 +41,7 @@ class TravelogueServiceTest {
 
 	@Test
 	@DisplayName("페이지로 가져온 게시글 목록을 TravelogueSimpleRes로 변경해서 전달할 수 있다.")
-	void test_get_all() {
+	public void test_get_all() {
 		// given
 		Member member = new Member("user@gmail.com", "password1!", "nickname", 1998);
 
@@ -66,8 +67,9 @@ class TravelogueServiceTest {
 			.thenReturn(travelogueSimples);
 
 		// when
-		CustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
-			pageRequest.getPageNumber(), pageRequest.getPageSize()
+		String sortField = "createDate";
+		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
+			pageRequest.getPageNumber(), pageRequest.getPageSize(), sortField
 		);
 
 		// then

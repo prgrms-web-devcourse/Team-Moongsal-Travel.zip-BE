@@ -14,6 +14,8 @@ import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.CustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
@@ -41,18 +43,18 @@ public class TravelogueService {
 		return new TravelogueCreateRes(id);
 	}
 
-	public CustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size) {
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createDate"));
+	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
 
 		Slice<TravelogueSimple> travelogues = travelogueRepository.findAllBySlice(pageRequest);
 
-		return CustomSlice.toDto(
+		return TravelogueCustomSlice.toDto(
 			travelogues.map(TravelogueSimpleRes::toDto)
 		);
 	}
 
-    public Travelogue findBy(Long id) {
-        return travelogueRepository.findById(id)
+	public Travelogue findBy(Long id) {
+		return travelogueRepository.findById(id)
             .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
     }
 
@@ -60,5 +62,10 @@ public class TravelogueService {
         int size) {
         return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
     }
+
+    public TravelogueDetailRes getTravelogueDetail(Long id) {
+        return TravelogueDetailRes.toDto(travelogueRepository.getTravelogueDetail(id));
+    }
+
 }
 
