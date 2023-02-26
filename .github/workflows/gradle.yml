@@ -2,7 +2,8 @@ name: Build and Deploy to EC2
 
 on:
   push:
-    branches: [  ]
+    branches:
+      - develop
 
 jobs:
   build:
@@ -24,6 +25,7 @@ jobs:
           AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
           NAVER_ID: ${{ secrets.NAVER_ID }}
           NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
+
         run: ./gradlew clean build
 
       - name: Show structure of artifact files

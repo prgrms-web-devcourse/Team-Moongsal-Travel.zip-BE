@@ -454,9 +454,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#검색-API">검색 API</a>
 <ul class="sectlevel2">
 <li><a href="#_request">Request</a></li>
-<li><a href="#_requestparam">RequestParam</a></li>
-<li><a href="#_response">Response</a></li>
-<li><a href="#_responsebody">ResponseBody</a></li>
 </ul>
 </li>
 </ul>
@@ -471,70 +468,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_request"><a class="link" href="#_request">Request</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/travelogues/search?keyword=%EC%A0%9C%EB%AA%A9&amp;lastTravelogue=0&amp;orderType=%EB%82%98%EC%A4%91%EC%97%90+%EC%B6%94%EA%B0%80&amp;size=10 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_requestparam"><a class="link" href="#_requestparam">RequestParam</a></h3>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">검색 키워드</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lastTravelogue</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">마지막 조회 된 travelogusId</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>orderType</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">조회 옵션</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">검색 사이즈</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_response"><a class="link" href="#_response">Response</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Credentials: true
-Access-Control-Allow-Methods: *
-Access-Control-Max-Age: 3600
-Access-Control-Allow-Headers: *
-Content-Type: application/json
-Content-Length: 3
-
-[ ]</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_responsebody"><a class="link" href="#_responsebody">ResponseBody</a></h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-json hljs" data-lang="json">[ ]</code></pre>
-</div>
+<div class="paragraph">
+<p>Unresolved directive in index.adoc - include::/Users/jangjuyeong/Desktop/Team-Moongsal-Travel.zip-BE/build/generated-snippets/TravelogueController/search/http-request.adoc[]
+=== RequestParam
+Unresolved directive in index.adoc - include::/Users/jangjuyeong/Desktop/Team-Moongsal-Travel.zip-BE/build/generated-snippets/TravelogueController/search/query-parameters.adoc[]
+=== Response
+Unresolved directive in index.adoc - include::/Users/jangjuyeong/Desktop/Team-Moongsal-Travel.zip-BE/build/generated-snippets/TravelogueController/search/http-response.adoc[]
+=== ResponseBody
+Unresolved directive in index.adoc - include::/Users/jangjuyeong/Desktop/Team-Moongsal-Travel.zip-BE/build/generated-snippets/TravelogueController/search/response-body.adoc[]</p>
 </div>
 </div>
 </div>
@@ -543,7 +484,7 @@ Content-Length: 3
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-02-26 00:08:45 +0900
+Last updated 2023-02-26 22:13:02 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
