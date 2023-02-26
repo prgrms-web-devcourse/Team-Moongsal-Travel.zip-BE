@@ -23,7 +23,7 @@ public record SubTravelogueCreateReq(
     List<TravelPhotoCreateReq> travelPhotoCreateReqs
 ) {
 
-    public SubTravelogue toEntity() {
+    public SubTravelogue toSubTravelogue() {
         return new SubTravelogue(
             this.title,
             this.content,
