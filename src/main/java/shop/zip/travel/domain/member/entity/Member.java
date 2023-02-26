@@ -44,7 +44,7 @@ public class Member extends BaseTimeEntity {
     this.birthYear = birthYear;
   }
 
-  public void validateMember(String email, String password, String nickname, int birthYear) {
+  private void validateMember(String email, String password, String nickname, int birthYear) {
     validateEmail(email);
     validatePassword(password);
     validateNickname(nickname);

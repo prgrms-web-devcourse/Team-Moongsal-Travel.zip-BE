@@ -2,9 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 configurations {
+    asciidoctorExtensions
     compileOnly {
         extendsFrom annotationProcessor
     }
@@ -19,8 +21,16 @@ repositories {
 }
 
 dependencies {
+    // security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // web
@@ -44,14 +54,54 @@ dependencies {
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // restDocs
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
 }
 
 test {
+    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
-clean {
-    delete file('src/main/generated')
+asciidoctor {
+    dependsOn test
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
+
+    sources{
+        include("**/index.adoc","**/common/*.adoc")
+    }
+
+    baseDirFollowsSourceFile()
+}
+
+asciidoctor.doFirst {
+    delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }
 
 jar {
