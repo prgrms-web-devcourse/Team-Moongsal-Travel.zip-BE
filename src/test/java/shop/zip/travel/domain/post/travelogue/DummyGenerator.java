@@ -1,6 +1,6 @@
 package shop.zip.travel.domain.post.travelogue;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -49,8 +49,8 @@ public class DummyGenerator {
 
 	public static Period createPeriod(){
 		return new Period(
-			LocalDateTime.of(2023, 2, 1, 12, 0),
-			LocalDateTime.of(2023, 2, 2, 12, 0)
+			LocalDate.of(2023, 2, 2),
+			LocalDate.of(2023, 2, 3)
 		);
 	}
 
