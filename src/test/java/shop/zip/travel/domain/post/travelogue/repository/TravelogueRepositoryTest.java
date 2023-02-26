@@ -120,9 +120,9 @@ class TravelogueRepositoryTest {
                     fieldWithPath("[].country").type(JsonFieldType.STRING).description("여행 나라").optional(),
                     fieldWithPath("[].thumbnail").type(JsonFieldType.STRING)
                         .description("여행기 썸네일 이미지 url").optional(),
-                    fieldWithPath("[].memberSimpleRes.nickname").type(JsonFieldType.STRING)
+                    fieldWithPath("[].member.nickname").type(JsonFieldType.STRING)
                         .description("여행기 작성자 닉네임").optional(),
-                    fieldWithPath("[].memberSimpleRes.profileImageUrl").type(JsonFieldType.STRING)
+                    fieldWithPath("[].member.profileImageUrl").type(JsonFieldType.STRING)
                         .description("여행기 작성자 프로필 이미지").optional()
                 )
             )

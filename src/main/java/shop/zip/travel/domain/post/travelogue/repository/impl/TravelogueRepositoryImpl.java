@@ -36,12 +36,13 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .from(travelogue)
         .where(
             keywordContains(keyword)
-                .and(travelogueIdLt(10L))
+                .and(travelogueIdLt(Long.MAX_VALUE))
         )
-        .orderBy(getOrder(orderType))
         .limit(size)
         .fetch();
 
+    System.out.println("ids.size() = " + ids.size());
+    
     if (ids.isEmpty()) {
       return new ArrayList<>();
     }
@@ -63,12 +64,12 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .from(travelogue)
         .where(travelogue.id.in(ids))
         .leftJoin(travelogue.member, member)
-        .orderBy(member.id.desc())
+        .orderBy(travelogue.createDate.desc())
         .fetch();
 
     List<TravelogueSimpleRes> travelogueSimpleResList = new ArrayList<>();
 
-    travelogueSimpleList.stream().map(travelogueSimple -> travelogueSimpleResList.add(
+    travelogueSimpleList.forEach(travelogueSimple -> travelogueSimpleResList.add(
         TravelogueSimpleRes.toDto(travelogueSimple)));
 
     return travelogueSimpleResList;
