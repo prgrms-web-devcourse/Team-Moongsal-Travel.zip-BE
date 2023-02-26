@@ -7,6 +7,7 @@ import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
+import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.exception.NotVerifiedAuthorizationCodeException;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.error.ErrorCode;
@@ -46,5 +47,10 @@ public class MemberService {
     } else {
       throw new NotVerifiedAuthorizationCodeException(ErrorCode.NOT_VERIFIED_CODE);
     }
+  }
+
+  public Member getMember(Long id) {
+    return memberRepository.findById(id)
+        .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 }
