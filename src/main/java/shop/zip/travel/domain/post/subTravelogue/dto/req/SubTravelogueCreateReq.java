@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.subTravelogue.dto;
+package shop.zip.travel.domain.post.subTravelogue.dto.req;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
