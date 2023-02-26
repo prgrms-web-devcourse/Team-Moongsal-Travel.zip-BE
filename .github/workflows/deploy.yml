@@ -22,7 +22,7 @@ jobs:
           AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
           AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
           AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
-        run: ./gradlew clean build -Pprofile=dev
+        run: ./gradlew clean build -Pprofile=local
 
       - name: Show structure of artifact files
         run: ls -ahl ./build/libs/*.jar
