@@ -23,19 +23,19 @@ public class MemberController {
   @PostMapping("/api/auth/signup")
   public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignupReq memberSignupReq) {
     memberService.createMember(memberSignupReq);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok().build();
   }
 
-  @GetMapping("/api/valid/nickname/{nickname}")
+  @GetMapping("/api/auth/valid/nickname/{nickname}")
   public ResponseEntity<Void> checkDuplicatedNickname(@PathVariable @Valid String nickname) {
     memberService.validateDuplicatedNickname(nickname);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/api/valid/code")
+  @PostMapping("/api/auth/valid/code")
   public ResponseEntity<Void> validateVerificationCode(
       @RequestBody @Valid CodeValidateReq codeValidateReq) {
     memberService.verifyCode(codeValidateReq.email(), codeValidateReq.code());
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok().build();
   }
 }

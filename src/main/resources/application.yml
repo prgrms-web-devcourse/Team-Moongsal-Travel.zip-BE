@@ -20,6 +20,9 @@ spring:
       hibernate:
         show-sql: true
         format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 500
+    show-sql: true
     open-in-view: false
 
   data:
@@ -33,3 +36,10 @@ spring:
     host: smtp.naver.com
     port: '465'
 
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

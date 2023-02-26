@@ -21,8 +21,16 @@ repositories {
 }
 
 dependencies {
+    // security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
     // jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     // web
@@ -37,8 +45,10 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-    // h2
+    // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // h2
     runtimeOnly 'com.h2database:h2'
 
     // mysql
@@ -46,6 +56,7 @@ dependencies {
 
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 
     // restDocs
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'

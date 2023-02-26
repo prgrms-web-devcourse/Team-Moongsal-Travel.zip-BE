@@ -21,14 +21,15 @@ public class Country {
 	private String name;
 
 	public Country(String name) {
-		verifyCountry(name);
+		verify(name);
 		this.name = name;
 	}
 
 	protected Country() {
 	}
 
-	private void verifyCountry(String inputCountryName) {
+	private void verify(String inputCountryName) {
+		Assert.notNull(inputCountryName, "국가명을 확인해주세요");
 		Assert.isTrue(LOCALES.contains(inputCountryName), "국가명을 확인해주세요");
 	}
 

@@ -30,12 +30,11 @@ public class EmailService {
     message.addRecipients(RecipientType.TO, toAddress);
     message.setSubject("Travel.zip 회원가입 인증 코드");
 
-    String msg = "";
-    msg += "이메일 주소 확인\n";
-    msg += "아래 확인 코드를 회원가입 화면에서 입력해주세요\n";
-    msg += verificationCode;
+    StringBuilder msg = new StringBuilder();
+    msg.append("이메일 주소 확인\n").append("아래 확인 코드를 회원가입 화면에서 입력해주세요\n");
+    msg.append(verificationCode);
 
-    message.setText(msg, "utf-8", "plain");
+    message.setText(msg.toString(), "utf-8", "plain");
     message.setFrom(new InternetAddress("travelzip@naver.com", "Travel.zip"));
 
     return message;

@@ -7,33 +7,34 @@ import shop.zip.travel.domain.post.data.Country;
 @Embeddable
 public class Address {
 
-	@Column(nullable = false)
-	private Country country;
+    @Column(nullable = false)
+    private String country;
 
-	@Column(nullable = false)
-	private String city;
+    @Column(nullable = false)
+    private String city;
 
-	@Column(nullable = false)
-	private String spot;
+    @Column(nullable = false)
+    private String spot;
 
-	protected Address() {
-	}
+    public Address() {
+    }
 
-	public Address(String city, String spot) {
-		this.city = city;
-		this.spot = spot;
-	}
+    public Address(Country country, String city, String spot) {
+        this.country = country.getName();
+        this.city = city;
+        this.spot = spot;
+    }
 
-	public Country getCountry() {
-		return country;
-	}
+    public String getCountry() {
+        return country;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public String getSpot() {
-		return spot;
-	}
+    public String getSpot() {
+        return spot;
+    }
 }
 

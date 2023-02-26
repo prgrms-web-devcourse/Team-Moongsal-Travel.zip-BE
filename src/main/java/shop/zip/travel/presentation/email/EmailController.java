@@ -28,7 +28,7 @@ public class EmailController {
     String email = emailValidateReq.email();
     memberService.validateDuplicatedEmail(email);
     emailService.sendMail(email);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.ok().build();
   }
 
 }
