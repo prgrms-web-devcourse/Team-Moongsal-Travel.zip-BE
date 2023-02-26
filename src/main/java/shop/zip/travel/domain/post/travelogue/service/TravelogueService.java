@@ -29,15 +29,15 @@ public class TravelogueService {
     public TravelogueService(TravelogueRepository travelogueRepository,
         MemberService memberService) {
         this.travelogueRepository = travelogueRepository;
-		this.memberService = memberService;
-	}
+        this.memberService = memberService;
+    }
 
-	@Transactional
-	public Long save(TravelogueCreateReq createReq, Long memberId) {
-		Member findMember = memberService.getMember(memberId);
-		return travelogueRepository.save(createReq.toEntity(findMember))
-			.getId();
-	}
+    @Transactional
+    public Long save(TravelogueCreateReq createReq, Long memberId) {
+        Member findMember = memberService.getMember(memberId);
+        return travelogueRepository.save(createReq.toTravelogue(findMember))
+            .getId();
+    }
 
 	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
@@ -58,5 +58,6 @@ public class TravelogueService {
         int size) {
         return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
     }
+
 }
 
