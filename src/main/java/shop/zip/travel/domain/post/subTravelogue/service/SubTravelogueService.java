@@ -3,7 +3,8 @@ package shop.zip.travel.domain.post.subTravelogue.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.post.image.dto.TravelPhotoCreateReq;
-import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueCreateReq;
+import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueCreateReq;
+import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueCreateRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -23,7 +24,7 @@ public class SubTravelogueService {
     }
 
     @Transactional
-    public Long save(SubTravelogueCreateReq createReq, Long travelogueId) {
+    public SubTravelogueCreateRes save(SubTravelogueCreateReq createReq, Long travelogueId) {
 
         Travelogue travelogue = travelogueService.findBy(travelogueId);
         SubTravelogue subTravelogue = subTravelogueRepository.save(createReq.toEntity());
@@ -34,6 +35,6 @@ public class SubTravelogueService {
                 .toList());
         travelogue.add(subTravelogue);
 
-        return subTravelogue.getId();
+        return new SubTravelogueCreateRes(subTravelogue.getId());
     }
 }
