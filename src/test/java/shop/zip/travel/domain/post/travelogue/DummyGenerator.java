@@ -82,7 +82,8 @@ public class DummyGenerator {
 		return new Member(
 			"user@naver.com",
 			"password1234!",
-			"nickname"
+			"nickname",
+				1998
 		);
 	}
 }

@@ -33,7 +33,7 @@ class TravelogueRepositoryTest {
 
 	@BeforeEach
 	void setUp() {
-		Member member = new Member("user@gmail.com", "password123!", "nickname");
+		Member member = new Member("user@gmail.com", "password123!", "nickname",1998);
 		memberRepository.save(member);
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
@@ -43,7 +43,7 @@ class TravelogueRepositoryTest {
 
 	@Test
 	@DisplayName("전체 게시물 리스트를 페이지로 가져올 수 있다.")
-	public void test_get_all_travelogue() {
+	void test_get_all_travelogue() {
 		PageRequest pageRequest = PageRequest.of(
 			0,
 			2,
