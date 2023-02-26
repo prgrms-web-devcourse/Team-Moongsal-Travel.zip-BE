@@ -138,7 +138,12 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public void addSubTravelogue(SubTravelogue subTravelogue) {
+		verifySubTravelogueDuplicate(subTravelogue);
 		this.subTravelogues.add(subTravelogue);
+	}
+
+	public void verifySubTravelogueDuplicate(SubTravelogue subTravelogue) {
+		Assert.isTrue(!subTravelogues.contains(subTravelogue), "이미 존재하는 서브게시물 입니다.");
 	}
 
 }
