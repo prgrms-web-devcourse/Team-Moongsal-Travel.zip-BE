@@ -7,7 +7,10 @@ public enum ErrorCode {
 	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물을 찾을 수 없습니다"),
 	DUPLICATED_EMAIL(HttpStatus.CONFLICT, "이메일이 중복입니다"),
 	DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "닉네임이 중복입니다"),
-	NOT_VERIFIED_CODE(HttpStatus.BAD_REQUEST, "잘못된 인증 코드입니다");
+	NOT_VERIFIED_CODE(HttpStatus.BAD_REQUEST, "잘못된 인증 코드입니다"),
+	MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "멤버를 찾을 수 없습니다"),
+	TRAVELOGUE_NOT_FOUND(HttpStatus.NOT_FOUND, "여행기를 찾을 수 없습니다"),;
+
 
 	private final HttpStatus status;
 	private final String message;
