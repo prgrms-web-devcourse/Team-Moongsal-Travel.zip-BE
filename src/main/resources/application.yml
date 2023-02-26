@@ -1,4 +1,32 @@
 spring:
-
   profiles:
     default: dev
+
+  jpa:
+    properties:
+      hibernate:
+        show-sql: true
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 500
+    show-sql: true
+    open-in-view: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  mail:
+    username: ${NAVER_ID}
+    password: ${NAVER_PASSWORD}
+    host: smtp.naver.com
+    port: '465'
+
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
