@@ -33,7 +33,7 @@ class TravelogueRepositoryTest {
 
 	@BeforeEach
 	void setUp() {
-		Member member = new Member("user@gmail.com", "password123!", "nickname");
+		Member member = new Member("user@gmail.com", "password123!", "nickname", 1999);
 		memberRepository.save(member);
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));

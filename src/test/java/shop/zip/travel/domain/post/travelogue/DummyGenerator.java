@@ -1,6 +1,6 @@
 package shop.zip.travel.domain.post.travelogue;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -41,15 +41,16 @@ public class DummyGenerator {
 
 	public static Address createAddress(){
 		return new Address(
+			createCountry(),
 			"오사카",
-			"유니버셜 스튜디오 재팬"
+			"유니버셜 스튜디오"
 		);
 	}
 
 	public static Period createPeriod(){
 		return new Period(
-			LocalDateTime.of(2023, 2, 1, 12, 0),
-			LocalDateTime.of(2023, 2, 2, 12, 0)
+			LocalDate.of(2023, 2, 2),
+			LocalDate.of(2023, 2, 3)
 		);
 	}
 
