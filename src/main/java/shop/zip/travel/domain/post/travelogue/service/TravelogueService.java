@@ -42,5 +42,9 @@ public class TravelogueService {
         return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
     }
 
+    public TravelogueDetailRes getTravelogueDetail(Long id) {
+        return TravelogueDetailRes.toDto(travelogueRepository.getTravelogueDetail(id));
+    }
+
 }
 
