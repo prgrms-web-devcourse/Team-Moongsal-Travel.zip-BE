@@ -9,6 +9,7 @@ import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
+import shop.zip.travel.domain.member.exception.EmailNotMatchException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.exception.NotVerifiedAuthorizationCodeException;
 import shop.zip.travel.domain.member.exception.PasswordNotMatchException;
@@ -58,7 +59,7 @@ public class MemberService {
 
   public MemberSigninRes login(MemberSigninReq memberSigninReq) {
     Member member = memberRepository.findByEmail(memberSigninReq.email())
-        .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+        .orElseThrow(() -> new EmailNotMatchException(ErrorCode.EMAIL_NOT_MATCH));
 
     if (!member.getPassword().equals(memberSigninReq.password())) {
       throw new PasswordNotMatchException(ErrorCode.PASSWORD_NOT_MATCH);
