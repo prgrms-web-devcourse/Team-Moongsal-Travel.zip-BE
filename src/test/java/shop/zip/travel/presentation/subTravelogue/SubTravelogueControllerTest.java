@@ -74,7 +74,7 @@ class SubTravelogueControllerTest {
         List.of(new TravelPhotoCreateReq("www.google.com"))
     );
 
-    String token = jwtTokenProvider.createToken(member.getId());
+    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
 
     mockMvc.perform(post("/api/travelogues/{travelogueId}/subTravelogues", travelogue.getId())
             .header("AccessToken", token)
