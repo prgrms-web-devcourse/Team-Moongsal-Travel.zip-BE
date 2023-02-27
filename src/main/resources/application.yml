@@ -36,6 +36,9 @@ spring:
     host: smtp.naver.com
     port: '465'
 
+  jwt:
+    accessTokenSecretKey: ${ACCESS_TOKEN_SECRET_KEY}
+
 logging:
   level:
     org:
