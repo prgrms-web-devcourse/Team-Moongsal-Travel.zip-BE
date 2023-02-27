@@ -12,9 +12,9 @@ class CountryTest {
 
   private static Logger log = LoggerFactory.getLogger(CountryTest.class);
 
-  private static final String KOREAN = "ko";
+  private final String KOREAN = "ko";
 
-  private static final List<String> LOCALES = Arrays.stream(Locale.getISOCountries())
+  private final List<String> LOCALES = Arrays.stream(Locale.getISOCountries())
       .map(country -> new Locale(KOREAN, country).getDisplayCountry())
       .toList();
 
