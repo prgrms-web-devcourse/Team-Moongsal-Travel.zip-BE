@@ -43,7 +43,7 @@ class TravelogueRepositoryTest {
 
 	@Test
 	@DisplayName("전체 게시물 리스트를 페이지로 가져올 수 있다.")
-	public void test_get_all_travelogue() {
+	void test_get_all_travelogue() {
 		PageRequest pageRequest = PageRequest.of(
 			0,
 			2,
@@ -55,5 +55,4 @@ class TravelogueRepositoryTest {
 		assertThat(expected.getSize()).isEqualTo(actualLength);
 		assertThat(expected.hasNext()).isTrue();
 	}
-
 }
