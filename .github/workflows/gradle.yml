@@ -25,16 +25,22 @@ jobs:
         uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
           arguments: build
+        env:
+          AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
+          AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
+          AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
+          NAVER_ID: ${{ secrets.NAVER_ID }}
+          NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
 
-#      - name: Gradle build
-#        env:
-#          AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
-#          AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
-#          AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
-#          NAVER_ID: ${{ secrets.NAVER_ID }}
-#          NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
-#
-#        run: ./gradlew clean build
+      #      - name: Gradle build
+      #        env:
+      #          AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
+      #          AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
+      #          AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
+      #          NAVER_ID: ${{ secrets.NAVER_ID }}
+      #          NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
+      #
+      #        run: ./gradlew clean build
 
       - name: Show structure of artifact files
         run: ls -ahl ./build/libs/*.jar
