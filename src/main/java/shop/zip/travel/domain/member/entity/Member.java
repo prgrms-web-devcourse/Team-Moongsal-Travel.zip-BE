@@ -26,8 +26,8 @@ public class Member extends BaseTimeEntity {
   @Column(unique = true, nullable = false)
   private String nickname;
 
-  @Column(nullable = false)
-  private int birthYear;
+  @Column(nullable = false, length = 4)
+  private String birthYear;
 
   @Column
   private String profileImageUrl = "default";
@@ -36,7 +36,7 @@ public class Member extends BaseTimeEntity {
 
   }
 
-  public Member(String email, String password, String nickname, int birthYear) {
+  public Member(String email, String password, String nickname, String birthYear) {
     validateMember(email, password, nickname, birthYear);
     this.email = email;
     this.password = password;
@@ -44,7 +44,7 @@ public class Member extends BaseTimeEntity {
     this.birthYear = birthYear;
   }
 
-  private void validateMember(String email, String password, String nickname, int birthYear) {
+  private void validateMember(String email, String password, String nickname, String birthYear) {
     validateEmail(email);
     validatePassword(password);
     validateNickname(nickname);
@@ -67,9 +67,10 @@ public class Member extends BaseTimeEntity {
     Assert.isTrue(nickname.matches(nicknamePattern),"닉네임이 형식에 맞지 않습니다");
   }
 
-  private void validateBirthYear(int birthYear) {
+  private void validateBirthYear(String birthYear) {
     int currentYear = LocalDate.now().getYear();
-    Assert.isTrue(currentYear - 119 <= birthYear && birthYear <= currentYear - 5, "탄생년이 올바르지 않습니다");
+    Assert.isTrue(currentYear - 87 <= Integer.parseInt(birthYear) && Integer.parseInt(birthYear) <= currentYear - 7
+        ,"탄생년이 올바르지 않습니다");
   }
 
   public Long getId() {
@@ -88,7 +89,7 @@ public class Member extends BaseTimeEntity {
     return nickname;
   }
 
-  public int getBirthYear() {
+  public String getBirthYear() {
     return birthYear;
   }
 

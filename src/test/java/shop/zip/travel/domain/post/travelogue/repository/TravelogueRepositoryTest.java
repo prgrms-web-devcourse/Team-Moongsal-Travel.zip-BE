@@ -35,7 +35,7 @@ class TravelogueRepositoryTest {
 
 	@BeforeEach
 	void setUp() {
-		Member member = new Member("user@gmail.com", "password123!", "nickname", 1998);
+		Member member = new Member("user@gmail.com", "password123!", "nickname", "1998");
 		memberRepository.save(member);
 		travelogue = DummyGenerator.createTravelogue(member);
 		travelogueRepository.save(travelogue);

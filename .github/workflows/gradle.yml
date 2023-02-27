@@ -3,7 +3,7 @@ name: Build and Deploy to EC2
 on:
   push:
     branches:
-      - feature/#17
+      - develop
 
 jobs:
   build:
@@ -14,6 +14,8 @@ jobs:
       AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
       NAVER_ID: ${{ secrets.NAVER_ID }}
       NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
+      ACCESS_TOKEN_SECRET_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
+
 
     steps:
       - uses: actions/checkout@v3
@@ -37,6 +39,7 @@ jobs:
           AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
           NAVER_ID: ${{ secrets.NAVER_ID }}
           NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
+          ACCESS_TOKEN_SECRET_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
 
       #      - name: Gradle build
       #        env:

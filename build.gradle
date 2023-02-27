@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
     // security
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     //jwt
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
@@ -61,6 +61,8 @@ dependencies {
     // restDocs
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0-b170201.1204'
 
 }
 
