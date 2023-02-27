@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
+import shop.zip.travel.domain.post.fake.FakeTravelogue;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
@@ -98,8 +99,7 @@ class TravelogueServiceTest {
 		Member member = DummyGenerator.createMember();
 		Travelogue travelogue = new FakeTravelogue(
 			1L,
-			DummyGenerator.createTravelogue(member),
-			member
+				DummyGenerator.createTravelogue(member)
 		);
 
 		when(memberService.getMember(1L))
