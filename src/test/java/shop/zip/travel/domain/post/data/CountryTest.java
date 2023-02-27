@@ -21,10 +21,10 @@ class CountryTest {
 
   @Test
   void getName() throws IOException {
-    Runtime.getRuntime().exec("echo 자 준비하시고 쏘세요!!");
+    Runtime.getRuntime().exec("echo \"자 준비하시고 쏘세요!!\"");
     LOCALES.forEach(locale -> {
       try {
-        Runtime.getRuntime().exec("echo " + locale.toString());
+        Runtime.getRuntime().exec("echo \"" + locale.toString() +"\"");
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
