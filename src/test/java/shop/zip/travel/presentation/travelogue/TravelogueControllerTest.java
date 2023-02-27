@@ -53,7 +53,7 @@ class TravelogueControllerTest {
 
 	@BeforeEach
 	void setUp(){
-		member = new Member("user@gmail.com", "password123!", "nickname", 1998);
+		member = new Member("user@gmail.com", "password123!", "nickname", "1998");
 		memberRepository.save(member);
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));
 		travelogueRepository.save(DummyGenerator.createTravelogue(member));

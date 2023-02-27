@@ -83,7 +83,7 @@ public class DummyGenerator {
 			"user@naver.com",
 			"password1234!",
 			"nickname",
-				1998
+				"1998"
 		);
 	}
 }

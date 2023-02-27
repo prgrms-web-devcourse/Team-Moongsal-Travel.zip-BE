@@ -43,7 +43,7 @@ class TravelogueServiceTest {
 	@DisplayName("페이지로 가져온 게시글 목록을 TravelogueSimpleRes로 변경해서 전달할 수 있다.")
 	public void test_get_all() {
 		// given
-		Member member = new Member("user@gmail.com", "password1!", "nickname", 1998);
+		Member member = new Member("user@gmail.com", "password1!", "nickname", "1998");
 
 		Travelogue travelogue = DummyGenerator.createTravelogue(member);
 
