@@ -29,6 +29,7 @@ import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
+import shop.zip.travel.global.security.JwtTokenProvider;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
@@ -37,17 +38,26 @@ import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 class SubTravelogueControllerTest {
 
   private final ObjectMapper objectMapper = new ObjectMapper();
+
   @Autowired
   private MockMvc mockMvc;
+
   @Autowired
   private TravelogueRepository travelogueRepository;
+
   @Autowired
   private MemberRepository memberRepository;
+
+  @Autowired
+  private JwtTokenProvider jwtTokenProvider;
+
   private Travelogue travelogue;
+
+  private Member member;
 
   @BeforeEach
   void setUp() {
-    Member member = new Member("user@naver.com", "password1234!", "nickname", 1999);
+    member = new Member("user@naver.com", "password1234!", "nickname", "1999");
     memberRepository.save(member);
 
     travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
@@ -64,7 +74,10 @@ class SubTravelogueControllerTest {
         List.of(new TravelPhotoCreateReq("www.google.com"))
     );
 
+    String token = jwtTokenProvider.createToken(member.getId());
+
     mockMvc.perform(post("/api/travelogues/{travelogueId}/subTravelogues", travelogue.getId())
+            .header("AccessToken", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(subTravelogueCreateReq)))
         .andExpect(status().isOk())
