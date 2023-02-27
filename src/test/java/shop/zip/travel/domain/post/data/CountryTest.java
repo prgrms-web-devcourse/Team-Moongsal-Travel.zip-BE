@@ -20,8 +20,8 @@ class CountryTest {
 
   @Test
   void getName() {
-    log.info("자 준비하시고 쏘세요!!");
-    LOCALES.forEach(locale -> log.info(locale));
+    System.out.println("자 준비하시고 쏘세요!!");
+    LOCALES.forEach(System.out::println);
     Assert.isTrue(LOCALES.contains("일본"), "국가명을 확인해주세요");
 
   }
