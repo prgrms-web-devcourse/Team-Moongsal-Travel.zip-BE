@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      가AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
+      AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
       AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
       AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
       NAVER_ID: ${{ secrets.NAVER_ID }}
