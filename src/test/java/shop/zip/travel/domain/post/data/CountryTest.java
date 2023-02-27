@@ -1,5 +1,6 @@
 package shop.zip.travel.domain.post.data;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -19,9 +20,15 @@ class CountryTest {
       .toList();
 
   @Test
-  void getName() {
-    System.out.println("자 준비하시고 쏘세요!!");
-    LOCALES.forEach(System.out::println);
+  void getName() throws IOException {
+    Runtime.getRuntime().exec("echo 자 준비하시고 쏘세요!!");
+    LOCALES.forEach(locale -> {
+      try {
+        Runtime.getRuntime().exec("echo " + locale.toString());
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
     Assert.isTrue(LOCALES.contains("일본"), "국가명을 확인해주세요");
 
   }
