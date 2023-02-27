@@ -14,7 +14,7 @@ jobs:
       AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
       NAVER_ID: ${{ secrets.NAVER_ID }}
       NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
-      ACCESS_TOKEN_SECERT_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
+      ACCESS_TOKEN_SECRET_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
 
 
     steps:
@@ -39,7 +39,7 @@ jobs:
           AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
           NAVER_ID: ${{ secrets.NAVER_ID }}
           NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
-          ACCESS_TOKEN_SECERT_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
+          ACCESS_TOKEN_SECRET_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
 
       #      - name: Gradle build
       #        env:
