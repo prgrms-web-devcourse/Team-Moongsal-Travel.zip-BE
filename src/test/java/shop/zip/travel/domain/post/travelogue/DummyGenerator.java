@@ -77,4 +77,13 @@ public class DummyGenerator {
 			travelogue.getMember().getProfileImageUrl()
 		);
 	}
+
+	public static Member createMember(){
+		return new Member(
+			"user@naver.com",
+			"password1234!",
+			"nickname",
+				1998
+		);
+	}
 }

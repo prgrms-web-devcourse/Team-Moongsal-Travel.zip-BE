@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -33,23 +34,12 @@ public class TravelogueController {
     }
 
 	@PostMapping
-	public ResponseEntity<Long> create(
-			@RequestBody @Valid TravelogueCreateReq createReq,
-			@RequestParam Long memberId) {
+	public ResponseEntity<TravelogueCreateRes> create(
+		@RequestBody @Valid TravelogueCreateReq createReq,
+		@RequestParam Long memberId) {
 
-        Long travelogueId = travelogueService.save(createReq, memberId);
-        return ResponseEntity.ok(travelogueId);
-    }
-
-	@GetMapping("/search")
-	public ResponseEntity<List<TravelogueSimpleRes>> search(
-			@RequestParam(name = "keyword", required = false) String keyword,
-			@RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
-			@RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
-		List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
-				keyword, orderType, size);
-
-		return ResponseEntity.ok(travelogueSimpleResList);
+		TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq, memberId);
+		return ResponseEntity.ok(travelogueCreateRes);
 	}
 
     @GetMapping("/{travelogueId}")
@@ -57,7 +47,6 @@ public class TravelogueController {
         TravelogueDetailRes travelogueDetail = travelogueService.getTravelogueDetail(travelogueId);
         return ResponseEntity.ok(travelogueDetail);
     }
-
 
 	@GetMapping
 	public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
@@ -69,5 +58,16 @@ public class TravelogueController {
 
 		return ResponseEntity.ok(travelogueSimpleRes);
 	}
-}
 
+	@GetMapping("/search")
+	public ResponseEntity<List<TravelogueSimpleRes>> search(
+		@RequestParam(name = "keyword", required = false) String keyword,
+		@RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
+		@RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
+		List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
+			keyword, orderType, size);
+
+		return ResponseEntity.ok(travelogueSimpleResList);
+	}
+
+}

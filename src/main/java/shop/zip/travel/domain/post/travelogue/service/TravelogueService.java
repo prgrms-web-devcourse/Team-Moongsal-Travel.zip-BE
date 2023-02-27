@@ -12,6 +12,7 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -33,12 +34,13 @@ public class TravelogueService {
         this.memberService = memberService;
     }
 
-    @Transactional
-    public Long save(TravelogueCreateReq createReq, Long memberId) {
-        Member findMember = memberService.getMember(memberId);
-        return travelogueRepository.save(createReq.toTravelogue(findMember))
-            .getId();
-    }
+	@Transactional
+	public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
+		Member findMember = memberService.getMember(memberId);
+		Long id = travelogueRepository.save(createReq.toTravelogue(findMember))
+			.getId();
+		return new TravelogueCreateRes(id);
+	}
 
 	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
