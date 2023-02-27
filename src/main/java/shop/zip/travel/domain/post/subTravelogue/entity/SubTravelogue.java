@@ -58,6 +58,7 @@ public class SubTravelogue extends BaseTimeEntity {
 
     public SubTravelogue(String title, String content, List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
+        verify(title, content, addresses, transportationSet, photos);
         this.title = title;
         this.content = content;
         this.addresses = addresses;
@@ -89,28 +90,48 @@ public class SubTravelogue extends BaseTimeEntity {
         return new ArrayList<>(photos);
     }
 
-    public void verify(String title, String content, List<Address> addresses,
+    private void verify(String title, String content, List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
+        nullCheck(title, content, addresses, transportationSet, photos);
         verifyTitle(title);
         verifyContent(content);
-        nullCheck(title, content, addresses, transportationSet, photos);
+        verifyAddressList(addresses);
+        verifyTransportationSet(transportationSet);
     }
 
-    public void verifyTitle(String title) {
+    private void verifyTitle(String title) {
+        if (title.isBlank()) {
+            throw new IllegalArgumentException("제목은 비어있을 수 없습니다.");
+        }
         Assert.isTrue(title.length() < MAX_LENGTH && title.length() > MIN_LENGTH,
             "제목의 길이는 1글자 이상 50글자 이하여야 합니다");
     }
 
-    public void verifyContent(String content) {
+    private void verifyContent(String content) {
+        if (content.isBlank()) {
+            throw new IllegalArgumentException("내용은 비어있을 수 없습니다.");
+        }
         Assert.isTrue(content.length() > MIN_LENGTH, "내용을 확인해주세요");
     }
 
-    public void nullCheck(String title, String content, List<Address> addresses,
+    private void nullCheck(String title, String content, List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
         Assert.notNull(title, "제목을 확인해주세요");
         Assert.notNull(content, "내용을 확인해주세요");
         Assert.notNull(addresses, "주소를 확인해주세요");
         Assert.notNull(transportationSet, "이동수단을 확인해주세요");
         Assert.notNull(photos, "이미지를 확인해주세요");
+    }
+
+    private void verifyAddressList(List<Address> inputAddressList) {
+        if (inputAddressList.isEmpty()) {
+            throw new IllegalArgumentException("주소 데이터가 비어있습니다. 비어있을 수 없습니다.");
+        }
+    }
+
+    private void verifyTransportationSet(Set<Transportation> inputTransportationSet) {
+        if (inputTransportationSet.isEmpty()) {
+            throw new IllegalArgumentException("이동 수단 데이터가 비어있습니다. 비어있을 수 없습니다.");
+        }
     }
 }
