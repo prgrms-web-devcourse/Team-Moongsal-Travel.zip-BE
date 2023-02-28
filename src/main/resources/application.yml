@@ -1,6 +1,6 @@
 spring:
   profiles:
-    default: dev
+    default: local
 
   h2:
     console:
@@ -46,3 +46,4 @@ logging:
         type:
           descriptor:
             sql: trace
+
