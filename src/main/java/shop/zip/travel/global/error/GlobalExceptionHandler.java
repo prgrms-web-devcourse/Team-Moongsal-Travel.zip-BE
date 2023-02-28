@@ -3,6 +3,7 @@ package shop.zip.travel.global.error;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,34 +17,44 @@ public class GlobalExceptionHandler {
 
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-		log.info("IllegalArgumentException : ", e);
-		return ResponseEntity.badRequest().body(e.getMessage());
+	@ExceptionHandler(BindException.class)
+	protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {
+		log.info("BindException : ", e);
+		int httpStatus = ErrorCode.BINDING_WRONG.getStatusValue();
+		String message = ErrorCode.BINDING_WRONG.getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
 	@ExceptionHandler(CustomNotFoundException.class)
-	public ResponseEntity<String> handleCustomNotFoundException(CustomNotFoundException e) {
+	public ResponseEntity<ErrorResponse> handleCustomNotFoundException(CustomNotFoundException e) {
 		log.info("CustomNotFoundException : ", e);
-		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+		int httpStatus = e.getErrorCode().getStatusValue();
+		String message = e.getErrorCode().getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
 	@ExceptionHandler(DuplicatedException.class)
-	public ResponseEntity<String> handleDuplicatedException(DuplicatedException e) {
+	public ResponseEntity<ErrorResponse> handleDuplicatedException(DuplicatedException e) {
 		log.info("DuplicatedException : ", e);
-		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+		int httpStatus = e.getErrorCode().getStatusValue();
+		String message = e.getErrorCode().getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
 	@ExceptionHandler(NotVerifiedCodeException.class)
-	public ResponseEntity<String> handleNotVerifiedCodeException(NotVerifiedCodeException e) {
+	public ResponseEntity<ErrorResponse> handleNotVerifiedCodeException(NotVerifiedCodeException e) {
 		log.info("NotVerifiedCodeException : ", e);
-		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+		int httpStatus = e.getErrorCode().getStatusValue();
+		String message = e.getErrorCode().getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
 	@ExceptionHandler(NotMatchException.class)
-	public ResponseEntity<String> handleNotMatchException(NotMatchException e) {
+	public ResponseEntity<ErrorResponse> handleNotMatchException(NotMatchException e) {
 		log.info("NotMatchException : ", e);
-		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+		int httpStatus = e.getErrorCode().getStatusValue();
+		String message = e.getErrorCode().getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
 

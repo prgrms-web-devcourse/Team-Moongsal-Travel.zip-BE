@@ -24,7 +24,6 @@ public class EmailService {
   public MimeMessage createMail(String toAddress, String verificationCode)
       throws MessagingException, UnsupportedEncodingException {
 
-    // TODO MessagingException, UnsupportedEncodingException -> 구체적 예외를 전환할 필요 있다
     MimeMessage message = javaMailSender.createMimeMessage();
 
     message.addRecipients(RecipientType.TO, toAddress);
@@ -46,7 +45,6 @@ public class EmailService {
     MimeMessage message = createMail(toAddress, code);
     redisUtil.setDataWithExpire(toAddress, code, 180L);
     javaMailSender.send(message);
-    // TODO 구체적 예외처리 필요
   }
 
   public String createVerificationCode() {

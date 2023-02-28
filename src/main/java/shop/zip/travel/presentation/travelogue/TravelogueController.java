@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import shop.zip.travel.domain.member.exception.NotLoggedInException;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
-import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -49,15 +47,10 @@ public class TravelogueController {
   public ResponseEntity<TravelogueDetailRes> get(
     @PathVariable Long travelogueId,
     @AuthenticationPrincipal UserPrincipal userPrincipal) {
-    checkLogin(userPrincipal);
-    TravelogueDetailRes travelogueDetail = travelogueService.getTravelogueDetail(travelogueId);
-    return ResponseEntity.ok(travelogueDetail);
-  }
+    TravelogueDetailRes travelogueDetail =
+      travelogueService.getTravelogueDetail(travelogueId, userPrincipal.getUserId());
 
-  private void checkLogin(UserPrincipal userPrincipal) {
-    if (userPrincipal.getUserId() == null) {
-      throw new NotLoggedInException(ErrorCode.NOT_LOGGED_IN);
-    }
+    return ResponseEntity.ok(travelogueDetail);
   }
 
   @GetMapping
