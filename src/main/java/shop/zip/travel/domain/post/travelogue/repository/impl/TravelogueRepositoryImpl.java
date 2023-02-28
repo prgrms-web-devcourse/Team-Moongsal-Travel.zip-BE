@@ -36,10 +36,13 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .from(travelogue)
         .where(
             keywordContains(keyword)
-                .and(travelogueIdLt(lastTravelogueId))
+                .and(travelogueIdLt(Long.MAX_VALUE))
         )
+        .limit(size)
         .fetch();
 
+    System.out.println("ids.size() = " + ids.size());
+    
     if (ids.isEmpty()) {
       return new ArrayList<>();
     }
@@ -50,24 +53,23 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
                 TravelogueSimple.class,
                 travelogue.id,
                 travelogue.title,
-                travelogue.period.startDate,
-                travelogue.period.endDate,
+                travelogue.period,
                 travelogue.cost.total,
-                travelogue.country,
+                travelogue.country.name,
                 travelogue.thumbnail,
                 travelogue.member.nickname,
                 travelogue.member.profileImageUrl
             )
         )
         .from(travelogue)
-        .join(travelogue.member, member)
-        .limit(size)
-        .orderBy(getOrder(orderType))
+        .where(travelogue.id.in(ids))
+        .leftJoin(travelogue.member, member)
+        .orderBy(travelogue.createDate.desc())
         .fetch();
 
     List<TravelogueSimpleRes> travelogueSimpleResList = new ArrayList<>();
 
-    travelogueSimpleList.stream().map(travelogueSimple -> travelogueSimpleResList.add(
+    travelogueSimpleList.forEach(travelogueSimple -> travelogueSimpleResList.add(
         TravelogueSimpleRes.toDto(travelogueSimple)));
 
     return travelogueSimpleResList;

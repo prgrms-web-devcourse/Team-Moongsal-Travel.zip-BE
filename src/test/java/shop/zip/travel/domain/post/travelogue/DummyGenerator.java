@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
@@ -18,14 +17,17 @@ import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 public class DummyGenerator {
 
 	public static Travelogue createTravelogue(Member member){
+		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
+		subTravelogues.add(createSubTravelogue());
+
 		return new Travelogue(
-			createPeriod(),
-			"일본 오사카 다녀왔어요.",
-			createCountry(),
-			"www.naver.com",
-			createCost(),
-			List.of(createSubTravelogue()),
-			member
+				createPeriod(),
+				"일본 오사카 다녀왔어요.",
+				createCountry(),
+				"www.naver.com",
+				createCost(),
+				subTravelogues,
+				member
 		);
 	}
 
@@ -68,13 +70,14 @@ public class DummyGenerator {
 
 	public static TravelogueSimple createTravelogueSimple(Travelogue travelogue){
 		return new TravelogueSimple(
-			travelogue.getTitle(),
-			travelogue.getPeriod(),
-			travelogue.getCost().getTotal(),
-			travelogue.getCountry().getName(),
-			travelogue.getThumbnail(),
-			travelogue.getMember().getNickname(),
-			travelogue.getMember().getProfileImageUrl()
+				travelogue.getId(),
+				travelogue.getTitle(),
+				travelogue.getPeriod(),
+				travelogue.getCost().getTotal(),
+				travelogue.getCountry().getName(),
+				travelogue.getThumbnail(),
+				travelogue.getMember().getNickname(),
+				travelogue.getMember().getProfileImageUrl()
 		);
 	}
 
