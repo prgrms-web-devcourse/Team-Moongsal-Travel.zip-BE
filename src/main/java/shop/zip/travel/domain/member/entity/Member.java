@@ -29,19 +29,25 @@ public class Member extends BaseTimeEntity {
   @Column(nullable = false, length = 4)
   private String birthYear;
 
-  @Column
-  private String profileImageUrl = "default";
+  @Column(nullable = false)
+  private String profileImageUrl;
 
   protected Member() {
 
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
+    this(email, password, nickname, birthYear, "default");
+  }
+
+  public Member(String email, String password, String nickname, String birthYear,
+    String profileImageUrl) {
     validateMember(email, password, nickname, birthYear);
     this.email = email;
     this.password = password;
     this.nickname = nickname;
     this.birthYear = birthYear;
+    this.profileImageUrl = profileImageUrl;
   }
 
   private void validateMember(String email, String password, String nickname, String birthYear) {
@@ -69,8 +75,9 @@ public class Member extends BaseTimeEntity {
 
   private void validateBirthYear(String birthYear) {
     int currentYear = LocalDate.now().getYear();
-    Assert.isTrue(currentYear - 87 <= Integer.parseInt(birthYear) && Integer.parseInt(birthYear) <= currentYear - 7
-        ,"탄생년이 올바르지 않습니다");
+    Assert.isTrue(currentYear - 87 <= Integer.parseInt(birthYear)
+        && Integer.parseInt(birthYear) <= currentYear - 7
+      , "탄생년이 올바르지 않습니다");
   }
 
   public Long getId() {
