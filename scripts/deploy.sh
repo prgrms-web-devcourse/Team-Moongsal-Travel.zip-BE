@@ -1,5 +1,5 @@
 #!/bin/bash
-BUILD_WAR=$(ls /home/ec2-user/app/*.war)
+BUILD_WAR=$(ls /home/ec2-user/app/*.jar)
 WAR_NAME=$(basename $BUILD_WAR)
 echo "## build 파일명: $WAR_NAME"
 
