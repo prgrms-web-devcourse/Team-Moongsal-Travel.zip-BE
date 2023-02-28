@@ -3,11 +3,12 @@ os: linux
 
 files:
   - source: /
-    destination: /home/ec2-user/build
+    destination: /home/ec2-user/app/dev
     overwrite: yes
 
 permissions:
-  - object: /home/ec2-user/build
+  - object: /
+    pattern: "**"
     owner: ec2-user
     group: ec2-user
 
