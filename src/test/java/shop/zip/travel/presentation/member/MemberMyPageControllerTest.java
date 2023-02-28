@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
@@ -114,6 +116,23 @@ class MemberMyPageControllerTest {
           fieldWithPath("empty").description("데이터가 없는지 여부")
         )
       ));
+  }
+
+  @DisplayName("유저는 본인의 프로필 사진과 닉네임을 변경할 수 있다")
+  @Test
+  public void update_my_profile() throws Exception {
+    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
+    MemberUpdateReq memberUpdateReq = new MemberUpdateReq(
+      "test-profile-image-url",
+      "testNickname"
+    );
+
+    mockMvc.perform(get("/api/members/my/settings")
+        .header("AccessToken", token)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(memberUpdateReq)))
+      .andExpect(status().isOk())
+      .andDo(print());
   }
 
 }
