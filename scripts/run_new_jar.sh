@@ -14,7 +14,9 @@ else
 fi
 
 TARGET_PID=$(lsof -Fp -i TCP:${TARGET_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
+
 echo "${TARGET_PID} 여기 숫자 나오면 Kill 해야함 !!"
+
 if [ ! -z ${TARGET_PID} ]; then
   echo "> Kill JAR running at ${TARGET_PORT}."
   sudo kill -9 ${TARGET_PID}
