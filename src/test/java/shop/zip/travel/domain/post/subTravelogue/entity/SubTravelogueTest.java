@@ -54,7 +54,7 @@ class SubTravelogueTest {
   }
 
   @Test
-  @DisplayName("내용은 빈 값일 수 없다.")
+  @DisplayName("내용은 null이거나 빈 값일 수 없다.")
   void test_no_content() {
     String content = " ";
 
@@ -76,7 +76,7 @@ class SubTravelogueTest {
   }
 
   @Test
-  @DisplayName("주소는 비어있을 수 없다.")
+  @DisplayName("주소는 null이거나 비어있을 수 없다.")
   void test_no_address() {
     List<Address> emptyList = new ArrayList<>();
 
@@ -98,7 +98,7 @@ class SubTravelogueTest {
   }
 
   @Test
-  @DisplayName("이동 수단은 비어있을 수 없다.")
+  @DisplayName("이동 수단은 null이거나 비어있을 수 없다.")
   void test_no_transportations() {
     Set<Transportation> emptySet = new HashSet<>();
 
@@ -120,7 +120,7 @@ class SubTravelogueTest {
   }
 
   @Test
-  @DisplayName("이미지는 Null 값일 수 없다.")
+  @DisplayName("이미지는 null 값일 수 없다.")
   void test_travelPhotos_null() {
     assertThatThrownBy(() -> new SubTravelogue(
         validTitle,

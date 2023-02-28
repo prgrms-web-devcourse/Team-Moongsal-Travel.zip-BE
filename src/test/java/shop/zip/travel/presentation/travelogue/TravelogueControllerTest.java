@@ -75,8 +75,8 @@ class TravelogueControllerTest {
         .andDo(document("get-all-travelogue",
             responseFields(
                 fieldWithPath("content[].title").description("Travelogue 제목"),
-                fieldWithPath("content[].nights").description("몇박 몇일 중 몇박에 해당하는 값"),
-                fieldWithPath("content[].days").description("몇박 몇일 중 몇일에 해당하는 값"),
+                fieldWithPath("content[].nights").description("숙박 일"),
+                fieldWithPath("content[].days").description("여행 전체 일"),
                 fieldWithPath("content[].totalCost").description("여행 전체 비용"),
                 fieldWithPath("content[].country").description("방문한 나라"),
                 fieldWithPath("content[].thumbnail").description("썸네일 링크"),
@@ -85,14 +85,14 @@ class TravelogueControllerTest {
                 fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
-                fieldWithPath("pageable.offset").description("사용자가 마지막으로 본 위치?"),
+                fieldWithPath("pageable.offset").description("페이징 offset"),
                 fieldWithPath("pageable.pageNumber").description("현재 요청한 페이지 넘버"),
                 fieldWithPath("pageable.pageSize").description("요청한 데이터 갯수"),
-                fieldWithPath("pageable.paged").description("페이징이 된 여부?"),
-                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부?"),
-                fieldWithPath("size").description("객체의 사이즈?"),
-                fieldWithPath("number").description("????"),
-                fieldWithPath("numberOfElements").description("게시물 갯수"),
+                fieldWithPath("pageable.paged").description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부"),
+                fieldWithPath("size").description("요청된 페이징 사이즈"),
+                fieldWithPath("number").description("페이지 번호"),
+                fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),
                 fieldWithPath("first").description("첫번째 페이지인지의 여부"),
                 fieldWithPath("last").description("마지막 페이지인지의 여부"),
                 fieldWithPath("empty").description("데이터가 없는지의 여부")
@@ -115,7 +115,6 @@ class TravelogueControllerTest {
 
     mockMvc.perform(post("/api/travelogues")
             .header("AccessToken", token)
-            .queryParam("memberId", member.getId().toString())
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.registerModule(new JavaTimeModule())
                 .writeValueAsString(travelogueCreateReq)))
