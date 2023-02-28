@@ -57,13 +57,13 @@ sudo service nginx reload
 
 echo "> Nginx reloaded."
 
-TARGET_PID=$(lsof -Fp -i TCP:${TARGET_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
+TARGET_PID=$(lsof -Fp -i TCP:${CURRENT_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
 
 echo "$TARGET_PID"
 
 if [ ${TARGET_PID} -gt 0 ]
 then
-  echo "> Kill JAR running at ${TARGET_PORT}."
+  echo "> Kill JAR running at ${CURRENT_PORT}."
   sudo kill -9 ${TARGET_PID}
 fi
 
