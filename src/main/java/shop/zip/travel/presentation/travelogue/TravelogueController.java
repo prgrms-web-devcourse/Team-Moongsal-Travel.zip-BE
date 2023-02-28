@@ -33,15 +33,15 @@ public class TravelogueController {
     this.travelogueService = travelogueService;
   }
 
-	@PostMapping
-	public ResponseEntity<TravelogueCreateRes> create(
-		@RequestBody @Valid TravelogueCreateReq createReq,
-		@AuthenticationPrincipal UserPrincipal userPrincipal) {
-		TravelogueCreateRes travelogueCreateRes =
-			travelogueService.save(createReq, userPrincipal.getUserId());
+  @PostMapping
+  public ResponseEntity<TravelogueCreateRes> create(
+    @RequestBody @Valid TravelogueCreateReq createReq,
+    @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    TravelogueCreateRes travelogueCreateRes =
+      travelogueService.save(createReq, userPrincipal.getUserId());
 
-		return ResponseEntity.ok(travelogueCreateRes);
-	}
+    return ResponseEntity.ok(travelogueCreateRes);
+  }
 
   @GetMapping("/{travelogueId}")
   public ResponseEntity<TravelogueDetailRes> get(@PathVariable Long travelogueId) {
@@ -51,22 +51,22 @@ public class TravelogueController {
 
   @GetMapping
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
-      @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
-      @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
-      @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField) {
+    @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
+    @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
+    @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-        travelogueService.getTravelogues(page, size, sortField);
+      travelogueService.getTravelogues(page, size, sortField);
 
     return ResponseEntity.ok(travelogueSimpleRes);
   }
 
   @GetMapping("/search")
   public ResponseEntity<List<TravelogueSimpleRes>> search(
-      @RequestParam(name = "keyword", required = false) String keyword,
-      @RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
-      @RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
+    @RequestParam(name = "keyword", required = false) String keyword,
+    @RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
+    @RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
     List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
-        keyword, orderType, size);
+      keyword, orderType, size);
 
     return ResponseEntity.ok(travelogueSimpleResList);
   }
