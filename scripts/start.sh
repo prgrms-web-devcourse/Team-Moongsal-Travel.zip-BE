@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ec2-user/app/deploy"
-JAR_FILE="$PROJECT_ROOT/build/libs/app.jar"
+PROJECT_ROOT="/home/ec2-user/travel-zip-deploy"
+JAR_FILE="$PROJECT_ROOT/build/libs/travel-0.0.1-SNAPSHOT.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
