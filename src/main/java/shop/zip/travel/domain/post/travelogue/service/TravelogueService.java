@@ -63,8 +63,9 @@ public class TravelogueService {
     }
 
     public TravelogueDetailRes getTravelogueDetail(Long id) {
-        return TravelogueDetailRes.toDto(travelogueRepository.getTravelogueDetail(id));
-    }
+			return TravelogueDetailRes.toDto(
+				travelogueRepository.getTravelogueDetail(findBy(id).getId()));
+		}
 
 }
 
