@@ -14,6 +14,7 @@ then
   TARGET_PORT=8080
 else
   echo "> No JAR is connected to nginx"
+  TARGET_PORT=8080
 fi
 
 #TARGET_PID=$(lsof -Fp -i TCP:${TARGET_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
@@ -24,7 +25,7 @@ fi
 #  sudo kill -9 ${TARGET_PID}
 #fi
 
-nohup java -jar -Dserver.port=${TARGET_PORT} $JAR_FILE –Dspring.profiles.active=dev > /home/ec2-user/nohup.out 2>&1 &
+nohup java -jar -Dserver.port=${TARGET_PORT} $JAR_FILE –Dspring.profiles.active=dev & > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new JAR runs at ${TARGET_PORT}."
 
 echo "> Start health check of JAR at 'localhost:${TARGET_PORT}' ..."
