@@ -102,7 +102,7 @@ class TravelogueServiceTest {
 			member
 		);
 
-		when(memberService.getMember(1L))
+		when(memberService.getMember(1L).toMember())
 			.thenReturn(member);
 
 		when(travelogueRepository.save(any(Travelogue.class)))
