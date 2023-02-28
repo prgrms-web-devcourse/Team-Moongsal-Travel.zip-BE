@@ -14,10 +14,10 @@ else
 fi
 
 TARGET_PID=$(lsof -Fp -i TCP:${TARGET_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
-
+echo "${TARGET_PID} 여기 숫자 나오면 Kill 해야함 !!"
 if [ ! -z ${TARGET_PID} ]; then
   echo "> Kill JAR running at ${TARGET_PORT}."
-  sudo kill ${TARGET_PID}
+  sudo kill -9 ${TARGET_PID}
 fi
 
 nohup java -jar -Dserver.port=${TARGET_PORT} -Dspring.profiles.active=dev /home/ec2-user/travel-zip/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
