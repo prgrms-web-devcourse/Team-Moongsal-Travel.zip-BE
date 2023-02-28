@@ -12,9 +12,9 @@ permissions:
 
 hooks:
   ApplicationStop:
-    - location: travel-zip-deploy/scripts/stop.sh
+    - location: scripts/stop.sh
       runas: root
 
   ApplicationStart:
-    - location: travel-zip-deploy/scripts/stop.sh
+    - location: scripts/stop.sh
       runas: root
