@@ -108,4 +108,13 @@ public class Member extends BaseTimeEntity {
   public String getProfileImageUrl() {
     return profileImageUrl;
   }
+
+  public void updateProfileImageUrl(String profileImageUrl) {
+    this.profileImageUrl = profileImageUrl;
+  }
+
+  public void updateNickname(String nickname) {
+    this.nickname = nickname;
+  }
+
 }
