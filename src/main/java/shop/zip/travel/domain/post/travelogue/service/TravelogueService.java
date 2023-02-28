@@ -36,9 +36,11 @@ public class TravelogueService {
 
 	@Transactional
 	public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
-		Member findMember = memberService.getMember(memberId);
+
+		Member findMember = memberService.getMember(memberId).toMember();
 		Long id = travelogueRepository.save(createReq.toTravelogue(findMember))
 			.getId();
+
 		return new TravelogueCreateRes(id);
 	}
 
