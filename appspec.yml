@@ -16,14 +16,6 @@ permissions:
 ### 이번에 추가한 부분 ###
 hooks:
   ApplicationStart:
-    - location: scripts/run_new_jar.sh
-      timeout: 120
-      runas: ec2-user
-
-    - location: scripts/health_check.sh
-      timeout: 120
-      runas: ec2-user
-
-    - location: scripts/switch.sh
+    - location: deploy.sh
       timeout: 120
       runas: ec2-user
