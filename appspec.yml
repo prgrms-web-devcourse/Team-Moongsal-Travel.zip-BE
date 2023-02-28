@@ -16,10 +16,11 @@ hooks:
     - location: run_new_jar.sh # 엔진엑스와 연결되어 있지 않은 스프링 부트를 종료합니다.
       timeout: 60
       runas: ec2-user
+
     - location: health_check.sh # 엔진엑스와 연결되어 있지 않은 Port로 새 버전의 스프링 부트를 시작합니다.
       timeout: 60
       runas: ec2-user
-  ValidateService:
+
     - location: switch.sh # 새 스프링 부트가 정상적으로 실행됐는지 확인 합니다.
       timeout: 60
       runas: ec2-user
