@@ -35,14 +35,12 @@ public class SecurityConfig {
     http
         .csrf().disable()
         .httpBasic().disable()
-        .formLogin().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .authorizeHttpRequests(request -> request
-            .requestMatchers("/api/auth/signup").permitAll()
-            .anyRequest().authenticated())
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-            UsernamePasswordAuthenticationFilter.class);
+        .authorizeHttpRequests(requests -> requests
+            .anyRequest().authenticated()
+        )
+        .addFilterAfter(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }
