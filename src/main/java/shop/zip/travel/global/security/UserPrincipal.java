@@ -23,6 +23,10 @@ public class UserPrincipal implements UserDetails {
     return Collections.emptyList();
   }
 
+  public Long getUserId() {
+    return member.getId();
+  }
+
   @Override
   public String getUsername() {
     return member.getEmail();
