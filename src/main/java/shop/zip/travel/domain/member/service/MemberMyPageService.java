@@ -6,6 +6,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.entity.Member;
@@ -18,6 +19,8 @@ import shop.zip.travel.global.error.ErrorCode;
 @Service
 @Transactional(readOnly = true)
 public class MemberMyPageService {
+
+  private static final String NICK_NAME_PATTERN = "^[가-힣|a-zA-Z]{2,12}$";
 
   private final TravelogueRepository travelogueRepository;
   private final MemberRepository memberRepository;
@@ -50,6 +53,8 @@ public class MemberMyPageService {
 
   private void updateNickname(MemberUpdateReq memberUpdateReq, Member member) {
     if (StringUtils.isNotBlank(memberUpdateReq.nickname())) {
+      Assert.isTrue(memberUpdateReq.nickname()
+        .matches(NICK_NAME_PATTERN), "닉네임이 형식에 맞지 않습니다");
       member.updateNickname(memberUpdateReq.nickname());
     }
   }
