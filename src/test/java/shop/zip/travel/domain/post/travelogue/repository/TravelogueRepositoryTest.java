@@ -2,6 +2,7 @@ package shop.zip.travel.domain.post.travelogue.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,9 +40,11 @@ class TravelogueRepositoryTest {
 		memberRepository.save(member);
 		travelogue = DummyGenerator.createTravelogue(member);
 		travelogueRepository.save(travelogue);
-		travelogueRepository.save(DummyGenerator.createTravelogue(member));
-		travelogueRepository.save(DummyGenerator.createTravelogue(member));
-		travelogueRepository.save(DummyGenerator.createTravelogue(member));
+		travelogueRepository.saveAll(
+				List.of(
+						DummyGenerator.createTravelogue(member),
+						DummyGenerator.createTravelogue(member),
+						DummyGenerator.createTravelogue(member)));
 	}
 
 	@Test

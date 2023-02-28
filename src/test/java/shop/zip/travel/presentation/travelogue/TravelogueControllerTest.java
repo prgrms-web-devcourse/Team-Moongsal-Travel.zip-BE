@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,10 +56,11 @@ class TravelogueControllerTest {
   void setUp() {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
-    travelogueRepository.save(DummyGenerator.createTravelogue(member));
-    travelogueRepository.save(DummyGenerator.createTravelogue(member));
-    travelogueRepository.save(DummyGenerator.createTravelogue(member));
-    travelogueRepository.save(DummyGenerator.createTravelogue(member));
+    travelogueRepository.saveAll(
+        List.of(
+            DummyGenerator.createTravelogue(member),
+            DummyGenerator.createTravelogue(member),
+            DummyGenerator.createTravelogue(member)));
   }
 
   @Test
