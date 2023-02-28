@@ -2,6 +2,7 @@ package shop.zip.travel.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -24,7 +25,9 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-      .requestMatchers("/api/auth/**");
+        .requestMatchers("/api/auth/**")
+        .requestMatchers(HttpMethod.GET,"/api/travelogues")
+        .requestMatchers(HttpMethod.GET,"/api/travelogues/search");
   }
 
   @Bean
@@ -32,14 +35,12 @@ public class SecurityConfig {
     http
         .csrf().disable()
         .httpBasic().disable()
-        .formLogin().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .authorizeHttpRequests(request -> request
-            .requestMatchers("/api/auth/**").permitAll()
-            .anyRequest().authenticated())
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-            UsernamePasswordAuthenticationFilter.class);
+        .authorizeHttpRequests(requests -> requests
+            .anyRequest().authenticated()
+        )
+        .addFilterAfter(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }

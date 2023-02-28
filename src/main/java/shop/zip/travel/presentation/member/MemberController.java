@@ -3,13 +3,13 @@ package shop.zip.travel.presentation.member;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.email.dto.request.CodeValidateReq;
 import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
 import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
+import shop.zip.travel.domain.member.dto.request.NicknameValidateReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.service.MemberService;
 
@@ -35,9 +35,10 @@ public class MemberController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping("/api/auth/valid/nickname/{nickname}")
-  public ResponseEntity<Void> checkDuplicatedNickname(@PathVariable @Valid String nickname) {
-    memberService.validateDuplicatedNickname(nickname);
+  @GetMapping("/api/auth/valid/nickname")
+  public ResponseEntity<Void> checkDuplicatedNickname(
+      @RequestBody @Valid NicknameValidateReq nicknameValidateReq) {
+    memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
     return ResponseEntity.ok().build();
   }
 
