@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 
@@ -22,34 +23,38 @@ public class Member extends BaseTimeEntity {
   @Column(nullable = false)
   private String password;
 
-  @Column
-  private String profileImageUrl;
-
   @Column(unique = true, nullable = false)
   private String nickname;
 
-  @Column
-  private int birthYear;
+  @Column(nullable = false, length = 4)
+  private String birthYear;
+
+  @Column(nullable = false)
+  private String profileImageUrl;
 
   protected Member() {
 
   }
 
-  public Member(String email, String password, String nickname) {
-    validateEmail(email);
-    validatePassword(password);
-    validateNickname(nickname);
-    this.email = email;
-    this.password = password;
-    this.nickname = nickname;
+  public Member(String email, String password, String nickname, String birthYear) {
+    this(email, password, nickname, birthYear, "default");
   }
 
-
-  public Member(String email, String password, String nickname, int birthYear) {
+  public Member(String email, String password, String nickname, String birthYear,
+    String profileImageUrl) {
+    validateMember(email, password, nickname, birthYear);
     this.email = email;
     this.password = password;
     this.nickname = nickname;
     this.birthYear = birthYear;
+    this.profileImageUrl = profileImageUrl;
+  }
+
+  private void validateMember(String email, String password, String nickname, String birthYear) {
+    validateEmail(email);
+    validatePassword(password);
+    validateNickname(nickname);
+    validateBirthYear(birthYear);
   }
 
 
@@ -68,6 +73,13 @@ public class Member extends BaseTimeEntity {
     Assert.isTrue(nickname.matches(nicknamePattern),"닉네임이 형식에 맞지 않습니다");
   }
 
+  private void validateBirthYear(String birthYear) {
+    int currentYear = LocalDate.now().getYear();
+    Assert.isTrue(currentYear - 87 <= Integer.parseInt(birthYear)
+        && Integer.parseInt(birthYear) <= currentYear - 7
+      , "탄생년이 올바르지 않습니다");
+  }
+
   public Long getId() {
     return id;
   }
@@ -80,15 +92,15 @@ public class Member extends BaseTimeEntity {
     return password;
   }
 
-  public String getProfileImageUrl() {
-    return profileImageUrl;
-  }
-
   public String getNickname() {
     return nickname;
   }
 
-  public int getBirthYear() {
+  public String getBirthYear() {
     return birthYear;
+  }
+
+  public String getProfileImageUrl() {
+    return profileImageUrl;
   }
 }

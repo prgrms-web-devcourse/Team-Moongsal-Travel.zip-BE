@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import shop.zip.travel.global.error.exception.CustomNotFoundException;
+import shop.zip.travel.global.error.exception.DuplicatedException;
+import shop.zip.travel.global.error.exception.NotMatchException;
+import shop.zip.travel.global.error.exception.NotVerifiedCodeException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,6 +27,25 @@ public class GlobalExceptionHandler {
 		log.info("CustomNotFoundException : ", e);
 		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
 	}
+
+	@ExceptionHandler(DuplicatedException.class)
+	public ResponseEntity<String> handleDuplicatedException(DuplicatedException e) {
+		log.info("DuplicatedException : ", e);
+		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+	}
+
+	@ExceptionHandler(NotVerifiedCodeException.class)
+	public ResponseEntity<String> handleNotVerifiedCodeException(NotVerifiedCodeException e) {
+		log.info("NotVerifiedCodeException : ", e);
+		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+	}
+
+	@ExceptionHandler(NotMatchException.class)
+	public ResponseEntity<String> handleNotMatchException(NotMatchException e) {
+		log.info("NotMatchException : ", e);
+		return ResponseEntity.status(e.getErrorCode().getStatusValue()).body(e.getMessage());
+	}
+
 
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<String> handleRuntimeException(RuntimeException e) {

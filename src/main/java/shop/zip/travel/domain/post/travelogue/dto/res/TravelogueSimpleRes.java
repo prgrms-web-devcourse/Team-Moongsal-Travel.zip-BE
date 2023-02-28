@@ -16,6 +16,7 @@ public record TravelogueSimpleRes(
 
 	public static TravelogueSimpleRes toDto(TravelogueSimple travelogueSimple) {
 		long nights = travelogueSimple.period().getNights();
+
 		return new TravelogueSimpleRes(
 				travelogueSimple.travelogueId(),
 				travelogueSimple.title(),

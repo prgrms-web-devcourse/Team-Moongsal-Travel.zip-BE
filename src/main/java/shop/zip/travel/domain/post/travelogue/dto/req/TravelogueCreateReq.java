@@ -21,7 +21,7 @@ public record TravelogueCreateReq(
     Cost cost
 ) {
 
-    public Travelogue toEntity(Member member) {
+    public Travelogue toTravelogue(Member member) {
         return new Travelogue(
             this.period,
             this.title,
