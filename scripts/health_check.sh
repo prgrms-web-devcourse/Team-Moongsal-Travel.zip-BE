@@ -20,8 +20,9 @@ echo "> Start health check of JAR at 'http://127.0.0.1:${TARGET_PORT}' ..."
 for RETRY_COUNT in 1 2 3 4 5 6 7 8 9 10
 do
     echo "> #${RETRY_COUNT} trying..."
-    echo "${curl -s -o /dev/null -w "%{http_code}"}"
     RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}"  localhost:${TARGET_PORT}/api/healths)
+
+echo "${RESPONSE_CODE}"
 
     if [ ${RESPONSE_CODE} -eq 200 ]; then
         echo "> New JAR successfully running"
