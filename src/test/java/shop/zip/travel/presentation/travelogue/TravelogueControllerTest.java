@@ -66,10 +66,8 @@ class TravelogueControllerTest {
   @Test
   @DisplayName("전체 게시물 리스트를 페이지별로 가져올 수 있다.")
   public void test_get_all_travelogue() throws Exception {
-    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
 
     mockMvc.perform(get("/api/travelogues")
-            .header("AccessToken", token)
             .queryParam("size", "2")
             .queryParam("page", "0"))
         .andExpect(status().isOk())

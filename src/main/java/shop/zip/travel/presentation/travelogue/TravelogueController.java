@@ -23,49 +23,50 @@ import shop.zip.travel.global.security.UserPrincipal;
 @RequestMapping("/api/travelogues")
 public class TravelogueController {
 
-	private static final String DEFAULT_SIZE = "5";
-	private static final String DEFAULT_PAGE = "0";
-	private static final String DEFAULT_SORT_FIELD = "createDate";
+  private static final String DEFAULT_SIZE = "5";
+  private static final String DEFAULT_PAGE = "0";
+  private static final String DEFAULT_SORT_FIELD = "createDate";
 
-	private final TravelogueService travelogueService;
+  private final TravelogueService travelogueService;
 
-    public TravelogueController(TravelogueService travelogueService) {
-        this.travelogueService = travelogueService;
-    }
+  public TravelogueController(TravelogueService travelogueService) {
+    this.travelogueService = travelogueService;
+  }
 
-	@PostMapping
-	public ResponseEntity<TravelogueCreateRes> create(
-		@RequestBody @Valid TravelogueCreateReq createReq,
-		@RequestParam Long memberId) {
+  @PostMapping
+  public ResponseEntity<TravelogueCreateRes> create(
+    @RequestBody @Valid TravelogueCreateReq createReq,
+    @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-		TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq, memberId);
-		return ResponseEntity.ok(travelogueCreateRes);
-	}
+    TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq,
+      userPrincipal.getUserId());
+    return ResponseEntity.ok(travelogueCreateRes);
+  }
 
-    @GetMapping("/{travelogueId}")
-    public ResponseEntity<TravelogueDetailRes> get(@PathVariable Long travelogueId) {
-        TravelogueDetailRes travelogueDetail = travelogueService.getTravelogueDetail(travelogueId);
-        return ResponseEntity.ok(travelogueDetail);
-    }
+  @GetMapping("/{travelogueId}")
+  public ResponseEntity<TravelogueDetailRes> get(@PathVariable Long travelogueId) {
+    TravelogueDetailRes travelogueDetail = travelogueService.getTravelogueDetail(travelogueId);
+    return ResponseEntity.ok(travelogueDetail);
+  }
 
-	@GetMapping
-	public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
-		@RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
-		@RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
-		@RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField) {
-		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-			travelogueService.getTravelogues(page, size, sortField);
+  @GetMapping
+  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
+    @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
+    @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
+    @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField) {
+    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
+      travelogueService.getTravelogues(page, size, sortField);
 
-		return ResponseEntity.ok(travelogueSimpleRes);
-	}
+    return ResponseEntity.ok(travelogueSimpleRes);
+  }
 
-	@GetMapping("/search")
-	public ResponseEntity<List<TravelogueSimpleRes>> search(
-		@RequestParam(name = "keyword", required = false) String keyword,
-		@RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
-		@RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
-		List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
-			keyword, orderType, size);
+  @GetMapping("/search")
+  public ResponseEntity<List<TravelogueSimpleRes>> search(
+    @RequestParam(name = "keyword", required = false) String keyword,
+    @RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
+    @RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
+    List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
+      keyword, orderType, size);
 
     return ResponseEntity.ok(travelogueSimpleResList);
   }
