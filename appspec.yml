@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/travel-zip-deploy/
+    destination: /home/ec2-user/travel-zip-deploy
     overwrite: yes
 
 permissions:
@@ -12,9 +12,9 @@ permissions:
 
 hooks:
   ApplicationStop:
-    - location: scripts/stop.sh
+    - location: travel-zip-deploy/scripts/stop.sh
       runas: root
 
   ApplicationStart:
-    - location: scripts/start.sh
+    - location: travel-zip-deploy/scripts/stop.sh
       runas: root
