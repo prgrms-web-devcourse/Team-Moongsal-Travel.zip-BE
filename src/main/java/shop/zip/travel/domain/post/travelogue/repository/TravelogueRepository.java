@@ -22,9 +22,9 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
 	Slice<TravelogueSimple> findAllBySlice(@Param("pageRequest") PageRequest pageRequest);
 
 	@Query(value = "select t "
-			+ "from Travelogue t "
-			+ "left join fetch t.member "
-			+ "where t.id = :travelogueId")
+		+ "from Travelogue t "
+		+ "left join fetch t.member "
+		+ "where t.id = ?1")
 	Travelogue getTravelogueDetail(@Param("travelogueId") Long travelogueId);
 
 }
