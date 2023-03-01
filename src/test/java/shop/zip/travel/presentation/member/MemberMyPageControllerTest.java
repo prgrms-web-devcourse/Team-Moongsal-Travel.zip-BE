@@ -90,7 +90,7 @@ class MemberMyPageControllerTest {
   @DisplayName("유저는 본인이 작성한 여행기 목록을 조회할 수 있다")
   @Test
   public void get_my_travelogues() throws Exception {
-    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/members/my/travelogues")
             .header("AccessToken", token)
@@ -99,16 +99,26 @@ class MemberMyPageControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-my-travelogues",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
             responseFields(
-                fieldWithPath("content[].travelogueId").description("Travelogue 아이디"),
-                fieldWithPath("content[].title").description("Travelogue 제목"),
-                fieldWithPath("content[].nights").description("몇박 몇일 중 몇박에 해당하는 값"),
-                fieldWithPath("content[].days").description("몇박 몇일 중 몇일에 해당하는 값"),
-                fieldWithPath("content[].totalCost").description("여행 전체 비용"),
-                fieldWithPath("content[].country").description("방문한 나라"),
-                fieldWithPath("content[].thumbnail").description("썸네일 링크"),
-                fieldWithPath("content[].member.nickname").description("작성자 닉네임"),
-                fieldWithPath("content[].member.profileImageUrl").description("작성자 프로필 이미지 링크"),
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue 아이디값"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER)
+                    .description("몇박 몇일 중 몇박에 해당하는 값"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER)
+                    .description("몇박 몇일 중 몇일에 해당하는 값"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 전체 비용"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("방문한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("썸네일 링크"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 이미지 링크"),
                 fieldWithPath("pageable").description(""),
                 fieldWithPath("size").description("요청된 페이지 사이즈"),
                 fieldWithPath("number").description("페이지 번호"),
@@ -126,7 +136,7 @@ class MemberMyPageControllerTest {
   @DisplayName("유저는 본인의 프로필 사진과 닉네임을 변경할 수 있다")
   @Test
   public void update_my_profile() throws Exception {
-    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
     MemberUpdateReq memberUpdateReq = new MemberUpdateReq(
         "test-profile-image-url",
         "testNickname"

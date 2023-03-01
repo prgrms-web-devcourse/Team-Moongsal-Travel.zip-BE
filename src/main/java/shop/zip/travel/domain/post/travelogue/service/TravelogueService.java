@@ -60,12 +60,11 @@ public class TravelogueService {
 		return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
 	}
 
-	public TravelogueDetailRes getTravelogueDetail(Long travelogueId, Long memberId) {
-		memberService.getMember(memberId);
-
-		return TravelogueDetailRes.toDto(
-			travelogueRepository.getTravelogueDetail(findBy(travelogueId).getId()));
-	}
+	public TravelogueDetailRes getTravelogueDetail(Long travelogueId) {
+    return TravelogueDetailRes.toDto(
+        travelogueRepository.getTravelogueDetail(travelogueId)
+            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
+  }
 
 }
 
