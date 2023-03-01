@@ -1,9 +1,9 @@
 #!/bin/bash
 
-CURRENT_PORT=$(cat /home/ec2-user/service_url.inc | grep -Po '[0-9]+' | tail -1)
-TARGET_PORT=0
+#CURRENT_PORT=$(cat /home/ec2-user/service_url.inc | grep -Po '[0-9]+' | tail -1)
+#TARGET_PORT=0
 
-echo "> Current port of running JAR is ${CURRENT_PORT}."
+#echo "> Current port of running JAR is ${CURRENT_PORT}."
 
 #if [ ${CURRENT_PORT} -eq 8080 ]
 #then
@@ -18,15 +18,16 @@ echo "> Current port of running JAR is ${CURRENT_PORT}."
 
 #TARGET_PID=$(lsof -Fp -i TCP:${CURRENT_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
 
-TARGET_PID=$(lsof -Fp -i TCP:8080 | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
-
-echo "$TARGET_PID"
-
-if [ ${TARGET_PID} -gt 0 ]
-then
-  echo "> Kill JAR running at ${CURRENT_PORT}."
-  sudo kill -9 ${TARGET_PID}
-fi
+#TARGET_PID=0
+#TARGET_PID=$(lsof -Fp -i TCP:8080 | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
+#
+#echo "$TARGET_PID"
+#
+#if [ ${TARGET_PID} -gt 0 ]
+#then
+#  echo "> Kill JAR running at ${CURRENT_PORT}."
+#  sudo kill -9 ${TARGET_PID}
+#fi
 
 
 #TARGET_PID=$(lsof -Fp -i TCP:${TARGET_PORT} | grep -Po 'p[0-9]+' | grep -Po '[0-9]+')
