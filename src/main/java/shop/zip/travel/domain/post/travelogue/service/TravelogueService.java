@@ -68,7 +68,8 @@ public class TravelogueService {
 		memberService.getMember(memberId);
 
 		return TravelogueDetailRes.toDto(
-			travelogueRepository.getTravelogueDetail(findBy(travelogueId).getId()));
+			travelogueRepository.getTravelogueDetail(travelogueId)
+				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
 	}
 
 }
