@@ -43,7 +43,7 @@ do
     if [ ${RESPONSE_CODE} -eq 200 ]
     then
         echo "> New JAR successfully running"
-        exit 0
+        break
     elif [ ${RETRY_COUNT} -eq 10 ]
     then
         echo "> Health check failed."
@@ -54,13 +54,11 @@ done
 
 echo "> Nginx currently proxies to ${CURRENT_PORT}."
 
-# Change proxying port into target port
 echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" |sudo tee /home/ec2-user/service_url.inc
 
 echo "> Now Nginx proxies to ${TARGET_PORT}."
 
-# Reload nginx
-sudo service nginx reload
+sudo service nginx restart
 
 echo "> Nginx reloaded."
 
