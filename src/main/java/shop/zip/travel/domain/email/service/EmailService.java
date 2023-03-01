@@ -43,7 +43,7 @@ public class EmailService {
       throws MessagingException, UnsupportedEncodingException {
     String code = createVerificationCode();
     MimeMessage message = createMail(toAddress, code);
-    redisUtil.setDataWithExpire(toAddress, code, 180L);
+    redisUtil.setDataWithExpire(toAddress, code, 3L);
     javaMailSender.send(message);
   }
 

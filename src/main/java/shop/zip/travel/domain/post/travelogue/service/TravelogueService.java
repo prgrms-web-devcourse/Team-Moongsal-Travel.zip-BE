@@ -1,13 +1,11 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
 import java.util.List;
-
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
@@ -36,12 +34,10 @@ public class TravelogueService {
 
 	@Transactional
 	public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
-
 		Member findMember = memberService.getMember(memberId);
-		Long id = travelogueRepository.save(createReq.toTravelogue(findMember))
-			.getId();
-
-		return new TravelogueCreateRes(id);
+		Travelogue travelogue = travelogueRepository.save(createReq.toTravelogue(findMember));
+		Long nights = travelogue.getPeriod().getNights();
+		return new TravelogueCreateRes(travelogue.getId(), nights, nights + 1);
 	}
 
 	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
