@@ -21,7 +21,7 @@ public class RedisUtil {
 
   public void setDataWithExpire(String key, String value, long duration) {
     ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
-    Duration expireDuration = Duration.ofSeconds(duration);
+    Duration expireDuration = Duration.ofMinutes(duration);
     valueOperations.set(key, value, expireDuration);
   }
 

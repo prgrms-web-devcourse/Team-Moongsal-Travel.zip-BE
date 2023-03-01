@@ -4,12 +4,15 @@ import static shop.zip.travel.domain.member.dto.request.MemberSignupReq.toMember
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
 import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
 import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
+import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
 import shop.zip.travel.domain.member.exception.EmailNotMatchException;
+import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.exception.NotVerifiedAuthorizationCodeException;
 import shop.zip.travel.domain.member.exception.PasswordNotMatchException;
@@ -17,6 +20,7 @@ import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.security.JwtTokenProvider;
 import shop.zip.travel.global.util.RedisUtil;
+
 
 @Service
 @Transactional(readOnly = true)
@@ -60,20 +64,41 @@ public class MemberService {
   @Transactional
   public MemberSigninRes login(MemberSigninReq memberSigninReq) {
     Member member = memberRepository.findByEmail(memberSigninReq.email())
-      .orElseThrow(() -> new EmailNotMatchException(ErrorCode.EMAIL_NOT_MATCH));
+        .orElseThrow(() -> new EmailNotMatchException(ErrorCode.EMAIL_NOT_MATCH));
 
     if (!member.getPassword().equals(memberSigninReq.password())) {
       throw new PasswordNotMatchException(ErrorCode.PASSWORD_NOT_MATCH);
     }
 
-    String accessToken = jwtTokenProvider.createToken(member.getId());
+    String accessToken = jwtTokenProvider.createAccessToken(member.getId());
+    String refreshToken = jwtTokenProvider.createRefreshToken();
 
-    return new MemberSigninRes(accessToken);
+    redisUtil.setDataWithExpire(String.valueOf(member.getId()), refreshToken, 120L);
+
+    return new MemberSigninRes(accessToken, refreshToken);
+  }
+
+  public MemberSigninRes recreateAccessAndRefreshToken(AccessTokenReissueReq accessTokenReissueReq) {
+
+    String accessToken = accessTokenReissueReq.accessToken();
+    String refreshToken = accessTokenReissueReq.refreshToken();
+    String memberId = jwtTokenProvider.getMemberIdUsingDecode(accessToken);
+
+    if (jwtTokenProvider.validateRefreshToken(accessTokenReissueReq.refreshToken()) &&
+        redisUtil.getData(memberId).equals(refreshToken)) {
+      redisUtil.deleteData(memberId);
+      String newAccessToken = jwtTokenProvider.createAccessToken(Long.parseLong(memberId));
+      String newRefreshToken = jwtTokenProvider.createRefreshToken();
+      redisUtil.setDataWithExpire(memberId, newRefreshToken, 120L);
+      return new MemberSigninRes(newAccessToken, newRefreshToken);
+    } else {
+      throw new InvalidRefreshTokenException(ErrorCode.INVALID_REFRESH_TOKEN);
+    }
   }
 
   public Member getMember(Long id) {
     return memberRepository.findById(id)
-      .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+        .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
 }
