@@ -6,17 +6,31 @@ import java.util.List;
 import java.util.Set;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
+import shop.zip.travel.domain.post.data.TempCountry;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
+import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
+import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
 public class DummyGenerator {
 
-	public static Travelogue createTravelogue(Member member){
+	public static TempTravelogueCreateReq createTempTravelogueReq(Member member) {
+		return new TempTravelogueCreateReq(
+			createTempPeriod(),
+			null,
+			createTempCountry(),
+			null,
+			new TempCost(null, null, null, null)
+		);
+	}
+
+	public static Travelogue createTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
 		subTravelogues.add(createSubTravelogue());
 
@@ -81,12 +95,25 @@ public class DummyGenerator {
 		);
 	}
 
-	public static Member createMember(){
+	public static Member createMember() {
 		return new Member(
 			"user@naver.com",
 			"password1234!",
 			"nickname",
-				"1998"
+			"1998"
+		);
+	}
+
+	public static TempPeriod createTempPeriod() {
+		return new TempPeriod(
+			null,
+			null
+		);
+	}
+
+	public static TempCountry createTempCountry() {
+		return new TempCountry(
+			"일본"
 		);
 	}
 }
