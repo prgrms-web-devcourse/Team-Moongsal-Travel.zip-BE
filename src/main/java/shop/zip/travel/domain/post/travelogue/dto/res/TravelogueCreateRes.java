@@ -1,4 +1,9 @@
 package shop.zip.travel.domain.post.travelogue.dto.res;
 
-public record TravelogueCreateRes(Long id) {
+public record TravelogueCreateRes(
+  Long id,
+  Long nights,
+  Long days
+) {
+
 }
