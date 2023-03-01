@@ -151,7 +151,10 @@ class TravelogueControllerTest {
                 fieldWithPath("cost.total").description("전체 경비")
             ),
             responseFields(
-                fieldWithPath("id").description("생성된 게시물의 pk 값")
+              fieldWithPath("id").description("생성된 게시물의 pk 값"),
+              fieldWithPath("nights").description("생성된 게시물의 n박에 해당하는 값"),
+              fieldWithPath("days").description("생성된 게시물의 n일에 해당하는 값")
+
             )));
   }
 
