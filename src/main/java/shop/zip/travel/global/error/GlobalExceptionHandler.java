@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import shop.zip.travel.global.error.exception.CustomNotFoundException;
 import shop.zip.travel.global.error.exception.DuplicatedException;
+import shop.zip.travel.global.error.exception.InvalidTokenException;
 import shop.zip.travel.global.error.exception.NotMatchException;
 import shop.zip.travel.global.error.exception.NotVerifiedCodeException;
 
@@ -18,10 +19,18 @@ public class GlobalExceptionHandler {
 	private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
 	@ExceptionHandler(BindException.class)
-	protected ResponseEntity<ErrorResponse> handleBindException(BindException e) {
+	public ResponseEntity<ErrorResponse> handleBindException(BindException e) {
 		log.info("BindException : ", e);
 		int httpStatus = ErrorCode.BINDING_WRONG.getStatusValue();
 		String message = ErrorCode.BINDING_WRONG.getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
+	}
+
+	@ExceptionHandler(InvalidTokenException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidTokenException(InvalidTokenException e) {
+		log.info("InvalidTokenException : ", e);
+		int httpStatus = e.getErrorCode().getStatusValue();
+		String message = e.getErrorCode().getMessage();
 		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 

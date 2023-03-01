@@ -9,7 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
+import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
 @Configuration
@@ -25,6 +27,8 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
+        .requestMatchers("/api/healths")
+        .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/api/auth/**")
         .requestMatchers(HttpMethod.GET,"/api/travelogues")
         .requestMatchers(HttpMethod.GET,"/api/travelogues/search");
@@ -33,6 +37,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+        .cors().disable()
         .csrf().disable()
         .httpBasic().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -40,8 +45,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(requests -> requests
             .anyRequest().authenticated()
         )
-        .addFilterAfter(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class);
-
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
     return http.build();
   }
 

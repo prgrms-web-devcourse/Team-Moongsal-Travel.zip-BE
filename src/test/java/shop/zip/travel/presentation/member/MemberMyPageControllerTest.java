@@ -73,20 +73,18 @@ class MemberMyPageControllerTest {
   @Test
   public void get_my_page_info() throws Exception {
 
-    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(get("/api/members/my/info")
-            .header("AccessToken", token))
+    mockMvc.perform(get("/api/members/my/info").header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-my-info",
-            responseFields(
-                fieldWithPath("email").description("이메일"),
-                fieldWithPath("nickname").description("닉네임"),
-                fieldWithPath("birthYear").description("생년월일"),
-                fieldWithPath("profileImageUrl").description("프로필 이미지 url")
-            )
-        ));
+            preprocessResponse(prettyPrint()),
+            responseFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                fieldWithPath("birthYear").type(JsonFieldType.STRING).description("생년월일"),
+                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                    .description("프로필 이미지 url"))));
   }
 
   @DisplayName("유저는 본인이 작성한 여행기 목록을 조회할 수 있다")
