@@ -69,7 +69,7 @@ class MemberMyPageControllerTest {
   @Test
   public void get_my_page_info() throws Exception {
 
-    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/members/my/info").header("AccessToken", token))
         .andExpect(status().isOk()).andDo(print()).andDo(
