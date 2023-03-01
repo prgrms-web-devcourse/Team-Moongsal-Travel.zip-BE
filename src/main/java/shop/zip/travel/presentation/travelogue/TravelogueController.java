@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,9 @@ import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
+import shop.zip.travel.domain.post.travelogue.dto.res.TraveloguePublishRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
+import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
 import shop.zip.travel.global.security.UserPrincipal;
 
@@ -31,9 +34,12 @@ public class TravelogueController {
   private static final boolean PUBLISH = true;
 
   private final TravelogueService travelogueService;
+  private final TraveloguePublishService traveloguePublishService;
 
-  public TravelogueController(TravelogueService travelogueService) {
+  public TravelogueController(TravelogueService travelogueService,
+      TraveloguePublishService traveloguePublishService) {
     this.travelogueService = travelogueService;
+    this.traveloguePublishService = traveloguePublishService;
   }
 
   @PostMapping
@@ -88,6 +94,14 @@ public class TravelogueController {
         travelogueService.getTravelogues(page, size, sortField, TEMP);
 
     return ResponseEntity.ok(travelogueSimpleResList);
+  }
+
+  @PatchMapping("/{travelogueId}")
+  public ResponseEntity<TraveloguePublishRes> publish(
+      @PathVariable Long travelogueId
+  ) {
+    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId);
+    return ResponseEntity.ok(traveloguePublishRes);
   }
 
   @GetMapping("/search")
