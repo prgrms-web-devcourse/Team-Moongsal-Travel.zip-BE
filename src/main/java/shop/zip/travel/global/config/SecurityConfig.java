@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
@@ -25,6 +26,8 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
+        .requestMatchers("/api/healths")
+        .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/api/auth/**")
         .requestMatchers(HttpMethod.GET,"/api/travelogues")
         .requestMatchers(HttpMethod.GET,"/api/travelogues/search");

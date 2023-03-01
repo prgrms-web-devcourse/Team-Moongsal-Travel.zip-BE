@@ -16,8 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -153,7 +151,10 @@ class TravelogueControllerTest {
                 fieldWithPath("cost.total").description("전체 경비")
             ),
             responseFields(
-                fieldWithPath("id").description("생성된 게시물의 pk 값")
+              fieldWithPath("id").description("생성된 게시물의 pk 값"),
+              fieldWithPath("nights").description("생성된 게시물의 n박에 해당하는 값"),
+              fieldWithPath("days").description("생성된 게시물의 n일에 해당하는 값")
+
             )));
   }
 
