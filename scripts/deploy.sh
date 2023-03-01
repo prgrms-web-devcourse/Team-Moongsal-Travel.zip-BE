@@ -25,7 +25,7 @@ fi
 #  sudo kill -9 ${TARGET_PID}
 #fi
 
-nohup java -jar -Dserver.port=${TARGET_PORT} /home/ec2-user/travel-zip-deploy/build/libs/* &
+nohup java -jar -Dserver.port=${TARGET_PORT} /home/ec2-user/travel-zip-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new JAR runs at ${TARGET_PORT}."
 
 echo "> Start health check of JAR at 'localhost:${TARGET_PORT}' ..."
