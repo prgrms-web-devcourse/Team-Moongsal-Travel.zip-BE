@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.email.dto.request.CodeValidateReq;
+import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
 import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
 import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.request.NicknameValidateReq;
@@ -46,6 +47,15 @@ public class MemberController {
   public ResponseEntity<MemberSigninRes> signin(
       @RequestBody @Valid MemberSigninReq memberSigninReq) {
     MemberSigninRes memberSigninRes = memberService.login(memberSigninReq);
+    return ResponseEntity.ok(memberSigninRes);
+  }
+
+  @PostMapping("/api/auth/reissue/refresh")
+  public ResponseEntity<MemberSigninRes> reissueAccessToken(
+      @RequestBody AccessTokenReissueReq accessTokenReissueReq
+  ) {
+    MemberSigninRes memberSigninRes = memberService.recreateAccessAndRefreshToken(
+        accessTokenReissueReq);
     return ResponseEntity.ok(memberSigninRes);
   }
 }
