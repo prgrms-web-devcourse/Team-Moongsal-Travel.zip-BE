@@ -94,6 +94,7 @@ class MemberMyPageControllerTest {
       .andDo(print())
       .andDo(document("get-my-travelogues",
         responseFields(
+          fieldWithPath("content[].travelogueId").description("Travelogue 아이디값"),
           fieldWithPath("content[].title").description("Travelogue 제목"),
           fieldWithPath("content[].nights").description("몇박 몇일 중 몇박에 해당하는 값"),
           fieldWithPath("content[].days").description("몇박 몇일 중 몇일에 해당하는 값"),
