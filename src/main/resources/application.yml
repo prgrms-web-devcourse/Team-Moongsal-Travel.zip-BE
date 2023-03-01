@@ -2,16 +2,6 @@ spring:
   profiles:
     default: local
 
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/travelzip/test
-    username: sa
-    password:
 
   jpa:
     hibernate:
@@ -31,13 +21,13 @@ spring:
       port: 6379
 
   mail:
-    username: ${NAVER_ID}
-    password: ${NAVER_PASSWORD}
+    username: travelzip
+    password: dugodwhgdk!
     host: smtp.naver.com
     port: '465'
 
   jwt:
-    accessTokenSecretKey: ${ACCESS_TOKEN_SECRET_KEY}
+    accessTokenSecretKey: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC14dfgertsdezx
 
 logging:
   level:
@@ -46,3 +36,38 @@ logging:
         type:
           descriptor:
             sql: trace
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://travel-zip-db.czvbgr7hie3i.ap-northeast-2.rds.amazonaws.com:3306/travel_zip_db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: andtkfgmxwnr
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/travel-local-db
+    username: sa
+    password:

@@ -7,6 +7,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
 import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.entity.Member;
@@ -24,11 +25,13 @@ public class MemberMyPageService {
 
   private final TravelogueRepository travelogueRepository;
   private final MemberRepository memberRepository;
+  private final BookmarkRepository bookmarkRepository;
 
   public MemberMyPageService(TravelogueRepository travelogueRepository,
-    MemberRepository memberRepository) {
+    MemberRepository memberRepository, BookmarkRepository bookmarkRepository) {
     this.travelogueRepository = travelogueRepository;
     this.memberRepository = memberRepository;
+    this.bookmarkRepository = bookmarkRepository;
   }
 
   public MemberInfoRes getInfoBy(Long memberId) {
