@@ -1,6 +1,8 @@
 package shop.zip.travel.presentation.member;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,12 +48,7 @@ class MemberMyPageControllerTest {
 
   @BeforeEach
   void setUp() {
-    member = new Member(
-      "user@naver.com",
-      "password1234!",
-      "nickname",
-      "2000",
-      "ProfileUrlForTest");
+    member = new Member("user@naver.com", "password1234!", "nickname", "2000", "ProfileUrlForTest");
 
     memberRepository.save(member);
   }
@@ -61,18 +59,14 @@ class MemberMyPageControllerTest {
 
     String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
 
-    mockMvc.perform(get("/api/members/my/info")
-        .header("AccessToken", token))
-      .andExpect(status().isOk())
-      .andDo(print())
-      .andDo(document("get-my-info",
-        responseFields(
-          fieldWithPath("email").description("이메일"),
-          fieldWithPath("nickname").description("닉네임"),
-          fieldWithPath("birthYear").description("생년월일"),
-          fieldWithPath("profileImageUrl").description("프로필 이미지 url")
-        )
-      ));
+    mockMvc.perform(get("/api/members/my/info").header("AccessToken", token))
+        .andExpect(status().isOk()).andDo(print()).andDo(
+            document("get-my-info", preprocessResponse(prettyPrint()),
+                responseFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                    fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                    fieldWithPath("birthYear").type(JsonFieldType.STRING).description("생년월일"),
+                    fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                        .description("프로필 이미지 url"))));
   }
 
 }
