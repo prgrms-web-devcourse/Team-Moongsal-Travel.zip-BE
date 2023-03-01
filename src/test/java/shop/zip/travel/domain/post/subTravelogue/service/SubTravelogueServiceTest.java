@@ -57,7 +57,7 @@ class SubTravelogueServiceTest {
 
     SubTravelogue actual = new FakeSubTravelogue(1L, subTravelogueCreateReq.toSubTravelogue());
 
-    when(travelogueService.findBy(travelogue.getId()))
+    when(travelogueService.getTravelogue(travelogue.getId()))
         .thenReturn(travelogue);
 
     when(subTravelogueRepository.save(any(SubTravelogue.class)))

@@ -30,16 +30,12 @@ public class Bookmark extends BaseTimeEntity {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Member member;
 
-  @Column(nullable = false)
-  private boolean status;
-
   protected Bookmark() {
   }
 
-  public Bookmark(Travelogue travelogue, Member member, boolean status) {
+  public Bookmark(Travelogue travelogue, Member member) {
     this.travelogue = travelogue;
     this.member = member;
-    this.status = status;
   }
 
   public Long getId() {

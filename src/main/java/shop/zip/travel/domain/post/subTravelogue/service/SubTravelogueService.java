@@ -27,8 +27,8 @@ public class SubTravelogueService {
     @Transactional
     public SubTravelogueCreateRes save(SubTravelogueCreateReq createReq, Long travelogueId) {
 
-        Travelogue travelogue = travelogueService.findBy(travelogueId);
-        SubTravelogue subTravelogue = subTravelogueRepository.save(createReq.toSubTravelogue());
+        Travelogue travelogue = travelogueService.getTravelogue(travelogueId);
+      SubTravelogue subTravelogue = subTravelogueRepository.save(createReq.toSubTravelogue());
         subTravelogue.getPhotos()
             .addAll(createReq.travelPhotoCreateReqs()
                 .stream()
