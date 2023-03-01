@@ -10,6 +10,7 @@ import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
 import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.request.NicknameValidateReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
+import shop.zip.travel.domain.member.dto.response.NicknameValidateRes;
 import shop.zip.travel.domain.member.service.MemberService;
 
 @RestController
@@ -35,10 +36,10 @@ public class MemberController {
   }
 
   @PostMapping("/api/auth/valid/nickname")
-  public ResponseEntity<Void> checkDuplicatedNickname(
+  public ResponseEntity<NicknameValidateRes> checkDuplicatedNickname(
       @RequestBody @Valid NicknameValidateReq nicknameValidateReq) {
-    memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
-    return ResponseEntity.ok().build();
+    boolean isDuplicated = memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
+    return ResponseEntity.ok(new NicknameValidateRes(isDuplicated));
   }
 
   @PostMapping("/api/auth/signin")
