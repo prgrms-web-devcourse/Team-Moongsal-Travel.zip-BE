@@ -66,7 +66,7 @@ class TravelogueRepositoryTest {
 	@DisplayName("Travelogue의 모든 디테일한 정보를 불러올 수 있다.")
 	void test_get_all_data_on_travelogue() {
 		Long travelogueId = travelogue.getId();
-		Travelogue expected = travelogueRepository.getTravelogueDetail(travelogueId);
+		Travelogue expected = travelogueRepository.getTravelogueDetail(travelogueId).get();
 
 		assertThat(travelogue).usingRecursiveComparison()
 				.isEqualTo(expected);

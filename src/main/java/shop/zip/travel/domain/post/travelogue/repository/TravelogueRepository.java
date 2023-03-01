@@ -1,5 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.repository;
 
+import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,6 +29,6 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
 		+ "from Travelogue t "
 		+ "left join fetch t.member "
 		+ "where t.id = ?1")
-	Travelogue getTravelogueDetail(@Param("travelogueId") Long travelogueId);
+	Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
 
 }
