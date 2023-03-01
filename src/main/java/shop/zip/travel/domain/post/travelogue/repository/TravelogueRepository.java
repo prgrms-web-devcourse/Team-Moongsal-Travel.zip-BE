@@ -18,8 +18,11 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
 		+ "t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
 		+ "from Travelogue t "
 		+ "inner join Member m "
-		+ "on m.id = t.member.id ")
-	Slice<TravelogueSimple> findAllBySlice(@Param("pageRequest") PageRequest pageRequest);
+		+ "on m.id = t.member.id "
+		+ "where t.isPublished = :isPublished")
+	Slice<TravelogueSimple> findAllBySlice(
+		@Param("pageRequest") PageRequest pageRequest,
+		@Param("isPublished") boolean isPublished);
 
 	@Query(value = "select t "
 		+ "from Travelogue t "

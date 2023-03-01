@@ -64,13 +64,13 @@ class TravelogueServiceTest {
 			pageRequest.next().isPaged()
 		);
 
-		when(travelogueRepository.findAllBySlice(pageRequest))
+		when(travelogueRepository.findAllBySlice(pageRequest, false))
 			.thenReturn(travelogueSimples);
 
 		// when
 		String sortField = "createDate";
 		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
-			pageRequest.getPageNumber(), pageRequest.getPageSize(), sortField
+			pageRequest.getPageNumber(), pageRequest.getPageSize(), sortField, true
 		);
 
 		// then

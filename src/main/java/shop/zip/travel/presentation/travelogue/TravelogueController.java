@@ -26,6 +26,8 @@ public class TravelogueController {
   private static final String DEFAULT_SIZE = "5";
   private static final String DEFAULT_PAGE = "0";
   private static final String DEFAULT_SORT_FIELD = "createDate";
+  private static final boolean TEMP = false;
+  private static final boolean PUBLISH = true;
 
   private final TravelogueService travelogueService;
 
@@ -53,9 +55,10 @@ public class TravelogueController {
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
     @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
     @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
-    @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField) {
+    @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField
+  ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-      travelogueService.getTravelogues(page, size, sortField);
+      travelogueService.getTravelogues(page, size, sortField, PUBLISH);
 
     return ResponseEntity.ok(travelogueSimpleRes);
   }

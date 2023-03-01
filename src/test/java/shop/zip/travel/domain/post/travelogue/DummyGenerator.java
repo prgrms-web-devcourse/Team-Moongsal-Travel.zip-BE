@@ -21,13 +21,14 @@ public class DummyGenerator {
 		subTravelogues.add(createSubTravelogue());
 
 		return new Travelogue(
-				createPeriod(),
-				"일본 오사카 다녀왔어요.",
-				createCountry(),
-				"www.naver.com",
-				createCost(),
-				subTravelogues,
-				member
+			createPeriod(),
+			"일본 오사카 다녀왔어요.",
+			createCountry(),
+			"www.naver.com",
+			createCost(),
+			true,
+			subTravelogues,
+			member
 		);
 	}
 

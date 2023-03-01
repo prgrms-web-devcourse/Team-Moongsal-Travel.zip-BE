@@ -45,7 +45,8 @@ public class TravelogueService {
 	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
 
-		Slice<TravelogueSimple> travelogues = travelogueRepository.findAllBySlice(pageRequest);
+    Slice<TravelogueSimple> travelogues =
+      travelogueRepository.findAllBySlice(pageRequest, isPublished);
 
 		return TravelogueCustomSlice.toDto(
 			travelogues.map(TravelogueSimpleRes::toDto)

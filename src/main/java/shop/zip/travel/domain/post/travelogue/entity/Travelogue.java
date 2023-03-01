@@ -46,6 +46,9 @@ public class Travelogue extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Cost cost;
 
+	@Column(nullable = false)
+	private boolean isPublished;
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "travelogue_id")
 	private List<SubTravelogue> subTravelogues = new ArrayList<>();
@@ -58,8 +61,8 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-		Member member) {
-		this(period, title, country, thumbnail, cost, Collections.emptyList(), member);
+		boolean isPublished, Member member) {
+		this(period, title, country, thumbnail, cost, isPublished, Collections.emptyList(), member);
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
@@ -71,6 +74,7 @@ public class Travelogue extends BaseTimeEntity {
 		this.country = country;
 		this.thumbnail = thumbnail;
 		this.cost = cost;
+		this.isPublished = isPublished;
 		this.subTravelogues = subTravelogues;
 		this.member = member;
 	}
@@ -97,6 +101,10 @@ public class Travelogue extends BaseTimeEntity {
 
 	public String getThumbnail() {
 		return thumbnail;
+	}
+
+	public boolean getIsPublished() {
+		return isPublished;
 	}
 
 	public List<SubTravelogue> getSubTravelogues() {
@@ -142,7 +150,7 @@ public class Travelogue extends BaseTimeEntity {
 		this.subTravelogues.add(subTravelogue);
 	}
 
-	public void verifySubTravelogueDuplicate(SubTravelogue subTravelogue) {
+	private void verifySubTravelogueDuplicate(SubTravelogue subTravelogue) {
 		Assert.isTrue(!subTravelogues.contains(subTravelogue), "이미 존재하는 서브게시물 입니다.");
 	}
 

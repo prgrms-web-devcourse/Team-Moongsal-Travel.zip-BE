@@ -48,14 +48,14 @@ class TravelogueRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("전체 게시물 리스트를 페이지로 가져올 수 있다.")
+	@DisplayName("완전히 저장된 전체 게시물 리스트를 페이지로 가져올 수 있다.")
 	void test_get_all_travelogue() {
 		PageRequest pageRequest = PageRequest.of(
 				0,
 				2,
 				Sort.by(Sort.Direction.DESC, "createDate")
 		);
-		Slice<TravelogueSimple> expected = travelogueRepository.findAllBySlice(pageRequest);
+		Slice<TravelogueSimple> expected = travelogueRepository.findAllBySlice(pageRequest, true);
 
 		int actualLength = 2;
 		assertThat(expected.getSize()).isEqualTo(actualLength);
