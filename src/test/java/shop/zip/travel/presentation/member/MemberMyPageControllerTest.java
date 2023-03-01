@@ -84,7 +84,7 @@ class MemberMyPageControllerTest {
   @DisplayName("유저는 본인이 작성한 여행기 목록을 조회할 수 있다")
   @Test
   public void get_my_travelogues() throws Exception {
-    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/members/my/travelogues")
             .header("AccessToken", token)
