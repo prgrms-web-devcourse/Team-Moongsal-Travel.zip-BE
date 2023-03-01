@@ -38,65 +38,65 @@ public class TravelogueController {
 
   @PostMapping
   public ResponseEntity<TravelogueCreateRes> create(
-    @RequestBody @Valid TravelogueCreateReq createReq,
-    @AuthenticationPrincipal UserPrincipal userPrincipal) {
+      @RequestBody @Valid TravelogueCreateReq createReq,
+      @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
     TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq,
-      userPrincipal.getUserId());
+        userPrincipal.getUserId());
     return ResponseEntity.ok(travelogueCreateRes);
   }
 
   @PostMapping("/temp")
   public ResponseEntity<TravelogueCreateRes> createTemp(
-    @RequestBody @Valid TempTravelogueCreateReq tempTravelogueCreateReq,
-    @AuthenticationPrincipal UserPrincipal userPrincipal
+      @RequestBody @Valid TempTravelogueCreateReq tempTravelogueCreateReq,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     TravelogueCreateRes travelogueCreateRes = travelogueService.save(tempTravelogueCreateReq,
-      userPrincipal.getUserId());
+        userPrincipal.getUserId());
     return ResponseEntity.ok(travelogueCreateRes);
   }
 
   @GetMapping("/{travelogueId}")
   public ResponseEntity<TravelogueDetailRes> get(
-    @PathVariable Long travelogueId
+      @PathVariable Long travelogueId
   ) {
     TravelogueDetailRes travelogueDetail =
-      travelogueService.getTravelogueDetail(travelogueId);
+        travelogueService.getTravelogueDetail(travelogueId);
 
     return ResponseEntity.ok(travelogueDetail);
   }
 
   @GetMapping
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
-    @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
-    @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
-    @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField
+      @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
+      @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
+      @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-      travelogueService.getTravelogues(page, size, sortField, PUBLISH);
+        travelogueService.getTravelogues(page, size, sortField, PUBLISH);
 
     return ResponseEntity.ok(travelogueSimpleRes);
   }
 
   @GetMapping("/temp")
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getTempAll(
-    @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
-    @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
-    @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField
+      @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
+      @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
+      @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
-      travelogueService.getTravelogues(page, size, sortField, TEMP);
+        travelogueService.getTravelogues(page, size, sortField, TEMP);
 
     return ResponseEntity.ok(travelogueSimpleResList);
   }
 
   @GetMapping("/search")
   public ResponseEntity<List<TravelogueSimpleRes>> search(
-    @RequestParam(name = "keyword", required = false) String keyword,
-    @RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
-    @RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
+      @RequestParam(name = "keyword", required = false) String keyword,
+      @RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
+      @RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
     List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
-      keyword, orderType, size);
+        keyword, orderType, size);
 
     return ResponseEntity.ok(travelogueSimpleResList);
   }
