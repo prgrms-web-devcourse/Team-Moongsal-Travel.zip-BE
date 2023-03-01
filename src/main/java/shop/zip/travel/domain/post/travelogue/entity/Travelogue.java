@@ -66,7 +66,7 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-		List<SubTravelogue> subTravelogues, Member member) {
+		boolean isPublished, List<SubTravelogue> subTravelogues, Member member) {
 		nullCheck(period, title, country, thumbnail, cost, subTravelogues, member);
 		valid(title, thumbnail);
 		this.period = period;
@@ -152,6 +152,10 @@ public class Travelogue extends BaseTimeEntity {
 
 	private void verifySubTravelogueDuplicate(SubTravelogue subTravelogue) {
 		Assert.isTrue(!subTravelogues.contains(subTravelogue), "이미 존재하는 서브게시물 입니다.");
+	}
+
+	public void changePublishStatus() {
+		this.isPublished = true;
 	}
 
 }
