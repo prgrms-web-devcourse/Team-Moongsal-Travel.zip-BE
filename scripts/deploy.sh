@@ -28,12 +28,14 @@ fi
 nohup java -jar -Dserver.port=${TARGET_PORT} /home/ec2-user/travel-zip-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 echo "> Now new JAR runs at ${TARGET_PORT}."
 
-echo "> Start health check of JAR at 'http://127.0.0.1:${TARGET_PORT}' ..."
+echo "> Start health check of JAR at 'localhost:${TARGET_PORT}' ..."
 
 for RETRY_COUNT in 1 2 3 4 5 6 7 8 9 10
 do
     echo "> #${RETRY_COUNT} trying..."
     RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}"  localhost:${TARGET_PORT}/api/healths)
+
+    echo "RESPONSE_CODE ${RESPONSE_CODE}"
 
     if [ ${RESPONSE_CODE} -eq 200 ]
     then
