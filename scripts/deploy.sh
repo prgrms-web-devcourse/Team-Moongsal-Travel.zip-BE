@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bashrc
+
 CURRENT_PORT=$(cat /home/ec2-user/service_url.inc | grep -Po '[0-9]+' | tail -1)
 TARGET_PORT=0
 
@@ -24,7 +26,7 @@ fi
 #  sudo kill -9 ${TARGET_PID}
 #fi
 
-nohup java -jar -Dserver.port=${TARGET_PORT} -Dspring.profiles.active=dev /home/ec2-user/travel-zip-deploy/build/libs/* &
+nohup java -jar -Dserver.port=${TARGET_PORT} /home/ec2-user/travel-zip-deploy/build/libs/* &
 echo "> Now new JAR runs at ${TARGET_PORT}."
 
 echo "> Start health check of JAR at 'localhost:${TARGET_PORT}' ..."
