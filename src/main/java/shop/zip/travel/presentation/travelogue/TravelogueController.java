@@ -37,18 +37,17 @@ public class TravelogueController {
   public ResponseEntity<TravelogueCreateRes> create(
     @RequestBody @Valid TravelogueCreateReq createReq,
     @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    TravelogueCreateRes travelogueCreateRes =
+      travelogueService.save(createReq, userPrincipal.getUserId());
 
-    TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq,
-      userPrincipal.getUserId());
     return ResponseEntity.ok(travelogueCreateRes);
   }
 
   @GetMapping("/{travelogueId}")
   public ResponseEntity<TravelogueDetailRes> get(
-    @PathVariable Long travelogueId,
-    @AuthenticationPrincipal UserPrincipal userPrincipal) {
+      @PathVariable Long travelogueId) {
     TravelogueDetailRes travelogueDetail =
-      travelogueService.getTravelogueDetail(travelogueId, userPrincipal.getUserId());
+        travelogueService.getTravelogueDetail(travelogueId);
 
     return ResponseEntity.ok(travelogueDetail);
   }
