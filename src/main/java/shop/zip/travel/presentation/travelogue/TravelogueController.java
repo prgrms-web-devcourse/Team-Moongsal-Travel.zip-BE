@@ -58,10 +58,10 @@ public class TravelogueController {
 
   @GetMapping("/{travelogueId}")
   public ResponseEntity<TravelogueDetailRes> get(
-    @PathVariable Long travelogueId,
-    @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    @PathVariable Long travelogueId
+  ) {
     TravelogueDetailRes travelogueDetail =
-      travelogueService.getTravelogueDetail(travelogueId, userPrincipal.getUserId());
+      travelogueService.getTravelogueDetail(travelogueId);
 
     return ResponseEntity.ok(travelogueDetail);
   }

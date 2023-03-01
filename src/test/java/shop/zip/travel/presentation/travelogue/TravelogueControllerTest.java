@@ -16,8 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -259,25 +257,49 @@ class TravelogueControllerTest {
     List<SubTravelogue> subTravelogueList3 = new ArrayList<>();
     subTravelogueList.add(subTravelogue);
 
-    Member member = new Member("cloudwi@naver.com", "qwe123!@#", "cloudwi","1998");
+    Member member = new Member("cloudwi@naver.com", "qwe123!@#", "cloudwi", "1998");
     memberRepository.save(member);
 
-    Travelogue travelogue = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
-        subTravelogueList, member);
-    Travelogue travelogue2 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
-        subTravelogueList2, member);
-    Travelogue travelogue3 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
-        subTravelogueList3, member);
+    Travelogue travelogue = new Travelogue(
+      period,
+      "제목",
+      country,
+      "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ",
+      cost,
+      true,
+      subTravelogueList,
+      member
+    );
+    Travelogue travelogue2 = new Travelogue(
+      period,
+      "제목",
+      country,
+      "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ",
+      cost,
+      true,
+      subTravelogueList2,
+      member
+    );
+    Travelogue travelogue3 = new Travelogue(
+      period,
+      "제목",
+      country,
+      "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ",
+      cost,
+      true,
+      subTravelogueList3,
+      member
+    );
 
     travelogueRepository.save(travelogue);
     travelogueRepository.save(travelogue2);
     travelogueRepository.save(travelogue3);
 
     mockMvc.perform(
-            get("/api/travelogues/search")
-                .param("keyword", "제목")
-                .param("lastTravelogue", "0")
-                .param("orderType", "나중에 추가")
+        get("/api/travelogues/search")
+          .param("keyword", "제목")
+          .param("lastTravelogue", "0")
+          .param("orderType", "나중에 추가")
                 .param("size", "10")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
