@@ -14,10 +14,6 @@ public class UserPrincipal implements UserDetails {
     this.member = member;
   }
 
-  public Long getUserId() {
-    return member.getId();
-  }
-
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.emptyList();
