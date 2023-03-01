@@ -15,10 +15,6 @@ permissions:
 
 ### 이번에 추가한 부분 ###
 hooks:
-  ApplicationStop:
-    - location : scripts/start.sh
-      runas: ec2-user
-
 
   ApplicationStart:
     - location: scripts/deploy.sh
