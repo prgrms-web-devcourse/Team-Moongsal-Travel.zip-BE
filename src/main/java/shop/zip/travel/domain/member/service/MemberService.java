@@ -6,11 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
 import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
-import shop.zip.travel.domain.member.dto.response.MemberDetailRes;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
-import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
 import shop.zip.travel.domain.member.exception.EmailNotMatchException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.exception.NotVerifiedAuthorizationCodeException;
@@ -47,10 +45,8 @@ public class MemberService {
     }
   }
 
-  public void validateDuplicatedNickname(String nickname) {
-    if (memberRepository.existsByNickname(nickname)) {
-      throw new DuplicatedNicknameException(ErrorCode.DUPLICATED_NICKNAME);
-    }
+  public boolean validateDuplicatedNickname(String nickname) {
+    return memberRepository.existsByNickname(nickname);
   }
 
   public void verifyCode(String email, String code) {
@@ -75,9 +71,9 @@ public class MemberService {
     return new MemberSigninRes(accessToken);
   }
 
-  public MemberDetailRes getMember(Long id) {
-    return MemberDetailRes.toDto(memberRepository.findById(id)
-      .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND)));
+  public Member getMember(Long id) {
+    return memberRepository.findById(id)
+      .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
 }
