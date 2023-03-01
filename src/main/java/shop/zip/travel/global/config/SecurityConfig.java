@@ -11,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
+import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
 @Configuration
@@ -43,8 +44,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(requests -> requests
             .anyRequest().authenticated()
         )
-        .addFilterAfter(new JwtAuthenticationFilter(jwtTokenProvider),UsernamePasswordAuthenticationFilter.class);
-
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
     return http.build();
   }
 
