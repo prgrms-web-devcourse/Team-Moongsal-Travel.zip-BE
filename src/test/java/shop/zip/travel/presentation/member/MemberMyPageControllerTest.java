@@ -1,6 +1,9 @@
 package shop.zip.travel.presentation.member;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -94,16 +97,19 @@ class MemberMyPageControllerTest {
       .andExpect(status().isOk())
       .andDo(print())
       .andDo(document("get-my-travelogues",
-        responseFields(
-            fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
-                .description("Travelogue 아이디값"),
-            fieldWithPath("content[].title").type(JsonFieldType.STRING)
-                .description("Travelogue 제목"),
-            fieldWithPath("content[].nights").type(JsonFieldType.NUMBER)
-                .description("몇박 몇일 중 몇박에 해당하는 값"),
-            fieldWithPath("content[].days").type(JsonFieldType.NUMBER)
-                .description("몇박 몇일 중 몇일에 해당하는 값"),
-            fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER).description("여행 전체 비용"),
+          preprocessRequest(prettyPrint()),
+          preprocessResponse(prettyPrint()),
+          responseFields(
+              fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                  .description("Travelogue 아이디값"),
+              fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                  .description("Travelogue 제목"),
+              fieldWithPath("content[].nights").type(JsonFieldType.NUMBER)
+                  .description("몇박 몇일 중 몇박에 해당하는 값"),
+              fieldWithPath("content[].days").type(JsonFieldType.NUMBER)
+                  .description("몇박 몇일 중 몇일에 해당하는 값"),
+              fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                  .description("여행 전체 비용"),
             fieldWithPath("content[].country").type(JsonFieldType.STRING).description("방문한 나라"),
             fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING).description("썸네일 링크"),
             fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
