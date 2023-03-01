@@ -1,0 +1,21 @@
+# appspec.yml
+
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/travel-zip-deploy/ # 프로젝트 이름
+    overwrite: yes
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+
+### 이번에 추가한 부분 ###
+hooks:
+
+  ApplicationStart:
+    - location: scripts/deploy.sh
+      runas: ec2-user
