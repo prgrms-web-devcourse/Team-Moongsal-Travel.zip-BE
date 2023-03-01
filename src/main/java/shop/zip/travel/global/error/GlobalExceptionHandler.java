@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.global.error.exception.CustomNotFoundException;
 import shop.zip.travel.global.error.exception.DuplicatedException;
 import shop.zip.travel.global.error.exception.NotMatchException;
@@ -57,6 +57,14 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
+	@ExceptionHandler(InvalidPublishTravelogueException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidPublishTravelogueException(
+			InvalidPublishTravelogueException e) {
+		log.info("InvalidPublishTravelogueException : ", e);
+		int httpStatus = e.getErrorCode().getStatusValue();
+		String message = e.getErrorCode().getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
+	}
 
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
