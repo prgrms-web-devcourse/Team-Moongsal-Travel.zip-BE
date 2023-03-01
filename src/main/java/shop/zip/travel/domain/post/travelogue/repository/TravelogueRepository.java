@@ -15,19 +15,20 @@ import shop.zip.travel.domain.post.travelogue.repository.querydsl.TravelogueRepo
 public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
     TravelogueRepositoryQuerydsl {
 
-	@Query("select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
-		+ "t.id,t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
-		+ "from Travelogue t "
-		+ "inner join Member m "
-		+ "on m.id = t.member.id ")
-	Slice<TravelogueSimple> findAllBySlice(
-		@Param("pageRequest") PageRequest pageRequest,
-		@Param("isPublished") boolean isPublished);
+  @Query("select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
+      + "t.id,t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
+      + "from Travelogue t "
+      + "inner join Member m "
+      + "on m.id = t.member.id "
+      + "where t.isPublished = :isPublished")
+  Slice<TravelogueSimple> findAllBySlice(
+      @Param("pageRequest") PageRequest pageRequest,
+      @Param("isPublished") boolean isPublished);
 
-	@Query(value = "select t "
-		+ "from Travelogue t "
-		+ "left join fetch t.member "
-		+ "where t.id = :travelogueId")
-	Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
+  @Query(value = "select t "
+      + "from Travelogue t "
+      + "left join fetch t.member "
+      + "where t.id = :travelogueId")
+  Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
 
 }
