@@ -21,17 +21,10 @@ public class Country {
 	private String name;
 
 	public Country(String name) {
-//		verify(name);
 		this.name = name;
 	}
 
 	protected Country() {
-	}
-
-	private void verify(String inputCountryName) {
-		LOCALES.forEach(System.out::println);
-		Assert.notNull(inputCountryName, "국가명을 확인해주세요");
-		Assert.isTrue(LOCALES.contains(inputCountryName), "국가명을 확인해주세요");
 	}
 
 	public String getName() {

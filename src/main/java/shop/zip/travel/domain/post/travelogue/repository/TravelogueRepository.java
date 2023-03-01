@@ -16,19 +16,16 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
     TravelogueRepositoryQuerydsl {
 
 	@Query("select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
-		+ "t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
-		+ "from Travelogue t "
-		+ "inner join Member m "
-		+ "on m.id = t.member.id "
-		+ "where t.isPublished = :isPublished")
-	Slice<TravelogueSimple> findAllBySlice(
-		@Param("pageRequest") PageRequest pageRequest,
-		@Param("isPublished") boolean isPublished);
+			+ "t.id,t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
+			+ "from Travelogue t "
+			+ "inner join Member m "
+			+ "on m.id = t.member.id ")
+	Slice<TravelogueSimple> findAllBySlice(@Param("pageRequest") PageRequest pageRequest);
 
 	@Query(value = "select t "
 		+ "from Travelogue t "
 		+ "left join fetch t.member "
-		+ "where t.id = ?1")
+		+ "where t.id = :travelogueId")
 	Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
 
 }

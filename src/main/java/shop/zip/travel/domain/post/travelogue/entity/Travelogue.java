@@ -39,7 +39,7 @@ public class Travelogue extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Country country;
 
-	@Column(nullable = false)
+	@Column(nullable = false, length = 2000)
 	private String thumbnail;
 
 	@Embedded

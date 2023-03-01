@@ -85,13 +85,14 @@ public class DummyGenerator {
 
 	public static TravelogueSimple createTravelogueSimple(Travelogue travelogue){
 		return new TravelogueSimple(
-			travelogue.getTitle(),
-			travelogue.getPeriod(),
-			travelogue.getCost().getTotal(),
-			travelogue.getCountry().getName(),
-			travelogue.getThumbnail(),
-			travelogue.getMember().getNickname(),
-			travelogue.getMember().getProfileImageUrl()
+				travelogue.getId(),
+				travelogue.getTitle(),
+				travelogue.getPeriod(),
+				travelogue.getCost().getTotal(),
+				travelogue.getCountry().getName(),
+				travelogue.getThumbnail(),
+				travelogue.getMember().getNickname(),
+				travelogue.getMember().getProfileImageUrl()
 		);
 	}
 
