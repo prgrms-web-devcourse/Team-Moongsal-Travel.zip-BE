@@ -108,6 +108,7 @@ public class Member extends BaseTimeEntity {
   }
 
   public void updateNickname(String nickname) {
+    validateNickname(nickname);
     this.nickname = nickname;
   }
 
