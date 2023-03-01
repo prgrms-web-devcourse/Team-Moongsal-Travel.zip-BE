@@ -69,7 +69,7 @@ class SubTravelogueControllerTest {
     SubTravelogueCreateReq subTravelogueCreateReq = new SubTravelogueCreateReq(
         "일본 다녀왔습니다.",
         "일본은 가까워서 좋고, 맛있는게 많아서 좋습니다. 일단 일본 다녀오면 3kg이 찝니다. 주의하세요.",
-        List.of(DummyGenerator.createAddress()),
+        List.of(DummyGenerator.createTempAddress()),
         Set.of(Transportation.BUS),
         List.of(new TravelPhotoCreateReq("www.google.com"))
     );

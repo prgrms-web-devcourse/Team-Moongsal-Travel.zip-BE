@@ -8,6 +8,7 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
 import shop.zip.travel.domain.post.data.TempCountry;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
+import shop.zip.travel.domain.post.subTravelogue.data.TempAddress;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
@@ -58,9 +59,7 @@ public class DummyGenerator {
 
 	public static Address createAddress(){
 		return new Address(
-			createCountry(),
-			"오사카",
-			"유니버셜 스튜디오"
+				"일본 오사카 유니버셜 스튜디오"
 		);
 	}
 
@@ -107,14 +106,20 @@ public class DummyGenerator {
 
 	public static TempPeriod createTempPeriod() {
 		return new TempPeriod(
-			null,
-			null
+				null,
+				null
 		);
 	}
 
 	public static TempCountry createTempCountry() {
 		return new TempCountry(
-			"일본"
+				"일본"
+		);
+	}
+
+	public static TempAddress createTempAddress() {
+		return new TempAddress(
+				"일본 오사카 유니버셜 스튜디오"
 		);
 	}
 }
