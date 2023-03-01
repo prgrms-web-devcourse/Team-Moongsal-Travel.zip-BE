@@ -2,7 +2,6 @@ package shop.zip.travel.presentation.member;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +34,7 @@ public class MemberController {
     return ResponseEntity.ok().build();
   }
 
-  @GetMapping("/api/auth/valid/nickname")
+  @PostMapping("/api/auth/valid/nickname")
   public ResponseEntity<Void> checkDuplicatedNickname(
       @RequestBody @Valid NicknameValidateReq nicknameValidateReq) {
     memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
