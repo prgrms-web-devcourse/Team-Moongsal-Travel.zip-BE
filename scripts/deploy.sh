@@ -52,6 +52,7 @@ do
     sleep 12
 done
 
+
 echo "> Nginx currently proxies to ${CURRENT_PORT}."
 
 echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" |sudo tee /home/ec2-user/service_url.inc
