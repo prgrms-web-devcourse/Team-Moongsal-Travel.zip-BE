@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/.bashrc
+echo "> Checking pid of the running application..."
 
 CURRENT_PORT=$(cat /home/ec2-user/service_url.inc | grep -Po '[0-9]+' | tail -1)
 TARGET_PORT=0
@@ -31,12 +31,12 @@ nohup java -jar -Dserver.port=${TARGET_PORT} -Dspring.profiles.active=dev /home/
 
 echo "> Now new JAR runs at ${TARGET_PORT}."
 
-echo "> Start health check of JAR at 'localhost:${TARGET_PORT}' ..."
+echo "> Start health check of JAR at 'http://127.0.0.1:${TARGET_PORT}' ..."
 
 for RETRY_COUNT in 1 2 3 4 5 6 7 8 9 10
 do
     echo "> #${RETRY_COUNT} trying..."
-    RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}"  localhost:${TARGET_PORT}/api/healths)
+    RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}"  http://127.0.0.1:${TARGET_PORT}/api/healths)
 
     echo "RESPONSE_CODE ${RESPONSE_CODE}"
 
@@ -55,7 +55,7 @@ done
 echo "> Nginx currently proxies to ${CURRENT_PORT}."
 
 # Change proxying port into target port
-echo "set \$service_url localhost:${TARGET_PORT};" |sudo tee /home/ec2-user/service_url.inc
+echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" |sudo tee /home/ec2-user/service_url.inc
 
 echo "> Now Nginx proxies to ${TARGET_PORT}."
 
@@ -71,7 +71,7 @@ echo "$TARGET_PID"
 if [ ${TARGET_PID} -gt 0 ]
 then
   echo "> Kill JAR running at ${CURRENT_PORT}."
-  sudo kill -9 ${TARGET_PID}
+  sudo kill -15 ${TARGET_PID}
 fi
 
 exit 0
