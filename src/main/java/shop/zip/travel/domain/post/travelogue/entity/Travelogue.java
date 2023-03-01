@@ -18,6 +18,7 @@ import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
+import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
@@ -158,4 +159,12 @@ public class Travelogue extends BaseTimeEntity {
 		this.isPublished = true;
 	}
 
+	public boolean cannotPublish() {
+		return period.cannotPublish() ||
+				DefaultValue.STRING.isEqual(title) ||
+				DefaultValue.STRING.isEqual(thumbnail) ||
+				country.cannotPublish() ||
+				cost.cannotPublish() ||
+				subTravelogues.size() < getPeriod().getNights() + 1;
+	}
 }

@@ -2,16 +2,10 @@ package shop.zip.travel.domain.post.subTravelogue.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import shop.zip.travel.domain.post.data.Country;
+import shop.zip.travel.domain.post.data.DefaultValue;
 
 @Embeddable
 public class Address {
-
-    @Column(nullable = false)
-    private String country;
-
-    @Column(nullable = false)
-    private String city;
 
     @Column(nullable = false)
     private String spot;
@@ -19,22 +13,16 @@ public class Address {
     public Address() {
     }
 
-    public Address(Country country, String city, String spot) {
-        this.country = country.getName();
-        this.city = city;
+    public Address(String spot) {
         this.spot = spot;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getCity() {
-        return city;
     }
 
     public String getSpot() {
         return spot;
+    }
+
+    public boolean cannotPublish() {
+        return DefaultValue.STRING.isEqual(spot);
     }
 }
 

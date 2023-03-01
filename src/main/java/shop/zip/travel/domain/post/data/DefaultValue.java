@@ -15,4 +15,8 @@ public enum DefaultValue {
   public String getValue() {
     return value;
   }
+
+  public boolean isEqual(String request) {
+    return value.equals(request);
+  }
 }

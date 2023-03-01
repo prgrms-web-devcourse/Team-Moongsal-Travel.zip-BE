@@ -1,13 +1,10 @@
 package shop.zip.travel.domain.post.data;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import org.springframework.util.Assert;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Country {
@@ -29,5 +26,9 @@ public class Country {
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean cannotPublish() {
+		return DefaultValue.STRING.isEqual(name);
 	}
 }
