@@ -58,14 +58,7 @@ public class MemberMyPageController {
 
     return ResponseEntity.ok(memberInfoRes);
   }
-
-  @GetMapping("/bookmarks")
-  public ResponseEntity<Void> getBookmarked(
-    @AuthenticationPrincipal UserPrincipal userPrincipal
-  ) {
-
-  }
-
+  
 }
 
 
