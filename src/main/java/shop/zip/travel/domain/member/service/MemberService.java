@@ -10,7 +10,6 @@ import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
-import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
 import shop.zip.travel.domain.member.exception.EmailNotMatchException;
 import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
@@ -78,7 +77,8 @@ public class MemberService {
     return new MemberSigninRes(accessToken, refreshToken);
   }
 
-  public MemberSigninRes recreateAccessAndRefreshToken(AccessTokenReissueReq accessTokenReissueReq) {
+  public MemberSigninRes recreateAccessAndRefreshToken(
+      AccessTokenReissueReq accessTokenReissueReq) {
 
     String accessToken = accessTokenReissueReq.accessToken();
     String refreshToken = accessTokenReissueReq.refreshToken();
