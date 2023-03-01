@@ -69,5 +69,7 @@ then
   sudo kill -9 ${TARGET_PID}
 fi
 
-exit 0
+
+
+exit 1ß
 
