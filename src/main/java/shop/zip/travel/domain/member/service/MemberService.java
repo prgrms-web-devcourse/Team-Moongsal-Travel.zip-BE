@@ -3,6 +3,7 @@ package shop.zip.travel.domain.member.service;
 import static shop.zip.travel.domain.member.dto.request.MemberSignupReq.toMember;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
 import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
 import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
@@ -20,7 +21,9 @@ import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.security.JwtTokenProvider;
 import shop.zip.travel.global.util.RedisUtil;
 
+
 @Service
+@Transactional(readOnly = true)
 public class MemberService {
 
   private final MemberRepository memberRepository;
@@ -34,6 +37,7 @@ public class MemberService {
     this.jwtTokenProvider = jwtTokenProvider;
   }
 
+  @Transactional
   public void createMember(MemberSignupReq memberSignupReq) {
     Member member = toMember(memberSignupReq);
     memberRepository.save(member);
@@ -57,6 +61,7 @@ public class MemberService {
     }
   }
 
+  @Transactional
   public MemberSigninRes login(MemberSigninReq memberSigninReq) {
     Member member = memberRepository.findByEmail(memberSigninReq.email())
         .orElseThrow(() -> new EmailNotMatchException(ErrorCode.EMAIL_NOT_MATCH));
@@ -95,5 +100,6 @@ public class MemberService {
     return memberRepository.findById(id)
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
+
 }
 

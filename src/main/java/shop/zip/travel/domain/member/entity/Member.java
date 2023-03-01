@@ -42,7 +42,13 @@ public class Member extends BaseTimeEntity {
 
   public Member(String email, String password, String nickname, String birthYear,
     String profileImageUrl) {
+    this(null, email, password, nickname, birthYear, profileImageUrl);
+  }
+
+  public Member(Long id, String email, String password, String nickname, String birthYear,
+    String profileImageUrl) {
     validateMember(email, password, nickname, birthYear);
+    this.id = id;
     this.email = email;
     this.password = password;
     this.nickname = nickname;
@@ -56,7 +62,6 @@ public class Member extends BaseTimeEntity {
     validateNickname(nickname);
     validateBirthYear(birthYear);
   }
-
 
   private void validateEmail(String email) {
     String emailPattern = "^[\\w-.]+@[\\w-]+.[\\w.]+$";
