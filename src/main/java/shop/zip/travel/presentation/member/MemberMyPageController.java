@@ -1,7 +1,6 @@
 package shop.zip.travel.presentation.member;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.service.MemberMyPageService;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.global.security.UserPrincipal;
 
@@ -35,12 +35,12 @@ public class MemberMyPageController {
   }
 
   @GetMapping("/travelogues")
-  public ResponseEntity<Slice<TravelogueSimpleRes>> getMyTravelogues(
-    @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
-    @AuthenticationPrincipal UserPrincipal userPrincipal
+  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getMyTravelogues(
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
-    Slice<TravelogueSimpleRes> travelogues =
-      memberService.getTravelogues(userPrincipal.getUserId(), pageable);
+    TravelogueCustomSlice<TravelogueSimpleRes> travelogues =
+        memberService.getTravelogues(userPrincipal.getUserId(), pageable);
 
     return ResponseEntity.ok(travelogues);
   }

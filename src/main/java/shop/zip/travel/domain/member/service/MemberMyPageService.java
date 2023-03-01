@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.repository.MemberRepository;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 
@@ -18,7 +19,7 @@ public class MemberMyPageService {
   private final MemberRepository memberRepository;
 
   public MemberMyPageService(TravelogueRepository travelogueRepository,
-    MemberRepository memberRepository) {
+      MemberRepository memberRepository) {
     this.travelogueRepository = travelogueRepository;
     this.memberRepository = memberRepository;
   }
@@ -27,11 +28,15 @@ public class MemberMyPageService {
     return memberRepository.getMemberInfo(memberId);
   }
 
-  public Slice<TravelogueSimpleRes> getTravelogues(Long memberId, Pageable pageable) {
-    return new SliceImpl<>(travelogueRepository.getMyTravelogues(memberId, pageable)
-      .stream()
-      .map(TravelogueSimpleRes::toDto)
-      .toList());
+  public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Long memberId,
+      Pageable pageable) {
+    Slice<TravelogueSimpleRes> travelogueSimpleRes = new SliceImpl<>(
+        travelogueRepository.getMyTravelogues(memberId, pageable)
+            .stream()
+            .map(TravelogueSimpleRes::toDto)
+            .toList());
+
+    return TravelogueCustomSlice.toDto(travelogueSimpleRes);
   }
 
 }
