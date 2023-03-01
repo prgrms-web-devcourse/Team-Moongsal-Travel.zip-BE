@@ -33,7 +33,7 @@ echo "> Start health check of JAR at 'http://127.0.0.1:${TARGET_PORT}' ..."
 for RETRY_COUNT in 1 2 3 4 5 6 7 8 9 10
 do
     echo "> #${RETRY_COUNT} trying..."
-    RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}"  http://127.0.0.1:${TARGET_PORT}/api/healths)
+    RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}"  localhost:${TARGET_PORT}/api/healths)
 
     if [ ${RESPONSE_CODE} -eq 200 ]
     then
@@ -50,7 +50,7 @@ done
 echo "> Nginx currently proxies to ${CURRENT_PORT}."
 
 # Change proxying port into target port
-echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" | tee /home/ec2-user/service_url.inc
+echo "set \$service_url localhost:${TARGET_PORT};" | tee /home/ec2-user/service_url.inc
 
 echo "> Now Nginx proxies to ${TARGET_PORT}."
 
