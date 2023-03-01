@@ -2,8 +2,10 @@ package shop.zip.travel.presentation.member;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,6 +98,7 @@ class MemberMyPageControllerTest {
       .andDo(print())
       .andDo(document("get-my-travelogues",
         responseFields(
+          fieldWithPath("content[].travelogueId").description("Travelogue 아이디"),
           fieldWithPath("content[].title").description("Travelogue 제목"),
           fieldWithPath("content[].nights").description("몇박 몇일 중 몇박에 해당하는 값"),
           fieldWithPath("content[].days").description("몇박 몇일 중 몇일에 해당하는 값"),
@@ -127,12 +130,25 @@ class MemberMyPageControllerTest {
       "testNickname"
     );
 
-    mockMvc.perform(get("/api/members/my/settings")
+    mockMvc.perform(patch("/api/members/my/settings")
         .header("AccessToken", token)
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(memberUpdateReq)))
       .andExpect(status().isOk())
-      .andDo(print());
+      .andDo(print())
+      .andDo(document("update-my-profile",
+        requestFields(
+          fieldWithPath("profileImageUrl").description("변경할 프로필 이미지 url"),
+          fieldWithPath("nickname").description("변경할 닉네임")
+        )
+        ,
+        responseFields(
+          fieldWithPath("email").description("이메일"),
+          fieldWithPath("nickname").description("닉네임"),
+          fieldWithPath("birthYear").description("생년월일"),
+          fieldWithPath("profileImageUrl").description("프로필 이미지 url")
+        )
+      ));
   }
 
 }
