@@ -1,12 +1,16 @@
 package shop.zip.travel.presentation.member;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.service.MemberMyPageService;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
@@ -43,6 +47,17 @@ public class MemberMyPageController {
         memberService.getTravelogues(userPrincipal.getUserId(), pageable);
 
     return ResponseEntity.ok(travelogues);
+  }
+
+  @PatchMapping("/settings")
+  public ResponseEntity<MemberInfoRes> updateMyProfile(
+      @RequestBody @Valid MemberUpdateReq memberUpdateReq,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
+  ) {
+    MemberInfoRes memberInfoRes =
+      memberService.updateMemberProfile(userPrincipal.getUserId(), memberUpdateReq);
+
+    return ResponseEntity.ok(memberInfoRes);
   }
 
 }

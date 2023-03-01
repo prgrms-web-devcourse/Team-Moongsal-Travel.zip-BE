@@ -42,13 +42,7 @@ public class Member extends BaseTimeEntity {
 
   public Member(String email, String password, String nickname, String birthYear,
     String profileImageUrl) {
-    this(null, email, password, nickname, birthYear, profileImageUrl);
-  }
-
-  public Member(Long id, String email, String password, String nickname, String birthYear,
-    String profileImageUrl) {
     validateMember(email, password, nickname, birthYear);
-    this.id = id;
     this.email = email;
     this.password = password;
     this.nickname = nickname;
@@ -108,4 +102,14 @@ public class Member extends BaseTimeEntity {
   public String getProfileImageUrl() {
     return profileImageUrl;
   }
+
+  public void updateProfileImageUrl(String profileImageUrl) {
+    this.profileImageUrl = profileImageUrl;
+  }
+
+  public void updateNickname(String nickname) {
+    validateNickname(nickname);
+    this.nickname = nickname;
+  }
+
 }

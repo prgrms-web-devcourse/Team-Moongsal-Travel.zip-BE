@@ -5,8 +5,10 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,10 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
@@ -72,13 +76,15 @@ class MemberMyPageControllerTest {
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/members/my/info").header("AccessToken", token))
-        .andExpect(status().isOk()).andDo(print()).andDo(
-            document("get-my-info", preprocessResponse(prettyPrint()),
-                responseFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-                    fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
-                    fieldWithPath("birthYear").type(JsonFieldType.STRING).description("생년월일"),
-                    fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
-                        .description("프로필 이미지 url"))));
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-my-info",
+            preprocessResponse(prettyPrint()),
+            responseFields(fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                fieldWithPath("birthYear").type(JsonFieldType.STRING).description("생년월일"),
+                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                    .description("프로필 이미지 url"))));
   }
 
   @DisplayName("유저는 본인이 작성한 여행기 목록을 조회할 수 있다")
@@ -123,6 +129,40 @@ class MemberMyPageControllerTest {
                 fieldWithPath("first").description("첫번째 페이지인지 여부"),
                 fieldWithPath("last").description("마지막 페이지인지 여부"),
                 fieldWithPath("empty").description("데이터가 없는지 여부")
+            )
+        ));
+  }
+
+  @DisplayName("유저는 본인의 프로필 사진과 닉네임을 변경할 수 있다")
+  @Test
+  public void update_my_profile() throws Exception {
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+    MemberUpdateReq memberUpdateReq = new MemberUpdateReq(
+        "test-profile-image-url",
+        "testNickname"
+    );
+
+    mockMvc.perform(patch("/api/members/my/settings")
+            .header("AccessToken", token)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(memberUpdateReq)))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("update-my-profile",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            requestFields(
+                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                    .description("변경할 프로필 이미지 url"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("변경할 닉네임")
+            )
+            ,
+            responseFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임"),
+                fieldWithPath("birthYear").type(JsonFieldType.STRING).description("생년월일"),
+                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                    .description("프로필 이미지 url")
             )
         ));
   }
