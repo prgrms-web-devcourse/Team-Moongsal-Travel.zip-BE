@@ -1,5 +1,6 @@
 package shop.zip.travel.presentation.member;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
@@ -50,8 +51,8 @@ public class MemberMyPageController {
 
   @PatchMapping("/settings")
   public ResponseEntity<MemberInfoRes> updateMyProfile(
-    @RequestBody MemberUpdateReq memberUpdateReq,
-    @AuthenticationPrincipal UserPrincipal userPrincipal
+      @RequestBody @Valid MemberUpdateReq memberUpdateReq,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     MemberInfoRes memberInfoRes =
       memberService.updateMemberProfile(userPrincipal.getUserId(), memberUpdateReq);
