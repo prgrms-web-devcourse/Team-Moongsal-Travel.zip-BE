@@ -168,7 +168,6 @@ gradle-app.setting
 *.hprof
 
 /src/main/generated
-/src/main/resources/application.yml
-/src/main/resources/application-dev.yml
-/src/main/resources/application-local.yml
 # End of https://www.toptal.com/developers/gitignore/api/gradle,intellij,java
+
+application.yml

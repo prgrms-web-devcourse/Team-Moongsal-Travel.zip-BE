@@ -73,13 +73,10 @@ class TravelogueControllerTest {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
     travelogueRepository.saveAll(
-      List.of(
-        DummyGenerator.createTempTravelogueReq(member).toTravelogue(member),
-        DummyGenerator.createTravelogue(member),
-        DummyGenerator.createTravelogue(member),
-        DummyGenerator.createTravelogue(member))
-    );
-
+        List.of(
+            DummyGenerator.createTravelogue(member),
+            DummyGenerator.createTravelogue(member),
+            DummyGenerator.createTravelogue(member)));
   }
 
   @Test
@@ -162,14 +159,14 @@ class TravelogueControllerTest {
   public void test_save_travelogue() throws Exception {
     // given
     TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
-      DummyGenerator.createPeriod(),
-      "메인 게시물 제목",
-      DummyGenerator.createCountry(),
-      "www.naver.com",
-      DummyGenerator.createCost()
+        DummyGenerator.createPeriod(),
+        "메인 게시물 제목",
+        DummyGenerator.createCountry(),
+        "www.naver.com",
+        DummyGenerator.createCost()
     );
 
-    String token = "Bearer " + jwtTokenProvider.createToken(member.getId());
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(post("/api/travelogues")
         .header("AccessToken", token)
@@ -260,46 +257,22 @@ class TravelogueControllerTest {
     Member member = new Member("cloudwi@naver.com", "qwe123!@#", "cloudwi", "1998");
     memberRepository.save(member);
 
-    Travelogue travelogue = new Travelogue(
-      period,
-      "제목",
-      country,
-      "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ",
-      cost,
-      true,
-      subTravelogueList,
-      member
-    );
-    Travelogue travelogue2 = new Travelogue(
-      period,
-      "제목",
-      country,
-      "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ",
-      cost,
-      true,
-      subTravelogueList2,
-      member
-    );
-    Travelogue travelogue3 = new Travelogue(
-      period,
-      "제목",
-      country,
-      "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ",
-      cost,
-      true,
-      subTravelogueList3,
-      member
-    );
+    Travelogue travelogue = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
+        subTravelogueList, member);
+    Travelogue travelogue2 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
+        subTravelogueList2, member);
+    Travelogue travelogue3 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
+        subTravelogueList3, member);
 
     travelogueRepository.save(travelogue);
     travelogueRepository.save(travelogue2);
     travelogueRepository.save(travelogue3);
 
     mockMvc.perform(
-        get("/api/travelogues/search")
-          .param("keyword", "제목")
-          .param("lastTravelogue", "0")
-          .param("orderType", "나중에 추가")
+            get("/api/travelogues/search")
+                .param("keyword", "제목")
+                .param("lastTravelogue", "0")
+                .param("orderType", "나중에 추가")
                 .param("size", "10")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
@@ -320,11 +293,16 @@ class TravelogueControllerTest {
                 responseFields(
                     fieldWithPath("[].travelogueId").type(JsonFieldType.NUMBER)
                         .description("여행기 아이디").optional(),
-                    fieldWithPath("[].title").type(JsonFieldType.STRING).description("여행기 제목").optional(),
-                    fieldWithPath("[].nights").type(JsonFieldType.NUMBER).description("여행 몇박").optional(),
-                    fieldWithPath("[].days").type(JsonFieldType.NUMBER).description("여행 몇일").optional(),
-                    fieldWithPath("[].totalCost").type(JsonFieldType.NUMBER).description("여행 총 비용").optional(),
-                    fieldWithPath("[].country").type(JsonFieldType.STRING).description("여행 나라").optional(),
+                    fieldWithPath("[].title").type(JsonFieldType.STRING).description("여행기 제목")
+                        .optional(),
+                    fieldWithPath("[].nights").type(JsonFieldType.NUMBER).description("여행 몇박")
+                        .optional(),
+                    fieldWithPath("[].days").type(JsonFieldType.NUMBER).description("여행 몇일")
+                        .optional(),
+                    fieldWithPath("[].totalCost").type(JsonFieldType.NUMBER).description("여행 총 비용")
+                        .optional(),
+                    fieldWithPath("[].country").type(JsonFieldType.STRING).description("여행 나라")
+                        .optional(),
                     fieldWithPath("[].thumbnail").type(JsonFieldType.STRING)
                         .description("여행기 썸네일 이미지 url").optional(),
                     fieldWithPath("[].member.nickname").type(JsonFieldType.STRING)

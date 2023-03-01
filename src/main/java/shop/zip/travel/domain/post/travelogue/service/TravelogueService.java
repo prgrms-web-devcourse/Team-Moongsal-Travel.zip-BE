@@ -24,34 +24,25 @@ import shop.zip.travel.global.error.ErrorCode;
 @Transactional(readOnly = true)
 public class TravelogueService {
 
-  private final TravelogueRepository travelogueRepository;
-  private final MemberService memberService;
+    private final TravelogueRepository travelogueRepository;
+    private final MemberService memberService;
 
-  public TravelogueService(TravelogueRepository travelogueRepository,
-      MemberService memberService) {
-    this.travelogueRepository = travelogueRepository;
-    this.memberService = memberService;
-  }
+    public TravelogueService(TravelogueRepository travelogueRepository,
+        MemberService memberService) {
+        this.travelogueRepository = travelogueRepository;
+        this.memberService = memberService;
+    }
 
-  @Transactional
-  public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
-    Member findMember = memberService.getMember(memberId);
-    Long id = travelogueRepository.save(createReq.toTravelogue(findMember))
-        .getId();
-    return new TravelogueCreateRes(id);
-  }
+	@Transactional
+	public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
+		Member findMember = memberService.getMember(memberId);
+		Travelogue travelogue = travelogueRepository.save(createReq.toTravelogue(findMember));
+		Long nights = travelogue.getPeriod().getNights();
+		return new TravelogueCreateRes(travelogue.getId(), nights, nights + 1);
+	}
 
-  @Transactional
-  public TravelogueCreateRes save(TempTravelogueCreateReq createReq, Long memberId) {
-    Member findMember = memberService.getMember(memberId);
-    Long id = travelogueRepository.save(createReq.toTravelogue(findMember))
-        .getId();
-    return new TravelogueCreateRes(id);
-  }
-
-  public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size,
-      String sortField, boolean isPublished) {
-    PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
+	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
+		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
 
     Slice<TravelogueSimple> travelogues =
         travelogueRepository.findAllBySlice(pageRequest, isPublished);

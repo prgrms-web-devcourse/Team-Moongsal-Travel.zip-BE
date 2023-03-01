@@ -7,6 +7,11 @@ public enum ErrorCode {
 	// field validation
 	BINDING_WRONG(HttpStatus.BAD_REQUEST, "요청하신 필드값이 잘못 되었습니다"),
 
+	// invalid token
+	INVALID_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "엑세스 토큰이 유효하지 않습니다"),
+	INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다"),
+	JSON_NOT_PARSING(HttpStatus.BAD_REQUEST,"토큰을 파싱할 수 없습니다"),
+
 	// member
 	DUPLICATED_EMAIL(HttpStatus.CONFLICT, "이메일이 중복입니다"),
 	NOT_VERIFIED_CODE(HttpStatus.BAD_REQUEST, "잘못된 인증 코드입니다"),
