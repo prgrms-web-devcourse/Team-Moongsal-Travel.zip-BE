@@ -28,7 +28,7 @@ public class TravelogueService {
   private final MemberService memberService;
 
   public TravelogueService(TravelogueRepository travelogueRepository,
-    MemberService memberService) {
+      MemberService memberService) {
     this.travelogueRepository = travelogueRepository;
     this.memberService = memberService;
   }
@@ -37,7 +37,7 @@ public class TravelogueService {
   public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
     Member findMember = memberService.getMember(memberId);
     Long id = travelogueRepository.save(createReq.toTravelogue(findMember))
-      .getId();
+        .getId();
     return new TravelogueCreateRes(id);
   }
 
@@ -45,38 +45,39 @@ public class TravelogueService {
   public TravelogueCreateRes save(TempTravelogueCreateReq createReq, Long memberId) {
     Member findMember = memberService.getMember(memberId);
     Long id = travelogueRepository.save(createReq.toTravelogue(findMember))
-      .getId();
+        .getId();
     return new TravelogueCreateRes(id);
   }
 
   public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size,
-    String sortField, boolean isPublished) {
+      String sortField, boolean isPublished) {
     PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
 
     Slice<TravelogueSimple> travelogues =
-      travelogueRepository.findAllBySlice(pageRequest, isPublished);
+        travelogueRepository.findAllBySlice(pageRequest, isPublished);
 
     return TravelogueCustomSlice.toDto(
-      travelogues.map(TravelogueSimpleRes::toDto)
+        travelogues.map(TravelogueSimpleRes::toDto)
     );
   }
 
   public Travelogue findBy(Long id) {
     return travelogueRepository.findById(id)
-      .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+        .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
   }
 
   public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
-    int size) {
+      int size) {
     return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
   }
 
   public TravelogueDetailRes getTravelogueDetail(Long id) {
     Travelogue travelogue = travelogueRepository.getTravelogueDetail(id)
-      .orElseThrow(() -> {
-        throw new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND);
-      });
+        .orElseThrow(() -> {
+          throw new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND);
+        });
     return TravelogueDetailRes.toDto(travelogue);
   }
 }
+
 
