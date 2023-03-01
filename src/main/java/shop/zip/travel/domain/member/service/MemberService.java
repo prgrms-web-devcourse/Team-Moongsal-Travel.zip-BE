@@ -39,6 +39,9 @@ public class MemberService {
 
   @Transactional
   public void createMember(MemberSignupReq memberSignupReq) {
+    validateDuplicatedEmail(memberSignupReq.email());
+    validateDuplicatedNickname(memberSignupReq.nickname());
+
     Member member = toMember(memberSignupReq);
     memberRepository.save(member);
   }
