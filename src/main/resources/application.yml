@@ -38,6 +38,7 @@ spring:
 
   jwt:
     accessTokenSecretKey: ${ACCESS_TOKEN_SECRET_KEY}
+    refreshTokenSecretKey: ${REFRESH_TOKEN_SECRET_KEY}
 
 logging:
   level:
