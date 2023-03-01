@@ -62,13 +62,11 @@ public class TravelogueService {
     return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
   }
 
-  public TravelogueDetailRes getTravelogueDetail(Long id) {
-    Travelogue travelogue = travelogueRepository.getTravelogueDetail(id)
-        .orElseThrow(() -> {
-          throw new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND);
-        });
-    return TravelogueDetailRes.toDto(travelogue);
+	public TravelogueDetailRes getTravelogueDetail(Long travelogueId) {
+    return TravelogueDetailRes.toDto(
+        travelogueRepository.getTravelogueDetail(travelogueId)
+            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
   }
-}
 
+}
 

@@ -46,6 +46,8 @@ public class TravelogueController {
   public ResponseEntity<TravelogueCreateRes> create(
       @RequestBody @Valid TravelogueCreateReq createReq,
       @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    TravelogueCreateRes travelogueCreateRes =
+      travelogueService.save(createReq, userPrincipal.getUserId());
 
     TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq,
         userPrincipal.getUserId());
@@ -66,6 +68,7 @@ public class TravelogueController {
   public ResponseEntity<TravelogueDetailRes> get(
       @PathVariable Long travelogueId
   ) {
+      @PathVariable Long travelogueId) {
     TravelogueDetailRes travelogueDetail =
         travelogueService.getTravelogueDetail(travelogueId);
 
