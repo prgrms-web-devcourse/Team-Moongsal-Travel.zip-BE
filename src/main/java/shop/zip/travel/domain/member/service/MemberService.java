@@ -43,7 +43,8 @@ public class MemberService {
     validateDuplicatedEmail(memberSignupReq.email());
     validateDuplicatedNickname(memberSignupReq.nickname());
 
-    Member member = toMember(memberSignupReq);
+    Member member = toMember(memberSignupReq, passwordEncoder);
+
     memberRepository.save(member);
   }
 
@@ -70,7 +71,7 @@ public class MemberService {
     Member member = memberRepository.findByEmail(memberSigninReq.email())
         .orElseThrow(() -> new EmailNotMatchException(ErrorCode.EMAIL_NOT_MATCH));
 
-    if (!member.getPassword().equals(memberSigninReq.password())) {
+    if ((passwordEncoder.matches(member.getPassword(), memberSigninReq.password()))) {
       throw new PasswordNotMatchException(ErrorCode.PASSWORD_NOT_MATCH);
     }
 

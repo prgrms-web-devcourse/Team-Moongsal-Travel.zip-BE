@@ -23,12 +23,14 @@ public class EmailController {
   }
 
   @PostMapping("/api/auth/email")
-  public ResponseEntity<Void> requestVerificationCode(@RequestBody @Valid EmailValidateReq emailValidateReq)
-      throws MessagingException, UnsupportedEncodingException {
+  public ResponseEntity<String> requestVerificationCode(@RequestBody @Valid EmailValidateReq emailValidateReq) {
     String email = emailValidateReq.email();
     memberService.validateDuplicatedEmail(email);
-    emailService.sendMail(email);
-    return ResponseEntity.ok().build();
+    try {
+      emailService.sendMail(email);
+    } catch (MessagingException | UnsupportedEncodingException e) {
+      throw new RuntimeException("이메일 전송이 비정상적으로 종료 되었습니다.");
+    }
+    return ResponseEntity.ok().body("이메일 발송 성공");
   }
-
 }
