@@ -15,7 +15,6 @@ public record TravelogueCreateReq(
     String title,
     @NotNull
     Country country,
-    @NotBlank
     String thumbnail,
     @NotNull
     Cost cost
