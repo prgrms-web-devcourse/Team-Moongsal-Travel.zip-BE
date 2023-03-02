@@ -32,12 +32,19 @@ public class Member extends BaseTimeEntity {
   @Column(nullable = false)
   private String profileImageUrl;
 
+  @Column(nullable = false)
+  private boolean isEmail;
+
   protected Member() {
 
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
-    this(email, password, nickname, birthYear, "default");
+    this.email = email;
+    this.password = password;
+    this.nickname = nickname;
+    this.birthYear = birthYear;
+    this.profileImageUrl = "default";
   }
 
   public Member(String email, String password, String nickname, String birthYear,

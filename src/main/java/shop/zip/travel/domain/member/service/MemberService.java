@@ -2,6 +2,7 @@ package shop.zip.travel.domain.member.service;
 
 import static shop.zip.travel.domain.member.dto.request.MemberSignupReq.toMember;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
@@ -20,7 +21,6 @@ import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.security.JwtTokenProvider;
 import shop.zip.travel.global.util.RedisUtil;
 
-
 @Service
 @Transactional(readOnly = true)
 public class MemberService {
@@ -28,12 +28,14 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final RedisUtil redisUtil;
   private final JwtTokenProvider jwtTokenProvider;
+  private final PasswordEncoder passwordEncoder;
 
   public MemberService(MemberRepository memberRepository, RedisUtil redisUtil,
-      JwtTokenProvider jwtTokenProvider) {
+      JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
     this.memberRepository = memberRepository;
     this.redisUtil = redisUtil;
     this.jwtTokenProvider = jwtTokenProvider;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Transactional
