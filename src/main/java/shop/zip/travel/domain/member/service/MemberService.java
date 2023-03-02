@@ -2,6 +2,7 @@ package shop.zip.travel.domain.member.service;
 
 import static shop.zip.travel.domain.member.dto.request.MemberSignupReq.toMember;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
@@ -10,7 +11,6 @@ import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
-import shop.zip.travel.domain.member.exception.DuplicatedNicknameException;
 import shop.zip.travel.domain.member.exception.EmailNotMatchException;
 import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
@@ -21,7 +21,6 @@ import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.security.JwtTokenProvider;
 import shop.zip.travel.global.util.RedisUtil;
 
-
 @Service
 @Transactional(readOnly = true)
 public class MemberService {
@@ -29,16 +28,21 @@ public class MemberService {
   private final MemberRepository memberRepository;
   private final RedisUtil redisUtil;
   private final JwtTokenProvider jwtTokenProvider;
+  private final PasswordEncoder passwordEncoder;
 
   public MemberService(MemberRepository memberRepository, RedisUtil redisUtil,
-      JwtTokenProvider jwtTokenProvider) {
+      JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
     this.memberRepository = memberRepository;
     this.redisUtil = redisUtil;
     this.jwtTokenProvider = jwtTokenProvider;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Transactional
   public void createMember(MemberSignupReq memberSignupReq) {
+    validateDuplicatedEmail(memberSignupReq.email());
+    validateDuplicatedNickname(memberSignupReq.nickname());
+
     Member member = toMember(memberSignupReq);
     memberRepository.save(member);
   }
@@ -78,7 +82,8 @@ public class MemberService {
     return new MemberSigninRes(accessToken, refreshToken);
   }
 
-  public MemberSigninRes recreateAccessAndRefreshToken(AccessTokenReissueReq accessTokenReissueReq) {
+  public MemberSigninRes recreateAccessAndRefreshToken(
+      AccessTokenReissueReq accessTokenReissueReq) {
 
     String accessToken = accessTokenReissueReq.accessToken();
     String refreshToken = accessTokenReissueReq.refreshToken();

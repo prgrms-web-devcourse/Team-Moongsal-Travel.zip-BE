@@ -5,18 +5,15 @@ on:
     branches:
       - main
       - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-  build:
+  deploy:
 
     runs-on: ubuntu-latest
-    env:
-      AWS_RDS_URL: ${{ secrets.AWS_RDS_URL }}
-      AWS_MASTER_USER_NAME: ${{ secrets.AWS_MASTER_USER_NAME }}
-      AWS_MASTER_USER_PASSWORD: ${{ secrets.AWS_MASTER_USER_PASSWORD }}
-      NAVER_ID: ${{ secrets.NAVER_ID }}
-      NAVER_PASSWORD: ${{ secrets.NAVER_PASSWORD }}
-      ACCESS_TOKEN_SECRET_KEY: ${{ secrets.ACCESS_TOKEN_SECRET_KEY }}
 
     steps:
       - uses: actions/checkout@v3
