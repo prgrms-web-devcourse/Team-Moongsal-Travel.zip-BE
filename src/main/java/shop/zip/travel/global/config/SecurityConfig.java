@@ -29,6 +29,7 @@ public class SecurityConfig {
     return web -> web.ignoring()
         .requestMatchers("/api/auth/**")
         .requestMatchers("/docs/index.html")
+        .requestMatchers("/api/healths")
         .requestMatchers(HttpMethod.GET,"/api/travelogues")
         .requestMatchers(HttpMethod.GET,"/api/travelogues/search");
   }
@@ -36,7 +37,6 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        .csrf().disable()
         .cors().disable()
         .httpBasic().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
