@@ -29,9 +29,9 @@ public class CorsFilter implements Filter {
     HttpServletRequest req = (HttpServletRequest) request;
     HttpServletResponse res = (HttpServletResponse) response;
 
-    res.setHeader("Access-Control-Allow-Origin", "localhost:3000, https://travel-zip.vercel.app/");
+    res.setHeader("Access-Control-Allow-Origin", "localhost:3000, https://travel-zip.vercel.app");
     res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Methods","ACL, CANCELUPLOAD, CHECKIN, CHECKOUT, COPY, DELETE, GET, HEAD, LOCK, MKCALENDAR, MKCOL, MOVE, OPTIONS, POST, PROPFIND, PROPPATCH, PUT, REPORT, SEARCH, UNCHECKOUT, UNLOCK, UPDATE, VERSION-CONTROL");
+    res.setHeader("Access-Control-Allow-Methods","GET, POST, DELETE, PATCH, OPTIONS");
     res.setHeader("Access-Control-Max-Age", "3600");
     res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key, Authorization");
 
