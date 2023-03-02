@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class Travelogue extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Country country;
 
-	@Column(nullable = true, length = 2000)
+	@Lob
 	private String thumbnail;
 
 	@Embedded
