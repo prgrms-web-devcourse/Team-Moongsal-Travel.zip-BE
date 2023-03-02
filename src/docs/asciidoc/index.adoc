@@ -46,6 +46,28 @@ include::{snippets}/save-temp-travelogue/http-response.adoc[]
 
 include::{snippets}/save-temp-travelogue/response-fields.adoc[]
 
+== Travelogue 발행
+
+== Request
+
+include::{snippets}/publish-travelogue-success/http-request.adoc[]
+
+=== Response (성공시)
+
+include::{snippets}/publish-travelogue-success/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/publish-travelogue-success/response-fields.adoc[]
+
+=== Response (실패시)
+
+include::{snippets}/publish-travelogue-fail/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/publish-travelogue-fail/response-fields.adoc[]
+
 == Travelogue 게시글 전체 조회
 
 === Request
