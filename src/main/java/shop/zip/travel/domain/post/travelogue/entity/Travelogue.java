@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
@@ -63,7 +62,7 @@ public class Travelogue extends BaseTimeEntity {
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
 		boolean isPublished, Member member) {
-		this(period, title, country, thumbnail, cost, isPublished, Collections.emptyList(), member);
+		this(period, title, country, thumbnail, cost, isPublished, new ArrayList<>(), member);
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
