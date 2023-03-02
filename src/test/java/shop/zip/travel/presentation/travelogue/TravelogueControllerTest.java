@@ -81,7 +81,7 @@ class TravelogueControllerTest {
 
   @Test
   @DisplayName("전체 게시물 리스트를 페이지별로 가져올 수 있다.")
-  public void test_get_all_travelogue() throws Exception {
+  void test_get_all_travelogue() throws Exception {
 
     mockMvc.perform(get("/api/travelogues")
             .queryParam("size", "2")
@@ -118,7 +118,7 @@ class TravelogueControllerTest {
 
   @Test
   @DisplayName("메인 게시물을 저장할 수 있다.")
-  public void test_save_travelogue() throws Exception {
+  void test_save_travelogue() throws Exception {
     // given
     TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
         DummyGenerator.createPeriod(),
@@ -159,6 +159,7 @@ class TravelogueControllerTest {
   }
 
   @Test
+  @DisplayName("검색 Rest docs 테스트 입니다.")
   void search() throws Exception {
     Period period = DummyGenerator.createPeriod();
     Country country = DummyGenerator.createCountry();

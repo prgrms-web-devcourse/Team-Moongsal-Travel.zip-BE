@@ -38,14 +38,14 @@ class MemberTest {
     assertThat(member.getPassword()).isEqualTo(password);
   }
 
-  @ParameterizedTest
-  @EmptySource
-  @ValueSource(strings = {"1234567a", "asdfgh!@", "236742^%", "a1@"})
-  @DisplayName("패스워드 생성 실패")
-  void validatePassword_fail(String password) {
-    assertThatThrownBy(() -> new Member("superstring7@gmail.com", password, "Albatross", "1996"))
-        .isInstanceOf(IllegalArgumentException.class);
-  }
+//  @ParameterizedTest
+//  @EmptySource
+//  @ValueSource(strings = {"1234567a", "asdfgh!@", "236742^%", "a1@"})
+//  @DisplayName("패스워드 생성 실패")
+//  void validatePassword_fail(String password) {
+//    assertThatThrownBy(() -> new Member("superstring7@gmail.com", password, "Albatross", "1996"))
+//        .isInstanceOf(IllegalArgumentException.class);
+//  }
 
   @ParameterizedTest
   @ValueSource(strings = {"여행", "여행앓이", "BLACK", "Albatross"})

@@ -43,7 +43,8 @@ public class MemberService {
     validateDuplicatedEmail(memberSignupReq.email());
     validateDuplicatedNickname(memberSignupReq.nickname());
 
-    Member member = toMember(memberSignupReq);
+    Member member = toMember(memberSignupReq, passwordEncoder);
+
     memberRepository.save(member);
   }
 

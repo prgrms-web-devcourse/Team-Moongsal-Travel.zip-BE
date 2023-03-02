@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import shop.zip.travel.global.error.exception.CustomNotFoundException;
 import shop.zip.travel.global.error.exception.DuplicatedException;
 import shop.zip.travel.global.error.exception.InvalidTokenException;
@@ -66,7 +65,6 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
-
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
 		log.error("RuntimeException : ", e);
@@ -76,7 +74,6 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleException(Exception e) {
 		log.error("Exception : ", e);
-		return ResponseEntity.internalServerError().body(e.getMessage());
+		return ResponseEntity.internalServerError().build();
 	}
-
 }

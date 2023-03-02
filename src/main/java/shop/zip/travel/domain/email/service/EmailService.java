@@ -21,7 +21,7 @@ public class EmailService {
     this.redisUtil = redisUtil;
   }
 
-  public MimeMessage createMail(String toAddress, String verificationCode)
+  private MimeMessage createMail(String toAddress, String verificationCode)
       throws MessagingException, UnsupportedEncodingException {
 
     MimeMessage message = javaMailSender.createMimeMessage();
@@ -39,15 +39,15 @@ public class EmailService {
     return message;
   }
 
-  public void sendMail(String toAddress)
+  public void sendMail(String toEmail)
       throws MessagingException, UnsupportedEncodingException {
     String code = createVerificationCode();
-    MimeMessage message = createMail(toAddress, code);
-    redisUtil.setDataWithExpire(toAddress, code, 3L);
+    MimeMessage message = createMail(toEmail, code);
+    redisUtil.setDataWithExpire(toEmail, code, 3L);
     javaMailSender.send(message);
   }
 
-  public String createVerificationCode() {
+  private String createVerificationCode() {
     StringBuilder code = new StringBuilder();
     Random random = new Random();
 

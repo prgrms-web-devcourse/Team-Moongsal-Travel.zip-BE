@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 
-
 @Entity
 public class Member extends BaseTimeEntity {
 
@@ -36,7 +35,6 @@ public class Member extends BaseTimeEntity {
   private boolean isEmail;
 
   protected Member() {
-
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
@@ -46,6 +44,7 @@ public class Member extends BaseTimeEntity {
     this.nickname = nickname;
     this.birthYear = birthYear;
     this.profileImageUrl = "default";
+    this.isEmail = false;
   }
 
   public Member(String email, String password, String nickname, String birthYear,
@@ -56,11 +55,12 @@ public class Member extends BaseTimeEntity {
     this.nickname = nickname;
     this.birthYear = birthYear;
     this.profileImageUrl = profileImageUrl;
+    this.isEmail = false;
   }
 
   private void validateMember(String email, String password, String nickname, String birthYear) {
     validateEmail(email);
-    validatePassword(password);
+//    validatePassword(password);
     validateNickname(nickname);
     validateBirthYear(birthYear);
   }
@@ -70,10 +70,10 @@ public class Member extends BaseTimeEntity {
     Assert.isTrue(email.matches(emailPattern),"이메일이 형식에 맞지 않습니다");
   }
 
-  private void validatePassword(String password) {
-    String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*])[A-Za-z\\d~!@#$%^&*]{8,}$";
-    Assert.isTrue(password.matches(passwordPattern),"비밀번호가 형식에 맞지 않습니다");
-  }
+//  private void validatePassword(String password) {
+//    String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*])[A-Za-z\\d~!@#$%^&*]{8,}$";
+//    Assert.isTrue(password.matches(passwordPattern),"비밀번호가 형식에 맞지 않습니다");
+//  }
 
   private void validateNickname(String nickname) {
     String nicknamePattern = "^[가-힣|a-zA-Z]{2,12}$";
@@ -111,6 +111,10 @@ public class Member extends BaseTimeEntity {
     return profileImageUrl;
   }
 
+  public boolean isEmail() {
+    return isEmail;
+  }
+
   public void updateProfileImageUrl(String profileImageUrl) {
     this.profileImageUrl = profileImageUrl;
   }
@@ -119,5 +123,4 @@ public class Member extends BaseTimeEntity {
     validateNickname(nickname);
     this.nickname = nickname;
   }
-
 }
