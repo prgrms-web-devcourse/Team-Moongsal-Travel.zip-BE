@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
+import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.data.TempCountry;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.TempAddress;
@@ -16,18 +17,19 @@ import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
-import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
 public class DummyGenerator {
 
-	public static TempTravelogueCreateReq createTempTravelogueReq(Member member) {
-		return new TempTravelogueCreateReq(
-			createTempPeriod(),
-			null,
-			createTempCountry(),
-			null,
-			new TempCost(null, null, null, null)
+	public static Travelogue createTempTravelogue(Member member) {
+		return new Travelogue(
+				createPeriod(),
+				DefaultValue.STRING.getValue(),
+				createCountry(),
+				DefaultValue.STRING.getValue(),
+				createCost(),
+				false,
+				member
 		);
 	}
 
@@ -36,8 +38,8 @@ public class DummyGenerator {
 		subTravelogues.add(createSubTravelogue());
 
 		return new Travelogue(
-			createPeriod(),
-			"일본 오사카 다녀왔어요.",
+				createPeriod(),
+				"일본 오사카 다녀왔어요.",
 			createCountry(),
 			"www.naver.com",
 			createCost(),
@@ -129,6 +131,16 @@ public class DummyGenerator {
 				0L,
 				0L,
 				10000000L
+		);
+	}
+
+	public static SubTravelogue createTempSubTravelogue() {
+		return new SubTravelogue(
+				"일본 오사카 재밌음",
+				DefaultValue.STRING.getValue(),
+				List.of(createAddress()),
+				Set.of(Transportation.BUS),
+				new ArrayList<>()
 		);
 	}
 }
