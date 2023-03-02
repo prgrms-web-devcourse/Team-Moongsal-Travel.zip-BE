@@ -77,7 +77,7 @@ class SubTravelogueControllerTest {
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(post("/api/travelogues/{travelogueId}/subTravelogues", travelogue.getId())
-            .header("accessToken", token)
+            .header("AccessToken", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(subTravelogueCreateReq)))
         .andExpect(status().isOk())
@@ -98,5 +98,4 @@ class SubTravelogueControllerTest {
             )
         ));
   }
-
 }
