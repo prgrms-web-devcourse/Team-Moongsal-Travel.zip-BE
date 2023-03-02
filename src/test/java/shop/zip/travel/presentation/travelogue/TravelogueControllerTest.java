@@ -131,7 +131,7 @@ class TravelogueControllerTest {
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(post("/api/travelogues")
-            .header("AccessToken", token)
+            .header("accessToken", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.registerModule(new JavaTimeModule())
                 .writeValueAsString(travelogueCreateReq)))

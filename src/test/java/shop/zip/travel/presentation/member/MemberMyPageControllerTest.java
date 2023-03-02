@@ -75,7 +75,7 @@ class MemberMyPageControllerTest {
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(get("/api/members/my/info").header("AccessToken", token))
+    mockMvc.perform(get("/api/members/my/info").header("accessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-my-info",
@@ -93,7 +93,7 @@ class MemberMyPageControllerTest {
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/members/my/travelogues")
-            .header("AccessToken", token)
+            .header("accessToken", token)
             .queryParam("size", "2")
             .queryParam("page", "0"))
         .andExpect(status().isOk())
@@ -132,7 +132,7 @@ class MemberMyPageControllerTest {
     );
 
     mockMvc.perform(patch("/api/members/my/settings")
-            .header("AccessToken", token)
+            .header("accessToken", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(memberUpdateReq)))
         .andExpect(status().isOk())
