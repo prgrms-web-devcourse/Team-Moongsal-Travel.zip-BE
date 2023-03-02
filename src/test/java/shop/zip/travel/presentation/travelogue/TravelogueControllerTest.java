@@ -2,6 +2,7 @@ package shop.zip.travel.presentation.travelogue;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -40,6 +41,7 @@ import shop.zip.travel.domain.post.data.Country;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
@@ -63,6 +65,8 @@ class TravelogueControllerTest {
   @Autowired
   private TravelogueRepository travelogueRepository;
   @Autowired
+  private SubTravelogueRepository subTravelogueRepository;
+  @Autowired
   private MemberRepository memberRepository;
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
@@ -74,13 +78,19 @@ class TravelogueControllerTest {
   void setUp() {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
-    travelogue = DummyGenerator.createTravelogue(member);
+    travelogue = DummyGenerator.createNotPublishedTravelogue(member);
     travelogueRepository.saveAll(
         List.of(
             travelogue,
             DummyGenerator.createTravelogue(member),
             DummyGenerator.createTravelogue(member))
     );
+
+    SubTravelogue subTravelogue = subTravelogueRepository.save(
+        DummyGenerator.createSubTravelogue()
+    );
+
+    travelogue.addSubTravelogue(subTravelogue);
   }
 
   @Test
@@ -215,6 +225,41 @@ class TravelogueControllerTest {
                 fieldWithPath("nights").description("n박"),
                 fieldWithPath("days").description("n일")
 
+            )));
+  }
+
+  @Test
+  @DisplayName("임시 저장된 게시글을 발행할 수 있다.")
+  void test_publish_travelogue() throws Exception {
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
+            .header("AccessToken", token))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("publish-travelogue",
+            responseFields(
+                fieldWithPath("travelogueId").description("공개된 게시글 PK")
+            )));
+  }
+
+  @Test
+  @DisplayName("작성이 완료되지 않은 게시글은 발행할 수 없다.")
+  void test_fail_publish_travelogue() throws Exception {
+
+    Travelogue cannotPublishTravelogue =
+        travelogueRepository.save(DummyGenerator.createNotPublishedTravelogue(member));
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}", cannotPublishTravelogue.getId())
+            .header("AccessToken", token))
+        .andExpect(status().isBadRequest())
+        .andDo(print())
+        .andDo(document("publish-travelogue",
+            responseFields(
+                fieldWithPath("message").description("예외 메시지")
             )));
   }
 

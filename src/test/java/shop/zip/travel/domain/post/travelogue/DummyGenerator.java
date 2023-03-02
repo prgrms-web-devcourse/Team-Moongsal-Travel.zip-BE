@@ -33,6 +33,22 @@ public class DummyGenerator {
 		);
 	}
 
+	public static Travelogue createNotPublishedTravelogue(Member member) {
+		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
+		subTravelogues.add(createSubTravelogue());
+
+		return new Travelogue(
+				createPeriod(),
+				"일본 오사카 다녀왔어요.",
+				createCountry(),
+				"www.naver.com",
+				createCost(),
+				false,
+				subTravelogues,
+				member
+		);
+	}
+
 	public static Travelogue createTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
 		subTravelogues.add(createSubTravelogue());
@@ -40,8 +56,8 @@ public class DummyGenerator {
 		return new Travelogue(
 				createPeriod(),
 				"일본 오사카 다녀왔어요.",
-			createCountry(),
-			"www.naver.com",
+				createCountry(),
+				"www.naver.com",
 			createCost(),
 			true,
 			subTravelogues,
