@@ -51,8 +51,12 @@ public class Period {
     }
 
     public long getNights() {
+        if (cannotPublish()) {
+            return -1L;
+        }
         return ChronoUnit.DAYS.between(this.startDate, this.endDate);
     }
+
 
     public boolean cannotPublish() {
         return DefaultValue.LOCAL_DATE.isEqual(startDate.toString()) ||
