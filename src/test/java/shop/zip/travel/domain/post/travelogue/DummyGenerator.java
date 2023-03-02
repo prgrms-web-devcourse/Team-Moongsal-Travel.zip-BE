@@ -122,4 +122,13 @@ public class DummyGenerator {
 				"일본 오사카 유니버셜 스튜디오"
 		);
 	}
+
+	public static TempCost createTempCost() {
+		return new TempCost(
+				0L,
+				0L,
+				0L,
+				10000000L
+		);
+	}
 }
