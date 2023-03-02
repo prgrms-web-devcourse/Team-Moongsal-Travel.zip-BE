@@ -40,6 +40,7 @@ public class Member extends BaseTimeEntity {
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
+    validateMember(email, password, nickname, birthYear);
     this.email = email;
     this.password = password;
     this.nickname = nickname;

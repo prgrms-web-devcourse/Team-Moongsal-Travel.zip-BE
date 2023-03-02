@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+
 class MemberTest {
 
   @ParameterizedTest
@@ -70,7 +71,6 @@ class MemberTest {
     Member member = new Member("superstring7@gmail.com", "qwe123!@#", "Albatross", birthYear);
     assertThat(member.getBirthYear()).isEqualTo(birthYear);
   }
-
 
   @ParameterizedTest
   @ValueSource(strings = {"-1", "1935", "2017"})
