@@ -1,5 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.entity;
 
+import io.jsonwebtoken.lang.Assert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,6 +35,7 @@ public class Like extends BaseTimeEntity {
   }
 
   public Like(Travelogue travelogue, Member member) {
+    verify(travelogue, member);
     this.travelogue = travelogue;
     this.member = member;
   }
@@ -48,5 +50,10 @@ public class Like extends BaseTimeEntity {
 
   public Member getMember() {
     return member;
+  }
+
+  private void verify(Travelogue travelogue, Member member) {
+    Assert.notNull(travelogue, "게시물 없이 좋아요 생성이 불가능합니다.");
+    Assert.notNull(member, "멤버 없이 좋아요 생성이 불가능합니다.");
   }
 }
