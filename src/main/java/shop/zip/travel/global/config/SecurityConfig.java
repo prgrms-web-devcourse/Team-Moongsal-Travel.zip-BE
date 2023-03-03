@@ -40,7 +40,8 @@ public class SecurityConfig {
         .cors().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .authorizeHttpRequests(requests -> requests
+        .authorizeHttpRequests((requests) -> requests
+            .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
