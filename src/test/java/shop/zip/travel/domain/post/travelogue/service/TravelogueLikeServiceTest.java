@@ -12,8 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
+import shop.zip.travel.domain.post.fake.FakeTravelogue;
+import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.entity.Like;
+import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueLikeRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,11 +39,19 @@ class TravelogueLikeServiceTest {
   @DisplayName("좋아요를 누를 수 있다.")
   void test_add_like() {
     // given
-    when(travelogueLikeRepository.findByMemberAndTravelogue(any(Long.class), any(Long.class)))
-        .thenReturn(Optional.empty());
-
     Long travelogueId = 1L;
     Long memberId = 1L;
+
+    Member member = DummyGenerator.createMember();
+    Travelogue travelogue = new FakeTravelogue(travelogueId,
+        DummyGenerator.createTravelogue(member));
+
+    when(travelogueLikeRepository.findByMemberAndTravelogue(any(Long.class), any(Long.class)))
+        .thenReturn(Optional.empty());
+    when(travelogueService.findBy(any(Long.class)))
+        .thenReturn(travelogue);
+    when(memberService.getMember(any(Long.class)))
+        .thenReturn(member);
 
     // when
     travelogueLikeService.liking(memberId, travelogueId);
