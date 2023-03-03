@@ -29,13 +29,7 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers(HttpMethod.OPTIONS, "/api/**")
-        .requestMatchers("/api/token/**")
-        .requestMatchers("/docs/index.html/**")
-        .requestMatchers("/api/healths")
-        .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-        .requestMatchers(HttpMethod.GET, "/api/travelogues")
-        .requestMatchers(HttpMethod.GET, "/api/travelogues/search");
+        .requestMatchers("/**");
   }
 
   @Bean
@@ -47,12 +41,12 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests(requests -> requests
-            .requestMatchers("/api/auth/**").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterAfter(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+
     return http.build();
   }
 
