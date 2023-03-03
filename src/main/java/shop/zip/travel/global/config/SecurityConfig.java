@@ -1,5 +1,6 @@
 package shop.zip.travel.global.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest.H2ConsoleRequestMatcher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,7 +29,7 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers(HttpMethod.OPTIONS, "/api/**")
+        .requestMatchers(HttpMethod.OPTIONS,"/api/**")
         .requestMatchers("/api/auth/**")
         .requestMatchers("/docs/index.html")
         .requestMatchers("/api/healths")
@@ -46,9 +47,10 @@ public class SecurityConfig {
         .httpBasic().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .authorizeHttpRequests(requests -> requests
-            .anyRequest().authenticated()
-        )
+        .authorizeHttpRequests()
+        .requestMatchers("h2-console/**").permitAll()
+        .anyRequest().authenticated()
+        .and()
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
