@@ -52,6 +52,7 @@ public class DummyGenerator {
 	public static Travelogue createTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
 		subTravelogues.add(createSubTravelogue());
+    subTravelogues.add(createSubTravelogue());
 
 		return new Travelogue(
 				createPeriod(),
