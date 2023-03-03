@@ -34,7 +34,9 @@ public class SecurityConfig {
         .requestMatchers("/docs/index.html/**")
         .requestMatchers("/api/healths")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-        .requestMatchers(HttpMethod.GET, "/api/travelogues/search/**");
+        .requestMatchers("/api/travelogues/search/**")
+        .requestMatchers(HttpMethod.GET, "/api/travelogues/**");
+
   }
 
   @Bean
