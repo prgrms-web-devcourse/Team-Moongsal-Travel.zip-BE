@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
 import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.security.JwtTokenProvider;
@@ -31,7 +32,7 @@ public class SecurityConfig {
         .requestMatchers("/api/auth/**")
         .requestMatchers("/docs/index.html")
         .requestMatchers("/api/healths")
-        .requestMatchers("/h2-console")
+        .requestMatchers(new AntPathRequestMatcher("/h2-console"))
         .requestMatchers(HttpMethod.GET,"/api/travelogues")
         .requestMatchers(HttpMethod.GET,"/api/travelogues/search");
   }
