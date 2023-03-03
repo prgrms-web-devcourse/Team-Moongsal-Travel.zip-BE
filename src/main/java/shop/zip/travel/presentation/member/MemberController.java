@@ -38,7 +38,7 @@ public class MemberController {
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("valid/nickname")
+  @PostMapping("/valid/nickname")
   public ResponseEntity<NicknameValidateRes> checkDuplicatedNickname(
       @RequestBody @Valid NicknameValidateReq nicknameValidateReq) {
     boolean isDuplicated = memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
