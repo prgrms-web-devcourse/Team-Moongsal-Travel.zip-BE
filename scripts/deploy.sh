@@ -26,7 +26,6 @@ fi
 #  sudo kill -9 ${TARGET_PID}
 #fi
 
-
 nohup java -jar -Dserver.port=${TARGET_PORT} -Dspring.profiles.active=dev /home/ec2-user/travel-zip-deploy/build/libs/* > /home/ec2-user/nohup.out 2>&1 &
 
 echo "> Now new JAR runs at ${TARGET_PORT}."
