@@ -13,7 +13,6 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
@@ -47,6 +46,9 @@ public class Travelogue extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Cost cost;
 
+	@Column(columnDefinition = "bigint default 0", nullable = false)
+	private Long viewCount;
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "travelogue_id")
 	private List<SubTravelogue> subTravelogues = new ArrayList<>();
@@ -59,12 +61,17 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-		Member member) {
-		this(period, title, country, thumbnail, cost, Collections.emptyList(), member);
+			Member member) {
+		this(period, title, country, thumbnail, cost, 0L, new ArrayList<>(), member);
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-		List<SubTravelogue> subTravelogues, Member member) {
+			List<SubTravelogue> subTravelogues, Member member) {
+		this(period, title, country, thumbnail, cost, 0L, subTravelogues, member);
+	}
+
+	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
+			Long viewCount, List<SubTravelogue> subTravelogues, Member member) {
 		nullCheck(period, title, country, thumbnail, cost, subTravelogues, member);
 		valid(title, thumbnail);
 		this.period = period;
@@ -72,6 +79,7 @@ public class Travelogue extends BaseTimeEntity {
 		this.country = country;
 		this.thumbnail = thumbnail;
 		this.cost = cost;
+		this.viewCount = viewCount;
 		this.subTravelogues = subTravelogues;
 		this.member = member;
 	}
@@ -108,9 +116,13 @@ public class Travelogue extends BaseTimeEntity {
 		return member;
 	}
 
+	public Long getViewCount() {
+		return viewCount;
+	}
+
 	private void nullCheck(Period period, String title, Country country, String thumbnail,
-		Cost cost,
-		List<SubTravelogue> subTravelogues, Member member) {
+			Cost cost,
+			List<SubTravelogue> subTravelogues, Member member) {
 		Assert.notNull(period, "날짜를 확인해주세요");
 		Assert.notNull(title, "제목을 확인해주세요");
 		Assert.notNull(country, "나라를 확인해주세요");
@@ -145,6 +157,10 @@ public class Travelogue extends BaseTimeEntity {
 
 	public void verifySubTravelogueDuplicate(SubTravelogue subTravelogue) {
 		Assert.isTrue(!subTravelogues.contains(subTravelogue), "이미 존재하는 서브게시물 입니다.");
+	}
+
+	public void addViewCount() {
+		this.viewCount++;
 	}
 
 }
