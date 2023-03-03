@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
-import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueDetailRes;
+import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
@@ -20,7 +20,8 @@ public record TravelogueDetailRes(
     Long days,
     Long totalCost,
     List<SubTravelogueDetailRes> subTravelogues,
-    Set<Transportation> transportations
+    Set<Transportation> transportations,
+    Long viewCount
 ) {
 
     public static TravelogueDetailRes toDto(Travelogue travelogue) {
@@ -44,7 +45,9 @@ public record TravelogueDetailRes(
                 .stream()
                 .map(SubTravelogue::getTransportationSet)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toSet())
+                .collect(Collectors.toSet()),
+            travelogue.getViewCount()
         );
     }
+
 }
