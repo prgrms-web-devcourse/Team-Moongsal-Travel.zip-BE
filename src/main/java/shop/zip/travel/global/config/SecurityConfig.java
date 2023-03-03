@@ -31,7 +31,7 @@ public class SecurityConfig {
     return web -> web.ignoring()
         .requestMatchers(HttpMethod.OPTIONS,"/api/**")
         .requestMatchers("/api/auth/**")
-        .requestMatchers("/docs/index.html")
+        .requestMatchers("/docs/index.html/**")
         .requestMatchers("/api/healths")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers(HttpMethod.GET,"/api/travelogues")
@@ -47,10 +47,9 @@ public class SecurityConfig {
         .httpBasic().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .authorizeHttpRequests()
-        .requestMatchers("h2-console/**").permitAll()
-        .anyRequest().authenticated()
-        .and()
+        .authorizeHttpRequests(requests -> requests
+            .anyRequest().authenticated()
+        )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
