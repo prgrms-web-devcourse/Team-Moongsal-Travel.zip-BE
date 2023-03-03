@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
 import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.security.JwtTokenProvider;
@@ -27,10 +28,11 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers(HttpMethod.OPTIONS,"/api/**")
+        .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers("/api/auth/**")
         .requestMatchers("/docs/index.html")
         .requestMatchers("/api/healths")
+        .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers(HttpMethod.GET,"/api/travelogues")
         .requestMatchers(HttpMethod.GET,"/api/travelogues/search");
   }
@@ -39,13 +41,16 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf().disable()
+        .headers().frameOptions().disable()
+        .and()
         .httpBasic().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests(requests -> requests
             .anyRequest().authenticated()
         )
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+            UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
     return http.build();
   }

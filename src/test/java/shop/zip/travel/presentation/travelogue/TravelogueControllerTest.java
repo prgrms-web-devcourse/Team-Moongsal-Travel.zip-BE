@@ -238,7 +238,7 @@ class TravelogueControllerTest {
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("publish-travelogue",
+        .andDo(document("publish-travelogue-success",
             responseFields(
                 fieldWithPath("travelogueId").description("공개된 게시글 PK")
             )));
@@ -257,7 +257,7 @@ class TravelogueControllerTest {
             .header("AccessToken", token))
         .andExpect(status().isBadRequest())
         .andDo(print())
-        .andDo(document("publish-travelogue",
+        .andDo(document("publish-travelogue-fail",
             responseFields(
                 fieldWithPath("message").description("예외 메시지")
             )));
