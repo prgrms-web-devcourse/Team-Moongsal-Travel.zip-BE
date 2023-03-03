@@ -21,12 +21,12 @@ public class Like extends BaseTimeEntity {
   private Long id;
 
   @ManyToOne
-  @JoinColumn(name = "travelogue_id")
+  @JoinColumn(name = "travelogue_id", nullable = false)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Travelogue travelogue;
 
   @ManyToOne
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "member_id", nullable = false)
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Member member;
 
