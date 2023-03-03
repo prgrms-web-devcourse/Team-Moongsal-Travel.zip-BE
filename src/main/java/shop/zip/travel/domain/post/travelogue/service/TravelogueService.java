@@ -52,19 +52,28 @@ public class TravelogueService {
 
 	public Travelogue findBy(Long id) {
 		return travelogueRepository.findById(id)
-			.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
 	}
 
 	public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
-		int size) {
+			int size) {
 		return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
 	}
 
-	public TravelogueDetailRes getTravelogueDetail(Long travelogueId) {
-    return TravelogueDetailRes.toDto(
-        travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
-  }
+	@Transactional
+	public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount) {
+		setViewCount(travelogueId, canAddViewCount);
+		return TravelogueDetailRes.toDto(
+				travelogueRepository.getTravelogueDetail(travelogueId)
+						.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
+	}
+
+	private void setViewCount(Long travelogueId, boolean canAddViewCount) {
+		if (canAddViewCount) {
+			Travelogue findTravelogue = findBy(travelogueId);
+			findTravelogue.addViewCount();
+		}
+	}
 
 }
 

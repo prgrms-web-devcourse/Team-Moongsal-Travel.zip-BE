@@ -1,5 +1,7 @@
 package shop.zip.travel.presentation.travelogue;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
+import shop.zip.travel.domain.post.util.CookieUtil;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -45,9 +48,12 @@ public class TravelogueController {
 
   @GetMapping("/{travelogueId}")
   public ResponseEntity<TravelogueDetailRes> get(
+      HttpServletRequest request,
+      HttpServletResponse response,
       @PathVariable Long travelogueId) {
+    boolean canAddViewCount = CookieUtil.canAddViewCount(request, response, travelogueId);
     TravelogueDetailRes travelogueDetail =
-        travelogueService.getTravelogueDetail(travelogueId);
+        travelogueService.getTravelogueDetail(travelogueId, canAddViewCount);
 
     return ResponseEntity.ok(travelogueDetail);
   }
