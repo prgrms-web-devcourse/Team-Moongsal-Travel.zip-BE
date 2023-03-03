@@ -1,5 +1,6 @@
 package shop.zip.travel.global.config;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest.H2ConsoleRequestMatcher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,7 +31,7 @@ public class SecurityConfig {
     return web -> web.ignoring()
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers("/api/auth/**")
-        .requestMatchers("/docs/index.html")
+        .requestMatchers("/docs/index.html/**")
         .requestMatchers("/api/healths")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers(HttpMethod.GET,"/api/travelogues")
