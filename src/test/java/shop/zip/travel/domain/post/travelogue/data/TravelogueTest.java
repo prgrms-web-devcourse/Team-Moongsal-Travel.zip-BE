@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.travelog.entity;
+package shop.zip.travel.domain.post.travelogue.data;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
