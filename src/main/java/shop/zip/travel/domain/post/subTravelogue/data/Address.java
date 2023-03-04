@@ -8,33 +8,17 @@ import shop.zip.travel.domain.post.data.Country;
 public class Address {
 
     @Column(nullable = false)
-    private String country;
-
-    @Column(nullable = false)
-    private String city;
-
-    @Column(nullable = false)
-    private String spot;
+    private String region;
 
     public Address() {
     }
 
-    public Address(Country country, String city, String spot) {
-        this.country = country.getName();
-        this.city = city;
-        this.spot = spot;
+    public Address(String region) {
+        this.region = region;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getSpot() {
-        return spot;
+    public String getRegion() {
+        return region;
     }
 }
 
