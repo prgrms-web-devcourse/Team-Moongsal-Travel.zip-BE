@@ -12,6 +12,8 @@ import shop.zip.travel.domain.post.data.DefaultValue;
 @Embeddable
 public class Period {
 
+    private static final long NO_DATE = -1L;
+
     @Column(nullable = false)
     private LocalDate startDate;
 
@@ -52,7 +54,7 @@ public class Period {
 
     public long getNights() {
         if (cannotPublish()) {
-            return -1L;
+            return NO_DATE;
         }
         return ChronoUnit.DAYS.between(this.startDate, this.endDate);
     }
