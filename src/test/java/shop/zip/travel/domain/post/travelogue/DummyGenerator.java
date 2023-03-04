@@ -43,8 +43,6 @@ public class DummyGenerator {
 
 	public static Address createAddress(){
 		return new Address(
-			createCountry(),
-			"오사카",
 			"유니버셜 스튜디오"
 		);
 	}

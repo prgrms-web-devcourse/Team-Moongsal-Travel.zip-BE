@@ -50,7 +50,7 @@ public class TravelogueService {
 		);
 	}
 
-	public Travelogue findBy(Long id) {
+	public Travelogue getTravelogue(Long id) {
 		return travelogueRepository.findById(id)
 				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
 	}

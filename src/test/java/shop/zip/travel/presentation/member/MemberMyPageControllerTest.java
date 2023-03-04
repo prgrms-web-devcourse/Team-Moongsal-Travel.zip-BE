@@ -26,10 +26,13 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import shop.zip.travel.domain.bookmark.entity.Bookmark;
+import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
 import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
+import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
@@ -50,11 +53,16 @@ class MemberMyPageControllerTest {
   private TravelogueRepository travelogueRepository;
 
   @Autowired
+  private BookmarkRepository bookmarkRepository;
+
+  @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   private Member member;
+
+  private Travelogue travelogue;
 
   @BeforeEach
   void setUp() {
@@ -66,7 +74,7 @@ class MemberMyPageControllerTest {
         "ProfileUrlForTest");
 
     memberRepository.save(member);
-    travelogueRepository.save(DummyGenerator.createTravelogue(member));
+    travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
   }
 
   @DisplayName("유저는 본인의 개인정보를 조회할 수 있다")
@@ -152,6 +160,35 @@ class MemberMyPageControllerTest {
                 fieldWithPath("birthYear").type(JsonFieldType.STRING).description("생년월일"),
                 fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
                     .description("프로필 이미지 url")
+            )
+        ));
+  }
+
+  @DisplayName("유저는 본인이 북마크한 여행기목록을 조회할 수 있다")
+  @Test
+  public void get_my_bookmark_list() throws Exception {
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+    Bookmark bookmark = new Bookmark(travelogue, member);
+    bookmarkRepository.save(bookmark);
+
+    mockMvc.perform(get("/api/members/my/bookmarks")
+            .header("AccessToken", token))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get_my_bookmark_list",
+            preprocessResponse(prettyPrint()),
+            responseFields(
+                fieldWithPath("[].travelogueId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
+                fieldWithPath("[].title").type(JsonFieldType.STRING).description("게시글 제목"),
+                fieldWithPath("[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("[].days").type(JsonFieldType.NUMBER).description("여행 전체 일"),
+                fieldWithPath("[].totalCost").type(JsonFieldType.NUMBER).description("여행 전체 비용"),
+                fieldWithPath("[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                fieldWithPath("[].thumbnail").type(JsonFieldType.STRING).description("게시글 썸네일"),
+                fieldWithPath("[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 이미지 링크")
             )
         ));
   }

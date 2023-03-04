@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry corsRegistry) {
     corsRegistry.addMapping("/**")
-        .allowedOrigins("http://localhost:3000","https://travel-zip.vercel.app")
+        .allowedOrigins("http://localhost:3000","https://tzavel-zip.vercel.app")
         .allowedMethods("*")
         .allowedHeaders("*")
         .allowCredentials(true)
