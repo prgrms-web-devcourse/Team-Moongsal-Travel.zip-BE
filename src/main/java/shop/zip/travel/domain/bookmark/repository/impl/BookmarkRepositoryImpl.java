@@ -27,17 +27,6 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
   }
 
   @Override
-  public boolean existsBy(Long memberId, Long travelogueId) {
-    Integer fetchOne = jpaQueryFactory.selectOne()
-        .from(bookmark)
-        .where(bookmark.travelogue.id.eq(travelogueId)
-            .and(bookmark.member.id.eq(memberId)))
-        .fetchFirst();
-
-    return fetchOne != null;
-  }
-
-  @Override
   public List<TravelogueSimpleRes> getBookmarkedList(Long memberId, Pageable pageable) {
     List<Long> travelogueIds = jpaQueryFactory.select(bookmark.travelogue.id)
         .from(bookmark)
