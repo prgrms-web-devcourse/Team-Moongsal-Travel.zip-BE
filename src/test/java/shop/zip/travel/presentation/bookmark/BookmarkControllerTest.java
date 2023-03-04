@@ -52,12 +52,7 @@ class BookmarkControllerTest {
 
   @BeforeEach
   void setUp() {
-    member = new Member(
-        "user@naver.com",
-        "password1234!",
-        "nickname",
-        "2000",
-        "ProfileUrlForTest");
+    member = DummyGenerator.createMember();
 
     memberRepository.save(member);
     travelogue = DummyGenerator.createTravelogue(member);
