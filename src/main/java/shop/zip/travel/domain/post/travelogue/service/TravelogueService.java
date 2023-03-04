@@ -47,7 +47,7 @@ public class TravelogueService {
     Member findMember = memberService.getMember(memberId);
     Travelogue travelogue = travelogueRepository.save(createReq.toTravelogue(findMember));
     Long nights = travelogue.getPeriod().getNights();
-    return new TravelogueCreateRes(travelogue.getId(), nights, nights + 1);
+    return TravelogueCreateRes.toDto(travelogue.getId(), nights);
   }
 
   public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Pageable pageable) {
