@@ -1,5 +1,6 @@
 package shop.zip.travel.domain.bookmark.repository;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ public interface BookmarkRepository extends JpaRepository<Bookmark, Long>,
       + "from Bookmark b "
       + "where b.member.id = :memberId "
       + "and  b.travelogue.id = :travelogueId")
-  Long getBookmarkId(@Param("memberId") Long memberId,
+  Optional<Long> getBookmarkId(@Param("memberId") Long memberId,
       @Param("travelogueId") Long travelogueId);
 
 }
