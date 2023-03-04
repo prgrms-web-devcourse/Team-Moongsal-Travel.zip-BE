@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,11 +42,7 @@ class BookmarkControllerTest {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
-
   private Member member;
-
-  private Travelogue travelogue;
   private Travelogue savedTravelogue;
 
   @BeforeEach
@@ -55,8 +50,7 @@ class BookmarkControllerTest {
     member = DummyGenerator.createMember();
 
     memberRepository.save(member);
-    travelogue = DummyGenerator.createTravelogue(member);
-    savedTravelogue = travelogueRepository.save(travelogue);
+    savedTravelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
   }
 
   @DisplayName("유저는 맘에드는 게시글을 북마크 할 수 있다")
