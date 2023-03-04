@@ -2,6 +2,8 @@ package shop.zip.travel.presentation.travelogue;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +29,7 @@ import shop.zip.travel.global.security.UserPrincipal;
 @RequestMapping("/api/travelogues")
 public class TravelogueController {
 
-  private static final String DEFAULT_SIZE = "5";
-  private static final String DEFAULT_PAGE = "0";
-  private static final String DEFAULT_SORT_FIELD = "createDate";
-  private static final boolean TEMP = false;
-  private static final boolean PUBLISH = true;
+  private static final int DEFAULT_SIZE = 5;
 
   private final TravelogueService travelogueService;
   private final TraveloguePublishService traveloguePublishService;
