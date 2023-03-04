@@ -5,16 +5,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
@@ -28,7 +25,6 @@ import shop.zip.travel.global.security.JwtTokenProvider;
 @AutoConfigureRestDocs
 @SpringBootTest
 @Transactional
-@ExtendWith(SpringExtension.class)
 class BookmarkControllerTest {
 
   @Autowired
@@ -43,25 +39,15 @@ class BookmarkControllerTest {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
-
   private Member member;
-
-  private Travelogue travelogue;
   private Travelogue savedTravelogue;
 
   @BeforeEach
   void setUp() {
-    member = new Member(
-        "user@naver.com",
-        "password1234!",
-        "nickname",
-        "2000",
-        "ProfileUrlForTest");
+    member = DummyGenerator.createMember();
 
     memberRepository.save(member);
-    travelogue = DummyGenerator.createTravelogue(member);
-    savedTravelogue = travelogueRepository.save(travelogue);
+    savedTravelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
   }
 
   @DisplayName("유저는 맘에드는 게시글을 북마크 할 수 있다")
