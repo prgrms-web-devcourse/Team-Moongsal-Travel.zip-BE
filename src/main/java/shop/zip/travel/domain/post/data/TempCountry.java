@@ -1,12 +1,14 @@
 package shop.zip.travel.domain.post.data;
 
+import java.util.Objects;
+
 public record TempCountry(
-  String name
+    String name
 ) {
 
   public Country toCountry() {
     return new Country(
-      (name == null) ? DefaultValue.STRING.getValue() : name
+        (Objects.isNull(name)) ? DefaultValue.STRING.getValue() : name
     );
   }
 }

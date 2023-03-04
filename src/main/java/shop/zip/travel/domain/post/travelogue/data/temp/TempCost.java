@@ -1,5 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.data.temp;
 
+import java.util.Objects;
 import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 
@@ -14,10 +15,11 @@ public record TempCost(
 
   public Cost toCost() {
     return new Cost(
-      (lodge == null) ? Long.parseLong(DefaultValue.LONG.getValue()) : lodge,
-      (transportation == null) ? Long.parseLong(DefaultValue.LONG.getValue()) : transportation,
-      (etc == null) ? Long.parseLong(DefaultValue.LONG.getValue()) : etc,
-      (total == null) ? Long.parseLong(DefaultValue.LONG.getValue()) : total
+        (Objects.isNull(lodge)) ? Long.parseLong(DefaultValue.LONG.getValue()) : lodge,
+        (Objects.isNull(transportation)) ? Long.parseLong(DefaultValue.LONG.getValue())
+            : transportation,
+        (Objects.isNull(etc)) ? Long.parseLong(DefaultValue.LONG.getValue()) : etc,
+        (Objects.isNull(total)) ? Long.parseLong(DefaultValue.LONG.getValue()) : total
     );
   }
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.image.dto.TravelPhotoCreateReq;
@@ -24,16 +25,16 @@ public record SubTravelogueCreateReq(
 
     public SubTravelogue toSubTravelogue() {
         return new SubTravelogue(
-            (title == null) ? DefaultValue.STRING.getValue() : title,
-            (content == null) ? DefaultValue.STRING.getValue() : content,
+            (Objects.isNull(title)) ? DefaultValue.STRING.getValue() : title,
+            (Objects.isNull(content)) ? DefaultValue.STRING.getValue() : content,
             toAddresses(),
-            (transportationSet == null) ? new HashSet<>() : transportationSet,
+            (Objects.isNull(transportationSet)) ? new HashSet<>() : transportationSet,
             toTravelPhotos()
         );
     }
 
     private List<Address> toAddresses() {
-        if (addresses == null) {
+        if (Objects.isNull(addresses)) {
             return new ArrayList<>();
         }
 
@@ -43,7 +44,7 @@ public record SubTravelogueCreateReq(
     }
 
     private List<TravelPhoto> toTravelPhotos() {
-        if (travelPhotoCreateReqs == null) {
+        if (Objects.isNull(travelPhotoCreateReqs)) {
             return new ArrayList<>();
         }
 

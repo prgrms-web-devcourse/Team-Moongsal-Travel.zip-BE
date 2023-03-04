@@ -1,6 +1,7 @@
 package shop.zip.travel.domain.post.travelogue.dto.req;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.data.TempCountry;
@@ -23,13 +24,13 @@ public record TempTravelogueCreateReq(
 
   public Travelogue toTravelogue(Member member) {
     return new Travelogue(
-      period.toPeriod(),
-      (title == null) ? DefaultValue.STRING.getValue() : title,
-      country.toCountry(),
-      (thumbnail == null) ? DefaultValue.STRING.getValue() : thumbnail,
-      cost.toCost(),
-      TEMP_SAVE_STATUS,
-      member
+        period.toPeriod(),
+        (Objects.isNull(title)) ? DefaultValue.STRING.getValue() : title,
+        country.toCountry(),
+        (Objects.isNull(thumbnail)) ? DefaultValue.STRING.getValue() : thumbnail,
+        cost.toCost(),
+        TEMP_SAVE_STATUS,
+        member
     );
   }
 }
