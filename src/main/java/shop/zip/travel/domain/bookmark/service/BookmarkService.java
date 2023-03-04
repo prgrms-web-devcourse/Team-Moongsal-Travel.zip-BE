@@ -1,5 +1,6 @@
 package shop.zip.travel.domain.bookmark.service;
 
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.bookmark.entity.Bookmark;
@@ -26,8 +27,9 @@ public class BookmarkService {
 
   @Transactional
   public void bookmarking(Long memberId, Long travelogueId) {
-    if (bookmarkRepository.existsBy(memberId, travelogueId)) {
-      cancelBookmark(memberId, travelogueId);
+    Optional<Long> bookmarkId = bookmarkRepository.getBookmarkId(memberId, travelogueId);
+    if (bookmarkId.isPresent()) {
+      cancelBookmark(bookmarkId.get());
 
       return;
     }
@@ -41,8 +43,7 @@ public class BookmarkService {
     bookmarkRepository.save(new Bookmark(travelogue, member));
   }
 
-  private void cancelBookmark(Long memberId, Long travelogueId) {
-    Long bookmarkId = bookmarkRepository.getBookmarkId(memberId, travelogueId);
+  private void cancelBookmark(Long bookmarkId) {
     bookmarkRepository.deleteById(bookmarkId);
   }
 
