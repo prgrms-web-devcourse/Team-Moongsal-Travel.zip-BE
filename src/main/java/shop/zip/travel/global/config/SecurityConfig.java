@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -29,27 +28,29 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers("/api/healths")
-        .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/api/auth/**")
-        .requestMatchers("/docs/index.html")
-        .requestMatchers(HttpMethod.GET,"/api/travelogues")
-        .requestMatchers(HttpMethod.GET,"/api/travelogues/search");
+        .requestMatchers(HttpMethod.OPTIONS, "/api/**")
+        .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
+        .requestMatchers(HttpMethod.GET, "/api/healths/**")
+        .requestMatchers(new AntPathRequestMatcher("/h2-console"))
+        .requestMatchers("/favicon.ico/**")
+        .requestMatchers("/docs/index.html/**");
   }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        .cors().disable()
-        .csrf().disable()
         .httpBasic().disable()
+        .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .authorizeHttpRequests(requests -> requests
+        .authorizeHttpRequests((requests) -> requests
             .anyRequest().authenticated()
         )
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+            UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+
     return http.build();
   }
 
