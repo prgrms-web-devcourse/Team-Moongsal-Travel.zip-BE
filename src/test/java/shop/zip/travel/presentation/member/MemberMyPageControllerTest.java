@@ -175,7 +175,7 @@ class MemberMyPageControllerTest {
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("update-my-profile",
+        .andDo(document("get_my_bookmark_list",
             preprocessResponse(prettyPrint()),
             responseFields(
                 fieldWithPath("[].travelogueId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
