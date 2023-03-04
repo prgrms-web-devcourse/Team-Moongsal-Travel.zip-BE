@@ -30,7 +30,8 @@ public class SecurityConfig {
     return web -> web.ignoring()
         .requestMatchers("/api/auth/**")
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
-        .requestMatchers(HttpMethod.GET, "/api/travelogues/**");
+        .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
+        .requestMatchers(new AntPathRequestMatcher("/h2-console"));
   }
 
   @Bean
