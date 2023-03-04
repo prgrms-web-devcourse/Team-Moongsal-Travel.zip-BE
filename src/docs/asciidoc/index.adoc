@@ -13,10 +13,96 @@ backtony.github.io(Rest Docs)
 == 검색 API
 
 === Request
+
 include::{snippets}/TravelogueController/search/http-request.adoc[]
+
 === RequestParam
+
 include::{snippets}/TravelogueController/search/query-parameters.adoc[]
+
 === Response
+
 include::{snippets}/TravelogueController/search/http-response.adoc[]
+
 === ResponseBody
+
 include::{snippets}/TravelogueController/search/response-body.adoc[]
+
+= myPage
+
+[[유저-정보-조회-API]]
+== 유저 정보 조회 API
+
+=== Request
+
+include::{snippets}/get-my-info/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/get-my-info/http-response.adoc[]
+
+=== ResponseFields
+
+include::{snippets}/get-my-info/response-fields.adoc[]
+
+[[본인이-작성한-travelogues조회-API]]
+== 본인이 작성한 travelogues 조회 API
+
+=== Request
+
+include::{snippets}/get-my-travelogues/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/get-my-travelogues/http-response.adoc[]
+
+=== ResponseFields
+
+include::{snippets}/get-my-travelogues/response-fields.adoc[]
+
+[[유저-프로필-수정-API]]
+== 유저 프로필 수정 API
+
+=== Request
+
+include::{snippets}/update-my-profile/http-request.adoc[]
+
+=== RequestFields
+
+include::{snippets}/update-my-profile/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/update-my-profile/http-response.adoc[]
+
+=== ResponseFields
+
+include::{snippets}/update-my-profile/response-fields.adoc[]
+
+[[북마크-목록-조회-API]]
+== 북마크 목록 조회 API
+
+=== Request
+
+include::{snippets}/get_my_bookmark_list/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/get_my_bookmark_list/http-response.adoc[]
+
+=== ResponseFields
+
+include::{snippets}/get_my_bookmark_list/response-fields.adoc[]
+
+= 북마크
+
+[[북마크-추가-및-취소-API]]
+== 북마크 추가 및 취소 API
+
+=== Request
+
+include::{snippets}/bookmarking/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/bookmarking/http-response.adoc[]
