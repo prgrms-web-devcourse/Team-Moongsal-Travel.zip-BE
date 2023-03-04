@@ -2,6 +2,7 @@ package shop.zip.travel.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -26,7 +27,9 @@ public class SecurityConfig {
 
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
-    return web -> web.ignoring();
+    return web -> web.ignoring()
+        .requestMatchers("/api/auth/**")
+        .requestMatchers(HttpMethod.OPTIONS, "/api/**");
   }
 
   @Bean
@@ -38,7 +41,6 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
