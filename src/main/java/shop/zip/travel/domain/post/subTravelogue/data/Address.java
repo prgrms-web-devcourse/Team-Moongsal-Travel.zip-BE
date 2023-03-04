@@ -8,21 +8,21 @@ import shop.zip.travel.domain.post.data.DefaultValue;
 public class Address {
 
     @Column(nullable = false)
-    private String spot;
+    private String region;
 
     public Address() {
     }
 
-    public Address(String spot) {
-        this.spot = spot;
+    public Address(String region) {
+        this.region = region;
     }
 
-    public String getSpot() {
-        return spot;
+    public String getRegion() {
+        return region;
     }
 
     public boolean cannotPublish() {
-        return DefaultValue.STRING.isEqual(spot);
+        return DefaultValue.STRING.isEqual(region);
     }
 }
 

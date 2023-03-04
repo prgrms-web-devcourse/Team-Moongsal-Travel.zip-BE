@@ -9,11 +9,6 @@ import java.util.Locale;
 @Embeddable
 public class Country {
 
-	private static final String KOREAN = "ko";
-	private static final List<String> LOCALES = Arrays.stream(Locale.getISOCountries())
-		.map(country -> new Locale(KOREAN, country).getDisplayCountry())
-		.toList();
-
 	@Column(name = "country_name", nullable = false)
 	private String name;
 

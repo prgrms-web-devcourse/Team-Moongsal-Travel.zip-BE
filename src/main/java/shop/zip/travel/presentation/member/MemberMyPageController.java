@@ -1,6 +1,7 @@
 package shop.zip.travel.presentation.member;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -55,9 +56,20 @@ public class MemberMyPageController {
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     MemberInfoRes memberInfoRes =
-      memberService.updateMemberProfile(userPrincipal.getUserId(), memberUpdateReq);
+        memberService.updateMemberProfile(userPrincipal.getUserId(), memberUpdateReq);
 
     return ResponseEntity.ok(memberInfoRes);
+  }
+
+  @GetMapping("/bookmarks")
+  public ResponseEntity<List<TravelogueSimpleRes>> getBookmarkedList(
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
+  ) {
+    List<TravelogueSimpleRes> travelogues =
+        memberService.getMyBookmarkedList(userPrincipal.getUserId(), pageable);
+
+    return ResponseEntity.ok(travelogues);
   }
 
 }
