@@ -32,7 +32,9 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
-        .requestMatchers(new AntPathRequestMatcher("/h2-console"));
+        .requestMatchers(new AntPathRequestMatcher("/h2-console"))
+        .requestMatchers("/favicon.ico/**")
+        .requestMatchers("/docs/index.html/**");
   }
 
   @Bean
