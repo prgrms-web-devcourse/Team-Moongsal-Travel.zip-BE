@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
-import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
@@ -41,16 +40,6 @@ public class TravelogueController {
   }
 
   @PostMapping
-  public ResponseEntity<TravelogueCreateRes> create(
-      @RequestBody @Valid TravelogueCreateReq createReq,
-      @AuthenticationPrincipal UserPrincipal userPrincipal) {
-
-    TravelogueCreateRes travelogueCreateRes = travelogueService.save(createReq,
-        userPrincipal.getUserId());
-    return ResponseEntity.ok(travelogueCreateRes);
-  }
-
-  @PostMapping("/temp")
   public ResponseEntity<TravelogueCreateRes> createTemp(
       @RequestBody @Valid TempTravelogueCreateReq tempTravelogueCreateReq,
       @AuthenticationPrincipal UserPrincipal userPrincipal
@@ -78,18 +67,6 @@ public class TravelogueController {
         travelogueService.getTravelogues(pageable);
 
     return ResponseEntity.ok(travelogueSimpleRes);
-  }
-
-  @GetMapping("/temp")
-  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getTempAll(
-      @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
-      @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
-      @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField
-  ) {
-    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
-        travelogueService.getTravelogues(page, size, sortField, TEMP);
-
-    return ResponseEntity.ok(travelogueSimpleResList);
   }
 
   @PatchMapping("/{travelogueId}")

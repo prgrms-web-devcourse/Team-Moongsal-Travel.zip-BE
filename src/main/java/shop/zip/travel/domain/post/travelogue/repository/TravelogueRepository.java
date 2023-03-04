@@ -1,7 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.repository;
 
 import java.util.Optional;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,19 +25,29 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
       @Param("pageable") Pageable pageable,
       @Param("isPublished") boolean isPublished);
 
-	@Query("select t "
-		+ "from Travelogue t "
-		+ "left join fetch t.member "
-		+ "where t.id = :travelogueId")
-	Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
+  @Query("select t "
+      + "from Travelogue t "
+      + "left join fetch t.member "
+      + "where t.id = :travelogueId")
+  Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
 
   @Query(
-		"select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
-			+ "t.id, t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl)"
-			+ "from Travelogue t "
-			+ "inner join t.member m "
-			+ "where m.id = :memberId ")
+      "select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
+          + "t.id, t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl)"
+          + "from Travelogue t "
+          + "inner join t.member m "
+          + "where m.id = :memberId ")
   Slice<TravelogueSimple> getMyTravelogues(@Param("memberId") Long memberId,
-    @Param("pageable") Pageable pageable);
+      @Param("pageable") Pageable pageable);
+
+  @Query(
+      "select t "
+          + "from Travelogue t "
+          + "inner join t.member m "
+          + "where m.id = :memberId and t.isPublished = :isPublished")
+  Slice<TravelogueSimple> getMyTempTravelogues(
+      @Param("memberId") Long memberId,
+      @Param("pageable") Pageable pageable,
+      @Param("isPublished") boolean isPublished);
 
 }
