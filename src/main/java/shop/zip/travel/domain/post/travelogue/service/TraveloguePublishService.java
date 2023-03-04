@@ -26,7 +26,7 @@ public class TraveloguePublishService {
   public TraveloguePublishRes publish(Long travelogueId) {
     Travelogue travelogue = findBy(travelogueId);
 
-    checkTravelogue(travelogue);
+    verifyPublish(travelogue);
     travelogue.changePublishStatus();
     return new TraveloguePublishRes(travelogue.getId());
   }
@@ -38,7 +38,7 @@ public class TraveloguePublishService {
         });
   }
 
-  private void checkTravelogue(Travelogue travelogue) {
+  private void verifyPublish(Travelogue travelogue) {
     if (travelogue.cannotPublish()) {
       throw new InvalidPublishTravelogueException(ErrorCode.CANNOT_PUBLISH_TRAVELOGUE);
     }

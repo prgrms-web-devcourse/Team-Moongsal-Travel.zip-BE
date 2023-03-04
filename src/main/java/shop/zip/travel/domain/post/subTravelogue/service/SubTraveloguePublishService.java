@@ -14,18 +14,18 @@ public class SubTraveloguePublishService {
 
   public void verifySubTravelogues(List<SubTravelogue> subTravelogues) {
     subTravelogues.forEach(subTravelogue -> {
-      checkSubTravelogue(subTravelogue);
-      checkAddresses(subTravelogue.getAddresses());
+      verifyPublish(subTravelogue);
+      verifyPublish(subTravelogue.getAddresses());
     });
   }
 
-  private void checkSubTravelogue(SubTravelogue subTravelogue) {
+  private void verifyPublish(SubTravelogue subTravelogue) {
     if (subTravelogue.cannotPublish()) {
       throw new InvalidPublishTravelogueException(ErrorCode.CANNOT_PUBLISH_TRAVELOGUE);
     }
   }
 
-  private void checkAddresses(List<Address> requestAddresses) {
+  private void verifyPublish(List<Address> requestAddresses) {
     requestAddresses.forEach(requestAddress -> {
       if (requestAddress.cannotPublish()
       ) {
