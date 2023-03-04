@@ -74,12 +74,10 @@ public class TravelogueController {
 
   @GetMapping
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
-      @RequestParam(required = false, defaultValue = DEFAULT_SIZE) int size,
-      @RequestParam(required = false, defaultValue = DEFAULT_PAGE) int page,
-      @RequestParam(required = false, defaultValue = DEFAULT_SORT_FIELD) String sortField
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-        travelogueService.getTravelogues(page, size, sortField, PUBLISH);
+        travelogueService.getTravelogues(pageable);
 
     return ResponseEntity.ok(travelogueSimpleRes);
   }

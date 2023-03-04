@@ -23,7 +23,7 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
       + "on m.id = t.member.id "
       + "where t.isPublished = :isPublished")
   Slice<TravelogueSimple> findAllBySlice(
-      @Param("pageRequest") PageRequest pageRequest,
+      @Param("pageable") Pageable pageable,
       @Param("isPublished") boolean isPublished);
 
 	@Query("select t "

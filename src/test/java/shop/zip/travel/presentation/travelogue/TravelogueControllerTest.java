@@ -346,7 +346,7 @@ class TravelogueControllerTest {
                     .description("SubTravelogue의 내용"),
                 fieldWithPath("subTravelogues[].addresses[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue의 방문한 장소 리스트"),
-                fieldWithPath("subTravelogues[].addresses[].spot").type(JsonFieldType.STRING)
+                fieldWithPath("subTravelogues[].addresses[].region").type(JsonFieldType.STRING)
                     .description("SubTravelogue의 방문한 장소명"),
                 fieldWithPath("subTravelogues[].transportationSet[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue 에서 이용한 이동 수단 리스트"),

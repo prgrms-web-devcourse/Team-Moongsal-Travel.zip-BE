@@ -62,29 +62,27 @@ class TravelogueServiceTest {
 		);
 
 		Slice<TravelogueSimple> travelogueSimples = new SliceImpl<>(
-			travelogueSimpleList,
-			pageRequest,
-			pageRequest.next().isPaged()
+				travelogueSimpleList,
+				pageRequest,
+				pageRequest.next().isPaged()
 		);
 
 		when(travelogueRepository.findAllBySlice(pageRequest, true))
-			.thenReturn(travelogueSimples);
+				.thenReturn(travelogueSimples);
 
 		// when
-		String sortField = "createDate";
-		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
-			pageRequest.getPageNumber(), pageRequest.getPageSize(), sortField, true
-		);
+		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
+				travelogueService.getTravelogues(pageRequest);
 
 		// then
 		int expectedNights = 1;
 		int expectedDays = 2;
 
 		assertThat(travelogueSimpleRes.content().get(0).nights())
-			.isEqualTo(expectedNights);
+				.isEqualTo(expectedNights);
 
 		assertThat(travelogueSimpleRes.content().get(0).days())
-			.isEqualTo(expectedDays);
+				.isEqualTo(expectedDays);
 	}
 
 	@Test
