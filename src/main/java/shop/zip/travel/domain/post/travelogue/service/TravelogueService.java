@@ -70,7 +70,7 @@ public class TravelogueService {
 
 	private void setViewCount(Long travelogueId, boolean canAddViewCount) {
 		if (canAddViewCount) {
-			Travelogue findTravelogue = findBy(travelogueId);
+			Travelogue findTravelogue = getTravelogue(travelogueId);
 			findTravelogue.addViewCount();
 		}
 	}
