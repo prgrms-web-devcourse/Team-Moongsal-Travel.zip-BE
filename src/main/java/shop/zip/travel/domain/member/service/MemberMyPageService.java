@@ -1,10 +1,12 @@
 package shop.zip.travel.domain.member.service;
 
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
 import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.entity.Member;
@@ -22,11 +24,13 @@ public class MemberMyPageService {
 
   private final TravelogueRepository travelogueRepository;
   private final MemberRepository memberRepository;
+  private final BookmarkRepository bookmarkRepository;
 
   public MemberMyPageService(TravelogueRepository travelogueRepository,
-      MemberRepository memberRepository) {
+      MemberRepository memberRepository, BookmarkRepository bookmarkRepository) {
     this.travelogueRepository = travelogueRepository;
     this.memberRepository = memberRepository;
+    this.bookmarkRepository = bookmarkRepository;
   }
 
   public MemberInfoRes getInfoBy(Long memberId) {
@@ -44,6 +48,7 @@ public class MemberMyPageService {
     return TravelogueCustomSlice.toDto(travelogueSimpleRes);
   }
 
+  @Transactional
   public MemberInfoRes updateMemberProfile(Long memberId, MemberUpdateReq memberUpdateReq) {
     Member member = getMember(memberId);
     member.updateProfileImageUrl(memberUpdateReq.profileImageUrl());
@@ -55,6 +60,10 @@ public class MemberMyPageService {
   private Member getMember(Long id) {
     return memberRepository.findById(id)
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+  }
+
+  public List<TravelogueSimpleRes> getMyBookmarkedList(Long memberId, Pageable pageable) {
+    return bookmarkRepository.getBookmarkedList(memberId, pageable);
   }
 
 }

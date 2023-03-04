@@ -50,9 +50,9 @@ public class TravelogueService {
 		);
 	}
 
-	public Travelogue findBy(Long id) {
+	public Travelogue getTravelogue(Long id) {
 		return travelogueRepository.findById(id)
-			.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
 	}
 
 	public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
