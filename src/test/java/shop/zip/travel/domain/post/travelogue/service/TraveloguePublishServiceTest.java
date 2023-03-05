@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
-import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
@@ -28,9 +27,6 @@ class TraveloguePublishServiceTest {
 
   @Autowired
   private TravelogueRepository travelogueRepository;
-
-  @Autowired
-  private SubTravelogueRepository subTravelogueRepository;
 
   @Autowired
   private MemberRepository memberRepository;

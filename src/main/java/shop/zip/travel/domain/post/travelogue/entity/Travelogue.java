@@ -22,6 +22,8 @@ import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
+import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
+import shop.zip.travel.global.error.ErrorCode;
 
 @Entity
 public class Travelogue extends BaseTimeEntity {
@@ -156,10 +158,14 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public void changePublishStatus() {
+		if (cannotPublish()) {
+			throw new InvalidPublishTravelogueException(ErrorCode.CANNOT_PUBLISH_TRAVELOGUE);
+		}
+		this.subTravelogues.forEach(SubTravelogue::verifyPublish);
 		this.isPublished = true;
 	}
 
-	public boolean cannotPublish() {
+	private boolean cannotPublish() {
 		return period.cannotPublish() ||
 				DefaultValue.STRING.isEqual(title) ||
 				DefaultValue.STRING.isEqual(thumbnail) ||
