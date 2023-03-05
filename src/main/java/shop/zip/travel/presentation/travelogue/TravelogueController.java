@@ -69,7 +69,7 @@ public class TravelogueController {
     return ResponseEntity.ok(travelogueSimpleRes);
   }
 
-  @PatchMapping("/{travelogueId}")
+  @PatchMapping("/{travelogueId}/publish")
   public ResponseEntity<TraveloguePublishRes> publish(
       @PathVariable Long travelogueId
   ) {
