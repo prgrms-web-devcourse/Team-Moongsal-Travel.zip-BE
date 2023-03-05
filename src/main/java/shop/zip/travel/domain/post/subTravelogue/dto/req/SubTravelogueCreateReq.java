@@ -17,6 +17,7 @@ import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 public record SubTravelogueCreateReq(
     String title,
     String content,
+    @Valid
     List<TempAddress> addresses,
     Set<Transportation> transportationSet,
     @Valid
