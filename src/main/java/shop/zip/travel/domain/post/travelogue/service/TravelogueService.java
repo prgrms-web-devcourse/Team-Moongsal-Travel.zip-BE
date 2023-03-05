@@ -6,6 +6,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
@@ -23,14 +24,16 @@ import shop.zip.travel.global.error.ErrorCode;
 @Transactional(readOnly = true)
 public class TravelogueService {
 
-    private final TravelogueRepository travelogueRepository;
-    private final MemberService memberService;
+	private final TravelogueRepository travelogueRepository;
+	private final MemberService memberService;
+	private final BookmarkRepository bookmarkRepository;
 
-    public TravelogueService(TravelogueRepository travelogueRepository,
-        MemberService memberService) {
-        this.travelogueRepository = travelogueRepository;
-        this.memberService = memberService;
-    }
+	public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
+			BookmarkRepository bookmarkRepository) {
+		this.travelogueRepository = travelogueRepository;
+		this.memberService = memberService;
+		this.bookmarkRepository = bookmarkRepository;
+	}
 
 	@Transactional
 	public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
@@ -40,7 +43,8 @@ public class TravelogueService {
 		return new TravelogueCreateRes(travelogue.getId(), nights, nights + 1);
 	}
 
-	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
+	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size,
+			String sortField) {
 		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
 
 		Slice<TravelogueSimple> travelogues = travelogueRepository.findAllBySlice(pageRequest);
@@ -56,15 +60,17 @@ public class TravelogueService {
 	}
 
 	public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
-		int size) {
+			int size) {
 		return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
 	}
 
-	public TravelogueDetailRes getTravelogueDetail(Long travelogueId) {
-    return TravelogueDetailRes.toDto(
-        travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
-  }
+	public TravelogueDetailRes getTravelogueDetail(Long travelogueId, Long memberId) {
+		Travelogue travelogue = travelogueRepository.getTravelogueDetail(travelogueId)
+				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+
+		Boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
+		return TravelogueDetailRes.toDto(travelogue, isBookmarked);
+	}
 
 }
 
