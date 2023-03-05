@@ -2,6 +2,7 @@ package shop.zip.travel.presentation.travelogue;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -40,6 +41,7 @@ import shop.zip.travel.domain.post.data.Country;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
@@ -63,24 +65,36 @@ class TravelogueControllerTest {
   @Autowired
   private TravelogueRepository travelogueRepository;
   @Autowired
+  private SubTravelogueRepository subTravelogueRepository;
+  @Autowired
   private MemberRepository memberRepository;
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
+
+  private Travelogue travelogue;
   private Member member;
 
   @BeforeEach
   void setUp() {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
+    travelogue = DummyGenerator.createNotPublishedTravelogue(member);
     travelogueRepository.saveAll(
         List.of(
+            travelogue,
             DummyGenerator.createTravelogue(member),
-            DummyGenerator.createTravelogue(member),
-            DummyGenerator.createTravelogue(member)));
+            DummyGenerator.createTravelogue(member))
+    );
+
+    SubTravelogue subTravelogue = subTravelogueRepository.save(
+        DummyGenerator.createSubTravelogue()
+    );
+
+    travelogue.addSubTravelogue(subTravelogue);
   }
 
   @Test
-  @DisplayName("전체 게시물 리스트를 페이지별로 가져올 수 있다.")
+  @DisplayName("저장이 완료된 전체 게시물 리스트를 페이지별로 가져올 수 있다.")
   void test_get_all_travelogue() throws Exception {
 
     mockMvc.perform(get("/api/travelogues")
@@ -117,15 +131,50 @@ class TravelogueControllerTest {
   }
 
   @Test
-  @DisplayName("메인 게시물을 저장할 수 있다.")
-  void test_save_travelogue() throws Exception {
+  @DisplayName("임시 저장된 게시글을 발행할 수 있다.")
+  void test_publish_travelogue() throws Exception {
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
+            .header("AccessToken", token))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("publish-travelogue-success",
+            responseFields(
+                fieldWithPath("travelogueId").description("공개된 게시글 PK")
+            )));
+  }
+
+  @Test
+  @DisplayName("작성이 완료되지 않은 게시글은 발행할 수 없다.")
+  void test_fail_publish_travelogue() throws Exception {
+
+    Travelogue cannotPublishTravelogue =
+        travelogueRepository.save(DummyGenerator.createNotPublishedTravelogue(member));
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}", cannotPublishTravelogue.getId())
+            .header("AccessToken", token))
+        .andExpect(status().isBadRequest())
+        .andDo(print())
+        .andDo(document("publish-travelogue-fail",
+            responseFields(
+                fieldWithPath("message").description("예외 메시지")
+            )));
+  }
+
+  @Test
+  @DisplayName("메인 게시글을 작성 혹은 임시 작성 할 수 있다.")
+  void test_temp_save_travelogue() throws Exception {
     // given
     TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
-        DummyGenerator.createPeriod(),
-        "메인 게시물 제목",
-        DummyGenerator.createCountry(),
+        DummyGenerator.createTempPeriod(),
+        null,
+        DummyGenerator.createTempCountry(),
         "www.naver.com",
-        DummyGenerator.createCost()
+        DummyGenerator.createTempCost()
     );
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
@@ -137,24 +186,78 @@ class TravelogueControllerTest {
                 .writeValueAsString(travelogueCreateReq)))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("save-travelogue",
+        .andDo(document("save-temp-travelogue",
             requestFields(
-                fieldWithPath("period.startDate").description("여행 시작 날짜"),
-                fieldWithPath("period.endDate").description("여행 종료 날짜"),
-                fieldWithPath("period.nights").description("여행 숙박 횟수"),
-                fieldWithPath("title").description("게시물 제목"),
-                fieldWithPath("country.name").description("여행한 나라 이름"),
-                fieldWithPath("thumbnail").description("게시물 썸네일 URL"),
-                fieldWithPath("cost.transportation").description("이동 수단 경비"),
-                fieldWithPath("cost.lodge").description("숙박 비용"),
-                fieldWithPath("cost.etc").description("기타 비용"),
-                fieldWithPath("cost.total").description("전체 경비")
+                fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작 날짜")
+                    .optional(),
+                fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료 날짜")
+                    .optional(),
+                fieldWithPath("period.nights").type(JsonFieldType.NUMBER).description("여행 숙박 횟수")
+                    .optional(),
+                fieldWithPath("title").type(JsonFieldType.STRING).description("게시물 제목").optional(),
+                fieldWithPath("country.name").type(JsonFieldType.STRING).description("여행한 나라 이름")
+                    .optional(),
+                fieldWithPath("thumbnail").type(JsonFieldType.STRING).description("게시물 썸네일 URL")
+                    .optional(),
+                fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER)
+                    .description("이동 수단 경비").optional(),
+                fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박 비용")
+                    .optional(),
+                fieldWithPath("cost.etc").type(JsonFieldType.NUMBER).description("기타 비용")
+                    .optional(),
+                fieldWithPath("cost.total").type(JsonFieldType.NUMBER).description("전체 경비")
+                    .optional()
             ),
             responseFields(
-              fieldWithPath("id").description("생성된 게시물의 pk 값"),
-              fieldWithPath("nights").description("생성된 게시물의 n박에 해당하는 값"),
-              fieldWithPath("days").description("생성된 게시물의 n일에 해당하는 값")
+                fieldWithPath("id").description("임시 저장된 게시물의 pk 값"),
+                fieldWithPath("nights").description("n박"),
+                fieldWithPath("days").description("n일")
+            )));
+  }
 
+  @Test
+  @DisplayName("게시글의 상세정보를 조회할 수 있다.")
+  void test_get_one_travelogue() throws Exception {
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(get("/api/travelogues/{travelogueId}", travelogue.getId())
+            .header("AccessToken", token))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-one-detail-travelogue",
+            responseFields(
+                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 이미지"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                fieldWithPath("id").type(JsonFieldType.NUMBER).description("Travelogue id"),
+                fieldWithPath("title").type(JsonFieldType.STRING).description("Travelogue 제목"),
+                fieldWithPath("country").type(JsonFieldType.STRING)
+                    .description("Travelogue 방문한 나라"),
+                fieldWithPath("nights").type(JsonFieldType.NUMBER)
+                    .description("Travelogue 여행 기간 중 숙박 날짜"),
+                fieldWithPath("days").type(JsonFieldType.NUMBER)
+                    .description("Travelogue 여행 기간 중 전체 날짜"),
+                fieldWithPath("totalCost").type(JsonFieldType.NUMBER)
+                    .description("Travelogue 여행 전체 경비"),
+                fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue 리스트"),
+                fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
+                    .description("SubTravelogue의 제목"),
+                fieldWithPath("subTravelogues[].content").type(JsonFieldType.STRING)
+                    .description("SubTravelogue의 내용"),
+                fieldWithPath("subTravelogues[].addresses[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue의 방문한 장소 리스트"),
+                fieldWithPath("subTravelogues[].addresses[].region").type(JsonFieldType.STRING)
+                    .description("SubTravelogue의 방문한 장소명"),
+                fieldWithPath("subTravelogues[].transportationSet[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue 에서 이용한 이동 수단 리스트"),
+                fieldWithPath("subTravelogues[].travelPhotoCreateReqs[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue의 이미지 리스트").optional(),
+                fieldWithPath("subTravelogues[].travelPhotoCreateReqs[].url").type(
+                    JsonFieldType.STRING).description("SubTravelogue의 이미지 url").optional(),
+                fieldWithPath("transportations").type(JsonFieldType.ARRAY)
+                    .description("Travelogue에서의 이용한 이동 수단")
             )));
   }
 
@@ -184,11 +287,13 @@ class TravelogueControllerTest {
     Member member = new Member("cloudwi@naver.com", "qwe123!@#", "cloudwi", "1998");
     memberRepository.save(member);
 
-    Travelogue travelogue = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
+    Travelogue travelogue = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost, true,
         subTravelogueList, member);
     Travelogue travelogue2 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
+        true,
         subTravelogueList2, member);
     Travelogue travelogue3 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
+        true,
         subTravelogueList3, member);
 
     travelogueRepository.save(travelogue);
