@@ -9,7 +9,6 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
-import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
@@ -32,14 +31,6 @@ public class TravelogueService {
       MemberService memberService) {
     this.travelogueRepository = travelogueRepository;
     this.memberService = memberService;
-  }
-
-  @Transactional
-  public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
-    Member findMember = memberService.getMember(memberId);
-    Travelogue travelogue = travelogueRepository.save(createReq.toTravelogue(findMember));
-    Long nights = travelogue.getPeriod().getNights();
-    return new TravelogueCreateRes(travelogue.getId(), nights, nights + 1);
   }
 
   @Transactional

@@ -22,7 +22,6 @@ import shop.zip.travel.domain.post.fake.FakeTravelogue;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
-import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -86,40 +85,7 @@ class TravelogueServiceTest {
 	}
 
 	@Test
-	@DisplayName("메인 게시물을 저장할 수 있다.")
-	void test_save_travelogue() {
-		// given
-		TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
-			DummyGenerator.createPeriod(),
-			"메인 게시물 제목",
-			DummyGenerator.createCountry(),
-			"www.naver.com",
-			DummyGenerator.createCost()
-		);
-
-		Member member = DummyGenerator.createMember();
-		Travelogue travelogue = new FakeTravelogue(
-			1L,
-				DummyGenerator.createTravelogue(member)
-		);
-
-		when(memberService.getMember(1L))
-			.thenReturn(member);
-
-		when(travelogueRepository.save(any(Travelogue.class)))
-				.thenReturn(travelogue);
-
-		// when
-		long expectedId = travelogueService.save(travelogueCreateReq, 1L)
-				.id();
-
-		// then
-		long actualId = travelogue.getId();
-		assertThat(actualId).isEqualTo(expectedId);
-	}
-
-	@Test
-	@DisplayName("빈 값을 포함한 게시글을 임시 저장할 수 있다.")
+	@DisplayName("게시글을 작성 혹은 임시 작성 할 수 있다.")
 	void test_temp_save() {
 		// given
 		TempTravelogueCreateReq tempTravelogueCreateReq = new TempTravelogueCreateReq(
