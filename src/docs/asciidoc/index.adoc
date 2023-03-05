@@ -10,25 +10,7 @@ backtony.github.io(Rest Docs)
 = post
 
 [[Travelogue]]
-== Travelogue 생성
-
-=== Request
-
-include::{snippets}/save-travelogue/http-request.adoc[]
-
-=== Request Fields
-
-include::{snippets}/save-travelogue/request-fields.adoc[]
-
-=== Response
-
-include::{snippets}/save-travelogue/http-response.adoc[]
-
-=== Response Fields
-
-include::{snippets}/save-travelogue/response-fields.adoc[]
-
-== Travelogue 임시 저장
+== Travelogue 작성
 
 === Request
 
@@ -81,20 +63,6 @@ include::{snippets}/get-all-travelogue/http-response.adoc[]
 === Response Fields
 
 include::{snippets}/get-all-travelogue/response-fields.adoc[]
-
-== 임시 저장한 Travelogue 전체 리스트 조회
-
-=== Request
-
-include::{snippets}/get-all-temp-travelogue/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/get-all-temp-travelogue/http-response.adoc[]
-
-=== Response Fields
-
-include::{snippets}/get-all-temp-travelogue/response-fields.adoc[]
 
 == Travelogue 상세 조회
 
@@ -160,6 +128,20 @@ include::{snippets}/get-my-travelogues/http-response.adoc[]
 === ResponseFields
 
 include::{snippets}/get-my-travelogues/response-fields.adoc[]
+
+== 자신이 임시 저장한 Travelogue 전체 리스트 조회
+
+=== Request
+
+include::{snippets}/get-all-temp-travelogue/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/get-all-temp-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/get-all-temp-travelogue/response-fields.adoc[]
 
 [[유저-프로필-수정-API]]
 == 유저 프로필 수정 API

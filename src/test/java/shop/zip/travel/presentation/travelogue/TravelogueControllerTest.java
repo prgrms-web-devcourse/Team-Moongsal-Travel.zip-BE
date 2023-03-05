@@ -136,7 +136,7 @@ class TravelogueControllerTest {
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}/publish", travelogue.getId())
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
@@ -155,8 +155,9 @@ class TravelogueControllerTest {
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(patch("/api/travelogues/{travelogueId}", cannotPublishTravelogue.getId())
-            .header("AccessToken", token))
+    mockMvc.perform(
+            patch("/api/travelogues/{travelogueId}/publish", cannotPublishTravelogue.getId())
+                .header("AccessToken", token))
         .andExpect(status().isBadRequest())
         .andDo(print())
         .andDo(document("publish-travelogue-fail",
