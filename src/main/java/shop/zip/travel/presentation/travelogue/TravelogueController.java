@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
@@ -41,7 +41,7 @@ public class TravelogueController {
 
   @PostMapping
   public ResponseEntity<TravelogueCreateRes> createTemp(
-      @RequestBody @Valid TempTravelogueCreateReq tempTravelogueCreateReq,
+      @RequestBody @Valid TravelogueCreateReq tempTravelogueCreateReq,
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     TravelogueCreateRes travelogueCreateRes = travelogueService.save(tempTravelogueCreateReq,

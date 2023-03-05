@@ -45,7 +45,7 @@ import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueReposit
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
-import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 import shop.zip.travel.global.config.QuerydslConfig;
@@ -169,7 +169,7 @@ class TravelogueControllerTest {
   @DisplayName("메인 게시글을 작성 혹은 임시 작성 할 수 있다.")
   void test_temp_save_travelogue() throws Exception {
     // given
-    TempTravelogueCreateReq travelogueCreateReq = new TempTravelogueCreateReq(
+    TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
         DummyGenerator.createTempPeriod(),
         null,
         DummyGenerator.createTempCountry(),

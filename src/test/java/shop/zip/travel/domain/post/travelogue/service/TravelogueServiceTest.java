@@ -21,7 +21,7 @@ import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.fake.FakeTravelogue;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
-import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -88,7 +88,7 @@ class TravelogueServiceTest {
 	@DisplayName("게시글을 작성 혹은 임시 작성 할 수 있다.")
 	void test_temp_save() {
 		// given
-		TempTravelogueCreateReq tempTravelogueCreateReq = new TempTravelogueCreateReq(
+		TravelogueCreateReq tempTravelogueCreateReq = new TravelogueCreateReq(
 				DummyGenerator.createTempPeriod(),
 				"일본 여행은 2박 3일은 짧아요.",
 				DummyGenerator.createTempCountry(),
