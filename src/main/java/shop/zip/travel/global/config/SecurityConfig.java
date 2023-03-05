@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
 import shop.zip.travel.global.filter.JwtExceptionFilter;
+import shop.zip.travel.global.oauth.CustomOAuth2UserService;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
 @Configuration
@@ -20,9 +21,12 @@ import shop.zip.travel.global.security.JwtTokenProvider;
 public class SecurityConfig {
 
   private final JwtTokenProvider jwtTokenProvider;
+  private final CustomOAuth2UserService customOAuth2UserService;
 
-  public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+  public SecurityConfig(JwtTokenProvider jwtTokenProvider,
+      CustomOAuth2UserService customOAuth2UserService) {
     this.jwtTokenProvider = jwtTokenProvider;
+    this.customOAuth2UserService = customOAuth2UserService;
   }
 
   @Bean
@@ -47,10 +51,12 @@ public class SecurityConfig {
         .authorizeHttpRequests((requests) -> requests
             .anyRequest().authenticated()
         )
+        .oauth2Login().userInfoEndpoint().userService(customOAuth2UserService);
+
+    http
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
-
     return http.build();
   }
 
