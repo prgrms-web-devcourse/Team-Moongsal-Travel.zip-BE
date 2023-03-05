@@ -1,6 +1,7 @@
 package shop.zip.travel.presentation.member;
 
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.service.MemberMyPageService;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
+import shop.zip.travel.domain.post.travelogue.service.TravelogueMyTempService;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -24,14 +26,17 @@ public class MemberMyPageController {
   private static final int DEFAULT_SIZE = 5;
 
   private final MemberMyPageService memberService;
+  private final TravelogueMyTempService travelogueTempService;
 
-  public MemberMyPageController(MemberMyPageService memberService) {
+  public MemberMyPageController(MemberMyPageService memberService,
+      TravelogueMyTempService travelogueTempService) {
     this.memberService = memberService;
+    this.travelogueTempService = travelogueTempService;
   }
 
   @GetMapping("/info")
   public ResponseEntity<MemberInfoRes> getMyInfo(
-    @AuthenticationPrincipal UserPrincipal userPrincipal
+      @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     MemberInfoRes memberInfo = memberService.getInfoBy(userPrincipal.getUserId());
 
@@ -55,9 +60,30 @@ public class MemberMyPageController {
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     MemberInfoRes memberInfoRes =
-      memberService.updateMemberProfile(userPrincipal.getUserId(), memberUpdateReq);
+        memberService.updateMemberProfile(userPrincipal.getUserId(), memberUpdateReq);
 
     return ResponseEntity.ok(memberInfoRes);
+  }
+
+  @GetMapping("/bookmarks")
+  public ResponseEntity<List<TravelogueSimpleRes>> getBookmarkedList(
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
+  ) {
+    List<TravelogueSimpleRes> travelogues =
+        memberService.getMyBookmarkedList(userPrincipal.getUserId(), pageable);
+
+    return ResponseEntity.ok(travelogues);
+  }
+
+  @GetMapping("/temp-travelogues")
+  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getTempAll(
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
+      @AuthenticationPrincipal UserPrincipal userPrincipal) {
+    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
+        travelogueTempService.getMyTempTravelogues(userPrincipal.getUserId(), pageable);
+
+    return ResponseEntity.ok(travelogueSimpleResList);
   }
 
 }

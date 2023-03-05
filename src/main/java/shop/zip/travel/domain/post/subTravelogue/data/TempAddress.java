@@ -1,14 +1,17 @@
 package shop.zip.travel.domain.post.subTravelogue.data;
 
+import jakarta.validation.constraints.NotBlank;
+import java.util.Objects;
 import shop.zip.travel.domain.post.data.DefaultValue;
 
 public record TempAddress(
-    String spot
+    @NotBlank
+    String region
 ) {
 
   public Address toAddress() {
     return new Address(
-        (spot == null) ? DefaultValue.STRING.getValue() : spot
+        (Objects.isNull(region)) ? DefaultValue.STRING.getValue() : region
     );
   }
 }

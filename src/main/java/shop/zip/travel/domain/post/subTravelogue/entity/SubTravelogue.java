@@ -23,6 +23,8 @@ import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
+import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
+import shop.zip.travel.global.error.ErrorCode;
 
 @Entity
 public class SubTravelogue extends BaseTimeEntity {
@@ -123,9 +125,16 @@ public class SubTravelogue extends BaseTimeEntity {
         Assert.notNull(photos, "이미지를 확인해주세요");
     }
 
-    public boolean cannotPublish() {
+    private boolean cannotPublish() {
         return DefaultValue.STRING.isEqual(title) ||
             DefaultValue.STRING.isEqual(content) ||
             addresses.size() == ZERO;
+    }
+
+    public void verifyPublish() {
+        if (cannotPublish()) {
+            throw new InvalidPublishTravelogueException(ErrorCode.CANNOT_PUBLISH_TRAVELOGUE);
+        }
+        this.addresses.forEach(Address::verifyPublish);
     }
 }

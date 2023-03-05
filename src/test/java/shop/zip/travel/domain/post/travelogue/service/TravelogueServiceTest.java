@@ -21,7 +21,6 @@ import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.fake.FakeTravelogue;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
-import shop.zip.travel.domain.post.travelogue.dto.req.TempTravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
@@ -62,69 +61,34 @@ class TravelogueServiceTest {
 		);
 
 		Slice<TravelogueSimple> travelogueSimples = new SliceImpl<>(
-			travelogueSimpleList,
-			pageRequest,
-			pageRequest.next().isPaged()
+				travelogueSimpleList,
+				pageRequest,
+				pageRequest.next().isPaged()
 		);
 
 		when(travelogueRepository.findAllBySlice(pageRequest, true))
-			.thenReturn(travelogueSimples);
+				.thenReturn(travelogueSimples);
 
 		// when
-		String sortField = "createDate";
-		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes = travelogueService.getTravelogues(
-			pageRequest.getPageNumber(), pageRequest.getPageSize(), sortField, true
-		);
+		TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
+				travelogueService.getTravelogues(pageRequest);
 
 		// then
 		int expectedNights = 1;
 		int expectedDays = 2;
 
 		assertThat(travelogueSimpleRes.content().get(0).nights())
-			.isEqualTo(expectedNights);
+				.isEqualTo(expectedNights);
 
 		assertThat(travelogueSimpleRes.content().get(0).days())
-			.isEqualTo(expectedDays);
+				.isEqualTo(expectedDays);
 	}
 
 	@Test
-	@DisplayName("메인 게시물을 저장할 수 있다.")
-	void test_save_travelogue() {
-		// given
-		TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
-			DummyGenerator.createPeriod(),
-			"메인 게시물 제목",
-			DummyGenerator.createCountry(),
-			"www.naver.com",
-			DummyGenerator.createCost()
-		);
-
-		Member member = DummyGenerator.createMember();
-		Travelogue travelogue = new FakeTravelogue(
-			1L,
-				DummyGenerator.createTravelogue(member)
-		);
-
-		when(memberService.getMember(1L))
-			.thenReturn(member);
-
-		when(travelogueRepository.save(any(Travelogue.class)))
-				.thenReturn(travelogue);
-
-		// when
-		long expectedId = travelogueService.save(travelogueCreateReq, 1L)
-				.id();
-
-		// then
-		long actualId = travelogue.getId();
-		assertThat(actualId).isEqualTo(expectedId);
-	}
-
-	@Test
-	@DisplayName("빈 값을 포함한 게시글을 임시 저장할 수 있다.")
+	@DisplayName("게시글을 작성 혹은 임시 작성 할 수 있다.")
 	void test_temp_save() {
 		// given
-		TempTravelogueCreateReq tempTravelogueCreateReq = new TempTravelogueCreateReq(
+		TravelogueCreateReq tempTravelogueCreateReq = new TravelogueCreateReq(
 				DummyGenerator.createTempPeriod(),
 				"일본 여행은 2박 3일은 짧아요.",
 				DummyGenerator.createTempCountry(),

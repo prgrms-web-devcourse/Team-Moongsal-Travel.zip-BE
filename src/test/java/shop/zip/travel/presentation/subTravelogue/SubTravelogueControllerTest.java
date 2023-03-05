@@ -87,7 +87,7 @@ class SubTravelogueControllerTest {
                 fieldWithPath("title").description("서브 게시물 제목"),
                 fieldWithPath("content").description("서브 게시물 내용"),
                 fieldWithPath("addresses[]").description("방문한 장소 리스트"),
-                fieldWithPath("addresses[].spot").description("방문한 장소"),
+                fieldWithPath("addresses[].region").description("방문한 장소"),
                 fieldWithPath("transportationSet[]").description("이용한 이동수단 리스트"),
                 fieldWithPath("travelPhotoCreateReqs[].url").description("게시물에 들어가는 이미지 URL")
             ),

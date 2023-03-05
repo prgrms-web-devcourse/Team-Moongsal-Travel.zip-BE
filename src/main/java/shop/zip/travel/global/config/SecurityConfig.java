@@ -1,6 +1,5 @@
 package shop.zip.travel.global.config;
 
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest.H2ConsoleRequestMatcher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,30 +28,29 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers("/api/auth/**")
-        .requestMatchers("/docs/index.html/**")
-        .requestMatchers("/api/healths")
+        .requestMatchers(HttpMethod.OPTIONS, "/api/**")
+        .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
+        .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-        .requestMatchers(HttpMethod.GET,"/api/travelogues")
-        .requestMatchers(HttpMethod.GET,"/api/travelogues/search");
+        .requestMatchers("/favicon.ico/**")
+        .requestMatchers("/docs/index.html/**");
   }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        .csrf().disable()
-        .headers().frameOptions().disable()
-        .and()
         .httpBasic().disable()
+        .csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .authorizeHttpRequests(requests -> requests
+        .authorizeHttpRequests((requests) -> requests
             .anyRequest().authenticated()
         )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+
     return http.build();
   }
 
