@@ -46,7 +46,7 @@ public class Travelogue extends BaseTimeEntity {
 	@Column(nullable = false)
 	private Cost cost;
 
-	@Column(columnDefinition = "bigint default 0", nullable = false)
+	@Column(nullable = false)
 	private Long viewCount;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
