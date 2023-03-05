@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +47,7 @@ public class TravelogueController {
     return ResponseEntity.ok(travelogueCreateRes);
   }
 
-  @GetMapping("/{travelogueId}")
+  @PatchMapping("/{travelogueId}")
   public ResponseEntity<TravelogueDetailRes> get(
       HttpServletRequest request,
       HttpServletResponse response,
