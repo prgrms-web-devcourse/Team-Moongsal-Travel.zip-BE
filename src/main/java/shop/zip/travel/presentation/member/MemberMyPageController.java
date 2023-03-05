@@ -16,7 +16,7 @@ import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.service.MemberMyPageService;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
-import shop.zip.travel.domain.post.travelogue.service.TravelogueTempService;
+import shop.zip.travel.domain.post.travelogue.service.TravelogueMyTempService;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -26,10 +26,10 @@ public class MemberMyPageController {
   private static final int DEFAULT_SIZE = 5;
 
   private final MemberMyPageService memberService;
-  private final TravelogueTempService travelogueTempService;
+  private final TravelogueMyTempService travelogueTempService;
 
   public MemberMyPageController(MemberMyPageService memberService,
-      TravelogueTempService travelogueTempService) {
+      TravelogueMyTempService travelogueTempService) {
     this.memberService = memberService;
     this.travelogueTempService = travelogueTempService;
   }

@@ -11,14 +11,14 @@ import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 
 @Service
 @Transactional(readOnly = true)
-public class TravelogueTempService {
+public class TravelogueMyTempService {
 
   private static final boolean TEMP = false;
 
   private final TravelogueRepository travelogueRepository;
 
 
-  public TravelogueTempService(TravelogueRepository travelogueRepository) {
+  public TravelogueMyTempService(TravelogueRepository travelogueRepository) {
     this.travelogueRepository = travelogueRepository;
   }
 
