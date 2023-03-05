@@ -18,6 +18,7 @@ public class TraveloguePublishService {
     this.travelogueRepository = travelogueRepository;
   }
 
+  @Transactional
   public TraveloguePublishRes publish(Long travelogueId) {
     Travelogue travelogue = findBy(travelogueId);
 

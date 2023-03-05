@@ -41,7 +41,8 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
       @Param("pageable") Pageable pageable);
 
   @Query(
-      "select t "
+      "select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple( "
+          + "t.id, t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl)"
           + "from Travelogue t "
           + "inner join t.member m "
           + "where m.id = :memberId and t.isPublished = :isPublished")
