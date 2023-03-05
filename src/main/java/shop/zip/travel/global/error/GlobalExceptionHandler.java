@@ -2,6 +2,7 @@ package shop.zip.travel.global.error;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -72,6 +73,14 @@ public class GlobalExceptionHandler {
 		log.info("InvalidPublishTravelogueException : ", e);
 		int httpStatus = e.getErrorCode().getStatusValue();
 		String message = e.getErrorCode().getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorResponse> handelIllegalArgumentException(IllegalArgumentException e) {
+		log.info("IllegalArgumentException: ", e);
+		int httpStatus = HttpStatus.BAD_REQUEST.value();
+		String message = e.getMessage();
 		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
