@@ -60,7 +60,9 @@ public class TravelogueService {
     return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
   }
 
+  @Transactional
   public TravelogueDetailRes getTravelogueDetail(Long travelogueId, Long memberId) {
+    setViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
 
@@ -69,6 +71,13 @@ public class TravelogueService {
             .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)),
         countLikes, isLiked);
   }
+
+	private void setViewCount(Long travelogueId, boolean canAddViewCount) {
+		if (canAddViewCount) {
+			Travelogue findTravelogue = getTravelogue(travelogueId);
+			findTravelogue.addViewCount();
+		}
+	}
 
 }
 

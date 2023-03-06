@@ -3,10 +3,8 @@ package shop.zip.travel.domain.post.travelogue.dto.res;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
-import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueDetailRes;
+import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
@@ -22,7 +20,8 @@ public record TravelogueDetailRes(
     List<SubTravelogueDetailRes> subTravelogues,
     Set<Transportation> transportations,
     Long countLikes,
-    boolean isLiked
+    boolean isLiked,
+    Long viewCount
 ) {
 
   public static TravelogueDetailRes toDto(Travelogue travelogue, Long countLikes, Boolean isLiked) {
@@ -48,7 +47,9 @@ public record TravelogueDetailRes(
             .flatMap(Collection::stream)
             .collect(Collectors.toSet()),
         countLikes,
-        isLiked
+        isLiked,
+        travelogue.getViewCount()
     );
-    }
+  }
+
 }

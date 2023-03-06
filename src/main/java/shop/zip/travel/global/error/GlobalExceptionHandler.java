@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
 		log.error("RuntimeException : ", e);
-		return ResponseEntity.internalServerError().body(e.getMessage());
+		return ResponseEntity.internalServerError().build();
 	}
 
 	@ExceptionHandler(Exception.class)

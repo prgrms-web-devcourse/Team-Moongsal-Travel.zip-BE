@@ -32,6 +32,7 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
   public List<TravelogueSimpleRes> getBookmarkedList(Long memberId, Pageable pageable) {
     List<Long> travelogueIds = jpaQueryFactory.select(bookmark.travelogue.id)
         .from(bookmark)
+        .leftJoin(bookmark.member, member)
         .where(bookmark.member.id.eq(memberId))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
