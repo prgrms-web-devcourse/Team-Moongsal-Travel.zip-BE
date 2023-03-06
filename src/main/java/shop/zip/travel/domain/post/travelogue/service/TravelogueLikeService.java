@@ -36,7 +36,7 @@ public class TravelogueLikeService {
 
   private void addLike(Long memberId, Long travelogueId) {
     Member member = memberService.getMember(memberId);
-    Travelogue travelogue = travelogueService.findBy(travelogueId);
+    Travelogue travelogue = travelogueService.getTravelogue(travelogueId);
 
     travelogueLikeRepository.save(new Like(travelogue, member));
   }

@@ -48,7 +48,7 @@ class TravelogueLikeServiceTest {
 
     when(travelogueLikeRepository.findByMemberAndTravelogue(any(Long.class), any(Long.class)))
         .thenReturn(Optional.empty());
-    when(travelogueService.findBy(any(Long.class)))
+    when(travelogueService.getTravelogue(any(Long.class)))
         .thenReturn(travelogue);
     when(memberService.getMember(any(Long.class)))
         .thenReturn(member);
@@ -57,7 +57,7 @@ class TravelogueLikeServiceTest {
     travelogueLikeService.liking(memberId, travelogueId);
 
     verify(travelogueLikeRepository, atLeastOnce()).save(any(Like.class));
-    verify(travelogueService, atLeastOnce()).findBy(travelogueId);
+    verify(travelogueService, atLeastOnce()).getTravelogue(travelogueId);
     verify(memberService, atLeastOnce()).getMember(memberId);
   }
 
