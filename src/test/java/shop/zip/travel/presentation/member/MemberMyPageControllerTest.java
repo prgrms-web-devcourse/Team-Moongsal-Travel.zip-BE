@@ -120,6 +120,7 @@ class MemberMyPageControllerTest {
                 fieldWithPath("content[].thumbnail").description("썸네일 링크"),
                 fieldWithPath("content[].member.nickname").description("작성자 닉네임"),
                 fieldWithPath("content[].member.profileImageUrl").description("작성자 프로필 이미지 링크"),
+                fieldWithPath("content[].likeCount").description("게시글 좋아요 수"),
                 fieldWithPath("pageable").description(""),
                 fieldWithPath("size").description("요청된 페이징 사이즈"),
                 fieldWithPath("number").description("페이지 번호"),
@@ -189,7 +190,9 @@ class MemberMyPageControllerTest {
                 fieldWithPath("[].member.nickname").type(JsonFieldType.STRING)
                     .description("작성자 닉네임"),
                 fieldWithPath("[].member.profileImageUrl").type(JsonFieldType.STRING)
-                    .description("작성자 프로필 이미지 링크")
+                    .description("작성자 프로필 이미지 링크"),
+                fieldWithPath("[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("좋아요 갯수")
             )
         ));
   }

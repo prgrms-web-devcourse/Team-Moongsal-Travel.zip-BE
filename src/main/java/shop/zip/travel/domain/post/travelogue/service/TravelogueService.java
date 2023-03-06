@@ -50,23 +50,28 @@ public class TravelogueService {
     );
   }
 
-	public Travelogue getTravelogue(Long id) {
-		return travelogueRepository.findById(id)
-				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
-	}
+  public Travelogue getTravelogue(Long id) {
+    return travelogueRepository.findById(id)
+        .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+  }
 
   public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
       int size) {
     return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
   }
 
-	@Transactional
-	public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount) {
-		setViewCount(travelogueId, canAddViewCount);
-		return TravelogueDetailRes.toDto(
-				travelogueRepository.getTravelogueDetail(travelogueId)
-						.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
-	}
+  @Transactional
+  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
+      Long memberId) {
+    setViewCount(travelogueId, canAddViewCount);
+    Long countLikes = travelogueRepository.countLikes(travelogueId);
+    boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
+
+    return TravelogueDetailRes.toDto(
+        travelogueRepository.getTravelogueDetail(travelogueId)
+            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)),
+        countLikes, isLiked);
+  }
 
 	private void setViewCount(Long travelogueId, boolean canAddViewCount) {
 		if (canAddViewCount) {

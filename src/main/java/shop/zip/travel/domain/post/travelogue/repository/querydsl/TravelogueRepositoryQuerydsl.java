@@ -7,4 +7,8 @@ public interface TravelogueRepositoryQuerydsl {
 
   List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
       long size);
+
+  boolean isLiked(Long travelogueId, Long memberId);
+
+  Long countLikes(Long travelogueId);
 }

@@ -10,7 +10,8 @@ public record TravelogueSimple(
 		String country,
 		String thumbnail,
 		String memberNickname,
-		String memberProfileImageUrl
+		String memberProfileImageUrl,
+		Long likeCount
 ) {
 
 }

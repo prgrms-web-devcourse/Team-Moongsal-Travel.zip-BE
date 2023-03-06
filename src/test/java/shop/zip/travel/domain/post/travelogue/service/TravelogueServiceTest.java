@@ -128,14 +128,23 @@ class TravelogueServiceTest {
 				DummyGenerator.createTravelogue(member)
 		);
 
+		Long memberId = 1L;
+		Long countLikes = 1L;
+		boolean isLiked = true;
+
 		when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
 		when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
 				Optional.of(travelogue));
+		when(travelogueRepository.isLiked(travelogue.getId(), memberId))
+				.thenReturn(isLiked);
+		when(travelogueRepository.countLikes(travelogue.getId())).thenReturn(countLikes);
 
 		TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
 				travelogue.getId(),
-				true);
-		TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue);
+				true,
+				memberId);
+		TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue, countLikes,
+				isLiked);
 
 		assertThat(actualTravelogueDetail).isEqualTo(expectedTravelogueDetail);
 	}
@@ -149,14 +158,21 @@ class TravelogueServiceTest {
 				1L,
 				DummyGenerator.createTravelogue(member)
 		);
+		Long memberId = 1L;
+		Long countLikes = 1L;
+		boolean isLiked = true;
 
 		when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
 		when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
 				Optional.of(travelogue));
+		when(travelogueRepository.isLiked(travelogue.getId(), memberId))
+				.thenReturn(isLiked);
+		when(travelogueRepository.countLikes(travelogue.getId())).thenReturn(countLikes);
 
 		TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
 				travelogue.getId(),
-				true);
+				true,
+				memberId);
 
 		long actualViewCount = 1L;
 

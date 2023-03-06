@@ -52,6 +52,7 @@ public class DummyGenerator {
 	public static Travelogue createTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
 		subTravelogues.add(createSubTravelogue(1));
+    subTravelogues.add(createSubTravelogue(2));
 
 		return new Travelogue(
 				createPeriod(),
@@ -69,7 +70,8 @@ public class DummyGenerator {
 		return new SubTravelogue(
 				"일본 오사카 재밌음",
 				"오사카 갔는데 또 가고 싶음",
-				dayOfSubTravelogue, List.of(createAddress()),
+				dayOfSubTravelogue,
+				List.of(createAddress()),
 				Set.of(Transportation.BUS),
 				new ArrayList<>()
 		);
@@ -109,7 +111,8 @@ public class DummyGenerator {
 				travelogue.getCountry().getName(),
 				travelogue.getThumbnail(),
 				travelogue.getMember().getNickname(),
-				travelogue.getMember().getProfileImageUrl()
+				travelogue.getMember().getProfileImageUrl(),
+				256L
 		);
 	}
 
@@ -154,7 +157,8 @@ public class DummyGenerator {
 		return new SubTravelogue(
 				"일본 오사카 재밌음",
 				DefaultValue.STRING.getValue(),
-				dayOfSubTravelogue, List.of(createAddress()),
+				dayOfSubTravelogue,
+				List.of(createAddress()),
 				Set.of(Transportation.BUS),
 				new ArrayList<>()
 		);
