@@ -5,6 +5,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +25,7 @@ import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
@@ -32,14 +34,14 @@ import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 @Transactional
 class TravelogueServiceTest {
 
-	@InjectMocks
-	private TravelogueService travelogueService;
+  @InjectMocks
+  private TravelogueService travelogueService;
 
-	@Mock
-	private TravelogueRepository travelogueRepository;
+  @Mock
+  private TravelogueRepository travelogueRepository;
 
-	@Mock
-	private MemberService memberService;
+  @Mock
+  private MemberService memberService;
 
 	private static final Member member = new Member("user@gmail.com", "password1!", "nickname",
 			"1998");
@@ -115,4 +117,50 @@ class TravelogueServiceTest {
 
 		assertThat(actualId).isEqualTo(expected);
 	}
+
+	@Test
+	@DisplayName("메인 게시물을 상세조회 할 수 있다")
+	void test_get_detail() {
+		Member member = DummyGenerator.createMember();
+
+		Travelogue travelogue = new FakeTravelogue(
+				1L,
+				DummyGenerator.createTravelogue(member)
+		);
+
+		when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
+		when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
+				Optional.of(travelogue));
+
+		TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
+				travelogue.getId(),
+				true);
+		TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue);
+
+		assertThat(actualTravelogueDetail).isEqualTo(expectedTravelogueDetail);
+	}
+
+	@Test
+	@DisplayName("게시물을 상세조회 할 경우 조회수가 올라간다")
+	void test_view_count() {
+		Member member = DummyGenerator.createMember();
+
+		Travelogue travelogue = new FakeTravelogue(
+				1L,
+				DummyGenerator.createTravelogue(member)
+		);
+
+		when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
+		when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
+				Optional.of(travelogue));
+
+		TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
+				travelogue.getId(),
+				true);
+
+		long actualViewCount = 1L;
+
+		assertThat(actualViewCount).isEqualTo(expectedTravelogueDetail.viewCount());
+	}
+
 }
