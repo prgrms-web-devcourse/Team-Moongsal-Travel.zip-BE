@@ -35,7 +35,7 @@ public class DummyGenerator {
 
 	public static Travelogue createNotPublishedTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
-		subTravelogues.add(createSubTravelogue());
+		subTravelogues.add(createSubTravelogue(1));
 
 		return new Travelogue(
 				createPeriod(),
@@ -51,7 +51,7 @@ public class DummyGenerator {
 
 	public static Travelogue createTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
-		subTravelogues.add(createSubTravelogue());
+		subTravelogues.add(createSubTravelogue(1));
 
 		return new Travelogue(
 				createPeriod(),
@@ -65,13 +65,13 @@ public class DummyGenerator {
 		);
 	}
 
-	public static SubTravelogue createSubTravelogue(){
+	public static SubTravelogue createSubTravelogue(int dayOfSubTravelogue) {
 		return new SubTravelogue(
-			"일본 오사카 재밌음",
-			"오사카 갔는데 또 가고 싶음",
-			List.of(createAddress()),
-			Set.of(Transportation.BUS),
-			new ArrayList<>()
+				"일본 오사카 재밌음",
+				"오사카 갔는데 또 가고 싶음",
+				dayOfSubTravelogue, List.of(createAddress()),
+				Set.of(Transportation.BUS),
+				new ArrayList<>()
 		);
 	}
 
@@ -150,11 +150,11 @@ public class DummyGenerator {
 		);
 	}
 
-	public static SubTravelogue createTempSubTravelogue() {
+	public static SubTravelogue createTempSubTravelogue(int dayOfSubTravelogue) {
 		return new SubTravelogue(
 				"일본 오사카 재밌음",
 				DefaultValue.STRING.getValue(),
-				List.of(createAddress()),
+				dayOfSubTravelogue, List.of(createAddress()),
 				Set.of(Transportation.BUS),
 				new ArrayList<>()
 		);

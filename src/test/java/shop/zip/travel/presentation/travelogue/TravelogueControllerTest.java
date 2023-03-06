@@ -87,7 +87,7 @@ class TravelogueControllerTest {
     );
 
     SubTravelogue subTravelogue = subTravelogueRepository.save(
-        DummyGenerator.createSubTravelogue()
+        DummyGenerator.createSubTravelogue(2)
     );
 
     travelogue.addSubTravelogue(subTravelogue);
@@ -274,7 +274,7 @@ class TravelogueControllerTest {
 
     Set<Transportation> transportationList = new HashSet<>();
     transportationList.add(Transportation.BUS);
-    SubTravelogue subTravelogue = DummyGenerator.createSubTravelogue();
+    SubTravelogue subTravelogue = DummyGenerator.createSubTravelogue(1);
 
     List<SubTravelogue> subTravelogueList = new ArrayList<>();
     subTravelogueList.add(subTravelogue);

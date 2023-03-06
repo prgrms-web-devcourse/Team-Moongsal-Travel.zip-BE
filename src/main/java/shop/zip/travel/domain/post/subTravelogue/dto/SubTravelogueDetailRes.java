@@ -10,6 +10,7 @@ import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 public record SubTravelogueDetailRes(
     String title,
     String content,
+    int dayOfSubTravelogue,
     List<Address> addresses,
     Set<Transportation> transportationSet,
     List<TravelPhotoCreateReq> travelPhotoCreateReqs
@@ -19,6 +20,7 @@ public record SubTravelogueDetailRes(
         return new SubTravelogueDetailRes(
             subTravelogue.getTitle(),
             subTravelogue.getContent(),
+            subTravelogue.getDay(),
             subTravelogue.getAddresses(),
             subTravelogue.getTransportationSet(),
             subTravelogue.getPhotos()

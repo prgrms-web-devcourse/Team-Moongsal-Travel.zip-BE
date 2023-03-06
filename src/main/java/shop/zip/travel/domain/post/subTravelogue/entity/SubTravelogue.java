@@ -43,6 +43,9 @@ public class SubTravelogue extends BaseTimeEntity {
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String content;
 
+    @Column(name = "day", nullable = false)
+    private int day;
+
     @ElementCollection
     @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
     private List<Address> addresses = new ArrayList<>();
@@ -60,11 +63,13 @@ public class SubTravelogue extends BaseTimeEntity {
     protected SubTravelogue() {
     }
 
-    public SubTravelogue(String title, String content, List<Address> addresses,
+    public SubTravelogue(String title, String content, int dayOfSubTravelogue,
+        List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
-        verify(title, content, addresses, transportationSet, photos);
+        verify(title, content, dayOfSubTravelogue, addresses, transportationSet, photos);
         this.title = title;
         this.content = content;
+        this.day = dayOfSubTravelogue;
         this.addresses = addresses;
         this.transportationSet = transportationSet;
         this.photos = photos;
@@ -82,6 +87,10 @@ public class SubTravelogue extends BaseTimeEntity {
         return content;
     }
 
+    public int getDay() {
+        return day;
+    }
+
     public List<Address> getAddresses() {
         return new ArrayList<>(addresses);
     }
@@ -94,9 +103,11 @@ public class SubTravelogue extends BaseTimeEntity {
         return new ArrayList<>(photos);
     }
 
-    private void verify(String title, String content, List<Address> addresses,
+    private void verify(String title, String content, int dayOfSubTravelogue,
+        List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
         nullCheck(title, content, addresses, transportationSet, photos);
+        verifyDayOfSubTravelogue(dayOfSubTravelogue);
         verifyTitle(title);
         verifyContent(content);
     }
@@ -114,6 +125,12 @@ public class SubTravelogue extends BaseTimeEntity {
             throw new IllegalArgumentException("내용은 비어있을 수 없습니다.");
         }
         Assert.isTrue(content.length() > MIN_LENGTH, "내용을 확인해주세요");
+    }
+
+    private void verifyDayOfSubTravelogue(int dayOfSubTravelogue) {
+        if (dayOfSubTravelogue <= ZERO) {
+            throw new IllegalArgumentException("일차는 0보다 작을 수 없습니다.");
+        }
     }
 
     private void nullCheck(String title, String content, List<Address> addresses,
