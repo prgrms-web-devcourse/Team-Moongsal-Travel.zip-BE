@@ -67,7 +67,7 @@ public class ScrapService {
         .findById(storageObjectId)
         .orElseThrow(() -> new ScrapDocumentNotFoundException(ErrorCode.SCRAP_DOCUMENT_NOT_FOUND));
 
-    scrap.getContents().removeIf(place -> place.getObjectId().equals(scrapObjectId.toString()));
+    scrap.getContents().removeIf(place -> place.getScrapObjectId().equals(scrapObjectId.toString()));
     scrapRepository.save(scrap);
   }
 }

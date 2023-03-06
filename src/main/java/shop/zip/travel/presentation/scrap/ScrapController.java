@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.scrap.dto.req.ScrapCreateReq;
 import shop.zip.travel.domain.scrap.dto.res.ScrapDetailRes;
+import shop.zip.travel.domain.scrap.dto.res.ScrapListRes;
 import shop.zip.travel.domain.scrap.dto.res.ScrapSimpleRes;
 import shop.zip.travel.domain.scrap.service.ScrapService;
 import shop.zip.travel.global.security.UserPrincipal;
@@ -26,10 +27,10 @@ public class ScrapController {
   }
 
   @GetMapping("/api/storage")
-  public ResponseEntity<List<ScrapSimpleRes>> getAllStorage(
+  public ResponseEntity<ScrapListRes> getAllStorage(
       @AuthenticationPrincipal UserPrincipal userPrincipal) {
     List<ScrapSimpleRes> allStorageList = scrapService.findAllStorage(userPrincipal.getUserId());
-    return ResponseEntity.ok(allStorageList);
+    return ResponseEntity.ok(new ScrapListRes(allStorageList));
   }
 
   @GetMapping("/api/storage/{storageObjectId}")
@@ -48,7 +49,7 @@ public class ScrapController {
 
   @PostMapping("/api/storage/scrap")
   public ResponseEntity<Void> addMyScrapToStorage(@RequestBody ScrapCreateReq scrapCreateReq) {
-    scrapService.addContent(scrapCreateReq.storageObjectId(), scrapCreateReq.content());
+    scrapService.addContent(new ObjectId(scrapCreateReq.storageObjectId()), scrapCreateReq.content());
     return ResponseEntity.ok().build();
   }
 
