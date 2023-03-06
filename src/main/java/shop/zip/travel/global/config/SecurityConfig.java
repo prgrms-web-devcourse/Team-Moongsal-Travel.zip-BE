@@ -14,6 +14,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
 import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.oauth.CustomOAuth2UserService;
+import shop.zip.travel.global.oauth.OAuth2AuthenticationFailureHandler;
+import shop.zip.travel.global.oauth.OAuth2AuthenticationSuccessHandler;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
 @Configuration
@@ -22,11 +24,17 @@ public class SecurityConfig {
 
   private final JwtTokenProvider jwtTokenProvider;
   private final CustomOAuth2UserService customOAuth2UserService;
+  private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+  private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
 
   public SecurityConfig(JwtTokenProvider jwtTokenProvider,
-      CustomOAuth2UserService customOAuth2UserService) {
+      CustomOAuth2UserService customOAuth2UserService,
+      OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
+      OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.customOAuth2UserService = customOAuth2UserService;
+    this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
+    this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
   }
 
   @Bean
@@ -51,7 +59,17 @@ public class SecurityConfig {
         .authorizeHttpRequests((requests) -> requests
             .anyRequest().authenticated()
         )
-        .oauth2Login().userInfoEndpoint().userService(customOAuth2UserService);
+        .oauth2Login()
+        .authorizationEndpoint().baseUri("/oauth2/authorize")
+        .and()
+        .redirectionEndpoint()
+        .baseUri("/api/login/oauth2/code/**")
+        .and()
+        .userInfoEndpoint().userService(customOAuth2UserService)
+        .and()
+        .successHandler(oauth2AuthenticationSuccessHandler)
+        .failureHandler(oauth2AuthenticationFailureHandler)
+    ;
 
     http
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
