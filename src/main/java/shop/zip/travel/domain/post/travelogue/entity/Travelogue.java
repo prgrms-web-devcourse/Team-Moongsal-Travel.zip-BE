@@ -23,6 +23,7 @@ import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
+import shop.zip.travel.domain.post.travelogue.exception.NoAuthorizationException;
 import shop.zip.travel.global.error.ErrorCode;
 
 @Entity
@@ -172,5 +173,11 @@ public class Travelogue extends BaseTimeEntity {
 				country.cannotPublish() ||
 				cost.cannotPublish() ||
 				subTravelogues.size() < getPeriod().getNights() + 1;
+	}
+
+	public void isWriter(Long memberId) {
+		if (!this.member.getId().equals(memberId)) {
+			throw new NoAuthorizationException(ErrorCode.NO_AUTHORIZATION_TO_TRAVELOGUE);
+		}
 	}
 }

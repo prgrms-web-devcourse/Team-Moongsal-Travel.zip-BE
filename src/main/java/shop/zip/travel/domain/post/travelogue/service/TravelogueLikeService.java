@@ -24,6 +24,7 @@ public class TravelogueLikeService {
     this.travelogueLikeRepository = travelogueLikeRepository;
   }
 
+  @Transactional
   public void liking(Long memberId, Long travelogueId) {
     Optional<Long> hasLiked = travelogueLikeRepository.findByMemberAndTravelogue(memberId,
         travelogueId);

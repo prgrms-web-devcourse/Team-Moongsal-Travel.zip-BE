@@ -50,20 +50,24 @@ public class TravelogueService {
     );
   }
 
-	public Travelogue getTravelogue(Long id) {
-		return travelogueRepository.findById(id)
-				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
-	}
+  public Travelogue getTravelogue(Long id) {
+    return travelogueRepository.findById(id)
+        .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+  }
 
   public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
       int size) {
     return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
   }
 
-  public TravelogueDetailRes getTravelogueDetail(Long travelogueId) {
+  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, Long memberId) {
+    Long countLikes = travelogueRepository.countLikes(travelogueId);
+    boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
+
     return TravelogueDetailRes.toDto(
         travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
+            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)),
+        countLikes, isLiked);
   }
 
 }

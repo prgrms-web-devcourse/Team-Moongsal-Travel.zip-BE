@@ -20,31 +20,35 @@ public record TravelogueDetailRes(
     Long days,
     Long totalCost,
     List<SubTravelogueDetailRes> subTravelogues,
-    Set<Transportation> transportations
+    Set<Transportation> transportations,
+    Long countLikes,
+    boolean isLiked
 ) {
 
-    public static TravelogueDetailRes toDto(Travelogue travelogue) {
-        long nights = ChronoUnit.DAYS.between(travelogue.getPeriod().getStartDate(),
-            travelogue.getPeriod().getEndDate());
+  public static TravelogueDetailRes toDto(Travelogue travelogue, Long countLikes, Boolean isLiked) {
+    long nights = ChronoUnit.DAYS.between(travelogue.getPeriod().getStartDate(),
+        travelogue.getPeriod().getEndDate());
 
-        return new TravelogueDetailRes(
-            travelogue.getMember().getProfileImageUrl(),
-            travelogue.getMember().getNickname(),
-            travelogue.getId(),
-            travelogue.getTitle(),
-            travelogue.getCountry().getName(),
-            nights,
-            nights + 1,
-            travelogue.getCost().getTotal(),
-            travelogue.getSubTravelogues()
-                .stream()
-                .map(SubTravelogueDetailRes::toDto)
-                .toList(),
-            travelogue.getSubTravelogues()
-                .stream()
-                .map(SubTravelogue::getTransportationSet)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet())
-        );
+    return new TravelogueDetailRes(
+        travelogue.getMember().getProfileImageUrl(),
+        travelogue.getMember().getNickname(),
+        travelogue.getId(),
+        travelogue.getTitle(),
+        travelogue.getCountry().getName(),
+        nights,
+        nights + 1,
+        travelogue.getCost().getTotal(),
+        travelogue.getSubTravelogues()
+            .stream()
+            .map(SubTravelogueDetailRes::toDto)
+            .toList(),
+        travelogue.getSubTravelogues()
+            .stream()
+            .map(SubTravelogue::getTransportationSet)
+            .flatMap(Collection::stream)
+            .collect(Collectors.toSet()),
+        countLikes,
+        isLiked
+    );
     }
 }

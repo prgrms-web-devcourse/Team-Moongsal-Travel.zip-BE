@@ -110,7 +110,8 @@ public class DummyGenerator {
 				travelogue.getCountry().getName(),
 				travelogue.getThumbnail(),
 				travelogue.getMember().getNickname(),
-				travelogue.getMember().getProfileImageUrl()
+				travelogue.getMember().getProfileImageUrl(),
+				256L
 		);
 	}
 

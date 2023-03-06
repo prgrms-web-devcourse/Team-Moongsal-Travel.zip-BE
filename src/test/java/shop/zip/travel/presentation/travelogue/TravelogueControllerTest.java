@@ -113,6 +113,7 @@ class TravelogueControllerTest {
                 fieldWithPath("content[].thumbnail").description("썸네일 링크"),
                 fieldWithPath("content[].member.nickname").description("작성자 닉네임"),
                 fieldWithPath("content[].member.profileImageUrl").description("작성자 프로필 이미지 링크"),
+                fieldWithPath("content[].likeCount").description("좋아요 수"),
                 fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
@@ -241,6 +242,10 @@ class TravelogueControllerTest {
                     .description("Travelogue 여행 기간 중 전체 날짜"),
                 fieldWithPath("totalCost").type(JsonFieldType.NUMBER)
                     .description("Travelogue 여행 전체 경비"),
+                fieldWithPath("countLikes").type(JsonFieldType.NUMBER)
+                    .description("좋아요 갯수"),
+                fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN)
+                    .description("좋아요 여부"),
                 fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue 리스트"),
                 fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
@@ -341,7 +346,9 @@ class TravelogueControllerTest {
                     fieldWithPath("[].member.nickname").type(JsonFieldType.STRING)
                         .description("여행기 작성자 닉네임").optional(),
                     fieldWithPath("[].member.profileImageUrl").type(JsonFieldType.STRING)
-                        .description("여행기 작성자 프로필 이미지").optional()
+                        .description("여행기 작성자 프로필 이미지").optional(),
+                    fieldWithPath("[].likeCount").type(JsonFieldType.NUMBER)
+                        .description("게시물 좋아요 수").optional()
                 )
             )
         );

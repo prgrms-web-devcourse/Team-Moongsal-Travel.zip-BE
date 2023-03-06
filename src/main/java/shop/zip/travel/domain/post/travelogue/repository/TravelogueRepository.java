@@ -16,11 +16,14 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
     TravelogueRepositoryQuerydsl {
 
   @Query("select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
-      + "t.id,t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl) "
+      + "t.id,t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl, count(l)) "
       + "from Travelogue t "
       + "inner join Member m "
       + "on m.id = t.member.id "
-      + "where t.isPublished = :isPublished")
+      + "left join Like l "
+      + "on l.travelogue.id = t.id "
+      + "where t.isPublished = :isPublished "
+      + "group by t.id")
   Slice<TravelogueSimple> findAllBySlice(
       @Param("pageable") Pageable pageable,
       @Param("isPublished") boolean isPublished);
@@ -33,22 +36,27 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
 
   @Query(
       "select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("
-          + "t.id, t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl)"
+          + "t.id, t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl, count(l))"
           + "from Travelogue t "
           + "inner join t.member m "
-          + "where m.id = :memberId ")
+          + "left join Like l "
+          + "on l.travelogue.id = t.id "
+          + "where m.id = :memberId "
+          + "group by t.id")
   Slice<TravelogueSimple> getMyTravelogues(@Param("memberId") Long memberId,
       @Param("pageable") Pageable pageable);
 
   @Query(
       "select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple( "
-          + "t.id, t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl)"
+          + "t.id, t.title, t.period, t.cost.total, t.country.name, t.thumbnail, m.nickname, m.profileImageUrl, count(l))"
           + "from Travelogue t "
           + "inner join t.member m "
-          + "where m.id = :memberId and t.isPublished = :isPublished")
+          + "left join Like l "
+          + "on l.travelogue.id = t.id "
+          + "where m.id = :memberId and t.isPublished = :isPublished "
+          + "group by t.id")
   Slice<TravelogueSimple> getMyTempTravelogues(
       @Param("memberId") Long memberId,
       @Param("pageable") Pageable pageable,
       @Param("isPublished") boolean isPublished);
-
 }
