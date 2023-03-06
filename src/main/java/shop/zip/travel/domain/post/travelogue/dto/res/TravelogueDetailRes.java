@@ -3,6 +3,8 @@ package shop.zip.travel.domain.post.travelogue.dto.res;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;

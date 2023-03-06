@@ -61,7 +61,8 @@ public class TravelogueService {
   }
 
   @Transactional
-  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, Long memberId) {
+  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
+      Long memberId) {
     setViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
