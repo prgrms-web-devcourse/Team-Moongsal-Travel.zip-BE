@@ -220,6 +220,7 @@ class TravelogueControllerTest {
   @DisplayName("게시글의 상세정보를 조회할 수 있다.")
   void test_get_one_travelogue() throws Exception {
 
+    travelogue.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
