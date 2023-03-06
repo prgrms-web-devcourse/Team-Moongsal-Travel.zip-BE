@@ -60,11 +60,20 @@ public class TravelogueService {
     return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
   }
 
-  public TravelogueDetailRes getTravelogueDetail(Long travelogueId) {
-    return TravelogueDetailRes.toDto(
-        travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
-  }
+	@Transactional
+	public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount) {
+		setViewCount(travelogueId, canAddViewCount);
+		return TravelogueDetailRes.toDto(
+				travelogueRepository.getTravelogueDetail(travelogueId)
+						.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
+	}
+
+	private void setViewCount(Long travelogueId, boolean canAddViewCount) {
+		if (canAddViewCount) {
+			Travelogue findTravelogue = getTravelogue(travelogueId);
+			findTravelogue.addViewCount();
+		}
+	}
 
 }
 

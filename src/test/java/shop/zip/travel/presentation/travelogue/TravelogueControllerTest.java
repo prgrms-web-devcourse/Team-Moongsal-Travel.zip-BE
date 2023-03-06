@@ -220,9 +220,10 @@ class TravelogueControllerTest {
   @DisplayName("게시글의 상세정보를 조회할 수 있다.")
   void test_get_one_travelogue() throws Exception {
 
+    travelogue.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(get("/api/travelogues/{travelogueId}", travelogue.getId())
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
@@ -258,7 +259,8 @@ class TravelogueControllerTest {
                 fieldWithPath("subTravelogues[].travelPhotoCreateReqs[].url").type(
                     JsonFieldType.STRING).description("SubTravelogue의 이미지 url").optional(),
                 fieldWithPath("transportations").type(JsonFieldType.ARRAY)
-                    .description("Travelogue에서의 이용한 이동 수단")
+                    .description("Travelogue에서의 이용한 이동 수단"),
+                fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수")
             )));
   }
 
