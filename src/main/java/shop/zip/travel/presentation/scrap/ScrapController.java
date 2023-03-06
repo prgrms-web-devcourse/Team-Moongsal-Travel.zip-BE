@@ -4,6 +4,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +25,6 @@ public class ScrapController {
     this.scrapService = scrapService;
   }
 
-  // scrap 할 때 이름만 띄워주는게 아니라 objectId 도 한번에 건네주기
-  // 문서 목록 조회용 API
   @GetMapping("/api/storage")
   public ResponseEntity<List<ScrapSimpleRes>> getAllStorage(
       @AuthenticationPrincipal UserPrincipal userPrincipal) {
@@ -33,10 +32,9 @@ public class ScrapController {
     return ResponseEntity.ok(allStorageList);
   }
 
-  // 문서 상세 조회 API
-  @GetMapping("/api/storage/{objectId}")
-  public ResponseEntity<ScrapDetailRes> getOneStorage(@PathVariable ObjectId objectId) {
-    ScrapDetailRes scrapDetailRes = scrapService.findOneStorage(objectId);
+  @GetMapping("/api/storage/{storageObjectId}")
+  public ResponseEntity<ScrapDetailRes> getOneStorage(@PathVariable ObjectId storageObjectId) {
+    ScrapDetailRes scrapDetailRes = scrapService.findOneStorage(storageObjectId);
     return ResponseEntity.ok(scrapDetailRes);
   }
 
@@ -49,10 +47,21 @@ public class ScrapController {
   }
 
   @PostMapping("/api/storage/scrap")
-  public ResponseEntity<Void> addMyScrap(@RequestBody ScrapCreateReq scrapCreateReq) {
-    scrapService.addContent(scrapCreateReq.objectId(), scrapCreateReq.content());
+  public ResponseEntity<Void> addMyScrapToStorage(@RequestBody ScrapCreateReq scrapCreateReq) {
+    scrapService.addContent(scrapCreateReq.storageObjectId(), scrapCreateReq.content());
     return ResponseEntity.ok().build();
   }
 
-  // 문서 삭제 ->
+  @DeleteMapping("/api/storage/{storageObjectId}")
+  public ResponseEntity<Void> deleteStorage(@PathVariable ObjectId storageObjectId) {
+    scrapService.deleteOneStorage(storageObjectId);
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("/api/storage/{storageObjectId}/{scrapObjectId}")
+  public ResponseEntity<Void> deleteScrapInStorage(@PathVariable ObjectId storageObjectId,
+      @PathVariable ObjectId scrapObjectId) {
+    scrapService.deleteScrapInStorage(storageObjectId, scrapObjectId);
+    return ResponseEntity.ok().build();
+  }
 }
