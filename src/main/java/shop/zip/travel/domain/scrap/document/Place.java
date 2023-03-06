@@ -7,12 +7,12 @@ import org.bson.types.ObjectId;
 public class Place {
 
   @Id
-  String objectId;
+  String scrapObjectId;
 
   String placeName;
 
   public Place(String placeName) {
-    this.objectId = ObjectId.get().toString();
+    this.scrapObjectId = ObjectId.get().toString();
     this.placeName = placeName;
   }
 
@@ -20,8 +20,8 @@ public class Place {
 
   }
 
-  public String getObjectId() {
-    return objectId;
+  public String getScrapObjectId() {
+    return scrapObjectId;
   }
 
   public String getPlaceName() {
