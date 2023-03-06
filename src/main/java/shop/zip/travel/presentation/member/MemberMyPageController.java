@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.service.MemberMyPageService;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailForUpdateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueMyTempService;
 import shop.zip.travel.global.security.UserPrincipal;
@@ -84,6 +86,17 @@ public class MemberMyPageController {
         travelogueTempService.getMyTempTravelogues(userPrincipal.getUserId(), pageable);
 
     return ResponseEntity.ok(travelogueSimpleResList);
+  }
+
+  @GetMapping("/travelogues/{travelogueId}")
+  public ResponseEntity<TravelogueDetailForUpdateRes> getDetailForUpdate(
+      @PathVariable Long travelogueId,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
+  ) {
+    TravelogueDetailForUpdateRes travelogueUpdateDetailRes =
+        memberService.getTravelogueForUpdate(travelogueId, userPrincipal.getUserId());
+
+    return ResponseEntity.ok(travelogueUpdateDetailRes);
   }
 
 }

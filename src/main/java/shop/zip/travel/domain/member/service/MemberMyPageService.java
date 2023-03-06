@@ -13,7 +13,10 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailForUpdateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
+import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
+import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 import shop.zip.travel.global.error.ErrorCode;
 
@@ -64,6 +67,17 @@ public class MemberMyPageService {
 
   public List<TravelogueSimpleRes> getMyBookmarkedList(Long memberId, Pageable pageable) {
     return bookmarkRepository.getBookmarkedList(memberId, pageable);
+  }
+
+  public TravelogueDetailForUpdateRes getTravelogueForUpdate(Long memberId, Long travelogueId) {
+    Travelogue travelogue = getTravelogue(travelogueId);
+
+    return TravelogueDetailForUpdateRes.toDto(travelogue);
+  }
+
+  private Travelogue getTravelogue(Long travelogueId) {
+    return travelogueRepository.findById(travelogueId)
+        .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
   }
 
 }
