@@ -6,17 +6,34 @@ import java.util.List;
 import java.util.Set;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
+import shop.zip.travel.domain.post.data.DefaultValue;
+import shop.zip.travel.domain.post.data.TempCountry;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
+import shop.zip.travel.domain.post.subTravelogue.data.TempAddress;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
+import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
+import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
 public class DummyGenerator {
 
-	public static Travelogue createTravelogue(Member member){
+	public static Travelogue createTempTravelogue(Member member) {
+		return new Travelogue(
+				createPeriod(),
+				DefaultValue.STRING.getValue(),
+				createCountry(),
+				DefaultValue.STRING.getValue(),
+				createCost(),
+				false,
+				member
+		);
+	}
+
+	public static Travelogue createNotPublishedTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
 		subTravelogues.add(createSubTravelogue());
 
@@ -26,8 +43,25 @@ public class DummyGenerator {
 				createCountry(),
 				"www.naver.com",
 				createCost(),
+				false,
 				subTravelogues,
 				member
+		);
+	}
+
+	public static Travelogue createTravelogue(Member member) {
+		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
+		subTravelogues.add(createSubTravelogue());
+
+		return new Travelogue(
+				createPeriod(),
+				"일본 오사카 다녀왔어요.",
+				createCountry(),
+				"www.naver.com",
+			createCost(),
+			true,
+			subTravelogues,
+			member
 		);
 	}
 
@@ -43,7 +77,7 @@ public class DummyGenerator {
 
 	public static Address createAddress(){
 		return new Address(
-			"유니버셜 스튜디오"
+				"일본 오사카 유니버셜 스튜디오"
 		);
 	}
 
@@ -79,12 +113,50 @@ public class DummyGenerator {
 		);
 	}
 
-	public static Member createMember(){
+	public static Member createMember() {
 		return new Member(
 			"user@naver.com",
 			"password1234!",
 			"nickname",
-				"1998"
+			"1998"
+		);
+	}
+
+	public static TempPeriod createTempPeriod() {
+		return new TempPeriod(
+				null,
+				null
+		);
+	}
+
+	public static TempCountry createTempCountry() {
+		return new TempCountry(
+				"일본"
+		);
+	}
+
+	public static TempAddress createTempAddress() {
+		return new TempAddress(
+				"일본 오사카 유니버셜 스튜디오"
+		);
+	}
+
+	public static TempCost createTempCost() {
+		return new TempCost(
+				0L,
+				0L,
+				0L,
+				10000000L
+		);
+	}
+
+	public static SubTravelogue createTempSubTravelogue() {
+		return new SubTravelogue(
+				"일본 오사카 재밌음",
+				DefaultValue.STRING.getValue(),
+				List.of(createAddress()),
+				Set.of(Transportation.BUS),
+				new ArrayList<>()
 		);
 	}
 }

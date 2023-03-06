@@ -29,12 +29,12 @@ public class SecurityConfig {
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
         .requestMatchers("/api/auth/**")
+        .requestMatchers("/docs/rest-docs.html")
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
-        .requestMatchers(new AntPathRequestMatcher("/h2-console"))
-        .requestMatchers("/favicon.ico/**")
-        .requestMatchers("/docs/index.html/**");
+        .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+        .requestMatchers("/favicon.ico/**");
   }
 
   @Bean
@@ -42,15 +42,17 @@ public class SecurityConfig {
     http
         .httpBasic().disable()
         .csrf().disable()
+        .formLogin().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests((requests) -> requests
             .anyRequest().authenticated()
-        )
+        );
+
+    http
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
-
     return http.build();
   }
 

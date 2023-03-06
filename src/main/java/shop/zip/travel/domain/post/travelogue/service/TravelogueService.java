@@ -1,9 +1,8 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
 import java.util.List;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
@@ -23,42 +22,43 @@ import shop.zip.travel.global.error.ErrorCode;
 @Transactional(readOnly = true)
 public class TravelogueService {
 
-    private final TravelogueRepository travelogueRepository;
-    private final MemberService memberService;
+  private static final boolean PUBLISH = true;
 
-    public TravelogueService(TravelogueRepository travelogueRepository,
-        MemberService memberService) {
-        this.travelogueRepository = travelogueRepository;
-        this.memberService = memberService;
-    }
+  private final TravelogueRepository travelogueRepository;
+  private final MemberService memberService;
 
-	@Transactional
-	public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
-		Member findMember = memberService.getMember(memberId);
-		Travelogue travelogue = travelogueRepository.save(createReq.toTravelogue(findMember));
-		Long nights = travelogue.getPeriod().getNights();
-		return new TravelogueCreateRes(travelogue.getId(), nights, nights + 1);
-	}
+  public TravelogueService(TravelogueRepository travelogueRepository,
+      MemberService memberService) {
+    this.travelogueRepository = travelogueRepository;
+    this.memberService = memberService;
+  }
 
-	public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(int page, int size, String sortField) {
-		PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortField));
+  @Transactional
+  public TravelogueCreateRes save(TravelogueCreateReq createReq, Long memberId) {
+    Member findMember = memberService.getMember(memberId);
+    Travelogue travelogue = travelogueRepository.save(createReq.toTravelogue(findMember));
+    Long nights = travelogue.getPeriod().getNights();
+    return TravelogueCreateRes.toDto(travelogue.getId(), nights);
+  }
 
-		Slice<TravelogueSimple> travelogues = travelogueRepository.findAllBySlice(pageRequest);
+  public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Pageable pageable) {
+    Slice<TravelogueSimple> travelogues =
+        travelogueRepository.findAllBySlice(pageable, PUBLISH);
 
-		return TravelogueCustomSlice.toDto(
-			travelogues.map(TravelogueSimpleRes::toDto)
-		);
-	}
+    return TravelogueCustomSlice.toDto(
+        travelogues.map(TravelogueSimpleRes::toDto)
+    );
+  }
 
 	public Travelogue getTravelogue(Long id) {
 		return travelogueRepository.findById(id)
 				.orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
 	}
 
-	public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
-			int size) {
-		return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
-	}
+  public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
+      int size) {
+    return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
+  }
 
 	@Transactional
 	public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount) {
