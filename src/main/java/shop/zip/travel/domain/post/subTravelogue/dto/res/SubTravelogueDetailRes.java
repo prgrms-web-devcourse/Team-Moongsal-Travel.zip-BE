@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.subTravelogue.dto;
+package shop.zip.travel.domain.post.subTravelogue.dto.res;
 
 import java.util.List;
 import java.util.Set;
