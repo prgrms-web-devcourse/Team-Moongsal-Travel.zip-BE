@@ -38,6 +38,7 @@ public class ScrapService {
         .findById(objectId)
         .orElseThrow(() -> new ScrapDocumentNotFoundException(ErrorCode.SCRAP_DOCUMENT_NOT_FOUND));
     ScrapDetailRes scrapDetailRes = ScrapDetailRes.toDto(scrap);
+
     return scrapDetailRes;
   }
   @Transactional
@@ -47,13 +48,26 @@ public class ScrapService {
   }
 
   @Transactional
-  public void addContent(ObjectId objectId, String content) {
+  public void addContent(ObjectId storageObjectId, String content) {
     Scrap scrap = scrapRepository
-        .findById(objectId)
+        .findById(storageObjectId)
         .orElseThrow(() -> new ScrapDocumentNotFoundException(ErrorCode.SCRAP_DOCUMENT_NOT_FOUND));
     scrap.getContents().add(new Place(content));
     scrapRepository.save(scrap);
   }
 
+  @Transactional
+  public void deleteOneStorage(ObjectId objectId) {
+    scrapRepository.deleteById(objectId);
+  }
 
+  @Transactional
+  public void deleteScrapInStorage(ObjectId storageObjectId, ObjectId scrapObjectId) {
+    Scrap scrap = scrapRepository
+        .findById(storageObjectId)
+        .orElseThrow(() -> new ScrapDocumentNotFoundException(ErrorCode.SCRAP_DOCUMENT_NOT_FOUND));
+
+    scrap.getContents().removeIf(place -> place.getObjectId().equals(scrapObjectId.toString()));
+    scrapRepository.save(scrap);
+  }
 }
