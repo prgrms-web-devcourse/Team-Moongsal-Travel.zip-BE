@@ -1,6 +1,5 @@
 package shop.zip.travel.domain.post.travelogue.dto.res;
 
-import java.util.Objects;
 import shop.zip.travel.domain.member.dto.MemberSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 
@@ -15,8 +14,6 @@ public record TravelogueSimpleRes(
 		MemberSimpleRes member,
 		Long likeCount
 ) {
-
-	private static final Long ZERO = 0L;
 
 	public static TravelogueSimpleRes toDto(
 			TravelogueSimple travelogueSimple
@@ -33,7 +30,7 @@ public record TravelogueSimpleRes(
 				travelogueSimple.country(),
 				travelogueSimple.thumbnail(),
 				MemberSimpleRes.toDto(travelogueSimple),
-				(Objects.isNull(likeCount)) ? ZERO : likeCount
+				likeCount
 		);
 	}
 }
