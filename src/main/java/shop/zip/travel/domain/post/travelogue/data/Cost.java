@@ -3,6 +3,7 @@ package shop.zip.travel.domain.post.travelogue.data;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import org.springframework.util.Assert;
+import shop.zip.travel.domain.post.data.DefaultValue;
 
 @Embeddable
 public class Cost {
@@ -55,6 +56,10 @@ public class Cost {
 
     public Long getTotal() {
         return total;
+    }
+
+    public boolean cannotPublish() {
+        return DefaultValue.LONG.isEqual(total.toString());
     }
 
 }

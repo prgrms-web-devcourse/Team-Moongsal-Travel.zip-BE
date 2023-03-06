@@ -30,5 +30,4 @@ public class SubTravelogueController {
             travelogueId);
         return ResponseEntity.ok(subTravelogueCreateRes);
     }
-
 }
