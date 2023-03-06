@@ -71,9 +71,11 @@ public class TravelogueController {
 
   @PatchMapping("/{travelogueId}/publish")
   public ResponseEntity<TraveloguePublishRes> publish(
-      @PathVariable Long travelogueId
+      @PathVariable Long travelogueId,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
-    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId);
+    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId,
+        userPrincipal.getUserId());
     return ResponseEntity.ok(traveloguePublishRes);
   }
 
