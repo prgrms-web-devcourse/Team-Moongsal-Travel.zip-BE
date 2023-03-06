@@ -66,11 +66,11 @@ public class DummyGenerator {
 		);
 	}
 
-	public static SubTravelogue createSubTravelogue(int dayOfSubTravelogue) {
+	public static SubTravelogue createSubTravelogue(int day) {
 		return new SubTravelogue(
 				"일본 오사카 재밌음",
 				"오사카 갔는데 또 가고 싶음",
-				dayOfSubTravelogue,
+				day,
 				List.of(createAddress()),
 				Set.of(Transportation.BUS),
 				new ArrayList<>()

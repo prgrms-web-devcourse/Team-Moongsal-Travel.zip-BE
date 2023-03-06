@@ -19,7 +19,7 @@ public record SubTravelogueCreateReq(
     String title,
     String content,
     @NotNull
-    int dayOfSubTravelogue,
+    int day,
     @Valid
     List<TempAddress> addresses,
     Set<Transportation> transportationSet,
@@ -31,7 +31,7 @@ public record SubTravelogueCreateReq(
         return new SubTravelogue(
             (Objects.isNull(title)) ? DefaultValue.STRING.getValue() : title,
             (Objects.isNull(content)) ? DefaultValue.STRING.getValue() : content,
-            dayOfSubTravelogue,
+            day,
             toAddresses(),
             (Objects.isNull(transportationSet)) ? new HashSet<>() : transportationSet,
             toTravelPhotos()
