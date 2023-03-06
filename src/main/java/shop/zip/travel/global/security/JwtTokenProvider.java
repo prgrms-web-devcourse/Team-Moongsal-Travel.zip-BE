@@ -27,7 +27,7 @@ import shop.zip.travel.global.error.exception.JsonNotParsingException;
 @Component
 public class JwtTokenProvider {
 
-  private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+  private static final Logger log = LoggerFactory.getLogger(JwtTokenProvider.class);
 
   private final String accessTokenSecretKey;
   private final String refreshTokenSecretKey;
@@ -38,8 +38,8 @@ public class JwtTokenProvider {
   private final CustomUserDetailsService customUserDetailsService;
 
   public JwtTokenProvider(
-      @Value("${spring.jwt.accessTokenSecretKey}") String accessTokenSecretKey,
-      @Value("${spring.jwt.refreshTokenSecretKey}") String refreshTokenSecretKey,
+      @Value("${spring.jwt.secret-key[0].accessToken}") String accessTokenSecretKey,
+      @Value("${spring.jwt.secret-key[1].refreshToken}") String refreshTokenSecretKey,
       CustomUserDetailsService customUserDetailsService) {
     this.accessTokenSecretKey = accessTokenSecretKey;
     this.refreshTokenSecretKey = refreshTokenSecretKey;
@@ -55,16 +55,16 @@ public class JwtTokenProvider {
       Jwts.parser().setSigningKey(accessTokenSecretKey).parseClaimsJws(accessToken);
       return true;
     } catch (SignatureException ex) {
-      logger.error("유효하지 않은 JWT 서명");
+      log.error("유효하지 않은 JWT 서명");
     } catch (MalformedJwtException ex) {
-      logger.error("유효하지 않은 JWT 토큰");
+      log.error("유효하지 않은 JWT 토큰");
     } catch (ExpiredJwtException ex) {
-      logger.error("만료된 JWT 토큰");
+      log.error("만료된 JWT 토큰");
       throw new InvalidAccessTokenException(ErrorCode.INVALID_ACCESS_TOKEN);
     } catch (UnsupportedJwtException ex) {
-      logger.error("지원하지 않는 JWT 토큰");
+      log.error("지원하지 않는 JWT 토큰");
     } catch (IllegalArgumentException ex) {
-      logger.error("비어있는 토큰");
+      log.error("비어있는 토큰");
     }
     return false;
   }
@@ -101,15 +101,15 @@ public class JwtTokenProvider {
       Jwts.parser().setSigningKey(refreshTokenSecretKey).parseClaimsJws(refreshToken);
       return true;
     } catch (SignatureException ex) {
-      logger.error("유효하지 않은 JWT 서명");
+      log.error("유효하지 않은 JWT 서명");
     } catch (MalformedJwtException ex) {
-      logger.error("유효하지 않은 JWT 토큰");
+      log.error("유효하지 않은 JWT 토큰");
     } catch (ExpiredJwtException ex) {
-      logger.error("만료된 JWT 토큰");
+      log.error("만료된 JWT 토큰");
     } catch (UnsupportedJwtException ex) {
-      logger.error("지원하지 않는 JWT 토큰");
+      log.error("지원하지 않는 JWT 토큰");
     } catch (IllegalArgumentException ex) {
-      logger.error("비어있는 토큰");
+      log.error("비어있는 토큰");
     }
     return false;
   }
