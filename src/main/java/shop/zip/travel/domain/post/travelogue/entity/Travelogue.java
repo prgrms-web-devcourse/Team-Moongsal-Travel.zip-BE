@@ -67,12 +67,17 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-		boolean isPublished, Member member) {
-		this(period, title, country, thumbnail, cost, isPublished, 0L,new ArrayList<>(), member);
+			boolean isPublished, Member member) {
+		this(period, title, country, thumbnail, cost, isPublished, 0L, new ArrayList<>(), member);
 	}
 
 	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-		boolean isPublished, Long viewCount ,List<SubTravelogue> subTravelogues, Member member) {
+			boolean isPublished, List<SubTravelogue> subTravelogues, Member member) {
+		this(period, title, country, thumbnail, cost, isPublished, 0L, subTravelogues, member);
+	}
+
+	public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
+			boolean isPublished, Long viewCount, List<SubTravelogue> subTravelogues, Member member) {
 		nullCheck(period, title, country, thumbnail, cost, subTravelogues, member);
 		valid(title, thumbnail);
 		this.period = period;
