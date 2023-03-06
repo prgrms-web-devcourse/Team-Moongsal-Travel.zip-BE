@@ -3,8 +3,6 @@ package shop.zip.travel.domain.post.travelogue.dto.res;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
@@ -20,7 +18,7 @@ public record TravelogueDetailRes(
     Long days,
     Long totalCost,
     List<SubTravelogueDetailRes> subTravelogues,
-    Set<Transportation> transportations,
+    List<Transportation> transportations,
     Long viewCount
 ) {
 
@@ -45,7 +43,8 @@ public record TravelogueDetailRes(
                 .stream()
                 .map(SubTravelogue::getTransportationSet)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toSet()),
+                .distinct()
+                .toList(),
             travelogue.getViewCount()
         );
     }
