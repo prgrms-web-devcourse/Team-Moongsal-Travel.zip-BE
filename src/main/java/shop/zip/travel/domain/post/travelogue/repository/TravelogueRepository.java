@@ -28,7 +28,7 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
   @Query("select t "
       + "from Travelogue t "
       + "left join fetch t.member "
-      + "where t.id = :travelogueId")
+      + "where t.id = :travelogueId and t.isPublished = true")
   Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
 
   @Query(
