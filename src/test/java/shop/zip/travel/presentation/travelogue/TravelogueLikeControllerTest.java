@@ -2,6 +2,8 @@ package shop.zip.travel.presentation.travelogue;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,7 +75,11 @@ class TravelogueLikeControllerTest {
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("add-like-travelogue"));
+        .andDo(document("add-like-travelogue",
+            responseFields(
+                fieldWithPath("isAdded").description("좋아요가 추가되었는 지의 여부 - 좋아요가 추가된 것이면 true 반환"),
+                fieldWithPath("isCanceled").description("좋아요가 삭제되었는 지의 여부 - 좋아요가 삭제된 것이면 true 반환")
+            )));
   }
 
   @Test
@@ -86,6 +92,10 @@ class TravelogueLikeControllerTest {
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("cancel-like-travelogue"));
+        .andDo(document("cancel-like-travelogue",
+            responseFields(
+                fieldWithPath("isAdded").description("좋아요가 추가되었는 지의 여부 - 좋아요가 추가된 것이면 true 반환"),
+                fieldWithPath("isCanceled").description("좋아요가 삭제되었는 지의 여부 - 좋아요가 삭제된 것이면 true 반환")
+            )));
   }
 }
