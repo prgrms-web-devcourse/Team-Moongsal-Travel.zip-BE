@@ -9,6 +9,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -272,6 +274,9 @@ class TravelogueControllerTest {
         .andDo(print())
         .andDo(document("get-travelogues-searched",
             preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
                     .description("Travelogue id"),
@@ -307,8 +312,8 @@ class TravelogueControllerTest {
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     MultiValueMap<String, String> period = new LinkedMultiValueMap<>();
-    period.add("startDate", String.valueOf(travelogue.getPeriod().getStartDate()));
-    period.add("endDate", String.valueOf(travelogue.getPeriod().getEndDate()));
+    period.add("minDays", "0");
+    period.add("maxDays", "3");
 
     mockMvc.perform(get("/api/travelogues/search/filters")
             .header("AccessToken", token)
@@ -318,6 +323,11 @@ class TravelogueControllerTest {
         .andDo(print())
         .andDo(document("get-travelogues-filtered-period",
             preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("minDays").description("최소 기간"),
+                parameterWithName("maxDays").description("최대 기간")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
                     .description("Travelogue id"),
@@ -353,8 +363,8 @@ class TravelogueControllerTest {
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     MultiValueMap<String, String> cost = new LinkedMultiValueMap<>();
-    cost.add("lowest", "0");
-    cost.add("maximum", String.valueOf(travelogue.getCost().getTotal()));
+    cost.add("minCost", "0");
+    cost.add("maxCost", String.valueOf(travelogue.getCost().getTotal()));
 
     mockMvc.perform(get("/api/travelogues/search/filters")
             .header("AccessToken", token)
@@ -362,8 +372,13 @@ class TravelogueControllerTest {
             .param("keyword", keyword))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("get-travelogues-filtered-period",
+        .andDo(document("get-travelogues-filtered-cost",
             preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("minCost").description("최저가"),
+                parameterWithName("maxCost").description("최고가")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
                     .description("Travelogue id"),
@@ -399,12 +414,12 @@ class TravelogueControllerTest {
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     MultiValueMap<String, String> period = new LinkedMultiValueMap<>();
-    period.add("startDate", String.valueOf(travelogue.getPeriod().getStartDate()));
-    period.add("endDate", String.valueOf(travelogue.getPeriod().getEndDate()));
+    period.add("minDays", "0");
+    period.add("maxDays", "3");
 
     MultiValueMap<String, String> cost = new LinkedMultiValueMap<>();
-    cost.add("lowest", "0");
-    cost.add("maximum", String.valueOf(travelogue.getCost().getTotal()));
+    cost.add("minCost", "0");
+    cost.add("maxCost", String.valueOf(travelogue.getCost().getTotal()));
 
     mockMvc.perform(get("/api/travelogues/search/filters")
             .header("AccessToken", token)
@@ -413,8 +428,15 @@ class TravelogueControllerTest {
             .param("keyword", keyword))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("get-travelogues-filtered-period",
+        .andDo(document("get-travelogues-filtered",
             preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("minDays").description("최소 기간"),
+                parameterWithName("maxDays").description("최대 기간"),
+                parameterWithName("minCost").description("최저가"),
+                parameterWithName("maxCost").description("최고가")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
                     .description("Travelogue id"),
