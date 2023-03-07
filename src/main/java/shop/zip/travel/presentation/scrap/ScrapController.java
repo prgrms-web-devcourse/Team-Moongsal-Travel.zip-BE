@@ -49,7 +49,8 @@ public class ScrapController {
 
   @PostMapping("/api/storage/scrap")
   public ResponseEntity<Void> addMyScrapToStorage(@RequestBody ScrapCreateReq scrapCreateReq) {
-    scrapService.addContent(new ObjectId(scrapCreateReq.storageObjectId()), scrapCreateReq.content());
+    scrapService.addContent(new ObjectId(scrapCreateReq.storageObjectId())
+        , scrapCreateReq.content(), scrapCreateReq.postId());
     return ResponseEntity.ok().build();
   }
 

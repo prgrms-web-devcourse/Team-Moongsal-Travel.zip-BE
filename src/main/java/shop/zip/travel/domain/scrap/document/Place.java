@@ -11,9 +11,12 @@ public class Place {
 
   String placeName;
 
-  public Place(String placeName) {
+  Long postId;
+
+  public Place(String placeName, Long postId) {
     this.scrapObjectId = ObjectId.get().toString();
     this.placeName = placeName;
+    this.postId = postId;
   }
 
   protected Place() {
@@ -28,4 +31,7 @@ public class Place {
     return placeName;
   }
 
+  public Long getPostId() {
+    return postId;
+  }
 }

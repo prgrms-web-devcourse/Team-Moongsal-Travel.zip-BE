@@ -48,11 +48,11 @@ public class ScrapService {
   }
 
   @Transactional
-  public void addContent(ObjectId storageObjectId, String content) {
+  public void addContent(ObjectId storageObjectId, String content, Long postId) {
     Scrap scrap = scrapRepository
         .findById(storageObjectId)
         .orElseThrow(() -> new ScrapDocumentNotFoundException(ErrorCode.SCRAP_DOCUMENT_NOT_FOUND));
-    scrap.getContents().add(new Place(content));
+    scrap.getContents().add(new Place(content, postId));
     scrapRepository.save(scrap);
   }
 
