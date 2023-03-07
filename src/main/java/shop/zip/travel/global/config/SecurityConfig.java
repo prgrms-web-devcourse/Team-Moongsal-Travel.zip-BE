@@ -60,15 +60,6 @@ public class SecurityConfig {
             .requestMatchers("/docs/index.html").permitAll()
             .anyRequest().authenticated()
         )
-        .oauth2Login().userInfoEndpoint().userService(customOAuth2UserService)
-        .and()
-        .redirectionEndpoint()
-        .baseUri("/*/*/oauth2/code/*")
-        .and()
-        .userInfoEndpoint().userService(customOAuth2UserService)
-        .and()
-        .successHandler(oauth2AuthenticationSuccessHandler)
-        .and()
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
