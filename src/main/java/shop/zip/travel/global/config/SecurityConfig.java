@@ -56,6 +56,7 @@ public class SecurityConfig {
         .formLogin().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+
         .oauth2Login()
         .authorizationEndpoint().baseUri("/oauth2/authorize")
         .and()

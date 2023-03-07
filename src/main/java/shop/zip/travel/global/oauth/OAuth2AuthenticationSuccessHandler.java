@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.zip.travel.domain.member.entity.Member;
-import shop.zip.travel.domain.member.entity.Provider;
 import shop.zip.travel.domain.member.entity.Role;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.security.JwtTokenProvider;
@@ -63,7 +62,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     return new Member(attributes.get("email").toString(), UUID.randomUUID().toString(),
         attributes.get("name").toString(), "입력필요", attributes.get("profileImageUrl").toString(),
         true, Role.USER, attributes.get("provider").toString(),
-        attributes.get(attributes.get("attributeKey").toString()).toString());
+        attributes.get("id").toString());
   }
 
   protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response,
