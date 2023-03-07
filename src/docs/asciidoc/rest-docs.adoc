@@ -271,3 +271,5 @@ include::{snippets}/get-travelogues-filtered/http-response.adoc[]
 === ResponseFields
 
 include::{snippets}/get-travelogues-filtered/response-fields.adoc[]
+
+이동준 킹왕짱
