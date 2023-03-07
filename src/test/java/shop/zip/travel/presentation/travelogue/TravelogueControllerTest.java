@@ -12,6 +12,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +44,7 @@ import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
+import shop.zip.travel.domain.post.travelogue.service.TravelogueLikeService;
 import shop.zip.travel.global.config.QuerydslConfig;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
@@ -61,6 +63,8 @@ class TravelogueControllerTest {
   private TravelogueRepository travelogueRepository;
   @Autowired
   private SubTravelogueRepository subTravelogueRepository;
+  @Autowired
+  private TravelogueLikeService likeService;
   @Autowired
   private MemberRepository memberRepository;
   @Autowired
@@ -474,6 +478,72 @@ class TravelogueControllerTest {
                 fieldWithPath("last").description("마지막 페이지인지의 여부"),
                 fieldWithPath("empty").description("데이터가 없는지의 여부")
             )));
+  }
+
+  @Test
+  @DisplayName("유저는 인기순으로 검색결과를 정렬할 수 있다")
+  void get_travelogues_sort_by_like_count() throws Exception {
+
+    Travelogue travelogue2 = DummyGenerator.createTravelogue(member);
+    Travelogue travelogue3 = DummyGenerator.createTravelogue(member);
+    travelogueRepository.saveAll(
+        List.of(
+            travelogue2,
+            travelogue3));
+
+    changePublishStatus(travelogue, travelogue2, travelogue3);
+    likeService.liking(member.getId(), travelogue.getId());
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    MultiValueMap<String, String> filterParam = new LinkedMultiValueMap<>();
+    filterParam.add("keyword", "일본");
+    filterParam.add("sort", "popular");
+
+    mockMvc.perform(get("/api/travelogues/search/filters")
+            .header("AccessToken", token)
+            .params(filterParam))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("content[0].travelogueId").value(travelogue.getId()))
+        .andDo(print())
+        .andDo(document("get-travelogues-filtered",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("sort").description("정렬")
+            ),
+            responseFields(
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue id"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 총 경비"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 썸네일"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 사진"),
+                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("게시물 좋아요 수").optional(),
+                fieldWithPath("pageable").description("페이징 객체"),
+                fieldWithPath("size").description("요청된 페이징 사이즈"),
+                fieldWithPath("number").description("페이지 번호"),
+                fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),
+                fieldWithPath("first").description("첫번째 페이지인지의 여부"),
+                fieldWithPath("last").description("마지막 페이지인지의 여부"),
+                fieldWithPath("empty").description("데이터가 없는지의 여부")
+            )));
+  }
+
+  private void changePublishStatus(Travelogue... args) {
+    for (Travelogue travelogue : args) {
+      travelogue.changePublishStatus();
+    }
   }
 
 }
