@@ -68,7 +68,7 @@ class ScrapControllerTest {
     accessToken = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     Scrap savedScrap = scrapRepository.save(new Scrap(member.getId(), "Florence travel"));
-    savedScrap.getContents().add(new Place("Duomo Cathedral"));
+    savedScrap.getContents().add(new Place("Duomo Cathedral", 1L));
     scrap = scrapRepository.save(savedScrap);
   }
 
@@ -101,7 +101,7 @@ class ScrapControllerTest {
   @DisplayName("유저는 여행기를 보며 스크랩을 할 수 있다")
   void createScrap_success() throws Exception {
     System.out.println(scrap.getId());
-    ScrapCreateReq scrapCreateReq = new ScrapCreateReq(scrap.getId().toString(), "Duomo Cathedral");
+    ScrapCreateReq scrapCreateReq = new ScrapCreateReq(scrap.getId().toString(), "Duomo Cathedral", 1L);
 
     mockMvc.perform(post("/api/storage/scrap")
             .header("AccessToken", accessToken)
@@ -119,7 +119,9 @@ class ScrapControllerTest {
                 fieldWithPath("storageObjectId").type(JsonFieldType.STRING)
                     .description("문서 object id"),
                 fieldWithPath("content").type(JsonFieldType.STRING)
-                    .description("스크랩 내용")
+                    .description("스크랩 내용"),
+                fieldWithPath("postId").type(JsonFieldType.NUMBER)
+                    .description("게시글 id")
             )));
   }
 
@@ -163,7 +165,9 @@ class ScrapControllerTest {
                 fieldWithPath("title").type(JsonFieldType.STRING).description("문서 제목"),
                 fieldWithPath("contents[].scrapObjectId").type(JsonFieldType.STRING)
                     .description("스크랩 object id"),
-                fieldWithPath("contents[].placeName").type(JsonFieldType.STRING).description("scrap 장소 이름")
+                fieldWithPath("contents[].placeName").type(JsonFieldType.STRING).description("scrap 장소 이름"),
+                fieldWithPath("contents[].postId").type(JsonFieldType.NUMBER).description("게시글 id")
+
             )));
   }
 
