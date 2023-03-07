@@ -2,9 +2,9 @@ package shop.zip.travel.domain.post.travelogue.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -186,6 +186,7 @@ class TravelogueServiceTest {
     //when
     TravelogueCustomSlice<TravelogueSimpleRes> expectedSearchRes = travelogueService.search(title,
         pageable);
+    verify(travelogueRepository).search(title, pageable);
 
     //then
     assertThat(TravelogueCustomSlice.toDto(actualSearchRes)).isEqualTo(expectedSearchRes);
@@ -210,7 +211,7 @@ class TravelogueServiceTest {
     //when
     TravelogueCustomSlice<TravelogueSimpleRes> expectedSearchRes = travelogueService.search(country,
         pageable);
-
+    verify(travelogueRepository).search(country, pageable);
     //then
     assertThat(TravelogueCustomSlice.toDto(actualSearchRes)).isEqualTo(expectedSearchRes);
   }
@@ -235,7 +236,7 @@ class TravelogueServiceTest {
     //when
     TravelogueCustomSlice<TravelogueSimpleRes> expectedSearchRes = travelogueService.search(content,
         pageable);
-
+    verify(travelogueRepository).search(content, pageable);
     //then
     assertThat(TravelogueCustomSlice.toDto(actualSearchRes)).isEqualTo(expectedSearchRes);
   }
@@ -260,6 +261,7 @@ class TravelogueServiceTest {
     //when
     TravelogueCustomSlice<TravelogueSimpleRes> expectedSearchRes = travelogueService.search(region,
         pageable);
+    verify(travelogueRepository).search(region, pageable);
 
     //then
     assertThat(TravelogueCustomSlice.toDto(actualSearchRes)).isEqualTo(expectedSearchRes);
@@ -276,11 +278,11 @@ class TravelogueServiceTest {
     );
     String searchKeyword = travelogue.getTitle();
     Pageable pageable = PageRequest.of(0, 1);
-    LocalDate startDate = LocalDate.of(2023, 2, 1);
-    LocalDate endDate = travelogue.getPeriod().getEndDate();
+    Long minDays = 1L;
+    Long maxDays = 3L;
 
     TravelogueSearchFilter searchFilter =
-        new TravelogueSearchFilter(startDate, endDate, null, null);
+        new TravelogueSearchFilter(minDays, maxDays, null, null);
 
     SliceImpl<TravelogueSimpleRes> actualSearchRes =
         new SliceImpl<>(List.of(DummyGenerator.createTravelogueSimpleRes(travelogue)));
@@ -291,6 +293,7 @@ class TravelogueServiceTest {
     //when
     TravelogueCustomSlice<TravelogueSimpleRes> expectedSearchRes =
         travelogueService.filtering(searchKeyword, pageable, searchFilter);
+    verify(travelogueRepository).filtering(searchKeyword, pageable, searchFilter);
 
     //then
     assertThat(TravelogueCustomSlice.toDto(actualSearchRes)).isEqualTo(expectedSearchRes);
@@ -307,11 +310,11 @@ class TravelogueServiceTest {
     );
     String searchKeyword = travelogue.getTitle();
     Pageable pageable = PageRequest.of(0, 1);
-    Long lowest = 0L;
-    Long maximum = travelogue.getCost().getTotal();
+    Long minCost = 0L;
+    Long maxCost = travelogue.getCost().getTotal();
 
     TravelogueSearchFilter searchFilter =
-        new TravelogueSearchFilter(null, null, lowest, maximum);
+        new TravelogueSearchFilter(null, null, minCost, maxCost);
 
     SliceImpl<TravelogueSimpleRes> actualSearchRes =
         new SliceImpl<>(List.of(DummyGenerator.createTravelogueSimpleRes(travelogue)));
@@ -322,6 +325,7 @@ class TravelogueServiceTest {
     //when
     TravelogueCustomSlice<TravelogueSimpleRes> expectedSearchRes =
         travelogueService.filtering(searchKeyword, pageable, searchFilter);
+    verify(travelogueRepository).filtering(searchKeyword, pageable, searchFilter);
 
     //then
     assertThat(TravelogueCustomSlice.toDto(actualSearchRes)).isEqualTo(expectedSearchRes);
@@ -340,11 +344,11 @@ class TravelogueServiceTest {
     Pageable pageable = PageRequest.of(0, 1);
     Long lowest = 0L;
     Long maximum = travelogue.getCost().getTotal();
-    LocalDate startDate = LocalDate.of(2023, 2, 1);
-    LocalDate endDate = travelogue.getPeriod().getEndDate();
+    Long minDays = 0L;
+    Long maxDays = 2L;
 
     TravelogueSearchFilter searchFilter =
-        new TravelogueSearchFilter(startDate, endDate, lowest, maximum);
+        new TravelogueSearchFilter(minDays, maxDays, lowest, maximum);
 
     SliceImpl<TravelogueSimpleRes> actualSearchRes =
         new SliceImpl<>(List.of(DummyGenerator.createTravelogueSimpleRes(travelogue)));
@@ -355,6 +359,7 @@ class TravelogueServiceTest {
     //when
     TravelogueCustomSlice<TravelogueSimpleRes> expectedSearchRes =
         travelogueService.filtering(searchKeyword, pageable, searchFilter);
+    verify(travelogueRepository).filtering(searchKeyword, pageable, searchFilter);
 
     //then
     assertThat(TravelogueCustomSlice.toDto(actualSearchRes)).isEqualTo(expectedSearchRes);
