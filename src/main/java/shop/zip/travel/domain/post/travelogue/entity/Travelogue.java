@@ -22,12 +22,16 @@ import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueUpdate;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.domain.post.travelogue.exception.NoAuthorizationException;
 import shop.zip.travel.global.error.ErrorCode;
 
 @Entity
 public class Travelogue extends BaseTimeEntity {
+
+	private static final boolean TEMP = false;
+	private static final int MAKE_IDX = 1;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -170,6 +174,15 @@ public class Travelogue extends BaseTimeEntity {
 		Assert.isTrue(!subTravelogues.contains(subTravelogue), "이미 존재하는 서브게시물 입니다.");
 	}
 
+	public void update(TravelogueUpdate travelogueUpdate) {
+		this.period = travelogueUpdate.period();
+		this.title = travelogueUpdate.title();
+		this.country = travelogueUpdate.country();
+		this.cost = travelogueUpdate.cost();
+		this.thumbnail = travelogueUpdate.thumbnail();
+		this.isPublished = false;
+	}
+
 	public void changePublishStatus() {
 		if (cannotPublish()) {
 			throw new InvalidPublishTravelogueException(ErrorCode.CANNOT_PUBLISH_TRAVELOGUE);
@@ -195,6 +208,32 @@ public class Travelogue extends BaseTimeEntity {
 
 	public void addViewCount() {
 		this.viewCount++;
+	}
+
+	public void updateSubTravelogues(SubTravelogue newSubTravelogue) {
+		removeOldSubTravelogue(newSubTravelogue.getDay() - MAKE_IDX);
+		List<SubTravelogue> newSubTravelogues = new ArrayList<>(this.subTravelogues);
+		newSubTravelogues.add(newSubTravelogue);
+		changeSubTravelogues(newSubTravelogues);
+	}
+
+	private void removeOldSubTravelogue(int idx) {
+		this.subTravelogues.remove(idx);
+	}
+
+	private void changeSubTravelogues(List<SubTravelogue> newSubTravelogues) {
+		this.subTravelogues.clear();
+		newSubTravelogues.sort((sub1, sub2) -> {
+			int day1 = sub1.getDay();
+			int day2 = sub2.getDay();
+
+			if (day1 > day2) {
+				return 1;
+			} else {
+				return -1;
+			}
+		});
+		this.subTravelogues.addAll(newSubTravelogues);
 	}
 
 }

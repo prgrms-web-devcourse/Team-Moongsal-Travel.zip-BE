@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.image.dto.TravelPhotoCreateReq;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
@@ -45,7 +46,7 @@ public record SubTravelogueCreateReq(
 
         return addresses.stream()
             .map(TempAddress::toAddress)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private List<TravelPhoto> toTravelPhotos() {
@@ -55,6 +56,6 @@ public record SubTravelogueCreateReq(
 
         return travelPhotoCreateReqs.stream()
             .map(TravelPhotoCreateReq::toEntity)
-            .toList();
+            .collect(Collectors.toList());
     }
 }

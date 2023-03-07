@@ -23,6 +23,7 @@ import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
+import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueUpdate;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.global.error.ErrorCode;
 
@@ -140,6 +141,19 @@ public class SubTravelogue extends BaseTimeEntity {
         Assert.notNull(addresses, "주소를 확인해주세요");
         Assert.notNull(transportationSet, "이동수단을 확인해주세요");
         Assert.notNull(photos, "이미지를 확인해주세요");
+    }
+
+    public void update(SubTravelogueUpdate subTravelogueUpdate) {
+        this.title = subTravelogueUpdate.title();
+        this.content = subTravelogueUpdate.content();
+        this.addresses = subTravelogueUpdate.addresses();
+        this.transportationSet = subTravelogueUpdate.transportationSet();
+        updatePhotos(subTravelogueUpdate.travelPhotoCreateReqs());
+    }
+
+    private void updatePhotos(List<TravelPhoto> newPhotos) {
+        this.photos.clear();
+        this.photos.addAll(newPhotos);
     }
 
     private boolean cannotPublish() {
