@@ -59,10 +59,19 @@ public class TravelogueService {
     return TravelogueCustomSlice.toDto(travelogueRepository.search(keyword, pageable));
   }
 
-  public TravelogueDetailRes getTravelogueDetail(Long travelogueId) {
+  @Transactional
+  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount) {
+    setViewCount(travelogueId, canAddViewCount);
     return TravelogueDetailRes.toDto(
         travelogueRepository.getTravelogueDetail(travelogueId)
             .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
+  }
+
+  private void setViewCount(Long travelogueId, boolean canAddViewCount) {
+    if (canAddViewCount) {
+      Travelogue findTravelogue = getTravelogue(travelogueId);
+      findTravelogue.addViewCount();
+    }
   }
 
   public TravelogueCustomSlice<TravelogueSimpleRes> filtering(String keyword, Pageable pageable,
