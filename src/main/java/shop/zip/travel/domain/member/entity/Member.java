@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import java.time.LocalDate;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
@@ -42,8 +43,8 @@ public class Member extends BaseTimeEntity {
   @Column
   private String provider;
 
-  @Column
-  private Long providerId;
+  @Lob
+  private String providerId;
 
   protected Member() {
   }
@@ -58,7 +59,7 @@ public class Member extends BaseTimeEntity {
     this.isEmail = isEmail;
     this.role = role;
     this.provider = provider;
-    this.providerId = Long.parseLong(providerId);
+    this.providerId = providerId;
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
@@ -155,7 +156,7 @@ public class Member extends BaseTimeEntity {
     return provider;
   }
 
-  public Long getProviderId() {
+  public String getProviderId() {
     return providerId;
   }
 }
