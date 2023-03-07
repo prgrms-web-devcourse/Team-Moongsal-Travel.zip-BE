@@ -67,8 +67,8 @@ dependencies {
 
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0-b170201.1204'
 
-    //webflux
-    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.5.5'
+    // logback
+    implementation 'ca.pjer:logback-awslogs-appender:1.6.0'
 }
 
 ext {
