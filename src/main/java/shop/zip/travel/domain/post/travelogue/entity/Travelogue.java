@@ -160,14 +160,21 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	private void validThumbnail(String thumbnail){
-		if(thumbnail.isBlank()){
+		if (thumbnail.isBlank()) {
 			throw new IllegalArgumentException("썸네일은 빈 값으로 들어올 수 없습니다. 정확한 url이 필요합니다.");
 		}
 	}
 
 	public void addSubTravelogue(SubTravelogue subTravelogue) {
 		verifySubTravelogueDuplicate(subTravelogue);
+		verifySubTraveloguesSize();
 		this.subTravelogues.add(subTravelogue);
+	}
+
+	private void verifySubTraveloguesSize() {
+		if (this.subTravelogues.size() > this.period.getNights() + 1) {
+			throw new IllegalArgumentException("이미 모든 서브 트레블로그가 작성되어 있습니다.");
+		}
 	}
 
 	private void verifySubTravelogueDuplicate(SubTravelogue subTravelogue) {
