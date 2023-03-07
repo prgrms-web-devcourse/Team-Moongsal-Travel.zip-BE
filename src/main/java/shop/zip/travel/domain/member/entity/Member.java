@@ -39,17 +39,17 @@ public class Member extends BaseTimeEntity {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @Enumerated(EnumType.STRING)
-  private Provider provider;
+  @Column
+  private String provider;
 
   @Column
-  private String providerId;
+  private Long providerId;
 
   protected Member() {
   }
 
   public Member(String email, String password, String nickname, String birthYear,
-      String profileImageUrl, boolean isEmail, Role role, Provider provider, String providerId) {
+      String profileImageUrl, boolean isEmail, Role role, String provider, String providerId) {
     this.email = email;
     this.password = password;
     this.nickname = nickname;
@@ -58,7 +58,7 @@ public class Member extends BaseTimeEntity {
     this.isEmail = isEmail;
     this.role = role;
     this.provider = provider;
-    this.providerId = providerId;
+    this.providerId = Long.parseLong(providerId);
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
@@ -151,11 +151,11 @@ public class Member extends BaseTimeEntity {
     return role;
   }
 
-  public Provider getProvider() {
+  public String getProvider() {
     return provider;
   }
 
-  public String getProviderId() {
+  public Long getProviderId() {
     return providerId;
   }
 }
