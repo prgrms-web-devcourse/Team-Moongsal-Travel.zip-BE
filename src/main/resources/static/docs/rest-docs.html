@@ -575,6 +575,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_responsefields_8">ResponseFields</a></li>
 </ul>
 </li>
+<li><a href="#게시글-필터링-검색-정렬">게시글 필터링 검색(+인기순 정렬)</a>
+  <ul class="sectlevel2">
+    <li><a href="#_request_16">Request</a></li>
+    <li><a href="#_requestparam_6">RequestParam</a></li>
+    <li><a href="#_response_15">Response</a></li>
+    <li><a href="#_responsefields_9">ResponseFields</a></li>
+  </ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -591,7 +599,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/travelogues HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE1LCJpYXQiOjE2NzgxNzkwNjUsImV4cCI6MTY3ODE4MjY2NX0.W0mCbEk7hWVRtUSUTFqZSKX67dxvguIRNR-F7XCwEEdQBAs-5oGDvLGKf9xPnOT4-9iRTh3270geFovUoLe4tA
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE2LCJpYXQiOjE2NzgxODgxNjUsImV4cCI6MTY3ODE5MTc2NX0.N8tx4JbeF8VAk-ZHTCuGWbHiqiw7_mUFtq_Y6nfB3emMQ4yGPec_UZjxGlqbGO1xyn1eMIPmzfDQb23PZnJEag
 Content-Length: 176
 Host: localhost:8080
 
@@ -685,7 +693,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Length: 30
 
-{"id":47,"nights":-1,"days":0}</code></pre>
+{"id":52,"nights":-1,"days":0}</code></pre>
 </div>
 </div>
 </div>
@@ -736,8 +744,8 @@ Content-Length: 30
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/travelogues/19/publish HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjcsImlhdCI6MTY3ODE3OTA2NSwiZXhwIjoxNjc4MTgyNjY1fQ.z3fOJo8H0DI9XjFYoIsadOvy4isgETwmZF9f6fektEUfJeXdfIiwPkbT7QK6pKM1WnKciotd2NRt3Sip8n4x_Q
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/travelogues/24/publish HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjgsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.SSSogs2ejAzfl-KHSUeBLKBO62XuZkXR-Lv047ZZBZdLRWBhfFij8eYBXAuQ-4sn5tRg-cP26u-SgCQmQmXFBw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -758,7 +766,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Length: 19
 
-{"travelogueId":19}</code></pre>
+{"travelogueId":24}</code></pre>
 </div>
 </div>
 </div>
@@ -856,7 +864,7 @@ Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 677
 
-{"content":[{"travelogueId":14,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0},{"travelogueId":15,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0}],"pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"pageNumber":0,"pageSize":2,"unpaged":false,"paged":true},"size":2,"number":0,"numberOfElements":2,"first":true,"last":true,"empty":false}</code></pre>
+{"content":[{"travelogueId":19,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0},{"travelogueId":20,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0}],"pageable":{"sort":{"empty":true,"unsorted":true,"sorted":false},"offset":0,"pageNumber":0,"pageSize":2,"paged":true,"unpaged":false},"size":2,"number":0,"numberOfElements":2,"first":true,"last":true,"empty":false}</code></pre>
 </div>
 </div>
 </div>
@@ -1008,8 +1016,8 @@ Content-Length: 677
 <h3 id="_request_4"><a class="link" href="#_request_4">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/travelogues/16 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjYsImlhdCI6MTY3ODE3OTA2NSwiZXhwIjoxNjc4MTgyNjY1fQ.sVCI2EIHv484K6ejWpd4N6vmokuEhRWwSbpUiG0GsUerjno4UmONeUyJda_OoUixSbI7fA4cNkKjqxJzXqbqWQ
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/travelogues/21 HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjcsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.BOUX2xl2nyPNI686MRqjuc42MkeNH_-ladw0rxSyQRo7nv8St33-9NPjwa_uwzihtQjuDeeE1MLGdVOfJ-kv1w
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1022,7 +1030,7 @@ Host: localhost:8080</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewCountCookie_16=16; Max-Age=86400; Expires=Wed, 08 Mar 2023 08:51:05 GMT
+Set-Cookie: viewCountCookie_21=21; Max-Age=86400; Expires=Wed, 08 Mar 2023 11:22:44 GMT
 Content-Type: application/json
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
@@ -1032,7 +1040,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Length: 698
 
-{"profileImageUrl":"default","nickname":"nickname","id":16,"title":"일본 오사카 다녀왔어요.","country":"일본","nights":1,"days":2,"totalCost":500000,"subTravelogues":[{"title":"일본 오사카 재밌음","content":"오사카 갔는데 또 가고 싶음","addresses":[{"region":"일본 오사카 유니버셜 스튜디오"}],"transportationSet":["BUS"],"travelPhotoCreateReqs":[]},{"title":"일본 오사카 재밌음","content":"오사카 갔는데 또 가고 싶음","addresses":[{"region":"일본 오사카 유니버셜 스튜디오"}],"transportationSet":["BUS"],"travelPhotoCreateReqs":[]}],"transportations":["BUS"],"countLikes":0,"isLiked":false,"viewCount":1,"bookmarked":false}</code></pre>
+{"profileImageUrl":"default","nickname":"nickname","id":21,"title":"일본 오사카 다녀왔어요.","country":"일본","nights":1,"days":2,"totalCost":500000,"subTravelogues":[{"title":"일본 오사카 재밌음","content":"오사카 갔는데 또 가고 싶음","addresses":[{"region":"일본 오사카 유니버셜 스튜디오"}],"transportationSet":["BUS"],"travelPhotoCreateReqs":[]},{"title":"일본 오사카 재밌음","content":"오사카 갔는데 또 가고 싶음","addresses":[{"region":"일본 오사카 유니버셜 스튜디오"}],"transportationSet":["BUS"],"travelPhotoCreateReqs":[]}],"transportations":["BUS"],"countLikes":0,"isLiked":false,"viewCount":1,"bookmarked":false}</code></pre>
 </div>
 </div>
 </div>
@@ -1170,7 +1178,7 @@ Content-Length: 698
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search?keyword=%EC%9C%A0%EB%8B%88%EB%B2%84%EC%85%9C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODE3OTA2NSwiZXhwIjoxNjc4MTgyNjY1fQ.xqSbThfN_iV2y5ks-UKTClZZTam4ZMIR4ShXpSrqsfZX_BlwkJw6_WGROBiL4zUTKz9qzDteecV3HmM4iHsn4g
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.A0hMMztwkThmjY3QHErd1ZPT7Z0W_qmIc_ur12FXXqwXEPKhXkmWHFyhclDcRhrk088SW8TaTm-EdR0gyJDojw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1209,7 +1217,7 @@ Content-Length: 1102
 
 {
   "content" : [ {
-    "travelogueId" : 12,
+    "travelogueId" : 17,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -1222,7 +1230,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 11,
+    "travelogueId" : 16,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -1235,7 +1243,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 10,
+    "travelogueId" : 15,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -1265,7 +1273,7 @@ Content-Length: 1102
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="json" class="language-json hljs">{
   "content" : [ {
-    "travelogueId" : 12,
+    "travelogueId" : 17,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -1278,7 +1286,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 11,
+    "travelogueId" : 16,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -1291,7 +1299,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 10,
+    "travelogueId" : 15,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -1326,7 +1334,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/info HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjIsImlhdCI6MTY3ODE3OTA2NCwiZXhwIjoxNjc4MTgyNjY0fQ.pA5VdP4UwJnayIYoZFJp3qc0fa2Am08Ql4L92rtoJdJ81AtwsTQoSzC-IKGwwj7h3d6BjmlnZQ15tM20yCPQ9Q
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjIsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.uYAuDZ7_dNo9ejXj6PGb2B1xjeHaAgall62pXTvsI1QHBzCquxrZ77Sq8xqob1prwmzqZaEeGEAbI93lou3KVw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1406,7 +1414,7 @@ Content-Length: 126
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/travelogues?size=2&amp;page=0 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODE3OTA2NCwiZXhwIjoxNjc4MTgyNjY0fQ.97_56Pt71nRDqFUV5Qz6V9zPYCPVNwWXj0XJPEAgnuLdEok2dncsbgpOjCDefU4jSWZH2N2JYm8R-jODuCRgJA
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.8iUQAPIbAc9NjjM2qrPco7-iO_aR-TJqadvQHQYrHUKW6meZcUFHc7yZF-vQbq4KwUAZB997Hy6yIUEA5OkvXA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1568,7 +1576,7 @@ Content-Length: 481
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/temp-travelogues?size=2&amp;page=0 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjYsImlhdCI6MTY3ODE3OTA2NCwiZXhwIjoxNjc4MTgyNjY0fQ.exQXLzcQ6bkqsXQlK6VmVL28OaNIwc9eoRi5DMtMDQpw1OzJZycRRW8v-YzZahtLwdTXuXzmV1OJdk7tPJmViQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjYsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.wUXTPoFLuWbA-ddF31ujTqLpFB13pdj4basdPOdLV7tBmMJ9lHQ-gzuD6UX3D74TMxeKU18FLfk36AiSETlshw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1590,7 +1598,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Length: 227
 
-{"content":[],"pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"pageNumber":0,"pageSize":2,"unpaged":false,"paged":true},"size":2,"number":0,"numberOfElements":0,"first":true,"last":true,"empty":true}</code></pre>
+{"content":[],"pageable":{"sort":{"empty":true,"unsorted":true,"sorted":false},"offset":0,"pageNumber":0,"pageSize":2,"paged":true,"unpaged":false},"size":2,"number":0,"numberOfElements":0,"first":true,"last":true,"empty":true}</code></pre>
 </div>
 </div>
 </div>
@@ -1744,7 +1752,7 @@ Content-Length: 227
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/members/my/settings HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODE3OTA2NCwiZXhwIjoxNjc4MTgyNjY0fQ.c2A56logITwHggj5bup6t4EQwq0euwQ-qqi2KjqnRmlVpDs3gPePEuteOsz4SINoerl8TJwZSupy5zv2Znu94A
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.heRyymF8f8i-vYAmuHZe-a6_Jx6oAWvtDBAvjhK8iMgA3IhQGNk3S7Zd4IDWzBTuKRfXbFqFhvK-Mrfh68xyvQ
 Content-Length: 81
 Host: localhost:8080
 
@@ -1859,7 +1867,7 @@ Content-Length: 135
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/bookmarks HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjMsImlhdCI6MTY3ODE3OTA2NCwiZXhwIjoxNjc4MTgyNjY0fQ.vNNlm9lolutbbqCBj3BHhFz5EZ4vEcWwGNSLxpO8uy_0_-s7NVINh_9X_9DXKbZ4cM4YGoulIn8UbYQ0Tx2nlQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjMsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.oJjZKQNuDETaabZ0KYjxwm81zmjx8tcqdZQV7-3OS-U4fOjTkEjyaCJF-Q-ieglcERmZknJ72T1Dt6HCqP0oVw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1978,7 +1986,7 @@ Content-Length: 300
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/travelogues/1/bookmarks HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODE3OTA2NCwiZXhwIjoxNjc4MTgyNjY0fQ.HVpB78BdW03mejW-jw2YxDDnTNu4Q3GB8kfP7I0hf_qZQoQkuog8zHxK8DKJFQw86RR-qZqpYKzZoMIa6Kqseg
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODE4ODE2MCwiZXhwIjoxNjc4MTkxNzYwfQ.HhVPA-2QeaDs-OYvioe06MkYn-LgHDT5TCczpiWbfKZquqviDpO9_z_PfRb8vcvXhbig5yjuJpHQS6_XPrueKw
 Host: localhost:8080
 Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
@@ -2012,7 +2020,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search?keyword=%EC%9C%A0%EB%8B%88%EB%B2%84%EC%85%9C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODE3OTA2NSwiZXhwIjoxNjc4MTgyNjY1fQ.xqSbThfN_iV2y5ks-UKTClZZTam4ZMIR4ShXpSrqsfZX_BlwkJw6_WGROBiL4zUTKz9qzDteecV3HmM4iHsn4g
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.A0hMMztwkThmjY3QHErd1ZPT7Z0W_qmIc_ur12FXXqwXEPKhXkmWHFyhclDcRhrk088SW8TaTm-EdR0gyJDojw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2051,7 +2059,7 @@ Content-Length: 1102
 
 {
   "content" : [ {
-    "travelogueId" : 12,
+    "travelogueId" : 17,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2064,7 +2072,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 11,
+    "travelogueId" : 16,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2077,7 +2085,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 10,
+    "travelogueId" : 15,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2215,7 +2223,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?minDays=0&amp;maxDays=3&amp;keyword=%EB%98%90+%EA%B0%80%EA%B3%A0+%EC%8B%B6%EC%9D%8C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0LCJpYXQiOjE2NzgxNzkwNjUsImV4cCI6MTY3ODE4MjY2NX0.X3fFuuA9gqH70vl_aYFbzY0K5B6RxSu4Gj3OLLEWXv2RVtYpMTdJ2mPPkp9uIE53hjaael2Rr3eFB2BAMONSiQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE1LCJpYXQiOjE2NzgxODgxNjUsImV4cCI6MTY3ODE5MTc2NX0.3m8yrIKX6mSxXkE9MEd0NiRWpD9gRQjV8mARvjQqMFFYX5v813_eMvIUVbLyQEHfCnEWx94UXej6bHsKNj6wrw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2262,7 +2270,7 @@ Content-Length: 1102
 
 {
   "content" : [ {
-    "travelogueId" : 43,
+    "travelogueId" : 48,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2275,7 +2283,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 42,
+    "travelogueId" : 47,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2288,7 +2296,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 41,
+    "travelogueId" : 46,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2426,7 +2434,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?minCost=0&amp;maxCost=500000&amp;keyword=%EB%98%90+%EA%B0%80%EA%B3%A0+%EC%8B%B6%EC%9D%8C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjExLCJpYXQiOjE2NzgxNzkwNjUsImV4cCI6MTY3ODE4MjY2NX0.dFuxmi5vHVOeDFSxqQ9qKs0MxhoUWnsUiKvOV84yVz_SjxRDzmMftS5X51HVuuC2mb-cbpf3p2GU9aYWufoz_w
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEyLCJpYXQiOjE2NzgxODgxNjQsImV4cCI6MTY3ODE5MTc2NH0.P9C7kZRMG_Ai5wR607_Fi21go3YTMesgyWnRoMeD88qmqQU17TswOh1fz-50o6WLQzLu57ybqaxdhhEcuUgHaA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2473,7 +2481,7 @@ Content-Length: 1102
 
 {
   "content" : [ {
-    "travelogueId" : 34,
+    "travelogueId" : 39,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2486,7 +2494,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 33,
+    "travelogueId" : 38,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2499,7 +2507,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 32,
+    "travelogueId" : 37,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2637,7 +2645,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?minDays=0&amp;maxDays=3&amp;minCost=0&amp;maxCost=500000&amp;keyword=%EB%98%90+%EA%B0%80%EA%B3%A0+%EC%8B%B6%EC%9D%8C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE4LCJpYXQiOjE2NzgxNzkwNjUsImV4cCI6MTY3ODE4MjY2NX0.maL7C1velG0MjdGAnRFrK4F98P05aTLgVSnoesxfxpFEYSmmMzALFAoZnQyYIro7RrT629Jaq3c7gBkceJQiGQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE5LCJpYXQiOjE2NzgxODgxNjUsImV4cCI6MTY3ODE5MTc2NX0.YrFAmjilRzbmDJuJnR9MEKxqoVBLduOFK5VkR8ZW9Ee9PqXpwr0e3aZm44touqqws0RnKIESRghk9jMQuOFC7w
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2692,7 +2700,7 @@ Content-Length: 1102
 
 {
   "content" : [ {
-    "travelogueId" : 56,
+    "travelogueId" : 61,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2705,7 +2713,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 55,
+    "travelogueId" : 60,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2718,7 +2726,7 @@ Content-Length: 1102
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 54,
+    "travelogueId" : 59,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2835,27 +2843,273 @@ Content-Length: 1102
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지인지의 여부</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지인지의 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 없는지의 여부</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 없는지의 여부</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>이동준 킹왕짱</p>
 </div>
 </div>
 </div>
+  <div class="sect1">
+    <h2 id="게시글-필터링-검색-정렬"><a class="link" href="#게시글-필터링-검색-정렬">게시글 필터링 검색(+인기순 정렬)</a></h2>
+    <div class="sectionbody">
+      <div class="sect2">
+        <h3 id="_request_16"><a class="link" href="#_request_16">Request</a></h3>
+        <div class="listingblock">
+          <div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?keyword=%EC%9D%BC%EB%B3%B8&amp;sort=popular HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODE4ODE2MywiZXhwIjoxNjc4MTkxNzYzfQ.LCc33sHOIc31cWViJ9T_1PEkMizt6rWAPtlA0IMemf2EyZI54K_BlcRovE40kxuS6GbD7FkIfagtBeErWk5qdA
+Host: localhost:8080</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_requestparam_6"><a class="link" href="#_requestparam_6">RequestParam</a></h3>
+        <table class="tableblock frame-all grid-all stretch">
+          <colgroup>
+            <col style="width: 50%;">
+            <col style="width: 50%;">
+          </colgroup>
+          <thead>
+          <tr>
+            <th class="tableblock halign-left valign-top">Parameter</th>
+            <th class="tableblock halign-left valign-top">Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>keyword</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">검색 키워드</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">popular</p></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sect2">
+        <h3 id="_response_15"><a class="link" href="#_response_15">Response</a></h3>
+        <div class="listingblock">
+          <div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 1099
+
+{
+  "content" : [ {
+    "travelogueId" : 1,
+    "title" : "일본 오사카 다녀왔어요.",
+    "nights" : 1,
+    "days" : 2,
+    "totalCost" : 500000,
+    "country" : "일본",
+    "thumbnail" : "www.naver.com",
+    "member" : {
+      "nickname" : "nickname",
+      "profileImageUrl" : "default"
+    },
+    "likeCount" : 1
+  }, {
+    "travelogueId" : 3,
+    "title" : "일본 오사카 다녀왔어요.",
+    "nights" : 1,
+    "days" : 2,
+    "totalCost" : 500000,
+    "country" : "일본",
+    "thumbnail" : "www.naver.com",
+    "member" : {
+      "nickname" : "nickname",
+      "profileImageUrl" : "default"
+    },
+    "likeCount" : 0
+  }, {
+    "travelogueId" : 2,
+    "title" : "일본 오사카 다녀왔어요.",
+    "nights" : 1,
+    "days" : 2,
+    "totalCost" : 500000,
+    "country" : "일본",
+    "thumbnail" : "www.naver.com",
+    "member" : {
+      "nickname" : "nickname",
+      "profileImageUrl" : "default"
+    },
+    "likeCount" : 0
+  } ],
+  "pageable" : "INSTANCE",
+  "size" : 3,
+  "number" : 0,
+  "numberOfElements" : 3,
+  "first" : true,
+  "last" : true,
+  "empty" : false
+}</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="sect2">
+        <h3 id="_responsefields_9"><a class="link" href="#_responsefields_9">ResponseFields</a></h3>
+        <table class="tableblock frame-all grid-all stretch">
+          <colgroup>
+            <col style="width: 33.3333%;">
+            <col style="width: 33.3333%;">
+            <col style="width: 33.3334%;">
+          </colgroup>
+          <thead>
+          <tr>
+            <th class="tableblock halign-left valign-top">Path</th>
+            <th class="tableblock halign-left valign-top">Type</th>
+            <th class="tableblock halign-left valign-top">Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].travelogueId</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">Travelogue id</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].title</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">Travelogue 제목</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].nights</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">숙박일</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">
+              <code>content[].days</code></p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">전체일</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].totalCost</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">여행 총 경비</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].country</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">여행한 나라</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].thumbnail</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">Travelogue 썸네일</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.nickname</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 닉네임</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].likeCount</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">
+              <code>pageable</code></p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 객체</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">조회된 데이터 갯수</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>first</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">첫번째 페이지인지의 여부</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지인지의 여부</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>empty</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 없는지의 여부</p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-03-07 17:41:30 +0900
+  Last updated 2023-03-07 20:22:07 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
