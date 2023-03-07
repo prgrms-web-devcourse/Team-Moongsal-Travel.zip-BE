@@ -1,12 +1,12 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSearchFilter;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
@@ -55,30 +55,34 @@ public class TravelogueService {
         .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
   }
 
-  public List<TravelogueSimpleRes> search(Long lastTravelogue, String keyword, String orderType,
-      int size) {
-    return travelogueRepository.search(lastTravelogue, keyword, orderType, size);
+  public TravelogueCustomSlice<TravelogueSimpleRes> search(String keyword, Pageable pageable) {
+    return TravelogueCustomSlice.toDto(travelogueRepository.search(keyword, pageable));
   }
 
   @Transactional
-  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
-      Long memberId) {
+  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount, Long memberId) {
     setViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
 
     return TravelogueDetailRes.toDto(
         travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)),
-        countLikes, isLiked);
+            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
   }
 
-	private void setViewCount(Long travelogueId, boolean canAddViewCount) {
-		if (canAddViewCount) {
-			Travelogue findTravelogue = getTravelogue(travelogueId);
-			findTravelogue.addViewCount();
-		}
-	}
+  private void setViewCount(Long travelogueId, boolean canAddViewCount) {
+    if (canAddViewCount) {
+      Travelogue findTravelogue = getTravelogue(travelogueId);
+      findTravelogue.addViewCount();
+    }
+  }
+
+  public TravelogueCustomSlice<TravelogueSimpleRes> filtering(String keyword, Pageable pageable,
+      TravelogueSearchFilter searchFilter) {
+    return TravelogueCustomSlice.toDto(
+        travelogueRepository.filtering(keyword, pageable, searchFilter));
+  }
 
 }
+
 

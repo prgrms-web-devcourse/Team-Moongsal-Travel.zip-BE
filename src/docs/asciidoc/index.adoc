@@ -189,3 +189,81 @@ include::{snippets}/bookmarking/http-request.adoc[]
 === Response
 
 include::{snippets}/bookmarking/http-response.adoc[]
+
+= 검색
+
+[[게시글-검색-API]]
+== 게시글 검색 API
+
+=== Request
+
+include::{snippets}/get-travelogues-searched/http-request.adoc[]
+
+=== RequestParam
+
+include::{snippets}/get-travelogues-searched/query-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/get-travelogues-searched/http-response.adoc[]
+
+=== ResponseFields
+
+include::{snippets}/get-travelogues-filtered-period/response-fields.adoc[]
+
+[[게시글-기간-필터링-검색-API]]
+== 게시글 (기간)필터링 검색 API
+
+=== Request
+
+include::{snippets}/get-travelogues-filtered-period/http-request.adoc[]
+
+=== RequestParam
+
+include::{snippets}/get-travelogues-filtered-period/query-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/get-travelogues-filtered-period/http-response.adoc[]
+
+=== ResponseFidlds
+
+include::{snippets}/get-travelogues-filtered-period/response-fields.adoc[]
+
+[[게시글-여행경비-필터링-검색-API]]
+== 게시글 (여행 경비)필터링 검색 API
+
+=== Request
+
+include::{snippets}/get-travelogues-filtered-cost/http-request.adoc[]
+
+=== RequestParam
+
+include::{snippets}/get-travelogues-filtered-cost/query-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/get-travelogues-filtered-cost/http-response.adoc[]
+
+=== ResponseFields
+
+include::{snippets}/get-travelogues-filtered-cost/response-fields.adoc[]
+
+[[게시글-필터링-검색-API]]
+== 게시글 필터링 검색 API
+
+=== Request
+
+include::{snippets}/get-travelogues-filtered/http-request.adoc[]
+
+=== RequestParam
+
+include::{snippets}/get-travelogues-filtered/query-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/get-travelogues-filtered/http-response.adoc[]
+
+=== ResponseFields
+
+include::{snippets}/get-travelogues-filtered/response-fields.adoc[]

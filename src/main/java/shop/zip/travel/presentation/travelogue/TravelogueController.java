@@ -2,10 +2,7 @@ package shop.zip.travel.presentation.travelogue;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSearchFilter;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
@@ -26,7 +24,6 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TraveloguePublishRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
-import shop.zip.travel.domain.post.util.CookieUtil;
 import shop.zip.travel.domain.post.util.CookieUtil;
 import shop.zip.travel.global.security.UserPrincipal;
 
@@ -90,14 +87,25 @@ public class TravelogueController {
   }
 
   @GetMapping("/search")
-  public ResponseEntity<List<TravelogueSimpleRes>> search(
+  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> search(
       @RequestParam(name = "keyword", required = false) String keyword,
-      @RequestParam(name = "lastTravelogue", required = false) Long lastTravelogue,
-      @RequestParam(name = "orderType") String orderType, @RequestParam(name = "size") int size) {
-    List<TravelogueSimpleRes> travelogueSimpleResList = travelogueService.search(lastTravelogue,
-        keyword, orderType, size);
+      @PageableDefault(size = 5) Pageable pageable
+  ) {
+    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
+        travelogueService.search(keyword.trim(), pageable);
 
     return ResponseEntity.ok(travelogueSimpleResList);
   }
 
+  @GetMapping("/search/filters")
+  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> filtering(
+      @RequestParam(name = "keyword") String keyword,
+      @PageableDefault(size = 5) Pageable pageable,
+      TravelogueSearchFilter searchFilter
+  ) {
+    TravelogueCustomSlice<TravelogueSimpleRes> filtered = travelogueService.filtering(keyword,
+        pageable,
+        searchFilter);
+    return ResponseEntity.ok(filtered);
+  }
 }
