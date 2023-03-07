@@ -1,6 +1,5 @@
 package shop.zip.travel.domain.post.travelogue.dto.res;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -23,12 +22,11 @@ public record TravelogueDetailRes(
     Set<Transportation> transportations,
     Long countLikes,
     boolean isLiked,
-    Long viewCount
+    Long viewCount,
+    Boolean bookmarked
 ) {
 
-  public static TravelogueDetailRes toDto(Travelogue travelogue, Long countLikes, Boolean isLiked) {
-    long nights = ChronoUnit.DAYS.between(travelogue.getPeriod().getStartDate(),
-        travelogue.getPeriod().getEndDate());
+  public static TravelogueDetailRes toDto(Travelogue travelogue, Long countLikes, Boolean isLiked,  Boolean isBookmarked) {
 
     return new TravelogueDetailRes(
         travelogue.getMember().getProfileImageUrl(),
@@ -36,8 +34,8 @@ public record TravelogueDetailRes(
         travelogue.getId(),
         travelogue.getTitle(),
         travelogue.getCountry().getName(),
-        nights,
-        nights + 1,
+        travelogue.getPeriod().getNights(),
+        travelogue.getPeriod().getNights() + 1,
         travelogue.getCost().getTotal(),
         travelogue.getSubTravelogues()
             .stream()
@@ -50,8 +48,10 @@ public record TravelogueDetailRes(
             .collect(Collectors.toSet()),
         countLikes,
         isLiked,
-        travelogue.getViewCount()
+        travelogue.getViewCount(),
+        isBookmarked
     );
+
   }
 
 }

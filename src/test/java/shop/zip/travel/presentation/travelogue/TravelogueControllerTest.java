@@ -246,6 +246,8 @@ class TravelogueControllerTest {
                     .description("좋아요 갯수"),
                 fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN)
                     .description("좋아요 여부"),
+                fieldWithPath("bookmarked").type(JsonFieldType.BOOLEAN)
+                    .description("북마크 여부"),
                 fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue 리스트"),
                 fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
