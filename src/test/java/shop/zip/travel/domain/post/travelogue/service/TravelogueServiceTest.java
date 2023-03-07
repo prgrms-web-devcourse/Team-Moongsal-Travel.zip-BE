@@ -19,6 +19,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.fake.FakeTravelogue;
@@ -45,11 +46,15 @@ class TravelogueServiceTest {
   private TravelogueRepository travelogueRepository;
 
   @Mock
+  private BookmarkRepository bookmarkRepository;
+
+  @Mock
   private MemberService memberService;
 
-	private Long memberId = 1L;
-	Long countLikes = 1L;
-	boolean isLiked = true;
+  private final Long memberId = 1L;
+  private final Long countLikes = 1L;
+  private final boolean isLiked = true;
+  private final boolean isBookmarked = false;
 
   private static final Member member = new Member("user@gmail.com", "password1!", "nickname",
       "1998");
@@ -139,16 +144,16 @@ class TravelogueServiceTest {
     when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
     when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
         Optional.of(travelogue));
-		when(travelogueRepository.isLiked(travelogue.getId(), memberId))
-				.thenReturn(isLiked);
-		when(travelogueRepository.countLikes(travelogue.getId())).thenReturn(countLikes);
-
+    when(travelogueRepository.isLiked(travelogue.getId(), memberId))
+        .thenReturn(isLiked);
+    when(travelogueRepository.countLikes(travelogue.getId())).thenReturn(countLikes);
 
     TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
         travelogue.getId(),
         true,
-				memberId);
-    TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue, countLikes, isLiked);
+        memberId);
+    TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue, countLikes,
+        isLiked, isBookmarked);
 
     assertThat(actualTravelogueDetail).isEqualTo(expectedTravelogueDetail);
   }
@@ -166,6 +171,7 @@ class TravelogueServiceTest {
     when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
     when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
         Optional.of(travelogue));
+    when(bookmarkRepository.exists(any(), any())).thenReturn(isBookmarked);
 
 		TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
 				travelogue.getId(),
