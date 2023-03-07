@@ -8,12 +8,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
+import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.oauth.CustomOAuth2UserService;
-import shop.zip.travel.global.oauth.OAuth2AuthenticationSuccessHandler;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
 @Configuration
@@ -36,6 +36,7 @@ public class SecurityConfig {
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
         .requestMatchers("/api/auth/**")
+        .requestMatchers("/docs/rest-docs.html")
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
@@ -51,15 +52,14 @@ public class SecurityConfig {
     http
         .httpBasic().disable()
         .csrf().disable()
+        .formLogin().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers("/docs/index.html").permitAll()
             .anyRequest().authenticated()
         )
-
-        .oauth2Login()
-        .authorizationEndpoint().baseUri("/oauth2/authorize")
+        .oauth2Login().userInfoEndpoint().userService(customOAuth2UserService)
         .and()
         .redirectionEndpoint()
         .baseUri("/*/*/oauth2/code/*")
@@ -69,9 +69,8 @@ public class SecurityConfig {
         .successHandler(oauth2AuthenticationSuccessHandler)
         .and()
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-            OAuth2LoginAuthenticationFilter.class)
-    ;
-
+            UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
     return http.build();
   }
 

@@ -17,6 +17,7 @@ import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
 public class DummyGenerator {
@@ -52,38 +53,106 @@ public class DummyGenerator {
 	public static Travelogue createTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
 		subTravelogues.add(createSubTravelogue());
+    subTravelogues.add(createSubTravelogue());
 
 		return new Travelogue(
 				createPeriod(),
 				"일본 오사카 다녀왔어요.",
 				createCountry(),
 				"www.naver.com",
-			createCost(),
-			true,
-			subTravelogues,
-			member
+				createCost(),
+				true,
+				subTravelogues,
+				member
 		);
 	}
 
-	public static SubTravelogue createSubTravelogue(){
+	public static Travelogue createTravelogueWithSubTravelogues(List<SubTravelogue> subTravelogues,
+			Member member) {
+		return new Travelogue(
+				createPeriod(),
+				"일본 오사카 다녀왔어요.",
+				createCountry(),
+				"www.naver.com",
+				createCost(),
+				true,
+				subTravelogues,
+				member
+		);
+	}
+
+
+	public static Travelogue createTravelogueWithTitle(String title, Member member) {
+		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
+		subTravelogues.add(createSubTravelogue());
+
+		return new Travelogue(
+				createPeriod(),
+				title,
+				createCountry(),
+				"www.naver.com",
+				createCost(),
+				true,
+				subTravelogues,
+				member
+		);
+	}
+
+	public static Travelogue createTravelogueWithCountry(String country, Member member) {
+		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
+		subTravelogues.add(createSubTravelogue());
+
+		return new Travelogue(
+				createPeriod(),
+				"어디 다녀왔게",
+				new Country(country),
+				"www.naver.com",
+				createCost(),
+				true,
+				subTravelogues,
+				member
+		);
+	}
+
+	public static SubTravelogue createSubTravelogue() {
 		return new SubTravelogue(
-			"일본 오사카 재밌음",
-			"오사카 갔는데 또 가고 싶음",
-			List.of(createAddress()),
-			Set.of(Transportation.BUS),
-			new ArrayList<>()
+				"일본 오사카 재밌음",
+				"오사카 갔는데 또 가고 싶음",
+				List.of(createAddress()),
+				Set.of(Transportation.BUS),
+				new ArrayList<>()
 		);
 	}
 
-	public static Address createAddress(){
+	public static SubTravelogue createSubTravelogueWithContent(String content) {
+		return new SubTravelogue(
+				"일본 오사카 재밌음",
+				content,
+				List.of(createAddress()),
+				Set.of(Transportation.BUS),
+				new ArrayList<>()
+		);
+	}
+
+	public static SubTravelogue createSubTravelogueWithRegion(String region) {
+		return new SubTravelogue(
+				"일본 오사카 재밌음",
+				"오사카 갔는데 또 가고 싶음",
+				List.of(new Address(region)),
+				Set.of(Transportation.BUS),
+				new ArrayList<>()
+		);
+	}
+
+	public static Address createAddress() {
 		return new Address(
 				"일본 오사카 유니버셜 스튜디오"
 		);
 	}
 
-	public static Period createPeriod(){
+	public static Period createPeriod() {
 		return new Period(
-			LocalDate.of(2023, 2, 2),
+				LocalDate.of(2023, 2, 2),
 			LocalDate.of(2023, 2, 3)
 		);
 	}
@@ -109,7 +178,8 @@ public class DummyGenerator {
 				travelogue.getCountry().getName(),
 				travelogue.getThumbnail(),
 				travelogue.getMember().getNickname(),
-				travelogue.getMember().getProfileImageUrl()
+				travelogue.getMember().getProfileImageUrl(),
+				256L
 		);
 	}
 
@@ -159,4 +229,9 @@ public class DummyGenerator {
 				new ArrayList<>()
 		);
 	}
+
+	public static TravelogueSimpleRes createTravelogueSimpleRes(Travelogue travelogue) {
+		return TravelogueSimpleRes.toDto(createTravelogueSimple(travelogue));
+	}
+
 }

@@ -11,11 +11,15 @@ public record TravelogueSimpleRes(
 		Long totalCost,
 		String country,
 		String thumbnail,
-		MemberSimpleRes member
+		MemberSimpleRes member,
+		Long likeCount
 ) {
 
-	public static TravelogueSimpleRes toDto(TravelogueSimple travelogueSimple) {
+	public static TravelogueSimpleRes toDto(
+			TravelogueSimple travelogueSimple
+	) {
 		long nights = travelogueSimple.period().getNights();
+		Long likeCount = travelogueSimple.likeCount();
 
 		return new TravelogueSimpleRes(
 				travelogueSimple.travelogueId(),
@@ -25,7 +29,8 @@ public record TravelogueSimpleRes(
 				travelogueSimple.totalCost(),
 				travelogueSimple.country(),
 				travelogueSimple.thumbnail(),
-				MemberSimpleRes.toDto(travelogueSimple)
+				MemberSimpleRes.toDto(travelogueSimple),
+				likeCount
 		);
 	}
 }
