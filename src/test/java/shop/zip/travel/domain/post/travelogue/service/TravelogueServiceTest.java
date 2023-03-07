@@ -47,6 +47,10 @@ class TravelogueServiceTest {
   @Mock
   private MemberService memberService;
 
+	private Long memberId = 1L;
+	Long countLikes = 1L;
+	boolean isLiked = true;
+
   private static final Member member = new Member("user@gmail.com", "password1!", "nickname",
       "1998");
 
@@ -135,11 +139,16 @@ class TravelogueServiceTest {
     when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
     when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
         Optional.of(travelogue));
+		when(travelogueRepository.isLiked(travelogue.getId(), memberId))
+				.thenReturn(isLiked);
+		when(travelogueRepository.countLikes(travelogue.getId())).thenReturn(countLikes);
+
 
     TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
         travelogue.getId(),
-        true);
-    TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue);
+        true,
+				memberId);
+    TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue, countLikes, isLiked);
 
     assertThat(actualTravelogueDetail).isEqualTo(expectedTravelogueDetail);
   }
@@ -158,9 +167,10 @@ class TravelogueServiceTest {
     when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
         Optional.of(travelogue));
 
-    TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
-        travelogue.getId(),
-        true);
+		TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
+				travelogue.getId(),
+				true,
+				memberId);
 
     long actualViewCount = 1L;
 

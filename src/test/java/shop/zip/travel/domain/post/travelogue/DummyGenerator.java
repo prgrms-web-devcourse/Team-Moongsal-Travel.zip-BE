@@ -53,6 +53,7 @@ public class DummyGenerator {
 	public static Travelogue createTravelogue(Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
 		subTravelogues.add(createSubTravelogue());
+    subTravelogues.add(createSubTravelogue());
 
 		return new Travelogue(
 				createPeriod(),
@@ -177,7 +178,8 @@ public class DummyGenerator {
 				travelogue.getCountry().getName(),
 				travelogue.getThumbnail(),
 				travelogue.getMember().getNickname(),
-				travelogue.getMember().getProfileImageUrl()
+				travelogue.getMember().getProfileImageUrl(),
+				256L
 		);
 	}
 

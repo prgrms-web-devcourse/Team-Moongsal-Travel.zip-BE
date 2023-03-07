@@ -56,11 +56,12 @@ public class TravelogueController {
   public ResponseEntity<TravelogueDetailRes> get(
       HttpServletRequest request,
       HttpServletResponse response,
-      @PathVariable Long travelogueId
+      @PathVariable Long travelogueId,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     boolean canAddViewCount = CookieUtil.canAddViewCount(request, response, travelogueId);
     TravelogueDetailRes travelogueDetail =
-        travelogueService.getTravelogueDetail(travelogueId, canAddViewCount);
+        travelogueService.getTravelogueDetail(travelogueId, canAddViewCount, userPrincipal.getUserId());
 
     return ResponseEntity.ok(travelogueDetail);
   }
@@ -77,9 +78,11 @@ public class TravelogueController {
 
   @PatchMapping("/{travelogueId}/publish")
   public ResponseEntity<TraveloguePublishRes> publish(
-      @PathVariable Long travelogueId
+      @PathVariable Long travelogueId,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
-    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId);
+    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId,
+        userPrincipal.getUserId());
     return ResponseEntity.ok(traveloguePublishRes);
   }
 

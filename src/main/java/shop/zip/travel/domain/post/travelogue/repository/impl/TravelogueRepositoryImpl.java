@@ -1,9 +1,11 @@
 package shop.zip.travel.domain.post.travelogue.repository.impl;
 
+import static com.querydsl.core.types.ExpressionUtils.count;
 import static org.springframework.util.StringUtils.hasText;
 import static shop.zip.travel.domain.member.entity.QMember.member;
 import static shop.zip.travel.domain.post.subTravelogue.data.QAddress.address;
 import static shop.zip.travel.domain.post.subTravelogue.entity.QSubTravelogue.subTravelogue;
+import static shop.zip.travel.domain.post.travelogue.entity.QLike.like;
 import static shop.zip.travel.domain.post.travelogue.entity.QTravelogue.travelogue;
 
 import com.querydsl.core.types.OrderSpecifier;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Repository;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSearchFilter;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
+import shop.zip.travel.domain.post.travelogue.entity.QLike;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.querydsl.TravelogueRepositoryQuerydsl;
 
@@ -58,13 +61,17 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
                 travelogue.country.name,
                 travelogue.thumbnail,
                 travelogue.member.nickname,
-                travelogue.member.profileImageUrl
+                travelogue.member.profileImageUrl,
+                count(like)
             )
         )
         .from(travelogue)
         .where(travelogue.id.in(travelogueIds).and(travelogue.isPublished.isTrue()))
         .leftJoin(travelogue.member, member)
+        .leftJoin(like)
+        .on(like.travelogue.id.eq(travelogue.id))
         .orderBy(travelogue.createDate.desc())
+        .groupBy(travelogue.id)
         .fetch();
 
     return new SliceImpl<>(travelogueSimpleList.stream()
@@ -93,7 +100,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
                 travelogue.country.name,
                 travelogue.thumbnail,
                 travelogue.member.nickname,
-                travelogue.member.profileImageUrl
+                travelogue.member.profileImageUrl,
+                count(like)
             )
         )
         .from(travelogue)
@@ -103,7 +111,10 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
             travelogue.isPublished.isTrue()
         )
         .leftJoin(travelogue.member, member)
+        .leftJoin(like)
+        .on(like.travelogue.id.eq(travelogue.id))
         .orderBy(getOrder(pageable.getSort()))
+        .groupBy(travelogue.id)
         .fetch();
 
     return new SliceImpl<>(travelogueSimpleList.stream()
@@ -208,6 +219,25 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return Objects.nonNull(booleanExpression1) && Objects.nonNull(booleanExpression2);
   }
 
+  public boolean isLiked(Long travelogueId, Long memberId) {
+    Integer countLike = jpaQueryFactory.selectOne()
+        .from(QLike.like)
+        .where(QLike.like.travelogue.id.eq(travelogueId)
+            .and(QLike.like.member.id.eq(memberId)))
+        .fetchFirst();
+
+    return countLike != null;
+  }
+
+  public Long countLikes(Long travelogueId) {
+    Long countLikes = jpaQueryFactory.select(count(QLike.like))
+        .from(QLike.like)
+        .where(QLike.like.travelogue.id.eq(travelogueId))
+        .groupBy(QLike.like.travelogue.id)
+        .fetchOne();
+
+    return (countLikes == null) ? 0 : countLikes;
+  }
 
 }
 

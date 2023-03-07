@@ -12,5 +12,9 @@ public interface TravelogueRepositoryQuerydsl {
       TravelogueSearchFilter searchFilter);
 
   Slice<TravelogueSimpleRes> search(String keyword, Pageable pageable);
+
+  boolean isLiked(Long travelogueId, Long memberId);
+
+  Long countLikes(Long travelogueId);
 }
 

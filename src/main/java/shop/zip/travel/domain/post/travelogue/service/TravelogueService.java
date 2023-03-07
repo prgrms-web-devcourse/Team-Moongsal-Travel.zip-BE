@@ -60,11 +60,15 @@ public class TravelogueService {
   }
 
   @Transactional
-  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount) {
+  public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount, Long memberId) {
     setViewCount(travelogueId, canAddViewCount);
+    Long countLikes = travelogueRepository.countLikes(travelogueId);
+    boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
+
     return TravelogueDetailRes.toDto(
         travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
+            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND))
+        , countLikes, isLiked);
   }
 
   private void setViewCount(Long travelogueId, boolean canAddViewCount) {
