@@ -8,17 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.member.dto.request.MemberUpdateReq;
 import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.service.MemberMyPageService;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailForUpdateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
-import shop.zip.travel.domain.post.travelogue.service.TravelogueMyTempService;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -28,12 +24,9 @@ public class MemberMyPageController {
   private static final int DEFAULT_SIZE = 5;
 
   private final MemberMyPageService memberService;
-  private final TravelogueMyTempService travelogueTempService;
 
-  public MemberMyPageController(MemberMyPageService memberService,
-      TravelogueMyTempService travelogueTempService) {
+  public MemberMyPageController(MemberMyPageService memberService) {
     this.memberService = memberService;
-    this.travelogueTempService = travelogueTempService;
   }
 
   @GetMapping("/info")
@@ -43,17 +36,6 @@ public class MemberMyPageController {
     MemberInfoRes memberInfo = memberService.getInfoBy(userPrincipal.getUserId());
 
     return ResponseEntity.ok(memberInfo);
-  }
-
-  @GetMapping("/travelogues")
-  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getMyTravelogues(
-      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
-      @AuthenticationPrincipal UserPrincipal userPrincipal
-  ) {
-    TravelogueCustomSlice<TravelogueSimpleRes> travelogues =
-        memberService.getTravelogues(userPrincipal.getUserId(), pageable);
-
-    return ResponseEntity.ok(travelogues);
   }
 
   @PatchMapping("/settings")
@@ -76,27 +58,6 @@ public class MemberMyPageController {
         memberService.getMyBookmarkedList(userPrincipal.getUserId(), pageable);
 
     return ResponseEntity.ok(travelogues);
-  }
-
-  @GetMapping("/temp-travelogues")
-  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getTempAll(
-      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
-      @AuthenticationPrincipal UserPrincipal userPrincipal) {
-    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
-        travelogueTempService.getMyTempTravelogues(userPrincipal.getUserId(), pageable);
-
-    return ResponseEntity.ok(travelogueSimpleResList);
-  }
-
-  @GetMapping("/travelogues/{travelogueId}")
-  public ResponseEntity<TravelogueDetailForUpdateRes> getDetailForUpdate(
-      @PathVariable Long travelogueId,
-      @AuthenticationPrincipal UserPrincipal userPrincipal
-  ) {
-    TravelogueDetailForUpdateRes travelogueUpdateDetailRes =
-        memberService.getTravelogueForUpdate(travelogueId, userPrincipal.getUserId());
-
-    return ResponseEntity.ok(travelogueUpdateDetailRes);
   }
 
 }
