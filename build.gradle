@@ -103,6 +103,7 @@ task copyDocument(type: Copy) {
 }
 
 build {
+    test
     dependsOn copyDocument
 }
 

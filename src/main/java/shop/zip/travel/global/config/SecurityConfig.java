@@ -13,6 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
 import shop.zip.travel.global.filter.JwtExceptionFilter;
+import shop.zip.travel.global.oauth.CustomOAuth2UserService;
+import shop.zip.travel.global.oauth.OAuth2AuthenticationSuccessHandler;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
 @Configuration
@@ -20,9 +22,15 @@ import shop.zip.travel.global.security.JwtTokenProvider;
 public class SecurityConfig {
 
   private final JwtTokenProvider jwtTokenProvider;
+  private final CustomOAuth2UserService customOAuth2UserService;
+  private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
 
-  public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+  public SecurityConfig(JwtTokenProvider jwtTokenProvider,
+      CustomOAuth2UserService customOAuth2UserService,
+      OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
     this.jwtTokenProvider = jwtTokenProvider;
+    this.customOAuth2UserService = customOAuth2UserService;
+    this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
   }
 
   @Bean
@@ -34,7 +42,10 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-        .requestMatchers("/favicon.ico/**");
+        .requestMatchers("/favicon.ico/**")
+        .requestMatchers("/docs/index.html/**")
+        .requestMatchers("/favicon.ico")
+        ;
   }
 
   @Bean
@@ -46,10 +57,9 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests((requests) -> requests
+            .requestMatchers("/docs/index.html").permitAll()
             .anyRequest().authenticated()
-        );
-
-    http
+        )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
