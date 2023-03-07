@@ -9,8 +9,9 @@ import static shop.zip.travel.domain.post.travelogue.entity.QTravelogue.travelog
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -97,8 +98,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         )
         .from(travelogue)
         .where(travelogue.id.in(travelogueIds),
-            periodBetween(searchFilter.startDate(), searchFilter.endDate()),
-            totalCostBetween(searchFilter.lowest(), searchFilter.maximum()),
+            TraveloguePeriodDaysBetween(searchFilter.minDays(), searchFilter.maxDays()),
+            totalCostBetween(searchFilter.minCost(), searchFilter.maxCost()),
             travelogue.isPublished.isTrue()
         )
         .leftJoin(travelogue.member, member)
@@ -174,17 +175,15 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return travelogue.createDate.desc();
   }
 
-  private BooleanExpression startDateGoe(LocalDate startDate) {
-    return Objects.nonNull(startDate) ? travelogue.period.startDate.goe(startDate) : null;
+
+  private NumberTemplate<Integer> getDays() {
+    return Expressions.numberTemplate(Integer.class, "datediff(DAY,{0},{1})",
+        travelogue.period.startDate, travelogue.period.endDate);
   }
 
-  private BooleanExpression endDateLoe(LocalDate endDate) {
-    return Objects.nonNull(endDate) ? travelogue.period.endDate.loe(endDate) : null;
-  }
-
-  private BooleanExpression periodBetween(LocalDate startDate, LocalDate endDate) {
-    if (isAllNonNull(endDateLoe(endDate), startDateGoe(startDate))) {
-      return endDateLoe(endDate).and(startDateGoe(startDate));
+  private BooleanExpression TraveloguePeriodDaysBetween(Long minDays, Long maxDays) {
+    if (Objects.nonNull(minDays) && Objects.nonNull(maxDays)) {
+      return getDays().between(minDays, maxDays);
     }
     return null;
   }
