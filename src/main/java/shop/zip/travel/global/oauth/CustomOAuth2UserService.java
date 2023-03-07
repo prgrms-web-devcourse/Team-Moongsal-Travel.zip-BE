@@ -1,6 +1,8 @@
 package shop.zip.travel.global.oauth;
 
 import java.util.Collections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -16,19 +18,23 @@ import shop.zip.travel.global.oauth.dto.OAuthAttributes;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+  private final Logger log = LoggerFactory.getLogger(CustomOAuth2UserService.class);
+
   private final MemberRepository memberRepository;
 
   public CustomOAuth2UserService(MemberRepository memberRepository) {
+    log.info("CustomOAuth2UserService 진입");
     this.memberRepository = memberRepository;
   }
 
   @Override
   public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+
     OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
     OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-    String registrationId = userRequest.getClientRegistration().getRegistrationId();
-    String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+    String registrationId = userRequest.getClientRegistration().getRegistrationId(); //kakao
+    String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(); //id
 
     OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 

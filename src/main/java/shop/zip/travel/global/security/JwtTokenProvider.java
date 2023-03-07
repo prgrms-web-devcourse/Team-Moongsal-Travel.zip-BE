@@ -50,8 +50,9 @@ public class JwtTokenProvider {
     return bearerToken.substring("Bearer ".length());
   }
 
-  public boolean validateAccessToken(String accessToken) {
+  public boolean validateAccessToken(String token) {
     try {
+      String accessToken = removeBearer(token);
       Jwts.parser().setSigningKey(accessTokenSecretKey).parseClaimsJws(accessToken);
       return true;
     } catch (SignatureException ex) {

@@ -8,13 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
-import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.oauth.CustomOAuth2UserService;
-import shop.zip.travel.global.oauth.OAuth2AuthenticationFailureHandler;
 import shop.zip.travel.global.oauth.OAuth2AuthenticationSuccessHandler;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
@@ -25,16 +23,13 @@ public class SecurityConfig {
   private final JwtTokenProvider jwtTokenProvider;
   private final CustomOAuth2UserService customOAuth2UserService;
   private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
-  private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
 
   public SecurityConfig(JwtTokenProvider jwtTokenProvider,
       CustomOAuth2UserService customOAuth2UserService,
-      OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
-      OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler) {
+      OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.customOAuth2UserService = customOAuth2UserService;
     this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
-    this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
   }
 
   @Bean
@@ -46,7 +41,9 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/favicon.ico/**")
-        .requestMatchers("/docs/index.html/**");
+        .requestMatchers("/docs/index.html/**")
+        .requestMatchers("/favicon.ico")
+        ;
   }
 
   @Bean
@@ -57,24 +54,24 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests((requests) -> requests
+            .requestMatchers("/docs/index.html").permitAll()
             .anyRequest().authenticated()
         )
+
         .oauth2Login()
         .authorizationEndpoint().baseUri("/oauth2/authorize")
         .and()
         .redirectionEndpoint()
-        .baseUri("/api/login/oauth2/code/**")
+        .baseUri("/*/*/oauth2/code/*")
         .and()
         .userInfoEndpoint().userService(customOAuth2UserService)
         .and()
         .successHandler(oauth2AuthenticationSuccessHandler)
-        .failureHandler(oauth2AuthenticationFailureHandler)
+        .and()
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+            OAuth2LoginAuthenticationFilter.class)
     ;
 
-    http
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-            UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
     return http.build();
   }
 
