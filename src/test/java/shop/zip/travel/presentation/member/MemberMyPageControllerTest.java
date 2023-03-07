@@ -203,7 +203,7 @@ class MemberMyPageControllerTest {
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(RestDocumentationRequestBuilders.get("/api/members/my/temp-travelogues")
+    mockMvc.perform(RestDocumentationRequestBuilders.get("/api/members/my/travelogues/temp")
             .header("AccessToken", token)
             .queryParam("size", "2")
             .queryParam("page", "0"))

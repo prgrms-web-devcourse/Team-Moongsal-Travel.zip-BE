@@ -84,7 +84,7 @@ public class DummyGenerator {
 
 	public static Travelogue createTravelogueWithTitle(String title, Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
-		subTravelogues.add(createSubTravelogue());
+		subTravelogues.add(createSubTravelogue(1));
 
 		return new Travelogue(
 				createPeriod(),
@@ -100,7 +100,7 @@ public class DummyGenerator {
 
 	public static Travelogue createTravelogueWithCountry(String country, Member member) {
 		ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
-		subTravelogues.add(createSubTravelogue());
+		subTravelogues.add(createSubTravelogue(1));
 
 		return new Travelogue(
 				createPeriod(),

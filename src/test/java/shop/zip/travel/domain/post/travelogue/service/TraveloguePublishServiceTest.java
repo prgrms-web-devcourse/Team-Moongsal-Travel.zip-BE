@@ -43,13 +43,6 @@ class TraveloguePublishServiceTest {
     travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
     tempTravelogue = travelogueRepository.save(DummyGenerator.createTempTravelogue(member));
 
-    subTravelogues = List.of(
-        DummyGenerator.createSubTravelogue(1),
-        DummyGenerator.createSubTravelogue(2)
-    );
-    subTravelogues.forEach(
-        subTravelogue -> travelogue.addSubTravelogue(subTravelogue)
-    );
     tempSubTravelogues = DummyGenerator.createTempSubTravelogue(1);
     tempTravelogue.addSubTravelogue(tempSubTravelogues);
   }
