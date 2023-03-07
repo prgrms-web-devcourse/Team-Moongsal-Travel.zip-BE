@@ -67,7 +67,8 @@ public class TravelogueService {
 
     return TravelogueDetailRes.toDto(
         travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND)));
+            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND))
+        , countLikes, isLiked);
   }
 
   private void setViewCount(Long travelogueId, boolean canAddViewCount) {

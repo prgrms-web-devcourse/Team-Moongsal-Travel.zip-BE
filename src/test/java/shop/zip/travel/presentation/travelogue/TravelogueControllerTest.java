@@ -297,7 +297,9 @@ class TravelogueControllerTest {
                 fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
                     .description("작성자 닉네임"),
                 fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
-                    .description("작성자 프로필 사진"),
+                    .description("작성자 프로필 이미지 URL"),
+                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("게시글 좋아요 수"),
                 fieldWithPath("pageable").description("페이징 객체"),
                 fieldWithPath("size").description("요청된 페이징 사이즈"),
                 fieldWithPath("number").description("페이지 번호"),
@@ -403,7 +405,7 @@ class TravelogueControllerTest {
                 fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
                     .description("작성자 프로필 사진"),
                 fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
-                    .description("게시물 좋아요 수").optional()
+                    .description("게시물 좋아요 수").optional(),
                 fieldWithPath("pageable").description("페이징 객체"),
                 fieldWithPath("size").description("요청된 페이징 사이즈"),
                 fieldWithPath("number").description("페이지 번호"),
@@ -463,7 +465,7 @@ class TravelogueControllerTest {
                 fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
                     .description("작성자 프로필 사진"),
                 fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
-                    .description("게시물 좋아요 수").optional()
+                    .description("게시물 좋아요 수").optional(),
                 fieldWithPath("pageable").description("페이징 객체"),
                 fieldWithPath("size").description("요청된 페이징 사이즈"),
                 fieldWithPath("number").description("페이지 번호"),
