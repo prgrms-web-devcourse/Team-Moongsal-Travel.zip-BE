@@ -19,15 +19,19 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
+import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
+import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
+import shop.zip.travel.global.error.ErrorCode;
 
 @Entity
 public class SubTravelogue extends BaseTimeEntity {
 
     private static final int MIN_LENGTH = 0;
     private static final int MAX_LENGTH = 51;
+    private static final int ZERO = 0;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,8 +99,6 @@ public class SubTravelogue extends BaseTimeEntity {
         nullCheck(title, content, addresses, transportationSet, photos);
         verifyTitle(title);
         verifyContent(content);
-        verifyAddressList(addresses);
-        verifyTransportationSet(transportationSet);
     }
 
     private void verifyTitle(String title) {
@@ -123,15 +125,16 @@ public class SubTravelogue extends BaseTimeEntity {
         Assert.notNull(photos, "이미지를 확인해주세요");
     }
 
-    private void verifyAddressList(List<Address> inputAddressList) {
-        if (inputAddressList.isEmpty()) {
-            throw new IllegalArgumentException("주소 데이터가 비어있습니다. 비어있을 수 없습니다.");
-        }
+    private boolean cannotPublish() {
+        return DefaultValue.STRING.isEqual(title) ||
+            DefaultValue.STRING.isEqual(content) ||
+            addresses.size() == ZERO;
     }
 
-    private void verifyTransportationSet(Set<Transportation> inputTransportationSet) {
-        if (inputTransportationSet.isEmpty()) {
-            throw new IllegalArgumentException("이동 수단 데이터가 비어있습니다. 비어있을 수 없습니다.");
+    public void verifyPublish() {
+        if (cannotPublish()) {
+            throw new InvalidPublishTravelogueException(ErrorCode.CANNOT_PUBLISH_TRAVELOGUE);
         }
+        this.addresses.forEach(Address::verifyPublish);
     }
 }

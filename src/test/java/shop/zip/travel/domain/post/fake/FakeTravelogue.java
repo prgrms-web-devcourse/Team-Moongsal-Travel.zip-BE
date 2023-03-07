@@ -8,13 +8,14 @@ public class FakeTravelogue extends Travelogue {
 
 	public FakeTravelogue(Long id, Travelogue travelogue) {
 		super(
-				travelogue.getPeriod(),
-				travelogue.getTitle(),
-				travelogue.getCountry(),
-				travelogue.getThumbnail(),
-				travelogue.getCost(),
-				travelogue.getSubTravelogues(),
-				travelogue.getMember()
+			travelogue.getPeriod(),
+			travelogue.getTitle(),
+			travelogue.getCountry(),
+			travelogue.getThumbnail(),
+			travelogue.getCost(),
+			travelogue.getIsPublished(),
+			travelogue.getSubTravelogues(),
+			travelogue.getMember()
 		);
 		this.id = id;
 	}

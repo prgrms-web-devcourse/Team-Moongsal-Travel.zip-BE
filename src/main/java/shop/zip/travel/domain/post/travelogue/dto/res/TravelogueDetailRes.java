@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
-import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueDetailRes;
+import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
@@ -20,10 +20,13 @@ public record TravelogueDetailRes(
     Long totalCost,
     List<SubTravelogueDetailRes> subTravelogues,
     Set<Transportation> transportations,
+    Long countLikes,
+    boolean isLiked,
+    Long viewCount,
     Boolean bookmarked
 ) {
 
-  public static TravelogueDetailRes toDto(Travelogue travelogue, boolean isBookmarked) {
+  public static TravelogueDetailRes toDto(Travelogue travelogue, Long countLikes, Boolean isLiked,  Boolean isBookmarked) {
 
     return new TravelogueDetailRes(
         travelogue.getMember().getProfileImageUrl(),
@@ -43,7 +46,12 @@ public record TravelogueDetailRes(
             .map(SubTravelogue::getTransportationSet)
             .flatMap(Collection::stream)
             .collect(Collectors.toSet()),
+        countLikes,
+        isLiked,
+        travelogue.getViewCount(),
         isBookmarked
     );
+
   }
+
 }

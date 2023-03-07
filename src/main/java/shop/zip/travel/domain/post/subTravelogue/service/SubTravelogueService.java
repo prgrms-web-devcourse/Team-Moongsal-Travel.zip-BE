@@ -27,14 +27,27 @@ public class SubTravelogueService {
     public SubTravelogueCreateRes save(SubTravelogueCreateReq createReq, Long travelogueId) {
 
         Travelogue travelogue = travelogueService.getTravelogue(travelogueId);
-      SubTravelogue subTravelogue = subTravelogueRepository.save(createReq.toSubTravelogue());
-        subTravelogue.getPhotos()
-            .addAll(createReq.travelPhotoCreateReqs()
-                .stream()
-                .map(TravelPhotoCreateReq::toEntity)
-                .toList());
+        SubTravelogue subTravelogue = subTravelogueRepository.save(createReq.toSubTravelogue());
+
+        addPhotosTo(subTravelogue, createReq);
+
         travelogue.addSubTravelogue(subTravelogue);
 
         return new SubTravelogueCreateRes(subTravelogue.getId());
+    }
+
+    private void addPhotosTo(
+        SubTravelogue subTravelogue,
+        SubTravelogueCreateReq subTravelogueCreateReq
+    ) {
+        if (subTravelogue.getPhotos().isEmpty()) {
+            return;
+        }
+
+        subTravelogue.getPhotos()
+            .addAll(subTravelogueCreateReq.travelPhotoCreateReqs()
+                .stream()
+                .map(TravelPhotoCreateReq::toEntity)
+                .toList());
     }
 }

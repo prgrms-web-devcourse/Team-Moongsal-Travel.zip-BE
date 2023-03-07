@@ -1,8 +1,10 @@
 package shop.zip.travel.domain.bookmark.repository.impl;
 
 
+import static com.querydsl.core.types.ExpressionUtils.count;
 import static shop.zip.travel.domain.bookmark.entity.QBookmark.bookmark;
 import static shop.zip.travel.domain.member.entity.QMember.member;
+import static shop.zip.travel.domain.post.travelogue.entity.QLike.like;
 import static shop.zip.travel.domain.post.travelogue.entity.QTravelogue.travelogue;
 
 import com.querydsl.core.types.Projections;
@@ -42,6 +44,7 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
   public List<TravelogueSimpleRes> getBookmarkedList(Long memberId, Pageable pageable) {
     List<Long> travelogueIds = jpaQueryFactory.select(bookmark.travelogue.id)
         .from(bookmark)
+        .leftJoin(bookmark.member, member)
         .where(bookmark.member.id.eq(memberId))
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize())
@@ -61,14 +64,18 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
                 travelogue.country.name,
                 travelogue.thumbnail,
                 travelogue.member.nickname,
-                travelogue.member.profileImageUrl
+                travelogue.member.profileImageUrl,
+                count(like)
             )
         ).from(travelogue)
         .leftJoin(bookmark)
         .on(bookmark.travelogue.id.eq(travelogue.id))
         .leftJoin(travelogue.member, member)
+        .leftJoin(like)
+        .on(like.travelogue.id.eq(travelogue.id))
         .where(travelogue.id.in(travelogueIds))
         .orderBy(bookmark.createDate.asc())
+        .groupBy(travelogue.id)
         .fetch();
 
     return travelogueSimpleList.stream()

@@ -22,6 +22,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -119,6 +120,7 @@ class MemberMyPageControllerTest {
                 fieldWithPath("content[].thumbnail").description("썸네일 링크"),
                 fieldWithPath("content[].member.nickname").description("작성자 닉네임"),
                 fieldWithPath("content[].member.profileImageUrl").description("작성자 프로필 이미지 링크"),
+                fieldWithPath("content[].likeCount").description("게시글 좋아요 수"),
                 fieldWithPath("pageable").description(""),
                 fieldWithPath("size").description("요청된 페이징 사이즈"),
                 fieldWithPath("number").description("페이지 번호"),
@@ -188,9 +190,66 @@ class MemberMyPageControllerTest {
                 fieldWithPath("[].member.nickname").type(JsonFieldType.STRING)
                     .description("작성자 닉네임"),
                 fieldWithPath("[].member.profileImageUrl").type(JsonFieldType.STRING)
-                    .description("작성자 프로필 이미지 링크")
+                    .description("작성자 프로필 이미지 링크"),
+                fieldWithPath("[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("좋아요 갯수")
             )
         ));
   }
 
+  @Test
+  @DisplayName("자신이 작성 중이던 임시 저장 글들을 불러올 수 있다.")
+  public void test_get_all_temp_travelogue() throws Exception {
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(RestDocumentationRequestBuilders.get("/api/members/my/temp-travelogues")
+            .header("AccessToken", token)
+            .queryParam("size", "2")
+            .queryParam("page", "0"))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-all-temp-travelogue",
+            responseFields(
+                fieldWithPath("content[]").description("").optional(),
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue pk"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박 일"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("여행 전체 일"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 전체 비용"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("방문한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("썸네일 링크"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 이미지 링크"),
+                fieldWithPath("pageable.sort.empty").type(JsonFieldType.BOOLEAN)
+                    .description("데이터가 비어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.sorted").type(JsonFieldType.BOOLEAN)
+                    .description("데이터가 정렬되어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.unsorted").type(JsonFieldType.BOOLEAN)
+                    .description("데이터가 정렬되어 있지 않은지에 대한 여부"),
+                fieldWithPath("pageable.offset").type(JsonFieldType.NUMBER)
+                    .description("페이징 offset"),
+                fieldWithPath("pageable.pageNumber").type(JsonFieldType.NUMBER)
+                    .description("현재 요청한 페이지 넘버"),
+                fieldWithPath("pageable.pageSize").type(JsonFieldType.NUMBER)
+                    .description("요청한 데이터 갯수"),
+                fieldWithPath("pageable.paged").type(JsonFieldType.BOOLEAN)
+                    .description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").type(JsonFieldType.BOOLEAN)
+                    .description("페이징이 되지 않은 여부"),
+                fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청된 페이징 사이즈"),
+                fieldWithPath("number").type(JsonFieldType.NUMBER).description("페이지 번호"),
+                fieldWithPath("numberOfElements").type(JsonFieldType.NUMBER)
+                    .description("조회된 데이터 갯수"),
+                fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫번째 페이지인지의 여부"),
+                fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지인지의 여부"),
+                fieldWithPath("empty").type(JsonFieldType.BOOLEAN).description("데이터가 없는지의 여부")
+            )));
+  }
 }

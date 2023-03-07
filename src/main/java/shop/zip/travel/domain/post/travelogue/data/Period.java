@@ -7,9 +7,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import shop.zip.travel.domain.post.data.DefaultValue;
 
 @Embeddable
 public class Period {
+
+    private static final long NO_DATE = -1L;
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -50,6 +53,15 @@ public class Period {
     }
 
     public long getNights() {
+        if (cannotPublish()) {
+            return NO_DATE;
+        }
         return ChronoUnit.DAYS.between(this.startDate, this.endDate);
+    }
+
+
+    public boolean cannotPublish() {
+        return DefaultValue.LOCAL_DATE.isEqual(startDate.toString()) ||
+            DefaultValue.LOCAL_DATE.isEqual(endDate.toString());
     }
 }

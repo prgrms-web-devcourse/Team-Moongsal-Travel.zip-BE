@@ -46,7 +46,7 @@ class SubTravelogueServiceTest {
     SubTravelogueCreateReq subTravelogueCreateReq = new SubTravelogueCreateReq(
         "유니버셜 스튜디오 다녀옴.",
         "유니버셜 스튜디오에서는 해리포터 테마가 필수임.",
-        List.of(DummyGenerator.createAddress()),
+        List.of(DummyGenerator.createTempAddress()),
         Set.of(Transportation.SUBWAY),
         List.of(new TravelPhotoCreateReq("www.naver.com"))
     );
