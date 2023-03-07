@@ -14,6 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
 import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.oauth.CustomOAuth2UserService;
+import shop.zip.travel.global.oauth.OAuth2AuthenticationSuccessHandler;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
 @Configuration
