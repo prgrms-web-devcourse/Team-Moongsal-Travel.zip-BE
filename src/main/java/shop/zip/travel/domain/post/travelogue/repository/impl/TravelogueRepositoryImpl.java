@@ -113,7 +113,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .leftJoin(travelogue.member, member)
         .leftJoin(like)
         .on(like.travelogue.id.eq(travelogue.id))
-        .orderBy(getOrder(pageable.getSort()))
+        .orderBy(getOrder(pageable.getSort()), travelogue.createDate.desc())
         .groupBy(travelogue.id)
         .fetch();
 
@@ -178,7 +178,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     if (!sort.isEmpty()) {
       for (Sort.Order order : sort) {
         return switch (order.getProperty()) {
-          case "createDate" -> travelogue.createDate.desc();
+          case "popular" -> like.count().desc();
           default -> travelogue.createDate.desc();
         };
       }
