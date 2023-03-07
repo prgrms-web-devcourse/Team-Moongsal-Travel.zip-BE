@@ -67,7 +67,6 @@ public class SecurityConfig {
         .successHandler(oauth2AuthenticationSuccessHandler)
         .and()
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/docs/index.html").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
