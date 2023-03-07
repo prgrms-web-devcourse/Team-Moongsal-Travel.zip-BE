@@ -109,3 +109,4 @@ public class TravelogueController {
     return ResponseEntity.ok(filtered);
   }
 }
+
