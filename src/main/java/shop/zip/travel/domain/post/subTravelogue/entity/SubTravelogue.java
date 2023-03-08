@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Set;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
-import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
@@ -29,8 +28,6 @@ import shop.zip.travel.global.error.ErrorCode;
 @Entity
 public class SubTravelogue extends BaseTimeEntity {
 
-    private static final int MIN_LENGTH = 0;
-    private static final int MAX_LENGTH = 51;
     private static final int ZERO = 0;
 
     @Id
@@ -97,24 +94,8 @@ public class SubTravelogue extends BaseTimeEntity {
     private void verify(String title, String content, List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
         nullCheck(title, content, addresses, transportationSet, photos);
-        verifyTitle(title);
-        verifyContent(content);
     }
 
-    private void verifyTitle(String title) {
-        if (title.isBlank()) {
-            throw new IllegalArgumentException("제목은 비어있을 수 없습니다.");
-        }
-        Assert.isTrue(title.length() < MAX_LENGTH && title.length() > MIN_LENGTH,
-            "제목의 길이는 1글자 이상 50글자 이하여야 합니다");
-    }
-
-    private void verifyContent(String content) {
-        if (content.isBlank()) {
-            throw new IllegalArgumentException("내용은 비어있을 수 없습니다.");
-        }
-        Assert.isTrue(content.length() > MIN_LENGTH, "내용을 확인해주세요");
-    }
 
     private void nullCheck(String title, String content, List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
@@ -126,8 +107,8 @@ public class SubTravelogue extends BaseTimeEntity {
     }
 
     private boolean cannotPublish() {
-        return DefaultValue.STRING.isEqual(title) ||
-            DefaultValue.STRING.isEqual(content) ||
+        return title.isBlank() ||
+            content.isBlank() ||
             addresses.size() == ZERO;
     }
 

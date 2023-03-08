@@ -1,8 +1,6 @@
 package shop.zip.travel.domain.post.subTravelogue.dto.req;
 
-import jakarta.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -17,19 +15,17 @@ import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 public record SubTravelogueCreateReq(
     String title,
     String content,
-    @Valid
     List<TempAddress> addresses,
     Set<Transportation> transportationSet,
-    @Valid
     List<TravelPhotoCreateReq> travelPhotoCreateReqs
 ) {
 
     public SubTravelogue toSubTravelogue() {
         return new SubTravelogue(
-            (Objects.isNull(title)) ? DefaultValue.STRING.getValue() : title,
-            (Objects.isNull(content)) ? DefaultValue.STRING.getValue() : content,
+            (title.isBlank()) ? DefaultValue.STRING.getValue() : title,
+            (content.isBlank()) ? DefaultValue.STRING.getValue() : content,
             toAddresses(),
-            (Objects.isNull(transportationSet)) ? new HashSet<>() : transportationSet,
+            transportationSet,
             toTravelPhotos()
         );
     }
