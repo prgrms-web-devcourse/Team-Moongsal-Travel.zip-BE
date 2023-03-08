@@ -1,5 +1,5 @@
 ## Dockerfile-dev
-FROM openjdk:14-jdk-slim
+FROM openjdk:17
 EXPOSE 8080
 ARG JAR_FILE=/build/libs/travel-0.0.1-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
