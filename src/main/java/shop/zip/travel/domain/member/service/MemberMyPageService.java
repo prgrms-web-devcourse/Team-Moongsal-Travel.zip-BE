@@ -1,6 +1,5 @@
 package shop.zip.travel.domain.member.service;
 
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -62,8 +61,9 @@ public class MemberMyPageService {
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
-  public List<TravelogueSimpleRes> getMyBookmarkedList(Long memberId, Pageable pageable) {
-    return bookmarkRepository.getBookmarkedList(memberId, pageable);
+  public TravelogueCustomSlice<TravelogueSimpleRes> getMyBookmarkedList(Long memberId,
+      Pageable pageable) {
+    return TravelogueCustomSlice.toDto(bookmarkRepository.getBookmarkedList(memberId, pageable));
   }
 
 }

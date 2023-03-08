@@ -1,7 +1,6 @@
 package shop.zip.travel.presentation.member;
 
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -66,11 +65,11 @@ public class MemberMyPageController {
   }
 
   @GetMapping("/bookmarks")
-  public ResponseEntity<List<TravelogueSimpleRes>> getBookmarkedList(
+  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getBookmarkedList(
       @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
-    List<TravelogueSimpleRes> travelogues =
+    TravelogueCustomSlice<TravelogueSimpleRes> travelogues =
         memberService.getMyBookmarkedList(userPrincipal.getUserId(), pageable);
 
     return ResponseEntity.ok(travelogues);

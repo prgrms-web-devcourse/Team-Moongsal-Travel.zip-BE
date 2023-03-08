@@ -10,8 +10,11 @@ import static shop.zip.travel.domain.post.travelogue.entity.QTravelogue.travelog
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import shop.zip.travel.domain.bookmark.entity.Bookmark;
 import shop.zip.travel.domain.bookmark.repository.querydsl.BookmarkRepositoryQuerydsl;
@@ -41,17 +44,17 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
   }
 
   @Override
-  public List<TravelogueSimpleRes> getBookmarkedList(Long memberId, Pageable pageable) {
+  public Slice<TravelogueSimpleRes> getBookmarkedList(Long memberId, Pageable pageable) {
     List<Long> travelogueIds = jpaQueryFactory.select(bookmark.travelogue.id)
         .from(bookmark)
         .leftJoin(bookmark.member, member)
         .where(bookmark.member.id.eq(memberId))
         .offset(pageable.getOffset())
-        .limit(pageable.getPageSize())
+        .limit(pageable.getPageSize() + 1)
         .fetch();
 
     if (travelogueIds.isEmpty()) {
-      return new ArrayList<>();
+      return new SliceImpl<>(Collections.emptyList());
     }
 
     List<TravelogueSimple> travelogueSimpleList = jpaQueryFactory.select(
@@ -74,13 +77,31 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
         .leftJoin(like)
         .on(like.travelogue.id.eq(travelogue.id))
         .where(travelogue.id.in(travelogueIds))
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize() + 1)
         .orderBy(bookmark.createDate.asc())
         .groupBy(travelogue.id)
         .fetch();
 
-    return travelogueSimpleList.stream()
+    List<TravelogueSimple> results = new ArrayList<>();
+    results.addAll(travelogueSimpleList);
+
+    return checkLastPage(pageable, results);
+  }
+
+  private Slice<TravelogueSimpleRes> checkLastPage(Pageable pageable,
+      List<TravelogueSimple> results) {
+
+    boolean hasNext = false;
+
+    if (results.size() > pageable.getPageSize()) {
+      hasNext = true;
+      results.remove(pageable.getPageSize());
+    }
+
+    return new SliceImpl<>(results.stream()
         .map(TravelogueSimpleRes::toDto)
-        .toList();
+        .toList(), pageable, hasNext);
   }
 
 }
