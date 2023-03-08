@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.springframework.http.MediaType;
 import org.springframework.web.filter.OncePerRequestFilter;
 import shop.zip.travel.domain.member.exception.InvalidAccessTokenException;
+import shop.zip.travel.global.error.BusinessException;
 import shop.zip.travel.global.error.ErrorResponse;
 
 public class JwtExceptionFilter extends OncePerRequestFilter {
@@ -19,7 +20,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
     ObjectMapper objectMapper = new ObjectMapper();
     try {
       filterChain.doFilter(request, response);
-    } catch (InvalidAccessTokenException e) {
+    } catch (BusinessException e) {
       response.setStatus(e.getErrorCode().getStatusValue());
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
       response.setCharacterEncoding("UTF-8");
