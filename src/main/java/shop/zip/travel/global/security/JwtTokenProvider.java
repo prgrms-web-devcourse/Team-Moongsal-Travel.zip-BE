@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import shop.zip.travel.domain.member.exception.InvalidAccessTokenException;
+import shop.zip.travel.global.error.BusinessException;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.error.exception.JsonNotParsingException;
 
@@ -32,7 +33,7 @@ public class JwtTokenProvider {
   private final String accessTokenSecretKey;
   private final String refreshTokenSecretKey;
 
-  private final long ACCESS_TOKEN_EXPIRED_TIME = Duration.ofHours(1).toMillis();
+  private final long ACCESS_TOKEN_EXPIRED_TIME = Duration.ofMinutes(5).toMillis();
   private final long REFRESH_TOKEN_EXPIRED_TIME = Duration.ofHours(2).toMillis();
 
   private final CustomUserDetailsService customUserDetailsService;
@@ -102,17 +103,21 @@ public class JwtTokenProvider {
       Jwts.parser().setSigningKey(refreshTokenSecretKey).parseClaimsJws(refreshToken);
       return true;
     } catch (SignatureException ex) {
-      log.error("유효하지 않은 JWT 서명");
+      log.info("유효하지 않은 JWT 서명");
+      throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);
     } catch (MalformedJwtException ex) {
-      log.error("유효하지 않은 JWT 토큰");
+      log.info("유효하지 않은 JWT 토큰");
+      throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);
     } catch (ExpiredJwtException ex) {
-      log.error("만료된 JWT 토큰");
+      log.info("만료된 JWT 토큰");
+      throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);
     } catch (UnsupportedJwtException ex) {
-      log.error("지원하지 않는 JWT 토큰");
+      log.info("지원하지 않는 JWT 토큰");
+      throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);
     } catch (IllegalArgumentException ex) {
-      log.error("비어있는 토큰");
+      log.info("비어있는 토큰");
+      throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);
     }
-    return false;
   }
 
   public String createRefreshToken() {

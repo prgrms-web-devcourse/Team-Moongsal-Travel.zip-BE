@@ -25,6 +25,7 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
 import shop.zip.travel.domain.post.util.CookieUtil;
+import shop.zip.travel.domain.suggestion.service.SuggestionService;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -89,7 +90,7 @@ public class TravelogueController {
   @GetMapping("/search")
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> search(
       @RequestParam(name = "keyword", required = false) String keyword,
-      @PageableDefault(size = 5) Pageable pageable
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
         travelogueService.search(keyword.trim(), pageable);
@@ -100,7 +101,7 @@ public class TravelogueController {
   @GetMapping("/search/filters")
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> filtering(
       @RequestParam(name = "keyword") String keyword,
-      @PageableDefault(size = 5) Pageable pageable,
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
       TravelogueSearchFilter searchFilter
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> filtered = travelogueService.filtering(keyword,

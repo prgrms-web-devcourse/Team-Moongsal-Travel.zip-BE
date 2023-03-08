@@ -171,3 +171,5 @@ gradle-app.setting
 # End of https://www.toptal.com/developers/gitignore/api/gradle,intellij,java
 
 application.yml
+
+BOOT-INF

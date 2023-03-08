@@ -1,6 +1,5 @@
 package shop.zip.travel.presentation.subTravelogue;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,7 @@ public class SubTravelogueController {
 
     @PostMapping("/{travelogueId}/subTravelogues")
     public ResponseEntity<SubTravelogueCreateRes> create(
-        @RequestBody @Valid SubTravelogueCreateReq createReq,
+        @RequestBody SubTravelogueCreateReq createReq,
         @PathVariable Long travelogueId) {
 
         SubTravelogueCreateRes subTravelogueCreateRes = subTravelogueService.save(createReq,
