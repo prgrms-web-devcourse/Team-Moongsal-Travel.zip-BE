@@ -1,7 +1,9 @@
 package shop.zip.travel.presentation.bookmark;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +62,11 @@ class BookmarkControllerTest {
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("bookmarking"));
+        .andDo(document("bookmarking",
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue id")
+            )
+        ));
   }
 
 

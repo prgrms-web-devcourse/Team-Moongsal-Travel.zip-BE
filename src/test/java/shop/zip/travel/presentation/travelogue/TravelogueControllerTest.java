@@ -4,12 +4,14 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -98,6 +100,11 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-all-travelogue",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("size").description("페이지의 Travelogue 수"),
+                parameterWithName("page").description("페이지 수")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").description("Travelogue 아이디"),
                 fieldWithPath("content[].title").description("Travelogue 제목"),
@@ -137,6 +144,11 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("publish-travelogue-success",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue id")
+            ),
             responseFields(
                 fieldWithPath("travelogueId").description("공개된 게시글 PK")
             )));
@@ -157,6 +169,8 @@ class TravelogueControllerTest {
         .andExpect(status().isBadRequest())
         .andDo(print())
         .andDo(document("publish-travelogue-fail",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
             responseFields(
                 fieldWithPath("message").description("예외 메시지")
             )));
@@ -184,6 +198,8 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("save-temp-travelogue",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
             requestFields(
                 fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작 날짜")
                     .optional(),
@@ -224,6 +240,7 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-one-detail-travelogue",
+            preprocessResponse(prettyPrint()),
             responseFields(
                 fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
                     .description("작성자 프로필 이미지"),

@@ -7,6 +7,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -110,6 +112,10 @@ class MemberMyPageControllerTest {
         .andDo(document("get-my-travelogues",
             preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("size").description("페이지의 Travelogue 수"),
+                parameterWithName("page").description("페이지 수")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").description("Travelogue 아이디"),
                 fieldWithPath("content[].title").description("Travelogue 제목"),
@@ -210,6 +216,7 @@ class MemberMyPageControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-all-temp-travelogue",
+            preprocessResponse(prettyPrint()),
             responseFields(
                 fieldWithPath("content[]").description("").optional(),
                 fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
