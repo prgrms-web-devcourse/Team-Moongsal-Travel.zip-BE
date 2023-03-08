@@ -1,9 +1,7 @@
-package shop.zip.travel.presentation.bookmark;
+package shop.zip.travel.presentation.travelogue;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
+import shop.zip.travel.domain.post.travelogue.entity.Like;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
+import shop.zip.travel.domain.post.travelogue.repository.TravelogueLikeRepository;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
@@ -27,13 +27,10 @@ import shop.zip.travel.global.security.JwtTokenProvider;
 @AutoConfigureRestDocs
 @SpringBootTest
 @Transactional
-class BookmarkControllerTest {
+class TravelogueLikeControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
-
-  @Autowired
-  private MemberRepository memberRepository;
 
   @Autowired
   private TravelogueRepository travelogueRepository;
@@ -41,33 +38,54 @@ class BookmarkControllerTest {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
+  @Autowired
+  private TravelogueLikeRepository travelogueLikeRepository;
+
+  @Autowired
+  private MemberRepository memberRepository;
+
   private Member member;
-  private Travelogue savedTravelogue;
+
+  private Travelogue travelogue;
+
+  private Travelogue notLikeTravelogue;
+
+  private Like like;
 
   @BeforeEach
   void setUp() {
-    member = DummyGenerator.createMember();
-
-    memberRepository.save(member);
-    savedTravelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
+    member = memberRepository.save(
+        DummyGenerator.createMember());
+    travelogue = travelogueRepository.save(
+        DummyGenerator.createTravelogue(member));
+    notLikeTravelogue = travelogueRepository.save(
+        DummyGenerator.createTravelogue(member));
+    like = travelogueLikeRepository.save(new Like(travelogue, member));
   }
 
-  @DisplayName("유저는 맘에드는 게시글을 북마크 할 수 있다")
   @Test
-  public void add_bookmark() throws Exception {
+  @DisplayName("좋아요를 누르지 않은 게시물에 대해 좋아요를 누를 수 있다.")
+  void test_add_like() throws Exception {
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(put("/api/travelogues/{travelogueId}/bookmarks", savedTravelogue.getId())
+    mockMvc.perform(put("/api/travelogues/{travelogueId}/likes", notLikeTravelogue.getId())
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
-        .andDo(document("bookmarking",
-            pathParameters(
-                parameterWithName("travelogueId").description("travelogue id")
-            )
-        ));
+        .andDo(document("add-like-travelogue"));
   }
 
+  @Test
+  @DisplayName("좋아요를 누른 게시글에 좋아요를 또 누르면 취소된다.")
+  void test_cancel_like() throws Exception {
 
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(put("/api/travelogues/{travelogueId}/likes", travelogue.getId())
+            .header("AccessToken", token))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("cancel-like-travelogue"));
+  }
 }

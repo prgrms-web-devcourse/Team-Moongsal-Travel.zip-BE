@@ -11,20 +11,21 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,19 +36,17 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
-import shop.zip.travel.domain.post.data.Country;
-import shop.zip.travel.domain.post.subTravelogue.data.Address;
-import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
-import shop.zip.travel.domain.post.travelogue.data.Cost;
-import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
+import shop.zip.travel.domain.post.travelogue.service.TravelogueLikeService;
 import shop.zip.travel.global.config.QuerydslConfig;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
@@ -66,6 +65,8 @@ class TravelogueControllerTest {
   private TravelogueRepository travelogueRepository;
   @Autowired
   private SubTravelogueRepository subTravelogueRepository;
+  @Autowired
+  private TravelogueLikeService likeService;
   @Autowired
   private MemberRepository memberRepository;
   @Autowired
@@ -103,6 +104,11 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-all-travelogue",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("size").description("페이지의 Travelogue 수"),
+                parameterWithName("page").description("페이지 수")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").description("Travelogue 아이디"),
                 fieldWithPath("content[].title").description("Travelogue 제목"),
@@ -113,6 +119,7 @@ class TravelogueControllerTest {
                 fieldWithPath("content[].thumbnail").description("썸네일 링크"),
                 fieldWithPath("content[].member.nickname").description("작성자 닉네임"),
                 fieldWithPath("content[].member.profileImageUrl").description("작성자 프로필 이미지 링크"),
+                fieldWithPath("content[].likeCount").description("좋아요 수"),
                 fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
@@ -141,6 +148,11 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("publish-travelogue-success",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue id")
+            ),
             responseFields(
                 fieldWithPath("travelogueId").description("공개된 게시글 PK")
             )));
@@ -161,6 +173,8 @@ class TravelogueControllerTest {
         .andExpect(status().isBadRequest())
         .andDo(print())
         .andDo(document("publish-travelogue-fail",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
             responseFields(
                 fieldWithPath("message").description("예외 메시지")
             )));
@@ -188,6 +202,8 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("save-temp-travelogue",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
             requestFields(
                 fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작 날짜")
                     .optional(),
@@ -228,6 +244,7 @@ class TravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-one-detail-travelogue",
+            preprocessResponse(prettyPrint()),
             responseFields(
                 fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
                     .description("작성자 프로필 이미지"),
@@ -242,6 +259,12 @@ class TravelogueControllerTest {
                     .description("Travelogue 여행 기간 중 전체 날짜"),
                 fieldWithPath("totalCost").type(JsonFieldType.NUMBER)
                     .description("Travelogue 여행 전체 경비"),
+                fieldWithPath("countLikes").type(JsonFieldType.NUMBER)
+                    .description("좋아요 갯수"),
+                fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN)
+                    .description("좋아요 여부"),
+                fieldWithPath("bookmarked").type(JsonFieldType.BOOLEAN)
+                    .description("북마크 여부"),
                 fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue 리스트"),
                 fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
@@ -264,89 +287,317 @@ class TravelogueControllerTest {
             )));
   }
 
-  @Test
-  @DisplayName("검색 Rest docs 테스트 입니다.")
-  void search() throws Exception {
-    Period period = DummyGenerator.createPeriod();
-    Country country = DummyGenerator.createCountry();
-    Cost cost = DummyGenerator.createCost();
+  @DisplayName("유저는 나라이름, 게시글 제목, 게시글 내용, 장소로 게시물을 검색할 수 있다")
+  @ParameterizedTest
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음", "유니버셜"})
+  void test_search(String keyword) throws Exception {
 
-    List<Address> addressList = new ArrayList<>();
-    addressList.add(DummyGenerator.createAddress());
+    travelogue.changePublishStatus();
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    Set<Transportation> transportationList = new HashSet<>();
-    transportationList.add(Transportation.BUS);
-    SubTravelogue subTravelogue = DummyGenerator.createSubTravelogue();
-
-    List<SubTravelogue> subTravelogueList = new ArrayList<>();
-    subTravelogueList.add(subTravelogue);
-
-    List<SubTravelogue> subTravelogueList2 = new ArrayList<>();
-    subTravelogueList.add(subTravelogue);
-
-    List<SubTravelogue> subTravelogueList3 = new ArrayList<>();
-    subTravelogueList.add(subTravelogue);
-
-    Member member = new Member("cloudwi@naver.com", "qwe123!@#", "cloudwi", "1998");
-    memberRepository.save(member);
-
-    Travelogue travelogue = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost, true,
-        subTravelogueList, member);
-    Travelogue travelogue2 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
-        true,
-        subTravelogueList2, member);
-    Travelogue travelogue3 = new Travelogue(period, "제목", country, "ㅇ차퍼ㅗ마오ㅓㅏㅇㄴㅎ촞앟초ㅓㅏㄴㅁㅎ", cost,
-        true,
-        subTravelogueList3, member);
-
-    travelogueRepository.save(travelogue);
-    travelogueRepository.save(travelogue2);
-    travelogueRepository.save(travelogue3);
-
-    mockMvc.perform(
-            get("/api/travelogues/search")
-                .param("keyword", "제목")
-                .param("lastTravelogue", "0")
-                .param("orderType", "나중에 추가")
-                .param("size", "10")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-        )
+    mockMvc.perform(get("/api/travelogues/search")
+            .header("AccessToken", token)
+            .param("keyword", keyword))
         .andExpect(status().isOk())
-        .andDo(
-            document(
-                "TravelogueController/search",
-                preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint()),
-                queryParameters(
-                    parameterWithName("keyword").description("검색 키워드").optional(),
-                    parameterWithName("lastTravelogue").description("마지막 조회 된 travelogusId")
-                        .optional(),
-                    parameterWithName("orderType").description("조회 옵션").optional(),
-                    parameterWithName("size").description("검색 사이즈").optional()
-                ),
-                responseFields(
-                    fieldWithPath("[].travelogueId").type(JsonFieldType.NUMBER)
-                        .description("여행기 아이디").optional(),
-                    fieldWithPath("[].title").type(JsonFieldType.STRING).description("여행기 제목")
-                        .optional(),
-                    fieldWithPath("[].nights").type(JsonFieldType.NUMBER).description("여행 몇박")
-                        .optional(),
-                    fieldWithPath("[].days").type(JsonFieldType.NUMBER).description("여행 몇일")
-                        .optional(),
-                    fieldWithPath("[].totalCost").type(JsonFieldType.NUMBER).description("여행 총 비용")
-                        .optional(),
-                    fieldWithPath("[].country").type(JsonFieldType.STRING).description("여행 나라")
-                        .optional(),
-                    fieldWithPath("[].thumbnail").type(JsonFieldType.STRING)
-                        .description("여행기 썸네일 이미지 url").optional(),
-                    fieldWithPath("[].member.nickname").type(JsonFieldType.STRING)
-                        .description("여행기 작성자 닉네임").optional(),
-                    fieldWithPath("[].member.profileImageUrl").type(JsonFieldType.STRING)
-                        .description("여행기 작성자 프로필 이미지").optional()
-                )
-            )
-        );
+        .andDo(print())
+        .andDo(document("get-travelogues-searched",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드")
+            ),
+            responseFields(
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue id"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 총 경비"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 썸네일"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 이미지 URL"),
+                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("게시글 좋아요 수"),
+                fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
+                fieldWithPath("pageable.offset").description("페이징 offset"),
+                fieldWithPath("pageable.pageNumber").description("현재 요청한 페이지 넘버"),
+                fieldWithPath("pageable.pageSize").description("요청한 데이터 갯수"),
+                fieldWithPath("pageable.paged").description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부"),
+                fieldWithPath("size").description("요청된 페이징 사이즈"),
+                fieldWithPath("number").description("페이지 번호"),
+                fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),
+                fieldWithPath("first").description("첫번째 페이지인지의 여부"),
+                fieldWithPath("last").description("마지막 페이지인지의 여부"),
+                fieldWithPath("empty").description("데이터가 없는지의 여부")
+            )));
+  }
+
+  @DisplayName("유저는 기간으로 필터링하여 검색 할 수 있다")
+  @ParameterizedTest
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
+  void test_search_with_filter_period(String keyword) throws Exception {
+
+    travelogue.changePublishStatus();
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    MultiValueMap<String, String> period = new LinkedMultiValueMap<>();
+    period.add("minDays", "0");
+    period.add("maxDays", "3");
+
+    mockMvc.perform(get("/api/travelogues/search/filters")
+            .header("AccessToken", token)
+            .params(period)
+            .param("keyword", keyword))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-travelogues-filtered-period",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("minDays").description("최소 기간"),
+                parameterWithName("maxDays").description("최대 기간")
+            ),
+            responseFields(
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue id"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 총 경비"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 썸네일"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 사진"),
+                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("게시물 좋아요 수"),
+                fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
+                fieldWithPath("pageable.offset").description("페이징 offset"),
+                fieldWithPath("pageable.pageNumber").description("현재 요청한 페이지 넘버"),
+                fieldWithPath("pageable.pageSize").description("요청한 데이터 갯수"),
+                fieldWithPath("pageable.paged").description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부"),
+                fieldWithPath("size").description("요청된 페이징 사이즈"),
+                fieldWithPath("number").description("페이지 번호"),
+                fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),
+                fieldWithPath("first").description("첫번째 페이지인지의 여부"),
+                fieldWithPath("last").description("마지막 페이지인지의 여부"),
+                fieldWithPath("empty").description("데이터가 없는지의 여부")
+            )));
+  }
+
+  @DisplayName("유저는 가격범위로 필터링하여 검색 할 수 있다")
+  @ParameterizedTest
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
+  void test_search_with_filter_cost(String keyword) throws Exception {
+
+    travelogue.changePublishStatus();
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    MultiValueMap<String, String> cost = new LinkedMultiValueMap<>();
+    cost.add("minCost", "0");
+    cost.add("maxCost", String.valueOf(travelogue.getCost().getTotal()));
+
+    mockMvc.perform(get("/api/travelogues/search/filters")
+            .header("AccessToken", token)
+            .params(cost)
+            .param("keyword", keyword))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-travelogues-filtered-cost",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("minCost").description("최저가"),
+                parameterWithName("maxCost").description("최고가")
+            ),
+            responseFields(
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue id"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 총 경비"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 썸네일"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 사진"),
+                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("게시물 좋아요 수").optional(),
+                fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
+                fieldWithPath("pageable.offset").description("페이징 offset"),
+                fieldWithPath("pageable.pageNumber").description("현재 요청한 페이지 넘버"),
+                fieldWithPath("pageable.pageSize").description("요청한 데이터 갯수"),
+                fieldWithPath("pageable.paged").description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부"),
+                fieldWithPath("size").description("요청된 페이징 사이즈"),
+                fieldWithPath("number").description("페이지 번호"),
+                fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),
+                fieldWithPath("first").description("첫번째 페이지인지의 여부"),
+                fieldWithPath("last").description("마지막 페이지인지의 여부"),
+                fieldWithPath("empty").description("데이터가 없는지의 여부")
+            )));
+  }
+
+  @DisplayName("유저는 가격과 기간으로 필터링 검색을 할 수 있다")
+  @ParameterizedTest
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
+  void test_search_with_filter(String keyword) throws Exception {
+
+    travelogue.changePublishStatus();
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    MultiValueMap<String, String> period = new LinkedMultiValueMap<>();
+    period.add("minDays", "0");
+    period.add("maxDays", "3");
+
+    MultiValueMap<String, String> cost = new LinkedMultiValueMap<>();
+    cost.add("minCost", "0");
+    cost.add("maxCost", String.valueOf(travelogue.getCost().getTotal()));
+
+    mockMvc.perform(get("/api/travelogues/search/filters")
+            .header("AccessToken", token)
+            .params(period)
+            .params(cost)
+            .param("keyword", keyword))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-travelogues-filtered",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("minDays").description("최소 기간"),
+                parameterWithName("maxDays").description("최대 기간"),
+                parameterWithName("minCost").description("최저가"),
+                parameterWithName("maxCost").description("최고가")
+            ),
+            responseFields(
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue id"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 총 경비"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 썸네일"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 사진"),
+                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("게시물 좋아요 수").optional(),
+                fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
+                fieldWithPath("pageable.offset").description("페이징 offset"),
+                fieldWithPath("pageable.pageNumber").description("현재 요청한 페이지 넘버"),
+                fieldWithPath("pageable.pageSize").description("요청한 데이터 갯수"),
+                fieldWithPath("pageable.paged").description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부"),
+                fieldWithPath("size").description("요청된 페이징 사이즈"),
+                fieldWithPath("number").description("페이지 번호"),
+                fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),
+                fieldWithPath("first").description("첫번째 페이지인지의 여부"),
+                fieldWithPath("last").description("마지막 페이지인지의 여부"),
+                fieldWithPath("empty").description("데이터가 없는지의 여부")
+            )));
+  }
+
+  @Test
+  @DisplayName("유저는 인기순으로 검색결과를 정렬할 수 있다")
+  void get_travelogues_sort_by_like_count() throws Exception {
+
+    Travelogue travelogue2 = DummyGenerator.createTravelogue(member);
+    Travelogue travelogue3 = DummyGenerator.createTravelogue(member);
+    travelogueRepository.saveAll(
+        List.of(
+            travelogue2,
+            travelogue3));
+
+    changePublishStatus(travelogue, travelogue2, travelogue3);
+    likeService.liking(member.getId(), travelogue.getId());
+
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    MultiValueMap<String, String> filterParam = new LinkedMultiValueMap<>();
+    filterParam.add("keyword", "일본");
+    filterParam.add("sort", "popular");
+
+    mockMvc.perform(get("/api/travelogues/search/filters")
+            .header("AccessToken", token)
+            .params(filterParam))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("content[0].travelogueId").value(travelogue.getId()))
+        .andDo(print())
+        .andDo(document("get-travelogues-filtered-with-popular-sort",
+            preprocessResponse(prettyPrint()),
+            queryParameters(
+                parameterWithName("keyword").description("검색 키워드"),
+                parameterWithName("sort").description("정렬")
+            ),
+            responseFields(
+                fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
+                    .description("Travelogue id"),
+                fieldWithPath("content[].title").type(JsonFieldType.STRING)
+                    .description("Travelogue 제목"),
+                fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일"),
+                fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
+                    .description("여행 총 경비"),
+                fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 썸네일"),
+                fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
+                    .description("작성자 닉네임"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 사진"),
+                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
+                    .description("게시물 좋아요 수").optional(),
+                fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
+                fieldWithPath("pageable.offset").description("페이징 offset"),
+                fieldWithPath("pageable.pageNumber").description("현재 요청한 페이지 넘버"),
+                fieldWithPath("pageable.pageSize").description("요청한 데이터 갯수"),
+                fieldWithPath("pageable.paged").description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부"),
+                fieldWithPath("size").description("요청된 페이징 사이즈"),
+                fieldWithPath("number").description("페이지 번호"),
+                fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),
+                fieldWithPath("first").description("첫번째 페이지인지의 여부"),
+                fieldWithPath("last").description("마지막 페이지인지의 여부"),
+                fieldWithPath("empty").description("데이터가 없는지의 여부")
+            )));
+  }
+
+  private void changePublishStatus(Travelogue... args) {
+    for (Travelogue travelogue : args) {
+      travelogue.changePublishStatus();
+    }
   }
 
 }

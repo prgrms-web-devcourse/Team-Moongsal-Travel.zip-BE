@@ -23,6 +23,7 @@ public enum ErrorCode {
 	// travelogue
 	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시물을 찾을 수 없습니다"),
 	TRAVELOGUE_NOT_FOUND(HttpStatus.NOT_FOUND, "여행기를 찾을 수 없습니다"),
+	NO_AUTHORIZATION_TO_TRAVELOGUE(HttpStatus.UNAUTHORIZED, "접근권한이 없습니다."),
 	CANNOT_PUBLISH_TRAVELOGUE(HttpStatus.BAD_REQUEST, "아직 작성이 완료되지 않은 페이지가 있기 때문에 공개할 수 없습니다."),
 	NOT_LOGGED_IN(HttpStatus.UNAUTHORIZED, "로그인후 이용이 가능합니다"),
 

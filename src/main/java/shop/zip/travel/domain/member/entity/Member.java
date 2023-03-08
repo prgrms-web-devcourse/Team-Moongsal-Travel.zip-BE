@@ -2,9 +2,12 @@ package shop.zip.travel.domain.member.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import java.time.LocalDate;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
@@ -34,7 +37,29 @@ public class Member extends BaseTimeEntity {
   @Column(nullable = false)
   private boolean isEmail;
 
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
+  @Column
+  private String provider;
+
+  @Lob
+  private String providerId;
+
   protected Member() {
+  }
+
+  public Member(String email, String password, String nickname, String birthYear,
+      String profileImageUrl, boolean isEmail, Role role, String provider, String providerId) {
+    this.email = email;
+    this.password = password;
+    this.nickname = nickname;
+    this.birthYear = birthYear;
+    this.profileImageUrl = profileImageUrl;
+    this.isEmail = isEmail;
+    this.role = role;
+    this.provider = provider;
+    this.providerId = providerId;
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
@@ -60,7 +85,6 @@ public class Member extends BaseTimeEntity {
 
   private void validateMember(String email, String password, String nickname, String birthYear) {
     validateEmail(email);
-//    validatePassword(password);
     validateNickname(nickname);
     validateBirthYear(birthYear);
   }
@@ -69,11 +93,6 @@ public class Member extends BaseTimeEntity {
     String emailPattern = "^[\\w-.]+@[\\w-]+.[\\w.]+$";
     Assert.isTrue(email.matches(emailPattern),"이메일이 형식에 맞지 않습니다");
   }
-
-//  private void validatePassword(String password) {
-//    String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[~!@#$%^&*])[A-Za-z\\d~!@#$%^&*]{8,}$";
-//    Assert.isTrue(password.matches(passwordPattern),"비밀번호가 형식에 맞지 않습니다");
-//  }
 
   private void validateNickname(String nickname) {
     String nicknamePattern = "^[가-힣|a-zA-Z]{2,12}$";
@@ -122,5 +141,22 @@ public class Member extends BaseTimeEntity {
   public void updateNickname(String nickname) {
     validateNickname(nickname);
     this.nickname = nickname;
+  }
+
+  public Member update(String nickname, String profileImageUrl) {
+    this.nickname = nickname;
+    this.profileImageUrl = profileImageUrl;
+    return this;
+  }
+  public Role getRole() {
+    return role;
+  }
+
+  public String getProvider() {
+    return provider;
+  }
+
+  public String getProviderId() {
+    return providerId;
   }
 }

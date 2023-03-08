@@ -35,10 +35,11 @@ class TraveloguePublishServiceTest {
   private Travelogue tempTravelogue;
   private List<SubTravelogue> subTravelogues;
   private SubTravelogue tempSubTravelogues;
+  private Member member;
 
   @BeforeEach
   void setUp() {
-    Member member = memberRepository.save(DummyGenerator.createMember());
+    member = memberRepository.save(DummyGenerator.createMember());
     travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
     tempTravelogue = travelogueRepository.save(DummyGenerator.createTempTravelogue(member));
 
@@ -56,14 +57,15 @@ class TraveloguePublishServiceTest {
   @Test
   @DisplayName("임시로 저장한 게시물을 발행 시도하면 실패한다.")
   void test_fail_publish() {
-    assertThatThrownBy(() -> traveloguePublishService.publish(tempTravelogue.getId()))
+    assertThatThrownBy(
+        () -> traveloguePublishService.publish(tempTravelogue.getId(), member.getId()))
         .isInstanceOf(InvalidPublishTravelogueException.class);
   }
 
   @Test
   @DisplayName("작성이 완료한 게시물을 발행 시도하면 성공한다.")
   void test_success_publish() {
-    traveloguePublishService.publish(travelogue.getId());
+    traveloguePublishService.publish(travelogue.getId(), member.getId());
 
     Travelogue findTravelogue = travelogueRepository.findById(travelogue.getId()).
         get();
