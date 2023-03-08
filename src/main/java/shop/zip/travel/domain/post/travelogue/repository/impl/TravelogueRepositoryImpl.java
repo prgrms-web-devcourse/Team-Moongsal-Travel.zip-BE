@@ -68,6 +68,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         )
         .from(travelogue)
         .where(travelogue.id.in(travelogueIds).and(travelogue.isPublished.isTrue()))
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize() + 1)
         .leftJoin(travelogue.member, member)
         .leftJoin(like)
         .on(like.travelogue.id.eq(travelogue.id))
@@ -112,6 +114,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
             totalCostBetween(searchFilter.minCost(), searchFilter.maxCost()),
             travelogue.isPublished.isTrue()
         )
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize() + 1)
         .leftJoin(travelogue.member, member)
         .leftJoin(like)
         .on(like.travelogue.id.eq(travelogue.id))
