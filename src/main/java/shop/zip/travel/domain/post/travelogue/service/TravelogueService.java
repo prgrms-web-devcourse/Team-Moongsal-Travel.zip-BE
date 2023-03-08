@@ -68,14 +68,14 @@ public class TravelogueService {
   @Transactional
   public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
       Long memberId) {
-    Member member = memberService.getMember(memberId);
+//    Member member = memberService.getMember(memberId);
 
     setViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
     Boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
 
-    suggestionService.save(getTravelogue(travelogueId), member);
+//    suggestionService.save(getTravelogue(travelogueId), member);
 
     return TravelogueDetailRes.toDto(
         travelogueRepository.getTravelogueDetail(travelogueId)
