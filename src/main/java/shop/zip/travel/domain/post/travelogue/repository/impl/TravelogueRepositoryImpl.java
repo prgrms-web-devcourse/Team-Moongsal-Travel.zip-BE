@@ -14,6 +14,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -74,9 +75,10 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .groupBy(travelogue.id)
         .fetch();
 
-    return new SliceImpl<>(travelogueSimpleList.stream()
-        .map(TravelogueSimpleRes::toDto)
-        .toList());
+    List<TravelogueSimple> results = new ArrayList<>();
+    results.addAll(travelogueSimpleList);
+
+    return checkLastPage(pageable, results);
   }
 
   public Slice<TravelogueSimpleRes> filtering(String keyword, Pageable pageable,
@@ -117,12 +119,12 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .groupBy(travelogue.id)
         .fetch();
 
-    return new SliceImpl<>(travelogueSimpleList.stream()
-        .map(TravelogueSimpleRes::toDto)
-        .toList());
+    List<TravelogueSimple> results = new ArrayList<>();
+    results.addAll(travelogueSimpleList);
+
+    return checkLastPage(pageable, results);
 
   }
-
 
   private List<Long> getTravelogueIds(String keyword, Pageable pageable,
       List<Long> subTravelogueIds) {
@@ -136,8 +138,6 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
                 .or(titleContains(keyword))
                 .or(subTravelogue.id.in(subTravelogueIds))
         )
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize())
         .fetch();
   }
 
@@ -239,5 +239,19 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return (countLikes == null) ? 0 : countLikes;
   }
 
+  private Slice<TravelogueSimpleRes> checkLastPage(Pageable pageable,
+      List<TravelogueSimple> results) {
+
+    boolean hasNext = false;
+
+    if (results.size() > pageable.getPageSize()) {
+      hasNext = true;
+      results.remove(pageable.getPageSize());
+    }
+
+    return new SliceImpl<>(results.stream()
+        .map(TravelogueSimpleRes::toDto)
+        .toList(), pageable, hasNext);
+  }
 }
 
