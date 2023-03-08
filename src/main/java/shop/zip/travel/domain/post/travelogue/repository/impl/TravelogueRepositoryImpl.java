@@ -143,7 +143,6 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
                 .or(subTravelogue.id.in(subTravelogueIds))
         )
         .offset(pageable.getOffset())
-        .limit(pageable.getPageSize() + 1)
         .fetch();
   }
 
@@ -192,9 +191,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return travelogue.createDate.desc();
   }
 
-
   private NumberTemplate<Integer> getDays() {
-    return Expressions.numberTemplate(Integer.class, "datediff(DAY,{0},{1})",
+    return Expressions.numberTemplate(Integer.class, "TIMESTAMPDIFF(DAY,{0},{1})",
         travelogue.period.endDate, travelogue.period.startDate);
   }
 
