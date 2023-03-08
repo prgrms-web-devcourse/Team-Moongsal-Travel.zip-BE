@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (BusinessException e) {
-      response.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
       response.setCharacterEncoding("UTF-8");
       objectMapper.writeValue(response.getWriter(),
