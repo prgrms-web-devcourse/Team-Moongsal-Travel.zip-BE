@@ -34,7 +34,7 @@
     <accessKeyId>${AWS_ACCESS_KEY}</accessKeyId>
     <secretAccessKey>${AWS_SECRET_KEY}</secretAccessKey>
   </appender>
-
+<included>
   <springProfile name="local,dev">
     <root level="info">
       <appender-ref ref="CONSOLE"/>
@@ -65,4 +65,5 @@
       <appender-ref ref="CONSOLE"/>
     </logger>
   </springProfile>
+</included>
 </configuration>
