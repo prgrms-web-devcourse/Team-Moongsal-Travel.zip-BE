@@ -89,7 +89,7 @@ public class TravelogueController {
   @GetMapping("/search")
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> search(
       @RequestParam(name = "keyword", required = false) String keyword,
-      @PageableDefault(size = 5) Pageable pageable
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
         travelogueService.search(keyword.trim(), pageable);
@@ -100,7 +100,7 @@ public class TravelogueController {
   @GetMapping("/search/filters")
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> filtering(
       @RequestParam(name = "keyword") String keyword,
-      @PageableDefault(size = 5) Pageable pageable,
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
       TravelogueSearchFilter searchFilter
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> filtered = travelogueService.filtering(keyword,
