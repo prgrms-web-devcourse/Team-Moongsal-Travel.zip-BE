@@ -192,7 +192,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
   }
 
   private NumberTemplate<Integer> getDays() {
-    return Expressions.numberTemplate(Integer.class, "TIMESTAMPDIFF(DAY,{0},{1})",
+    return Expressions.numberTemplate(Integer.class, "function('datediff', DAY, {0}, {1})",
         travelogue.period.endDate, travelogue.period.startDate);
   }
 
