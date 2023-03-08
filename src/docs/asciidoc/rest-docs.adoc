@@ -2,8 +2,8 @@ ifndef::snippets[]
 :snippets: build/generated-snippets
 endif::[]
 
-= Spring REST Docs
-backtony.github.io(Rest Docs)
+= Travel.zip[✈️내가 가진 여행기억의 모음집] REST Docs
+뭉살흩죽
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -11,283 +11,185 @@ backtony.github.io(Rest Docs)
 :toclevels: 2
 :sectlinks:
 
-= post
+= 마이페이지
 
-[[Travelogue]]
-== Travelogue 작성
+== 유저 프로필 조회
 
 === Request
+include::{snippets}/get-my-info/http-request.adoc[]
 
+=== Response
+include::{snippets}/get-my-info/http-response.adoc[]
+
+=== ResponseFields
+include::{snippets}/get-my-info/response-fields.adoc[]
+
+== 유저 프로필 수정
+
+=== Request
+include::{snippets}/update-my-profile/http-request.adoc[]
+
+=== RequestFields
+include::{snippets}/update-my-profile/request-fields.adoc[]
+
+=== Response
+include::{snippets}/update-my-profile/http-response.adoc[]
+
+=== ResponseFields
+include::{snippets}/update-my-profile/response-fields.adoc[]
+
+== 자신이 임시 저장한 Travelogue 목록 조회
+
+=== Request
+include::{snippets}/get-all-temp-travelogue/http-request.adoc[]
+
+=== Response
+include::{snippets}/get-all-temp-travelogue/http-response.adoc[]
+
+=== Response Fields
+include::{snippets}/get-all-temp-travelogue/response-fields.adoc[]
+
+== 자신이 작성한 travelogue 목록 조회
+
+=== Request
+include::{snippets}/get-my-travelogues/http-request.adoc[]
+
+=== Query Parameters
+include::{snippets}/get-my-travelogues/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/get-my-travelogues/http-response.adoc[]
+
+=== ResponseFields
+include::{snippets}/get-my-travelogues/response-fields.adoc[]
+
+== 북마크 목록 조회 API
+
+=== Request
+include::{snippets}/get_my_bookmark_list/http-request.adoc[]
+
+=== Response
+include::{snippets}/get_my_bookmark_list/http-response.adoc[]
+
+=== ResponseFields
+include::{snippets}/get_my_bookmark_list/response-fields.adoc[]
+
+
+= 게시글 (Travelogue & SubTravelogue)
+
+== Travelogue 임시 저장
+
+=== Request
 include::{snippets}/save-temp-travelogue/http-request.adoc[]
 
 === Request Fields
-
 include::{snippets}/save-temp-travelogue/request-fields.adoc[]
 
 === Response
-
 include::{snippets}/save-temp-travelogue/http-response.adoc[]
 
 === Response Fields
 
 include::{snippets}/save-temp-travelogue/response-fields.adoc[]
 
+== SubTravelogue 임시 저장
+
+=== Request
+include::{snippets}/create-subTravelogue/http-request.adoc[]
+
+=== Path Parameter
+include::{snippets}/create-subTravelogue/path-parameters.adoc[]
+
+=== Request Fields
+include::{snippets}/create-subTravelogue/request-fields.adoc[]
+
+=== Response
+include::{snippets}/create-subTravelogue/http-response.adoc[]
+
+=== Response Fields
+include::{snippets}/create-subTravelogue/response-fields.adoc[]
+
+
 == Travelogue 발행
 
 == Request
-
 include::{snippets}/publish-travelogue-success/http-request.adoc[]
 
-=== Response (성공시)
+=== Path Parameter
+include::{snippets}/publish-travelogue-success/path-parameters.adoc[]
 
+=== Response
 include::{snippets}/publish-travelogue-success/http-response.adoc[]
 
 === Response Fields
-
-include::{snippets}/publish-travelogue-success/response-fields.adoc[]
-
-=== Response (실패시)
-
-include::{snippets}/publish-travelogue-fail/http-response.adoc[]
-
-=== Response Fields
-
 include::{snippets}/publish-travelogue-fail/response-fields.adoc[]
 
-== Travelogue 게시글 전체 조회
+== Travelogue 목록 조회
 
 === Request
-
 include::{snippets}/get-all-travelogue/http-request.adoc[]
 
-=== Response
+=== Query Parameters
+include::{snippets}/get-all-travelogue/query-parameters.adoc[]
 
+=== Response
 include::{snippets}/get-all-travelogue/http-response.adoc[]
 
 === Response Fields
-
 include::{snippets}/get-all-travelogue/response-fields.adoc[]
 
 == Travelogue 상세 조회
 
 === Request
-
 include::{snippets}/get-one-detail-travelogue/http-request.adoc[]
 
 === Response
-
 include::{snippets}/get-one-detail-travelogue/http-response.adoc[]
 
 === Response Fields
-
 include::{snippets}/get-one-detail-travelogue/response-fields.adoc[]
-
-[[검색-API]]
-== 검색 API
-
-=== Request
-
-include::{snippets}/get-travelogues-searched/http-request.adoc[]
-
-=== RequestParam
-
-include::{snippets}/get-travelogues-searched/query-parameters.adoc[]
-
-=== Response
-
-include::{snippets}/get-travelogues-searched/http-response.adoc[]
-
-=== ResponseBody
-
-include::{snippets}/get-travelogues-searched/response-body.adoc[]
-
-= myPage
-
-[[유저-정보-조회-API]]
-== 유저 정보 조회 API
-
-=== Request
-
-include::{snippets}/get-my-info/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/get-my-info/http-response.adoc[]
-
-=== ResponseFields
-
-include::{snippets}/get-my-info/response-fields.adoc[]
-
-[[본인이-작성한-travelogues조회-API]]
-== 본인이 작성한 travelogues 조회 API
-
-=== Request
-
-include::{snippets}/get-my-travelogues/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/get-my-travelogues/http-response.adoc[]
-
-=== ResponseFields
-
-include::{snippets}/get-my-travelogues/response-fields.adoc[]
-
-== 자신이 임시 저장한 Travelogue 전체 리스트 조회
-
-=== Request
-
-include::{snippets}/get-all-temp-travelogue/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/get-all-temp-travelogue/http-response.adoc[]
-
-=== Response Fields
-
-include::{snippets}/get-all-temp-travelogue/response-fields.adoc[]
-
-[[유저-프로필-수정-API]]
-== 유저 프로필 수정 API
-
-=== Request
-
-include::{snippets}/update-my-profile/http-request.adoc[]
-
-=== RequestFields
-
-include::{snippets}/update-my-profile/request-fields.adoc[]
-
-=== Response
-
-include::{snippets}/update-my-profile/http-response.adoc[]
-
-=== ResponseFields
-
-include::{snippets}/update-my-profile/response-fields.adoc[]
-
-[[북마크-목록-조회-API]]
-== 북마크 목록 조회 API
-
-=== Request
-
-include::{snippets}/get_my_bookmark_list/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/get_my_bookmark_list/http-response.adoc[]
-
-=== ResponseFields
-
-include::{snippets}/get_my_bookmark_list/response-fields.adoc[]
-
-= 북마크
-
-[[북마크-추가-및-취소-API]]
-== 북마크 추가 및 취소 API
-
-=== Request
-
-include::{snippets}/bookmarking/http-request.adoc[]
-
-=== Response
-
-include::{snippets}/bookmarking/http-response.adoc[]
 
 = 검색
 
-[[게시글-검색-API]]
-== 게시글 검색 API
+== keyword 로 게시글 검색
 
 === Request
-
 include::{snippets}/get-travelogues-searched/http-request.adoc[]
 
-=== RequestParam
-
+=== Query Parameter
 include::{snippets}/get-travelogues-searched/query-parameters.adoc[]
 
 === Response
-
 include::{snippets}/get-travelogues-searched/http-response.adoc[]
 
 === ResponseFields
-
 include::{snippets}/get-travelogues-filtered-period/response-fields.adoc[]
 
-[[게시글-기간-필터링-검색-API]]
-== 게시글 (기간)필터링 검색 API
+== 게시글 필터링 검색
 
 === Request
-
-include::{snippets}/get-travelogues-filtered-period/http-request.adoc[]
-
-=== RequestParam
-
-include::{snippets}/get-travelogues-filtered-period/query-parameters.adoc[]
-
-=== Response
-
-include::{snippets}/get-travelogues-filtered-period/http-response.adoc[]
-
-=== ResponseFields
-
-include::{snippets}/get-travelogues-filtered-period/response-fields.adoc[]
-
-[[게시글-여행경비-필터링-검색-API]]
-== 게시글 (여행 경비)필터링 검색 API
-
-=== Request
-
-include::{snippets}/get-travelogues-filtered-cost/http-request.adoc[]
-
-=== RequestParam
-
-include::{snippets}/get-travelogues-filtered-cost/query-parameters.adoc[]
-
-=== Response
-
-include::{snippets}/get-travelogues-filtered-cost/http-response.adoc[]
-
-=== ResponseFields
-
-include::{snippets}/get-travelogues-filtered-cost/response-fields.adoc[]
-
-[[게시글-필터링-검색-API]]
-== 게시글 필터링 검색 API
-
-=== Request
-
 include::{snippets}/get-travelogues-filtered/http-request.adoc[]
 
-=== RequestParam
-
+=== Query Parameters
 include::{snippets}/get-travelogues-filtered/query-parameters.adoc[]
 
 === Response
-
 include::{snippets}/get-travelogues-filtered/http-response.adoc[]
 
 === ResponseFields
-
 include::{snippets}/get-travelogues-filtered/response-fields.adoc[]
 
-[[게시글-필터링-검색-정렬]]
-== 게시글 필터링 검색(+인기순 정렬)
+= 북마크
+
+== 북마크 추가 및 취소
 
 === Request
+include::{snippets}/bookmarking/http-request.adoc[]
 
-include::{snippets}/get-travelogues-filtered-with-popular-sort/http-request.adoc[]
-
-=== RequestParam
-
-include::{snippets}/get-travelogues-filtered-with-popular-sort/query-parameters.adoc[]
+=== Path Parameter
+include::{snippets}/bookmarking/path-parameters.adoc[]
 
 === Response
+include::{snippets}/bookmarking/http-response.adoc[]
 
-include::{snippets}/get-travelogues-filtered-with-popular-sort/http-response.adoc[]
-
-=== ResponseFields
-
-include::{snippets}/get-travelogues-filtered-with-popular-sort/response-fields.adoc[]
-
+이동준 킹왕짱
