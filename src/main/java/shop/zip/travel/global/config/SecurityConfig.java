@@ -43,7 +43,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/favicon.ico/**")
-        .requestMatchers("/docs/index.html/**")
+        .requestMatchers("/docs/rest-docs.html/**")
         .requestMatchers("/favicon.ico")
         ;
   }
@@ -57,7 +57,7 @@ public class SecurityConfig {
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/docs/index.html").permitAll()
+            .requestMatchers("/docs/rest-docs.html").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),

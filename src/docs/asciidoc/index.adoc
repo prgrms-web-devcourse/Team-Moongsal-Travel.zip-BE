@@ -78,6 +78,20 @@ include::{snippets}/get-one-detail-travelogue/http-response.adoc[]
 
 include::{snippets}/get-one-detail-travelogue/response-fields.adoc[]
 
+== Travelogue 좋아요
+
+=== Request
+
+include::{snippets}/add-like-travelogue/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/add-like-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/add-like-travelogue/response-fields.adoc[]
+
 [[검색-API]]
 == 검색 API
 
@@ -142,6 +156,56 @@ include::{snippets}/get-all-temp-travelogue/http-response.adoc[]
 === Response Fields
 
 include::{snippets}/get-all-temp-travelogue/response-fields.adoc[]
+
+== 자신이 발행했던 게시글의 수정을 위한 조회
+
+=== Request
+
+include::{snippets}/get-my-one-travelogue/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/get-my-one-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/get-my-one-travelogue/response-fields.adoc[]
+
+== 자신이 발행했던 메인 게시글의 수정
+
+=== Request
+
+include::{snippets}/update-published-travelogue/http-request.adoc[]
+
+=== Request Fields
+
+include::{snippets}/update-published-travelogue/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/update-published-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/update-published-travelogue/response-fields.adoc[]
+
+== 자신이 발행했던 서브 게시글의 수정
+
+=== Request
+
+include::{snippets}/update-published-sub-travelogue/http-request.adoc[]
+
+=== Request Fields
+
+include::{snippets}/update-published-sub-travelogue/request-fields.adoc[]
+
+== Response
+
+include::{snippets}/update-published-sub-travelogue/http-response.adoc[]
+
+== Response Fields
+
+include::{snippets}/update-published-sub-travelogue/response-fields.adoc[]
 
 [[유저-프로필-수정-API]]
 == 유저 프로필 수정 API
