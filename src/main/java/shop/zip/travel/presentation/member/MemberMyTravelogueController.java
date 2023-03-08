@@ -64,7 +64,7 @@ public class MemberMyTravelogueController {
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     TravelogueDetailForUpdateRes travelogueUpdateDetailRes =
-        memberMyTravelogueService.getTravelogueForUpdate(travelogueId, userPrincipal.getUserId());
+        memberMyTravelogueService.getTravelogueForUpdate(userPrincipal.getUserId(), travelogueId);
 
     return ResponseEntity.ok(travelogueUpdateDetailRes);
   }

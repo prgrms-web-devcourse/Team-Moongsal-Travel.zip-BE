@@ -26,6 +26,8 @@ import shop.zip.travel.global.error.ErrorCode;
 @Transactional(readOnly = true)
 public class MemberMyTravelogueService {
 
+  private static final boolean PUBLISHED = true;
+
   private final TravelogueRepository travelogueRepository;
   private final SubTravelogueRepository subTravelogueRepository;
 
@@ -38,7 +40,7 @@ public class MemberMyTravelogueService {
   public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Long memberId,
       Pageable pageable) {
     Slice<TravelogueSimpleRes> travelogueSimpleRes = new SliceImpl<>(
-        travelogueRepository.getMyTravelogues(memberId, pageable)
+        travelogueRepository.getMyTravelogues(memberId, pageable, PUBLISHED)
             .stream()
             .map(TravelogueSimpleRes::toDto)
             .toList());
@@ -48,7 +50,6 @@ public class MemberMyTravelogueService {
 
   public TravelogueDetailForUpdateRes getTravelogueForUpdate(Long memberId, Long travelogueId) {
     Travelogue travelogue = getMyTravelogue(travelogueId, memberId);
-    travelogue.isWriter(memberId);
 
     return TravelogueDetailForUpdateRes.toDto(travelogue);
   }
@@ -60,7 +61,6 @@ public class MemberMyTravelogueService {
     TravelogueUpdate travelogueUpdate = travelogueUpdateReq.toTravelogueUpdate();
 
     travelogue.update(travelogueUpdate);
-    travelogueRepository.save(travelogue);
 
     return TravelogueUpdateRes.toDto(travelogue.getId());
   }
