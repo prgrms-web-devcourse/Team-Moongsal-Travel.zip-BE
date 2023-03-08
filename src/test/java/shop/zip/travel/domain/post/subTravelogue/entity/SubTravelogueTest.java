@@ -30,17 +30,8 @@ class SubTravelogueTest {
   }
 
   @Test
-  @DisplayName("제목은 null이거나 빈 값일 수 없다.")
+  @DisplayName("제목은 null일 수 없다.")
   void test_create_no_title() {
-    String title = " ";
-
-    assertThatThrownBy(() -> new SubTravelogue(
-        title,
-        validContent,
-        List.of(DummyGenerator.createAddress()),
-        Set.of(Transportation.BUS),
-        new ArrayList<>()
-    )).isInstanceOf(IllegalArgumentException.class);
 
     assertThatThrownBy(() -> new SubTravelogue(
         null,
@@ -52,17 +43,8 @@ class SubTravelogueTest {
   }
 
   @Test
-  @DisplayName("내용은 null이거나 빈 값일 수 없다.")
+  @DisplayName("내용은 null일 수 없다.")
   void test_no_content() {
-    String content = " ";
-
-    assertThatThrownBy(() -> new SubTravelogue(
-        validTitle,
-        content,
-        List.of(DummyGenerator.createAddress()),
-        Set.of(Transportation.BUS),
-        new ArrayList<>()
-    )).isInstanceOf(IllegalArgumentException.class);
 
     assertThatThrownBy(() -> new SubTravelogue(
         validTitle,

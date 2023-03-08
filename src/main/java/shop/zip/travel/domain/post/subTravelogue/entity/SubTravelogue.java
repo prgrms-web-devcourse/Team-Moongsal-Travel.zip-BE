@@ -28,6 +28,8 @@ import shop.zip.travel.global.error.ErrorCode;
 @Entity
 public class SubTravelogue extends BaseTimeEntity {
 
+    private static final int MIN_LENGTH = 0;
+    private static final int MAX_LENGTH = 51;
     private static final int ZERO = 0;
 
     @Id
@@ -94,6 +96,7 @@ public class SubTravelogue extends BaseTimeEntity {
     private void verify(String title, String content, List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
         nullCheck(title, content, addresses, transportationSet, photos);
+        verifyTitle(title);
     }
 
 
@@ -104,6 +107,11 @@ public class SubTravelogue extends BaseTimeEntity {
         Assert.notNull(addresses, "주소를 확인해주세요");
         Assert.notNull(transportationSet, "이동수단을 확인해주세요");
         Assert.notNull(photos, "이미지를 확인해주세요");
+    }
+
+    private void verifyTitle(String title) {
+        Assert.isTrue(title.length() < MAX_LENGTH && title.length() > MIN_LENGTH,
+            "제목의 길이는 1글자 이상 50글자 이하여야 합니다");
     }
 
     private boolean cannotPublish() {
