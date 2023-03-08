@@ -576,12 +576,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#게시글-필터링-검색-정렬">게시글 필터링 검색(+인기순 정렬)</a>
-  <ul class="sectlevel2">
-    <li><a href="#_request_16">Request</a></li>
-    <li><a href="#_requestparam_6">RequestParam</a></li>
-    <li><a href="#_response_15">Response</a></li>
-    <li><a href="#_responsefields_9">ResponseFields</a></li>
-  </ul>
+<ul class="sectlevel2">
+  <li><a href="#_request_16">Request</a></li>
+  <li><a href="#_requestparam_6">RequestParam</a></li>
+  <li><a href="#_response_15">Response</a></li>
+  <li><a href="#_responsefields_9">ResponseFields</a></li>
+</ul>
 </li>
 </ul>
 </li>
@@ -599,7 +599,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/travelogues HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE2LCJpYXQiOjE2NzgxODgxNjUsImV4cCI6MTY3ODE5MTc2NX0.N8tx4JbeF8VAk-ZHTCuGWbHiqiw7_mUFtq_Y6nfB3emMQ4yGPec_UZjxGlqbGO1xyn1eMIPmzfDQb23PZnJEag
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE2LCJpYXQiOjE2NzgyNTY4OTAsImV4cCI6MTY3ODI2MDQ5MH0.sYfXFWNEGeHnnxO2Z-BnUBA_nvAxdATAfPwNwjy0vsdAw3CHHpoJDCx1N0Ta5p0Z1T8Pc_Cw0IPNEVmRkzYkLg
 Content-Length: 176
 Host: localhost:8080
 
@@ -745,7 +745,7 @@ Content-Length: 30
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/travelogues/24/publish HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjgsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.SSSogs2ejAzfl-KHSUeBLKBO62XuZkXR-Lv047ZZBZdLRWBhfFij8eYBXAuQ-4sn5tRg-cP26u-SgCQmQmXFBw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjgsImlhdCI6MTY3ODI1Njg4OSwiZXhwIjoxNjc4MjYwNDg5fQ._sFRjRk4RQRgXVWYlCwOyqqgzxWcKivs83nlaRSXZNcPcrIgFZ-DmkuvzFcusZzMgZZXSyiJQIcpBe8VxCyBzw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -864,7 +864,7 @@ Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Content-Length: 677
 
-{"content":[{"travelogueId":19,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0},{"travelogueId":20,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0}],"pageable":{"sort":{"empty":true,"unsorted":true,"sorted":false},"offset":0,"pageNumber":0,"pageSize":2,"paged":true,"unpaged":false},"size":2,"number":0,"numberOfElements":2,"first":true,"last":true,"empty":false}</code></pre>
+{"content":[{"travelogueId":19,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0},{"travelogueId":20,"title":"일본 오사카 다녀왔어요.","nights":1,"days":2,"totalCost":500000,"country":"일본","thumbnail":"www.naver.com","member":{"nickname":"nickname","profileImageUrl":"default"},"likeCount":0}],"pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"pageNumber":0,"pageSize":2,"unpaged":false,"paged":true},"size":2,"number":0,"numberOfElements":2,"first":true,"last":true,"empty":false}</code></pre>
 </div>
 </div>
 </div>
@@ -1017,7 +1017,7 @@ Content-Length: 677
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/travelogues/21 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjcsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.BOUX2xl2nyPNI686MRqjuc42MkeNH_-ladw0rxSyQRo7nv8St33-9NPjwa_uwzihtQjuDeeE1MLGdVOfJ-kv1w
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjcsImlhdCI6MTY3ODI1Njg4OSwiZXhwIjoxNjc4MjYwNDg5fQ.nplTLxqQ8DYqbIjZzf7jOkqW2ZBD7bux5nsCpXUnLse4akNQZ3hBPqWl0jAk1zEEAa9v0sH1OE2tyXFbpzYVcw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1030,7 +1030,7 @@ Host: localhost:8080</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewCountCookie_21=21; Max-Age=86400; Expires=Wed, 08 Mar 2023 11:22:44 GMT
+Set-Cookie: viewCountCookie_21=21; Max-Age=86400; Expires=Thu, 09 Mar 2023 06:28:09 GMT
 Content-Type: application/json
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
@@ -1178,7 +1178,7 @@ Content-Length: 698
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search?keyword=%EC%9C%A0%EB%8B%88%EB%B2%84%EC%85%9C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.A0hMMztwkThmjY3QHErd1ZPT7Z0W_qmIc_ur12FXXqwXEPKhXkmWHFyhclDcRhrk088SW8TaTm-EdR0gyJDojw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODI1Njg4OSwiZXhwIjoxNjc4MjYwNDg5fQ.m7XUUUigWulHXjfKb2UMzNRoSgn3C1Vx704l2E5adyC5wENOy5aCPfVL4OdY1GoUxKsF0pRDIFQgJUQ3jpJEiw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1213,7 +1213,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1102
+Content-Length: 1291
 
 {
   "content" : [ {
@@ -1256,8 +1256,19 @@ Content-Length: 1102
     },
     "likeCount" : 0
   } ],
-  "pageable" : "INSTANCE",
-  "size" : 3,
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "size" : 5,
   "number" : 0,
   "numberOfElements" : 3,
   "first" : true,
@@ -1312,8 +1323,19 @@ Content-Length: 1102
     },
     "likeCount" : 0
   } ],
-  "pageable" : "INSTANCE",
-  "size" : 3,
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "size" : 5,
   "number" : 0,
   "numberOfElements" : 3,
   "first" : true,
@@ -1334,7 +1356,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/info HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjIsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.uYAuDZ7_dNo9ejXj6PGb2B1xjeHaAgall62pXTvsI1QHBzCquxrZ77Sq8xqob1prwmzqZaEeGEAbI93lou3KVw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjIsImlhdCI6MTY3ODI1Njg4MCwiZXhwIjoxNjc4MjYwNDgwfQ.JRLAvbaHL8ZTP3Kyql7kANsXFlAz0Z5BdHTt-_7gEX00rrP5fUGN366a34Aaqme414uX8mlN-SzoqZv8gJYADg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1414,7 +1436,7 @@ Content-Length: 126
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/travelogues?size=2&amp;page=0 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.8iUQAPIbAc9NjjM2qrPco7-iO_aR-TJqadvQHQYrHUKW6meZcUFHc7yZF-vQbq4KwUAZB997Hy6yIUEA5OkvXA
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODI1Njg4MywiZXhwIjoxNjc4MjYwNDgzfQ.3ckQCiIjdcy95PM76Vazb4TkW59IXBMWA0-5mW_mEuXAH4XZ4FKfTkorZ8n8P2EO9NvtqKOmKqbNIDedWv3P8A
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1576,7 +1598,7 @@ Content-Length: 481
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/temp-travelogues?size=2&amp;page=0 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjYsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.wUXTPoFLuWbA-ddF31ujTqLpFB13pdj4basdPOdLV7tBmMJ9lHQ-gzuD6UX3D74TMxeKU18FLfk36AiSETlshw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjYsImlhdCI6MTY3ODI1Njg4NCwiZXhwIjoxNjc4MjYwNDg0fQ.pRlpYnY6Yrg2ssoJN385iqV_OSluLjwkRAXo5V24rNm4niV9eDig24IzzwPn14opuxBGb-jC4_M2IjFg7Lj-RQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1598,7 +1620,7 @@ Expires: 0
 X-Frame-Options: DENY
 Content-Length: 227
 
-{"content":[],"pageable":{"sort":{"empty":true,"unsorted":true,"sorted":false},"offset":0,"pageNumber":0,"pageSize":2,"paged":true,"unpaged":false},"size":2,"number":0,"numberOfElements":0,"first":true,"last":true,"empty":true}</code></pre>
+{"content":[],"pageable":{"sort":{"empty":true,"sorted":false,"unsorted":true},"offset":0,"pageNumber":0,"pageSize":2,"unpaged":false,"paged":true},"size":2,"number":0,"numberOfElements":0,"first":true,"last":true,"empty":true}</code></pre>
 </div>
 </div>
 </div>
@@ -1752,7 +1774,7 @@ Content-Length: 227
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/members/my/settings HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.heRyymF8f8i-vYAmuHZe-a6_Jx6oAWvtDBAvjhK8iMgA3IhQGNk3S7Zd4IDWzBTuKRfXbFqFhvK-Mrfh68xyvQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODI1Njg4MywiZXhwIjoxNjc4MjYwNDgzfQ.IdSKMrlbf7Ls5WG3XmXettV4Chycmb1HNWkf_WEHyPIOtBrTQgf7G3EhsGgzLJtc_u7XBm6KsrEfoEFad8TUXQ
 Content-Length: 81
 Host: localhost:8080
 
@@ -1867,7 +1889,7 @@ Content-Length: 135
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/bookmarks HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjMsImlhdCI6MTY3ODE4ODE2MSwiZXhwIjoxNjc4MTkxNzYxfQ.oJjZKQNuDETaabZ0KYjxwm81zmjx8tcqdZQV7-3OS-U4fOjTkEjyaCJF-Q-ieglcERmZknJ72T1Dt6HCqP0oVw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjMsImlhdCI6MTY3ODI1Njg4MSwiZXhwIjoxNjc4MjYwNDgxfQ.rLnrFoZpbkeRXARkpBWUsqCWEvGjaDaVyGOFtbMtksvkOaXJNlQrKunBErbjMhA3kUB83BeLMv4-Ao_ftEi6MA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1986,7 +2008,7 @@ Content-Length: 300
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PUT /api/travelogues/1/bookmarks HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODE4ODE2MCwiZXhwIjoxNjc4MTkxNzYwfQ.HhVPA-2QeaDs-OYvioe06MkYn-LgHDT5TCczpiWbfKZquqviDpO9_z_PfRb8vcvXhbig5yjuJpHQS6_XPrueKw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODI1Njg3OSwiZXhwIjoxNjc4MjYwNDc5fQ.g6OUekijbqaUDa2ppB4wwtb7zmLFR-qTcnh8hcFpMf8rt5mmUZB8aOM8smqi3zO27dLgmg3Ck7XqqAlyQGMAkQ
 Host: localhost:8080
 Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
@@ -2020,7 +2042,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search?keyword=%EC%9C%A0%EB%8B%88%EB%B2%84%EC%85%9C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODE4ODE2NCwiZXhwIjoxNjc4MTkxNzY0fQ.A0hMMztwkThmjY3QHErd1ZPT7Z0W_qmIc_ur12FXXqwXEPKhXkmWHFyhclDcRhrk088SW8TaTm-EdR0gyJDojw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODI1Njg4OSwiZXhwIjoxNjc4MjYwNDg5fQ.m7XUUUigWulHXjfKb2UMzNRoSgn3C1Vx704l2E5adyC5wENOy5aCPfVL4OdY1GoUxKsF0pRDIFQgJUQ3jpJEiw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2055,7 +2077,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1102
+Content-Length: 1291
 
 {
   "content" : [ {
@@ -2098,8 +2120,19 @@ Content-Length: 1102
     },
     "likeCount" : 0
   } ],
-  "pageable" : "INSTANCE",
-  "size" : 3,
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "size" : 5,
   "number" : 0,
   "numberOfElements" : 3,
   "first" : true,
@@ -2166,29 +2199,75 @@ Content-Length: 1102
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].likeCount</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>content[].likeCount</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 객체</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.empty</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.sorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.unsorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어 있지 않은지에 대한 여부</p>
+  </td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.pageNumber</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">현재 요청한 페이지 넘버</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청한 데이터 갯수</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 된 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 되지 않은 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
@@ -2223,7 +2302,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?minDays=0&amp;maxDays=3&amp;keyword=%EB%98%90+%EA%B0%80%EA%B3%A0+%EC%8B%B6%EC%9D%8C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE1LCJpYXQiOjE2NzgxODgxNjUsImV4cCI6MTY3ODE5MTc2NX0.3m8yrIKX6mSxXkE9MEd0NiRWpD9gRQjV8mARvjQqMFFYX5v813_eMvIUVbLyQEHfCnEWx94UXej6bHsKNj6wrw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE1LCJpYXQiOjE2NzgyNTY4OTAsImV4cCI6MTY3ODI2MDQ5MH0.ZRTVZFhwla_UFynS6fLQVeeAGEAsniBzfJUM_qfzKhEURCLLrhLzXZ9i6ELFtrflF8X3M2_XHe1niPOT2sKbSg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2266,7 +2345,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1102
+Content-Length: 1291
 
 {
   "content" : [ {
@@ -2309,8 +2388,19 @@ Content-Length: 1102
     },
     "likeCount" : 0
   } ],
-  "pageable" : "INSTANCE",
-  "size" : 3,
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "size" : 5,
   "number" : 0,
   "numberOfElements" : 3,
   "first" : true,
@@ -2377,29 +2467,75 @@ Content-Length: 1102
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].likeCount</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>content[].likeCount</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 객체</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.empty</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.sorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.unsorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어 있지 않은지에 대한 여부</p>
+  </td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.pageNumber</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">현재 요청한 페이지 넘버</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청한 데이터 갯수</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 된 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 되지 않은 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
@@ -2434,7 +2570,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?minCost=0&amp;maxCost=500000&amp;keyword=%EB%98%90+%EA%B0%80%EA%B3%A0+%EC%8B%B6%EC%9D%8C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEyLCJpYXQiOjE2NzgxODgxNjQsImV4cCI6MTY3ODE5MTc2NH0.P9C7kZRMG_Ai5wR607_Fi21go3YTMesgyWnRoMeD88qmqQU17TswOh1fz-50o6WLQzLu57ybqaxdhhEcuUgHaA
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEyLCJpYXQiOjE2NzgyNTY4OTAsImV4cCI6MTY3ODI2MDQ5MH0.s-nClnrKIHkyPq27dSUNEVmc1EdqLoeLY1lDLDvY4NxkSinfLLVaXIjeJimXJu_q80XSBsaiu5bfCTB6vJhj4Q
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2477,7 +2613,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1102
+Content-Length: 1291
 
 {
   "content" : [ {
@@ -2520,8 +2656,19 @@ Content-Length: 1102
     },
     "likeCount" : 0
   } ],
-  "pageable" : "INSTANCE",
-  "size" : 3,
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "size" : 5,
   "number" : 0,
   "numberOfElements" : 3,
   "first" : true,
@@ -2588,29 +2735,75 @@ Content-Length: 1102
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].likeCount</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>content[].likeCount</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 객체</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.empty</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.sorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.unsorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어 있지 않은지에 대한 여부</p>
+  </td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.pageNumber</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">현재 요청한 페이지 넘버</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청한 데이터 갯수</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 된 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 되지 않은 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
@@ -2645,7 +2838,7 @@ Content-Length: 1102
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?minDays=0&amp;maxDays=3&amp;minCost=0&amp;maxCost=500000&amp;keyword=%EB%98%90+%EA%B0%80%EA%B3%A0+%EC%8B%B6%EC%9D%8C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE5LCJpYXQiOjE2NzgxODgxNjUsImV4cCI6MTY3ODE5MTc2NX0.YrFAmjilRzbmDJuJnR9MEKxqoVBLduOFK5VkR8ZW9Ee9PqXpwr0e3aZm44touqqws0RnKIESRghk9jMQuOFC7w
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE5LCJpYXQiOjE2NzgyNTY4OTEsImV4cCI6MTY3ODI2MDQ5MX0.p0SylDg_ZEn9E9dCdRsqlopbTK9WbKBYquDKzhV7P-aW7wRYIxpJwB59ah6JUSAzSSLx4sucdFIIPb3smzcifA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2696,7 +2889,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1102
+Content-Length: 1291
 
 {
   "content" : [ {
@@ -2739,8 +2932,19 @@ Content-Length: 1102
     },
     "likeCount" : 0
   } ],
-  "pageable" : "INSTANCE",
-  "size" : 3,
+  "pageable" : {
+    "sort" : {
+      "empty" : true,
+      "sorted" : false,
+      "unsorted" : true
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "size" : 5,
   "number" : 0,
   "numberOfElements" : 3,
   "first" : true,
@@ -2807,29 +3011,75 @@ Content-Length: 1102
 <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 닉네임</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].member.profileImageUrl</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">작성자 프로필 사진</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].likeCount</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>content[].likeCount</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이징 객체</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.empty</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.sorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어있는지에 대한 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.sort.unsorted</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어 있지 않은지에 대한 여부</p>
+  </td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">
+    <code>pageable.pageNumber</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">현재 요청한 페이지 넘버</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청한 데이터 갯수</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.paged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 된 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code>
+  </p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 되지 않은 여부</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">요청된 페이징 사이즈</p></td>
+</tr>
+<tr>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock">페이지 번호</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>numberOfElements</code></p></td>
@@ -2842,7 +3092,7 @@ Content-Length: 1102
 <td class="tableblock halign-left valign-top"><p class="tableblock">첫번째 페이지인지의 여부</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
+  <td class="tableblock halign-left valign-top"><p class="tableblock"><code>last</code></p></td>
   <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
   <td class="tableblock halign-left valign-top"><p class="tableblock">마지막 페이지인지의 여부</p></td>
 </tr>
@@ -2864,7 +3114,7 @@ Content-Length: 1102
         <div class="listingblock">
           <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?keyword=%EC%9D%BC%EB%B3%B8&amp;sort=popular HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODE4ODE2MywiZXhwIjoxNjc4MTkxNzYzfQ.LCc33sHOIc31cWViJ9T_1PEkMizt6rWAPtlA0IMemf2EyZI54K_BlcRovE40kxuS6GbD7FkIfagtBeErWk5qdA
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODI1Njg4OCwiZXhwIjoxNjc4MjYwNDg4fQ.00Ma10e8Wn4HOCOOhfUBvCrizmGFE8ZEKKp18p1-V1a7ahqVNEiWjlOR4CEnlTrdh7qEpjxZUXsf7tAIytntaA
 Host: localhost:8080</code></pre>
           </div>
         </div>
@@ -2891,7 +3141,7 @@ Host: localhost:8080</code></pre>
           <tr>
             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>sort</code>
             </p></td>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">popular</p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">정렬</p></td>
           </tr>
           </tbody>
         </table>
@@ -2905,7 +3155,7 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1099
+Content-Length: 1917
 
 {
   "content" : [ {
@@ -2921,6 +3171,32 @@ Content-Length: 1099
       "profileImageUrl" : "default"
     },
     "likeCount" : 1
+  }, {
+    "travelogueId" : 5,
+    "title" : "일본 오사카 다녀왔어요.",
+    "nights" : 1,
+    "days" : 2,
+    "totalCost" : 500000,
+    "country" : "일본",
+    "thumbnail" : "www.naver.com",
+    "member" : {
+      "nickname" : "nickname",
+      "profileImageUrl" : "default"
+    },
+    "likeCount" : 0
+  }, {
+    "travelogueId" : 4,
+    "title" : "일본 오사카 다녀왔어요.",
+    "nights" : 1,
+    "days" : 2,
+    "totalCost" : 500000,
+    "country" : "일본",
+    "thumbnail" : "www.naver.com",
+    "member" : {
+      "nickname" : "nickname",
+      "profileImageUrl" : "default"
+    },
+    "likeCount" : 0
   }, {
     "travelogueId" : 3,
     "title" : "일본 오사카 다녀왔어요.",
@@ -2948,10 +3224,21 @@ Content-Length: 1099
     },
     "likeCount" : 0
   } ],
-  "pageable" : "INSTANCE",
-  "size" : 3,
+  "pageable" : {
+    "sort" : {
+      "empty" : false,
+      "sorted" : true,
+      "unsorted" : false
+    },
+    "offset" : 0,
+    "pageNumber" : 0,
+    "pageSize" : 5,
+    "unpaged" : false,
+    "paged" : true
+  },
+  "size" : 5,
   "number" : 0,
-  "numberOfElements" : 3,
+  "numberOfElements" : 5,
   "first" : true,
   "last" : true,
   "empty" : false
@@ -3049,11 +3336,65 @@ Content-Length: 1099
             <td class="tableblock halign-left valign-top"><p class="tableblock">게시물 좋아요 수</p></td>
           </tr>
           <tr>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">
-              <code>pageable</code></p></td>
-            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.empty</code>
             </p></td>
-            <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 객체</p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 비어있는지에 대한
+              여부</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.sorted</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어있는지에 대한
+              여부</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.sort.unsorted</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">데이터가 정렬되어 있지 않은지에 대한
+              여부</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.offset</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">페이징 offset</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageNumber</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">현재 요청한 페이지 넘버</p>
+            </td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.pageSize</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">요청한 데이터 갯수</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">
+              <code>pageable.paged</code></p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 된 여부</p></td>
+          </tr>
+          <tr>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>pageable.unpaged</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code>
+            </p></td>
+            <td class="tableblock halign-left valign-top"><p class="tableblock">페이징이 되지 않은 여부</p>
+            </td>
           </tr>
           <tr>
             <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code>
@@ -3109,7 +3450,7 @@ Content-Length: 1099
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-  Last updated 2023-03-07 20:22:07 +0900
+  Last updated 2023-03-08 00:47:36 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
