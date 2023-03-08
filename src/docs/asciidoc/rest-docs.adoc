@@ -1,3 +1,7 @@
+ifndef::snippets[]
+:snippets: build/generated-snippets
+endif::[]
+
 = Spring REST Docs
 backtony.github.io(Rest Docs)
 :doctype: book
@@ -97,19 +101,19 @@ include::{snippets}/add-like-travelogue/response-fields.adoc[]
 
 === Request
 
-include::{snippets}/TravelogueController/search/http-request.adoc[]
+include::{snippets}/get-travelogues-searched/http-request.adoc[]
 
 === RequestParam
 
-include::{snippets}/TravelogueController/search/query-parameters.adoc[]
+include::{snippets}/get-travelogues-searched/query-parameters.adoc[]
 
 === Response
 
-include::{snippets}/TravelogueController/search/http-response.adoc[]
+include::{snippets}/get-travelogues-searched/http-response.adoc[]
 
 === ResponseBody
 
-include::{snippets}/TravelogueController/search/response-body.adoc[]
+include::{snippets}/get-travelogues-searched/response-body.adoc[]
 
 = myPage
 
@@ -290,7 +294,7 @@ include::{snippets}/get-travelogues-filtered-period/query-parameters.adoc[]
 
 include::{snippets}/get-travelogues-filtered-period/http-response.adoc[]
 
-=== ResponseFidlds
+=== ResponseFields
 
 include::{snippets}/get-travelogues-filtered-period/response-fields.adoc[]
 
@@ -331,3 +335,5 @@ include::{snippets}/get-travelogues-filtered/http-response.adoc[]
 === ResponseFields
 
 include::{snippets}/get-travelogues-filtered/response-fields.adoc[]
+
+이동준 킹왕짱

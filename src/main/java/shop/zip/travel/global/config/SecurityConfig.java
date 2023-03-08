@@ -56,6 +56,17 @@ public class SecurityConfig {
         .formLogin().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
+
+        .oauth2Login()
+        .authorizationEndpoint().baseUri("/oauth2/authorize")
+        .and()
+        .redirectionEndpoint()
+        .baseUri("/*/*/oauth2/code/*")
+        .and()
+        .userInfoEndpoint().userService(customOAuth2UserService)
+        .and()
+        .successHandler(oauth2AuthenticationSuccessHandler)
+        .and()
         .authorizeHttpRequests((requests) -> requests
             .requestMatchers("/docs/rest-docs.html").permitAll()
             .anyRequest().authenticated()

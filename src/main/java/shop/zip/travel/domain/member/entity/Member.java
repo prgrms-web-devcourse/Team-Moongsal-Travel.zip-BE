@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import java.time.LocalDate;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
@@ -39,17 +40,17 @@ public class Member extends BaseTimeEntity {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @Enumerated(EnumType.STRING)
-  private Provider provider;
-
   @Column
+  private String provider;
+
+  @Lob
   private String providerId;
 
   protected Member() {
   }
 
   public Member(String email, String password, String nickname, String birthYear,
-      String profileImageUrl, boolean isEmail, Role role, Provider provider, String providerId) {
+      String profileImageUrl, boolean isEmail, Role role, String provider, String providerId) {
     this.email = email;
     this.password = password;
     this.nickname = nickname;
@@ -151,7 +152,7 @@ public class Member extends BaseTimeEntity {
     return role;
   }
 
-  public Provider getProvider() {
+  public String getProvider() {
     return provider;
   }
 
