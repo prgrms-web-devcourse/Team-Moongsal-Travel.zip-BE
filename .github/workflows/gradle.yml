@@ -45,6 +45,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: application.yml created
+        uses: actions/checkout@v3
+      - run: touch ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION_YML}}" > ./src/main/resources/application.yml
+      - uses: actions/upload-artifact@v3
+        with:
+          name: application.yml
+          path: ./src/main/resources/application.yml
+
       - name: Build with Gradle
         run: ./gradlew clean build -Pprofile=dev
 
