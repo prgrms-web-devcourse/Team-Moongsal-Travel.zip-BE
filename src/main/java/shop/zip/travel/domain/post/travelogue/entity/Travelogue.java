@@ -20,6 +20,7 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
 import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.exception.InvalidAccessSubTravelogueException;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueUpdate;
@@ -222,6 +223,14 @@ public class Travelogue extends BaseTimeEntity {
 		List<SubTravelogue> newSubTravelogues = new ArrayList<>(this.subTravelogues);
 		newSubTravelogues.add(newSubTravelogue);
 		changeSubTravelogues(newSubTravelogues);
+	}
+
+	public void isContain(SubTravelogue subTravelogue) {
+		if (!this.getSubTravelogues().contains(subTravelogue)) {
+			throw new InvalidAccessSubTravelogueException(
+					ErrorCode.TRAVELOGUE_NOT_CONTAIN_SUB_TRAVELOGUE
+			);
+		}
 	}
 
 	private void removeOldSubTravelogue(int idx) {

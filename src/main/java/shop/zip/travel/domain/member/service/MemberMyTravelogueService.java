@@ -9,7 +9,6 @@ import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueUpdateRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
-import shop.zip.travel.domain.post.subTravelogue.exception.InvalidAccessSubTravelogueException;
 import shop.zip.travel.domain.post.subTravelogue.exception.SubTravelogueNotFoundException;
 import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueUpdate;
@@ -70,7 +69,7 @@ public class MemberMyTravelogueService {
       Long subTravelogueId) {
     Travelogue travelogue = getMyTravelogue(travelogueId, memberId);
     SubTravelogue subTravelogue = getSubTravelogue(subTravelogueId);
-    isTravelogueContain(subTravelogue, travelogue);
+    travelogue.isContain(subTravelogue);
 
     return SubTravelogueDetailRes.toDto(subTravelogue);
   }
@@ -95,20 +94,12 @@ public class MemberMyTravelogueService {
       SubTravelogueUpdateReq subTravelogueUpdateReq) {
     Travelogue travelogue = getMyTravelogue(travelogueId, memberId);
     SubTravelogue subTravelogue = getSubTravelogue(subTravelogueId);
-    isTravelogueContain(subTravelogue, travelogue);
+    travelogue.isContain(subTravelogue);
 
     subTravelogue.update(subTravelogueUpdateReq.toSubTravelogueUpdate());
 
     travelogue.updateSubTravelogues(subTravelogue);
 
     return SubTravelogueUpdateRes.toDto(subTravelogue.getId());
-  }
-
-  private void isTravelogueContain(SubTravelogue subTravelogue, Travelogue travelogue) {
-    if (!travelogue.getSubTravelogues().contains(subTravelogue)) {
-      throw new InvalidAccessSubTravelogueException(
-          ErrorCode.TRAVELOGUE_NOT_CONTAIN_SUB_TRAVELOGUE
-      );
-    }
   }
 }
