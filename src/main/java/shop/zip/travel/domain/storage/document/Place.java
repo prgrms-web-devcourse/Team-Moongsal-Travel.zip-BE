@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.scrap.document;
+package shop.zip.travel.domain.storage.document;
 
 
 import jakarta.persistence.Id;

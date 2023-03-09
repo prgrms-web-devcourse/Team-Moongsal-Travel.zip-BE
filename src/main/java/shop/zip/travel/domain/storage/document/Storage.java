@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.scrap.document;
+package shop.zip.travel.domain.storage.document;
 
 import jakarta.persistence.Id;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "my_scrap")
-public class Scrap {
+public class Storage {
 
   @Id
   private ObjectId id;
@@ -18,11 +18,11 @@ public class Scrap {
 
   private List<Place> contents;
 
-  protected Scrap() {
+  protected Storage() {
 
   }
 
-  public Scrap(Long memberId, String title) {
+  public Storage(Long memberId, String title) {
     this.memberId = memberId;
     this.title = title;
     this.contents = new ArrayList<>();

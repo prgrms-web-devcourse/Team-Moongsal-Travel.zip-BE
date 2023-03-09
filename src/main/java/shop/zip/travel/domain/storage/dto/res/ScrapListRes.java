@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.scrap.dto.res;
+package shop.zip.travel.domain.storage.dto.res;
 
 import java.util.List;
 
