@@ -1,5 +1,6 @@
 package shop.zip.travel.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,7 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import shop.zip.travel.global.filter.JwtAuthenticationFilter;
-import shop.zip.travel.global.filter.JwtExceptionFilter;
 import shop.zip.travel.global.oauth.CustomOAuth2UserService;
 import shop.zip.travel.global.oauth.OAuth2AuthenticationSuccessHandler;
 import shop.zip.travel.global.security.JwtTokenProvider;
@@ -24,13 +24,16 @@ public class SecurityConfig {
   private final JwtTokenProvider jwtTokenProvider;
   private final CustomOAuth2UserService customOAuth2UserService;
   private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
+  private final ObjectMapper objectMapper;
 
   public SecurityConfig(JwtTokenProvider jwtTokenProvider,
       CustomOAuth2UserService customOAuth2UserService,
-      OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler) {
+      OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
+      ObjectMapper objectMapper) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.customOAuth2UserService = customOAuth2UserService;
     this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
+    this.objectMapper = objectMapper;
   }
 
   @Bean
@@ -70,9 +73,8 @@ public class SecurityConfig {
         .authorizeHttpRequests((requests) -> requests
             .anyRequest().authenticated()
         )
-        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-            UsernamePasswordAuthenticationFilter.class)
-        .addFilterBefore(new JwtExceptionFilter(), JwtAuthenticationFilter.class);
+        .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, objectMapper),
+            UsernamePasswordAuthenticationFilter.class);
     return http.build();
   }
 

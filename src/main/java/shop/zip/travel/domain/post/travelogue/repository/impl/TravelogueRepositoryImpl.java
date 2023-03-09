@@ -142,6 +142,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
                 .or(titleContains(keyword))
                 .or(subTravelogue.id.in(subTravelogueIds))
         )
+        .offset(pageable.getOffset())
         .fetch();
   }
 
@@ -156,7 +157,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
 
         )
         .offset(pageable.getOffset())
-        .limit(pageable.getPageSize())
+        .limit(pageable.getPageSize() + 1)
         .fetch();
   }
 
@@ -190,15 +191,14 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return travelogue.createDate.desc();
   }
 
-
   private NumberTemplate<Integer> getDays() {
-    return Expressions.numberTemplate(Integer.class, "datediff(DAY,{0},{1})",
-        travelogue.period.startDate, travelogue.period.endDate);
+    return Expressions.numberTemplate(Integer.class, "function('datediff', DAY, {0}, {1})",
+        travelogue.period.endDate, travelogue.period.startDate);
   }
 
   private BooleanExpression TraveloguePeriodDaysBetween(Long minDays, Long maxDays) {
     if (Objects.nonNull(minDays) && Objects.nonNull(maxDays)) {
-      return getDays().between(minDays, maxDays);
+      return getDays().between(minDays - 1, maxDays);
     }
     return null;
   }
