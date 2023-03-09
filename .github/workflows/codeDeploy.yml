@@ -32,7 +32,7 @@ jobs:
           name: application.yml
           path: ./src/main/resources/application.yml
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission for gradle
         run: chmod +x gradlew
 
       - name: Build with Gradle
