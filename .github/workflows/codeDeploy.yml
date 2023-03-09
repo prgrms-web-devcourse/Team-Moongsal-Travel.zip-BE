@@ -14,9 +14,6 @@ jobs:
   deploy:
 
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        mongodb-version: [ '4.2', '4.4', '5.0', '6.0' ]
 
     steps:
       - uses: actions/checkout@v3
@@ -27,10 +24,10 @@ jobs:
           distribution: 'temurin'
 
       - name: application.yml created
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
       - run: touch ./src/main/resources/application.yml
-      - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
-        uses: actions/upload-artifact@v3
+      - run: echo "${{ secrets.APPLICATION_YML}}" > ./src/main/resources/application.yml
+      - uses: actions/upload-artifact@v3
         with:
           name: application.yml
           path: ./src/main/resources/application.yml
