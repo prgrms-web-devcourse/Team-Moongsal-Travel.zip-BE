@@ -157,27 +157,51 @@ include::{snippets}/get-one-detail-travelogue/response-fields.adoc[]
 include::{snippets}/get-travelogues-searched/http-request.adoc[]
 
 === Query Parameter
+
 include::{snippets}/get-travelogues-searched/query-parameters.adoc[]
 
 === Response
+
 include::{snippets}/get-travelogues-searched/http-response.adoc[]
 
 === ResponseFields
-include::{snippets}/get-travelogues-filtered-period/response-fields.adoc[]
 
-== 게시글 필터링 검색
+include::{snippets}/get-travelogues-searched/response-fields.adoc[]
+
+// == 게시글 필터링 검색
+//
+// === Request
+// include::{snippets}/get-travelogues-filtered/http-request.adoc[]
+//
+// === Query Parameters
+// include::{snippets}/get-travelogues-filtered/query-parameters.adoc[]
+//
+// === Response
+// include::{snippets}/get-travelogues-filtered/http-response.adoc[]
+//
+// === ResponseFields
+// include::{snippets}/get-travelogues-filtered/response-fields.adoc[]
+
+== 게시글 필터링 인기순 정렬
 
 === Request
-include::{snippets}/get-travelogues-filtered/http-request.adoc[]
+
+include::{snippets}/get-travelogues-filtered-with-popular-sort/http-request.adoc[]
 
 === Query Parameters
-include::{snippets}/get-travelogues-filtered/query-parameters.adoc[]
+
+인기순 정렬
+
+- sort = popular
+include::{snippets}/get-travelogues-filtered-with-popular-sort/query-parameters.adoc[]
 
 === Response
-include::{snippets}/get-travelogues-filtered/http-response.adoc[]
+
+include::{snippets}/get-travelogues-filtered-with-popular-sort/http-response.adoc[]
 
 === ResponseFields
-include::{snippets}/get-travelogues-filtered/response-fields.adoc[]
+
+include::{snippets}/get-travelogues-filtered-with-popular-sort/response-fields.adoc[]
 
 = 북마크
 
@@ -192,4 +216,3 @@ include::{snippets}/bookmarking/path-parameters.adoc[]
 === Response
 include::{snippets}/bookmarking/http-response.adoc[]
 
-이동준 킹왕짱
