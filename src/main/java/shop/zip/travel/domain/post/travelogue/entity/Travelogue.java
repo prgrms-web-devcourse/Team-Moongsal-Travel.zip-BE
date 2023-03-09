@@ -208,7 +208,7 @@ public class Travelogue extends BaseTimeEntity {
 				subTravelogues.size() < getPeriod().getNights() + 1;
 	}
 
-	public void isWriter(Long memberId) {
+	public void validateWriter(Long memberId) {
 		if (!this.member.getId().equals(memberId)) {
 			throw new NoAuthorizationException(ErrorCode.NO_AUTHORIZATION_TO_TRAVELOGUE);
 		}
