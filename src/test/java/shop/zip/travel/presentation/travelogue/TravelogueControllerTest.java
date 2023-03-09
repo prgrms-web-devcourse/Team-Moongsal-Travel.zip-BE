@@ -88,7 +88,7 @@ class TravelogueControllerTest {
     );
 
     SubTravelogue subTravelogue = subTravelogueRepository.save(
-        DummyGenerator.createSubTravelogue()
+        DummyGenerator.createSubTravelogue(2)
     );
 
     travelogue.addSubTravelogue(subTravelogue);
@@ -271,6 +271,8 @@ class TravelogueControllerTest {
                     .description("SubTravelogue의 제목"),
                 fieldWithPath("subTravelogues[].content").type(JsonFieldType.STRING)
                     .description("SubTravelogue의 내용"),
+                fieldWithPath("subTravelogues[].day").type(JsonFieldType.NUMBER)
+                    .description("SubTravelogue의 일차"),
                 fieldWithPath("subTravelogues[].addresses[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue의 방문한 장소 리스트"),
                 fieldWithPath("subTravelogues[].addresses[].region").type(JsonFieldType.STRING)

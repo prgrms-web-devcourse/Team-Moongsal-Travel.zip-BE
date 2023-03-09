@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
+import shop.zip.travel.domain.post.travelogue.dto.res.LikeResultRes;
 import shop.zip.travel.domain.post.travelogue.entity.Like;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueLikeRepository;
@@ -12,6 +13,11 @@ import shop.zip.travel.domain.post.travelogue.repository.TravelogueLikeRepositor
 @Service
 @Transactional(readOnly = true)
 public class TravelogueLikeService {
+
+  private static final boolean ADD = true;
+  private static final boolean NOT_ADD = false;
+  private static final boolean CANCEL = true;
+  private static final boolean NOT_CANCEL = false;
 
   private final MemberService memberService;
   private final TravelogueService travelogueService;
@@ -25,14 +31,15 @@ public class TravelogueLikeService {
   }
 
   @Transactional
-  public void liking(Long memberId, Long travelogueId) {
+  public LikeResultRes liking(Long memberId, Long travelogueId) {
     Optional<Long> hasLiked = travelogueLikeRepository.findByMemberAndTravelogue(memberId,
         travelogueId);
     if (hasLiked.isPresent()) {
       cancelLike(hasLiked.get());
-      return;
+      return LikeResultRes.toDto(NOT_ADD, CANCEL);
     }
     addLike(memberId, travelogueId);
+    return LikeResultRes.toDto(ADD, NOT_CANCEL);
   }
 
   private void addLike(Long memberId, Long travelogueId) {

@@ -20,14 +20,19 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.data.Country;
 import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.exception.InvalidAccessSubTravelogueException;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueUpdate;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.domain.post.travelogue.exception.NoAuthorizationException;
 import shop.zip.travel.global.error.ErrorCode;
 
 @Entity
 public class Travelogue extends BaseTimeEntity {
+
+	private static final boolean TEMP = false;
+	private static final int INDEX_MATCHER = 1;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -156,18 +161,34 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	private void validThumbnail(String thumbnail){
-		if(thumbnail.isBlank()){
+		if (thumbnail.isBlank()) {
 			throw new IllegalArgumentException("썸네일은 빈 값으로 들어올 수 없습니다. 정확한 url이 필요합니다.");
 		}
 	}
 
 	public void addSubTravelogue(SubTravelogue subTravelogue) {
 		verifySubTravelogueDuplicate(subTravelogue);
+		verifySubTraveloguesSize();
 		this.subTravelogues.add(subTravelogue);
+	}
+
+	private void verifySubTraveloguesSize() {
+		if (this.subTravelogues.size() > this.period.getNights() + 1) {
+			throw new IllegalArgumentException("이미 모든 서브 트레블로그가 작성되어 있습니다.");
+		}
 	}
 
 	private void verifySubTravelogueDuplicate(SubTravelogue subTravelogue) {
 		Assert.isTrue(!subTravelogues.contains(subTravelogue), "이미 존재하는 서브게시물 입니다.");
+	}
+
+	public void update(TravelogueUpdate travelogueUpdate) {
+		this.period = travelogueUpdate.period();
+		this.title = travelogueUpdate.title();
+		this.country = travelogueUpdate.country();
+		this.cost = travelogueUpdate.cost();
+		this.thumbnail = travelogueUpdate.thumbnail();
+		this.isPublished = TEMP;
 	}
 
 	public void changePublishStatus() {
@@ -187,7 +208,7 @@ public class Travelogue extends BaseTimeEntity {
 				subTravelogues.size() < getPeriod().getNights() + 1;
 	}
 
-	public void isWriter(Long memberId) {
+	public void validateWriter(Long memberId) {
 		if (!this.member.getId().equals(memberId)) {
 			throw new NoAuthorizationException(ErrorCode.NO_AUTHORIZATION_TO_TRAVELOGUE);
 		}
@@ -195,6 +216,40 @@ public class Travelogue extends BaseTimeEntity {
 
 	public void addViewCount() {
 		this.viewCount++;
+	}
+
+	public void updateSubTravelogues(SubTravelogue newSubTravelogue) {
+		removeOldSubTravelogue(newSubTravelogue.getDay() - INDEX_MATCHER);
+		List<SubTravelogue> newSubTravelogues = new ArrayList<>(this.subTravelogues);
+		newSubTravelogues.add(newSubTravelogue);
+		changeSubTravelogues(newSubTravelogues);
+	}
+
+	public void isContain(SubTravelogue subTravelogue) {
+		if (!this.getSubTravelogues().contains(subTravelogue)) {
+			throw new InvalidAccessSubTravelogueException(
+					ErrorCode.TRAVELOGUE_NOT_CONTAIN_SUB_TRAVELOGUE
+			);
+		}
+	}
+
+	private void removeOldSubTravelogue(int idx) {
+		this.subTravelogues.remove(idx);
+	}
+
+	private void changeSubTravelogues(List<SubTravelogue> newSubTravelogues) {
+		this.subTravelogues.clear();
+		newSubTravelogues.sort((sub1, sub2) -> {
+			int day1 = sub1.getDay();
+			int day2 = sub2.getDay();
+
+			if (day1 > day2) {
+				return 1;
+			} else {
+				return -1;
+			}
+		});
+		this.subTravelogues.addAll(newSubTravelogues);
 	}
 
 }

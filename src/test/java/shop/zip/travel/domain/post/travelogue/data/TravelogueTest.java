@@ -33,14 +33,14 @@ class TravelogueTest {
 	@DisplayName("기간 없이 메인 게시물을 생성할 수 없다.")
 	void create_fail_by_no_period(){
 		assertThatThrownBy(() -> new Travelogue(
-			null,
-			title,
-			DummyGenerator.createCountry(),
-			thumbnail,
-			DummyGenerator.createCost(),
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			DummyGenerator.createMember()
+				null,
+				title,
+				DummyGenerator.createCountry(),
+				thumbnail,
+				DummyGenerator.createCost(),
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				DummyGenerator.createMember()
 		)).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -48,25 +48,25 @@ class TravelogueTest {
 	@DisplayName("제목 없이 메인 게시물을 생성 할 수 없다.")
 	void create_fail_by_no_title(){
 		assertThatThrownBy(() -> new Travelogue(
-			DummyGenerator.createPeriod(),
-			null,
-			DummyGenerator.createCountry(),
-			thumbnail,
-			DummyGenerator.createCost(),
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			DummyGenerator.createMember()
+				DummyGenerator.createPeriod(),
+				null,
+				DummyGenerator.createCountry(),
+				thumbnail,
+				DummyGenerator.createCost(),
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				DummyGenerator.createMember()
 		)).isInstanceOf(IllegalArgumentException.class);
 
 		assertThatThrownBy(() -> new Travelogue(
-			DummyGenerator.createPeriod(),
-			"",
-			DummyGenerator.createCountry(),
-			thumbnail,
-			DummyGenerator.createCost(),
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			DummyGenerator.createMember()
+				DummyGenerator.createPeriod(),
+				"",
+				DummyGenerator.createCountry(),
+				thumbnail,
+				DummyGenerator.createCost(),
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				DummyGenerator.createMember()
 		)).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -74,14 +74,14 @@ class TravelogueTest {
 	@DisplayName("나라 없이 메인 게시물을 생성 할 수 없다.")
 	void create_fail_by_no_country(){
 		assertThatThrownBy(() -> new Travelogue(
-			DummyGenerator.createPeriod(),
-			title,
-			null,
-			thumbnail,
-			DummyGenerator.createCost(),
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			DummyGenerator.createMember()
+				DummyGenerator.createPeriod(),
+				title,
+				null,
+				thumbnail,
+				DummyGenerator.createCost(),
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				DummyGenerator.createMember()
 		)).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -89,25 +89,25 @@ class TravelogueTest {
 	@DisplayName("썸네일 없이 메인 게시물을 생성할 수 없다.")
 	void create_fail_by_no_thumbnail(){
 		assertThatThrownBy(() -> new Travelogue(
-			DummyGenerator.createPeriod(),
-			title,
-			DummyGenerator.createCountry(),
-			null,
-			DummyGenerator.createCost(),
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			DummyGenerator.createMember()
+				DummyGenerator.createPeriod(),
+				title,
+				DummyGenerator.createCountry(),
+				null,
+				DummyGenerator.createCost(),
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				DummyGenerator.createMember()
 		)).isInstanceOf(IllegalArgumentException.class);
 
 		assertThatThrownBy(() -> new Travelogue(
-			DummyGenerator.createPeriod(),
-			title,
-			DummyGenerator.createCountry(),
-			"",
-			DummyGenerator.createCost(),
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			DummyGenerator.createMember()
+				DummyGenerator.createPeriod(),
+				title,
+				DummyGenerator.createCountry(),
+				"",
+				DummyGenerator.createCost(),
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				DummyGenerator.createMember()
 		)).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -115,14 +115,14 @@ class TravelogueTest {
 	@DisplayName("경비 없이 메인 게시물을 생성할 수 없다.")
 	void create_fail_by_no_cost(){
 		assertThatThrownBy(() -> new Travelogue(
-			DummyGenerator.createPeriod(),
-			title,
-			DummyGenerator.createCountry(),
-			thumbnail,
-			null,
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			DummyGenerator.createMember()
+				DummyGenerator.createPeriod(),
+				title,
+				DummyGenerator.createCountry(),
+				thumbnail,
+				null,
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				DummyGenerator.createMember()
 		)).isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -130,14 +130,14 @@ class TravelogueTest {
 	@DisplayName("작성자 없이 메인 게시물을 생성할 수 없다.")
 	void create_fail_by_no_member(){
 		assertThatThrownBy(() -> new Travelogue(
-			DummyGenerator.createPeriod(),
-			title,
-			DummyGenerator.createCountry(),
-			thumbnail,
-			DummyGenerator.createCost(),
-			isPublished,
-			List.of(DummyGenerator.createSubTravelogue()),
-			null
+				DummyGenerator.createPeriod(),
+				title,
+				DummyGenerator.createCountry(),
+				thumbnail,
+				DummyGenerator.createCost(),
+				isPublished,
+				List.of(DummyGenerator.createSubTravelogue(1)),
+				null
 		)).isInstanceOf(IllegalArgumentException.class);
 	}
 }
