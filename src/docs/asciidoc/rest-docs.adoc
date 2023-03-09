@@ -331,3 +331,76 @@ include::{snippets}/bookmarking/path-parameters.adoc[]
 === Response
 include::{snippets}/bookmarking/http-response.adoc[]
 
+= 스크랩
+
+== 스크랩 문서 생성
+
+=== Request
+include::{snippets}/scrap/create-storage/http-request.adoc[]
+
+=== RequestFields
+include::{snippets}/scrap/create-storage/request-fields.adoc[]
+
+=== Response
+include::{snippets}/scrap/create-storage/http-response.adoc[]
+
+== 스크랩 문서 스크랩 추가
+
+=== Request
+include::{snippets}/scrap/create-scrap/http-request.adoc[]
+
+=== RequestFields
+include::{snippets}/scrap/create-scrap/request-fields.adoc[]
+
+=== Response
+include::{snippets}/scrap/create-scrap/http-response.adoc[]
+
+== 스크랩 문서 조회
+
+=== Request
+include::{snippets}/scrap/get-all-storage/http-request.adoc[]
+
+=== Response
+include::{snippets}/scrap/get-all-storage/http-response.adoc[]
+
+=== ResponseFields
+include::{snippets}/scrap/get-all-storage/response-fields.adoc[]
+
+== 스크랩 문서 상세 조회
+
+=== Request
+include::{snippets}/scrap/get-one-storage/http-request.adoc[]
+
+=== Path Parameter
+include::{snippets}/scrap/get-one-storage/path-parameters.adoc[]
+
+=== Response
+include::{snippets}/scrap/get-one-storage/http-response.adoc[]
+
+=== ResponseFields
+include::{snippets}/scrap/get-one-storage/response-fields.adoc[]
+
+== 스크랩 문서 삭제
+
+=== Request
+include::{snippets}/scrap/delete-one-storage/http-request.adoc[]
+
+=== Path Parameter
+include::{snippets}/scrap/delete-one-storage/path-parameters.adoc[]
+
+=== Response
+include::{snippets}/scrap/delete-one-storage/http-response.adoc[]
+
+== 특정 스크랩 삭제
+
+=== Request
+include::{snippets}/scrap/delete-one-scrap/http-request.adoc[]
+
+=== Path Parameter
+include::{snippets}/scrap/delete-one-scrap/path-parameters.adoc[]
+
+=== Response
+include::{snippets}/scrap/delete-one-scrap/http-response.adoc[]
+
+
+

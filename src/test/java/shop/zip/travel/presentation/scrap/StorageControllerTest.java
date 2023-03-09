@@ -166,6 +166,9 @@ class StorageControllerTest {
             requestHeaders(
                 headerWithName("AccessToken").description("Access Token")
             ),
+            pathParameters(
+                parameterWithName("storageObjectId").description("문서 object id")
+            ),
             responseFields(
                 fieldWithPath("title").type(JsonFieldType.STRING).description("문서 제목"),
                 fieldWithPath("contents[].scrapObjectId").type(JsonFieldType.STRING)
