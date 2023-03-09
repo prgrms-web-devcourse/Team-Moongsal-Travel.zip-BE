@@ -13,11 +13,6 @@ on:
 jobs:
   deploy:
 
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        mongodb-version: [ '4.2', '4.4', '5.0', '6.0' ]
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -25,11 +20,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.8.0
-        with:
-          mongodb-version: ${{ matrix.mongodb-version }}
 
       - name: application.yml created
       - run: touch ./src/main/resources/application.yml
