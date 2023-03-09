@@ -128,6 +128,28 @@ include::{snippets}/update-published-travelogue/http-response.adoc[]
 
 include::{snippets}/update-published-travelogue/response-fields.adoc[]
 
+== 자신이 작성했던 SubTravelogue 수정을 위한 조회
+
+=== Reequest
+
+include::{snippets}/get-my-one-sub-travelogue/http-request.adoc[]
+
+=== Request Headers
+
+include::{snippets}/get-my-one-sub-travelogue/request-headers.adoc[]
+
+=== Request param
+
+include::{snippets}/get-my-one-sub-travelogue/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/get-my-one-sub-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/get-my-one-sub-travelogue/response-fields.adoc[]
+
 == 자신이 작성했던 SubTravelogue 게시물 수정
 
 === Request

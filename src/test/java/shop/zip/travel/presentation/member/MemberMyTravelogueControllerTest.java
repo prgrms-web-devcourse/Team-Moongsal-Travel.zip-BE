@@ -5,6 +5,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -262,6 +263,7 @@ class MemberMyTravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("update-published-travelogue",
+            preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
             requestHeaders(
                 headerWithName("AccessToken").description("인증 토큰")
@@ -305,6 +307,7 @@ class MemberMyTravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("update-published-sub-travelogue",
+            preprocessRequest(prettyPrint()),
             preprocessResponse(prettyPrint()),
             requestHeaders(
                 headerWithName("AccessToken").description("인증 토큰")
