@@ -1,9 +1,15 @@
 package shop.zip.travel.presentation.travelogue;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,6 +82,13 @@ class TravelogueLikeControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("add-like-travelogue",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 토큰이 반드시 필요합니다.")
+            ),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue pk 값")
+            ),
             responseFields(
                 fieldWithPath("isAdded").description("좋아요가 추가되었는 지의 여부 - 좋아요가 추가된 것이면 true 반환"),
                 fieldWithPath("isCanceled").description("좋아요가 삭제되었는 지의 여부 - 좋아요가 삭제된 것이면 true 반환")
@@ -93,6 +106,13 @@ class TravelogueLikeControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("cancel-like-travelogue",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 토큰이 반드시 필요합니다.")
+            ),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue pk 값")
+            ),
             responseFields(
                 fieldWithPath("isAdded").description("좋아요가 추가되었는 지의 여부 - 좋아요가 추가된 것이면 true 반환"),
                 fieldWithPath("isCanceled").description("좋아요가 삭제되었는 지의 여부 - 좋아요가 삭제된 것이면 true 반환")

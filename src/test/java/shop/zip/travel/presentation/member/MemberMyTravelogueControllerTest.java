@@ -1,11 +1,18 @@
 package shop.zip.travel.presentation.member;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,25 +63,35 @@ class MemberMyTravelogueControllerTest {
 
   private Member member;
   private Travelogue travelogue;
+  private String token;
 
   @BeforeEach
   void setUp() {
     member = memberRepository.save(DummyGenerator.createMember());
     travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
     travelogueRepository.save(DummyGenerator.createTempTravelogue(member));
+    token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
   }
 
   @Test
   @DisplayName("내가 작성한 발행된 게시물들을 가져올 수 있다.")
   void getMyTravelogues() throws Exception {
 
-    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
-
     mockMvc.perform(get("/api/members/my/travelogues")
-            .header(tokenName, token))
+            .header(tokenName, token)
+            .param("size", "2")
+            .param("page", "0"))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-all-my-travelogues",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 토큰")
+            ),
+            queryParameters(
+                parameterWithName("size").description("한번에 가져올 데이터 갯수, 기본으로 5로 설정되어 있습니다."),
+                parameterWithName("page").description("조회할 페이지 넘버, 기본으로 0으로 설정되어 있습니다.(첫페이지)")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
                     .description("Travelogue id"),
@@ -107,13 +124,22 @@ class MemberMyTravelogueControllerTest {
   @Test
   @DisplayName("내가 작성한 임시 저장 게시물들을 가져올 수 있다.")
   void getTempAll() throws Exception {
-    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/members/my/travelogues/temp")
-            .header(tokenName, token))
+            .header(tokenName, token)
+            .param("size", "2")
+            .param("page", "0"))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-all-my-temp-travelogues",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 토큰")
+            ),
+            queryParameters(
+                parameterWithName("size").description("한번에 가져올 데이터 갯수, 기본으로 5로 설정되어 있습니다."),
+                parameterWithName("page").description("조회할 피이지 넘버, 기본으로 0으로 설정되어 있습니다.(첫페이지)")
+            ),
             responseFields(
                 fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
                     .description("Travelogue id"),
@@ -151,17 +177,21 @@ class MemberMyTravelogueControllerTest {
   }
 
   @Test
-  @DisplayName("내가 작성했던 트래블로그 정보를 가져올 수 있다.")
+  @DisplayName("내가 작성했던 하나의 트래블로그 정보를 가져올 수 있다.")
   void getDetailForUpdate() throws Exception {
-    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
-
-    System.out.println(travelogueRepository.findById(travelogue.getId()).get().getId());
 
     mockMvc.perform(get("/api/members/my/travelogues/{travelogueId}", travelogue.getId())
             .header(tokenName, token))
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("get-my-one-travelogue",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 헤더")
+            ),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue pk 값")
+            ),
             responseFields(
                 fieldWithPath("title").type(JsonFieldType.STRING)
                     .description("Travelogue 제목"),
@@ -185,8 +215,6 @@ class MemberMyTravelogueControllerTest {
   void updateTravelogue() throws Exception {
     TravelogueUpdateReq travelogueUpdateReq = DummyGenerator.createTravelogueUpdateReq();
 
-    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
-
     mockMvc.perform(patch("/api/members/my/travelogues/{travelogueId}", travelogue.getId())
             .header(tokenName, token)
             .contentType(MediaType.APPLICATION_JSON)
@@ -195,6 +223,13 @@ class MemberMyTravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("update-published-travelogue",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue pk 값")
+            ),
             requestFields(
                 fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작일"),
                 fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료일"),
@@ -221,8 +256,6 @@ class MemberMyTravelogueControllerTest {
 
     Long subTravelogueId = travelogue.getSubTravelogues().get(0).getId();
 
-    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
-
     mockMvc.perform(
             patch("/api/members/my/travelogues/{travelogueId}/subTravelogues/{subTravelogueId}",
                 travelogue.getId(), subTravelogueId)
@@ -233,6 +266,14 @@ class MemberMyTravelogueControllerTest {
         .andExpect(status().isOk())
         .andDo(print())
         .andDo(document("update-published-sub-travelogue",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 토큰")
+            ),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue pk 값"),
+                parameterWithName("subTravelogueId").description("subTravelogue pk 값")
+            ),
             requestFields(
                 fieldWithPath("title").type(JsonFieldType.STRING).description("소제목"),
                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),

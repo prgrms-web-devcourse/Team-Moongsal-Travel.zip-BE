@@ -33,42 +33,135 @@ include::{snippets}/update-my-profile/http-request.adoc[]
 include::{snippets}/update-my-profile/request-fields.adoc[]
 
 === Response
+
 include::{snippets}/update-my-profile/http-response.adoc[]
 
 === ResponseFields
+
 include::{snippets}/update-my-profile/response-fields.adoc[]
 
 == 자신이 임시 저장한 Travelogue 목록 조회
 
 === Request
-include::{snippets}/get-all-temp-travelogue/http-request.adoc[]
+
+include::{snippets}/get-all-my-temp-travelogues/http-request.adoc[]
+
+=== Request Headers
+
+include::{snippets}/get-all-my-temp-travelogues/request-headers.adoc[]
 
 === Response
-include::{snippets}/get-all-temp-travelogue/http-response.adoc[]
+
+include::{snippets}/get-all-my-temp-travelogues/http-response.adoc[]
 
 === Response Fields
-include::{snippets}/get-all-temp-travelogue/response-fields.adoc[]
+
+include::{snippets}/get-all-my-temp-travelogues/response-fields.adoc[]
 
 == 자신이 작성한 travelogue 목록 조회
 
 === Request
-include::{snippets}/get-my-travelogues/http-request.adoc[]
+
+include::{snippets}/get-all-my-travelogues/http-request.adoc[]
+
+=== Request Path Parameter
+
+include::{snippets}/get-all-my-travelogues/request-headers.adoc[]
 
 === Query Parameters
-include::{snippets}/get-my-travelogues/query-parameters.adoc[]
+
+include::{snippets}/get-all-my-travelogues/query-parameters.adoc[]
 
 === Response
-include::{snippets}/get-my-travelogues/http-response.adoc[]
+
+include::{snippets}/get-all-my-travelogues/http-response.adoc[]
 
 === ResponseFields
-include::{snippets}/get-my-travelogues/response-fields.adoc[]
+
+include::{snippets}/get-all-my-travelogues/response-fields.adoc[]
+
+== 발행한 게시물 수정을 위한 조회
+
+=== Request
+
+include::{snippets}/get-my-one-travelogue/http-request.adoc[]
+
+=== Request header
+
+include::{snippets}/get-my-one-travelogue/request-headers.adoc[]
+
+=== Request param
+
+include::{snippets}/get-my-one-travelogue/path-parameters.adoc[]
+
+=== Response
+
+include::{snippets}/get-my-one-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/get-my-one-travelogue/response-fields.adoc[]
+
+== 발행한 Travelogue 게시물 수정
+
+=== Request
+
+include::{snippets}/update-published-travelogue/http-request.adoc[]
+
+=== Request header
+
+include::{snippets}/update-published-travelogue/request-headers.adoc[]
+
+=== Request param
+
+include::{snippets}/update-published-travelogue/path-parameters.adoc[]
+
+=== Request Fields
+
+include::{snippets}/update-published-travelogue/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/update-published-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/update-published-travelogue/response-fields.adoc[]
+
+== 자신이 작성했던 SubTravelogue 게시물 수정
+
+=== Request
+
+include::{snippets}/update-published-sub-travelogue/http-request.adoc[]
+
+=== Request header
+
+include::{snippets}/update-published-sub-travelogue/request-headers.adoc[]
+
+=== Request param
+
+include::{snippets}/update-published-sub-travelogue/path-parameters.adoc[]
+
+=== Request Fields
+
+include::{snippets}/update-published-sub-travelogue/request-fields.adoc[]
+
+=== Response
+
+include::{snippets}/update-published-sub-travelogue/http-response.adoc[]
+
+=== Response Fields
+
+include::{snippets}/update-published-sub-travelogue/response-fields.adoc[]
 
 == 북마크 목록 조회 API
 
 === Request
+
 include::{snippets}/get_my_bookmark_list/http-request.adoc[]
 
 === Response
+
 include::{snippets}/get_my_bookmark_list/http-response.adoc[]
 
 === ResponseFields
