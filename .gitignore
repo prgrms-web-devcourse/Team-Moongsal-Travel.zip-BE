@@ -172,4 +172,4 @@ gradle-app.setting
 
 application.yml
 
-BOOT-INF
+BOOT-INF/
