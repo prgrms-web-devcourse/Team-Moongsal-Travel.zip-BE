@@ -23,8 +23,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+
       - name: application.yml created
-        uses: actions/checkout@v3
       - run: touch ./src/main/resources/application.yml
       - run: echo "${{ secrets.APPLICATION_YML}}" > ./src/main/resources/application.yml
       - uses: actions/upload-artifact@v3
