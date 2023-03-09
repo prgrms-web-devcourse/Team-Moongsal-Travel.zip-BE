@@ -14,6 +14,7 @@ class SubTravelogueTest {
 
   private static final String validTitle = "오사카 다녀옴.";
   private static final String validContent = "오사카 존잼임.";
+  private static final int dayOfSubTravelogue = 1;
 
   @Test
   @DisplayName("제목의 길이가 50글자를 넘어갈 수 없다.")
@@ -23,7 +24,7 @@ class SubTravelogueTest {
     assertThatThrownBy(() -> new SubTravelogue(
         title,
         validContent,
-        List.of(DummyGenerator.createAddress()),
+        1, List.of(DummyGenerator.createAddress()),
         Set.of(Transportation.BUS),
         new ArrayList<>()
     )).isInstanceOf(IllegalArgumentException.class);
@@ -36,7 +37,7 @@ class SubTravelogueTest {
     assertThatThrownBy(() -> new SubTravelogue(
         null,
         validContent,
-        List.of(DummyGenerator.createAddress()),
+        dayOfSubTravelogue, List.of(DummyGenerator.createAddress()),
         Set.of(Transportation.BUS),
         new ArrayList<>()
     )).isInstanceOf(IllegalArgumentException.class);
@@ -49,7 +50,7 @@ class SubTravelogueTest {
     assertThatThrownBy(() -> new SubTravelogue(
         validTitle,
         null,
-        List.of(DummyGenerator.createAddress()),
+        dayOfSubTravelogue, List.of(DummyGenerator.createAddress()),
         Set.of(Transportation.BUS),
         new ArrayList<>()
     )).isInstanceOf(IllegalArgumentException.class);
@@ -61,7 +62,7 @@ class SubTravelogueTest {
     assertThatThrownBy(() -> new SubTravelogue(
         validTitle,
         validContent,
-        List.of(DummyGenerator.createAddress()),
+        dayOfSubTravelogue, List.of(DummyGenerator.createAddress()),
         Set.of(Transportation.BUS),
         null
     )).isInstanceOf(IllegalArgumentException.class);

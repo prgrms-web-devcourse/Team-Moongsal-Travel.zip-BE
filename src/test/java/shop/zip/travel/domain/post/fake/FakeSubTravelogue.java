@@ -10,6 +10,7 @@ public class FakeSubTravelogue extends SubTravelogue {
     super(
         subTravelogue.getTitle(),
         subTravelogue.getContent(),
+        subTravelogue.getDay(),
         subTravelogue.getAddresses(),
         subTravelogue.getTransportationSet(),
         subTravelogue.getPhotos()

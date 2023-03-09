@@ -11,9 +11,9 @@ import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.TempAddress;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
-import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueUpdate;
 
-public record SubTravelogueCreateReq(
+public record SubTravelogueUpdateReq(
     String title,
     String content,
     int day,
@@ -22,8 +22,8 @@ public record SubTravelogueCreateReq(
     List<TravelPhotoCreateReq> travelPhotoCreateReqs
 ) {
 
-    public SubTravelogue toSubTravelogue() {
-        return new SubTravelogue(
+    public SubTravelogueUpdate toSubTravelogueUpdate() {
+        return new SubTravelogueUpdate(
             title.isBlank() ? DefaultValue.STRING.getValue() : title,
             content.isBlank() ? DefaultValue.STRING.getValue() : content,
             day,

@@ -39,6 +39,8 @@ class SubTravelogueServiceTest {
   @InjectMocks
   private SubTravelogueService subTravelogueService;
 
+  private static final int day = 1;
+
   @Test
   @DisplayName("요청된 데이터를 통해 하나의 SubTravelogue를 저장할 수 있다.")
   void test_save_subTravelogue() {
@@ -46,6 +48,7 @@ class SubTravelogueServiceTest {
     SubTravelogueCreateReq subTravelogueCreateReq = new SubTravelogueCreateReq(
         "유니버셜 스튜디오 다녀옴.",
         "유니버셜 스튜디오에서는 해리포터 테마가 필수임.",
+        day,
         List.of(DummyGenerator.createTempAddress()),
         Set.of(Transportation.SUBWAY),
         List.of(new TravelPhotoCreateReq("www.naver.com"))

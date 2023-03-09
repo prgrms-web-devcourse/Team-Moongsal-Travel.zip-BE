@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import shop.zip.travel.domain.post.travelogue.dto.res.LikeResultRes;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueLikeService;
 import shop.zip.travel.global.security.UserPrincipal;
 
@@ -20,11 +21,12 @@ public class TravelogueLikeController {
   }
 
   @PutMapping("/likes")
-  public ResponseEntity<Void> liking(
+  public ResponseEntity<LikeResultRes> liking(
       @PathVariable Long travelogueId,
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
-    travelogueLikeService.liking(userPrincipal.getUserId(), travelogueId);
-    return ResponseEntity.ok().build();
+    LikeResultRes likeResultRes =
+        travelogueLikeService.liking(userPrincipal.getUserId(), travelogueId);
+    return ResponseEntity.ok(likeResultRes);
   }
 }

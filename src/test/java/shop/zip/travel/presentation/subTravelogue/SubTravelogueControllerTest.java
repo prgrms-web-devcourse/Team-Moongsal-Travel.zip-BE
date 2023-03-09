@@ -60,6 +60,8 @@ class SubTravelogueControllerTest {
 
   private Member member;
 
+  private static final int day = 1;
+
   @BeforeEach
   void setUp() {
     member = new Member("user@naver.com", "password1234!", "nickname", "1999");
@@ -74,6 +76,7 @@ class SubTravelogueControllerTest {
     SubTravelogueCreateReq subTravelogueCreateReq = new SubTravelogueCreateReq(
         "일본 다녀왔습니다.",
         "일본은 가까워서 좋고, 맛있는게 많아서 좋습니다. 일단 일본 다녀오면 3kg이 찝니다. 주의하세요.",
+        day,
         List.of(DummyGenerator.createTempAddress()),
         Set.of(Transportation.BUS),
         List.of(new TravelPhotoCreateReq("www.google.com"))
@@ -96,6 +99,7 @@ class SubTravelogueControllerTest {
             requestFields(
                 fieldWithPath("title").description("서브 게시물 제목"),
                 fieldWithPath("content").description("서브 게시물 내용"),
+                fieldWithPath("day").description("서브 게시물 일차"),
                 fieldWithPath("addresses[]").description("방문한 장소 리스트"),
                 fieldWithPath("addresses[].region").description("방문한 장소"),
                 fieldWithPath("transportationSet[]").description("이용한 이동수단 리스트"),

@@ -22,6 +22,7 @@ import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
+import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueUpdate;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.global.error.ErrorCode;
 
@@ -42,6 +43,9 @@ public class SubTravelogue extends BaseTimeEntity {
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String content;
 
+    @Column(name = "day_seq", nullable = false)
+    private int day;
+
     @ElementCollection
     @CollectionTable(name = "address", joinColumns = @JoinColumn(name = "sub_travelogue_id"))
     private List<Address> addresses = new ArrayList<>();
@@ -59,11 +63,13 @@ public class SubTravelogue extends BaseTimeEntity {
     protected SubTravelogue() {
     }
 
-    public SubTravelogue(String title, String content, List<Address> addresses,
+    public SubTravelogue(String title, String content, int day,
+        List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
-        verify(title, content, addresses, transportationSet, photos);
+        verify(title, content, day, addresses, transportationSet, photos);
         this.title = title;
         this.content = content;
+        this.day = day;
         this.addresses = addresses;
         this.transportationSet = transportationSet;
         this.photos = photos;
@@ -81,6 +87,10 @@ public class SubTravelogue extends BaseTimeEntity {
         return content;
     }
 
+    public int getDay() {
+        return day;
+    }
+
     public List<Address> getAddresses() {
         return new ArrayList<>(addresses);
     }
@@ -93,12 +103,20 @@ public class SubTravelogue extends BaseTimeEntity {
         return new ArrayList<>(photos);
     }
 
-    private void verify(String title, String content, List<Address> addresses,
+    private void verify(String title, String content, int day,
+        List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
         nullCheck(title, content, addresses, transportationSet, photos);
+        verifyDay(day);
         verifyTitle(title);
     }
 
+
+    private void verifyDay(int day) {
+        if (day <= ZERO) {
+            throw new IllegalArgumentException("일차는 0보다 작을 수 없습니다.");
+        }
+    }
 
     private void nullCheck(String title, String content, List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
@@ -112,6 +130,19 @@ public class SubTravelogue extends BaseTimeEntity {
     private void verifyTitle(String title) {
         Assert.isTrue(title.length() < MAX_LENGTH && title.length() > MIN_LENGTH,
             "제목의 길이는 1글자 이상 50글자 이하여야 합니다");
+    }
+
+    public void update(SubTravelogueUpdate subTravelogueUpdate) {
+        this.title = subTravelogueUpdate.title();
+        this.content = subTravelogueUpdate.content();
+        this.addresses = subTravelogueUpdate.addresses();
+        this.transportationSet = subTravelogueUpdate.transportationSet();
+        updatePhotos(subTravelogueUpdate.travelPhotoCreateReqs());
+    }
+
+    private void updatePhotos(List<TravelPhoto> newPhotos) {
+        this.photos.clear();
+        this.photos.addAll(newPhotos);
     }
 
     private boolean cannotPublish() {

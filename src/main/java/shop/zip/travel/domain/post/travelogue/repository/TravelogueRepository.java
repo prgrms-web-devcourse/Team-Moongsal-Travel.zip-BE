@@ -42,9 +42,10 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
           + "left join Like l "
           + "on l.travelogue.id = t.id "
           + "where m.id = :memberId "
+          + "and t.isPublished = :isPublished "
           + "group by t.id")
   Slice<TravelogueSimple> getMyTravelogues(@Param("memberId") Long memberId,
-      @Param("pageable") Pageable pageable);
+      @Param("pageable") Pageable pageable, @Param("isPublished") boolean isPublished);
 
   @Query(
       "select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple( "
