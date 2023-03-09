@@ -6,6 +6,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
+import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueUpdateRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.exception.InvalidAccessSubTravelogueException;
@@ -63,6 +64,15 @@ public class MemberMyTravelogueService {
     travelogue.update(travelogueUpdate);
 
     return TravelogueUpdateRes.toDto(travelogue.getId());
+  }
+
+  public SubTravelogueDetailRes getSubTravelogueForUpdate(Long memberId, Long travelogueId,
+      Long subTravelogueId) {
+    Travelogue travelogue = getMyTravelogue(travelogueId, memberId);
+    SubTravelogue subTravelogue = getSubTravelogue(subTravelogueId);
+    isTravelogueContain(subTravelogue, travelogue);
+
+    return SubTravelogueDetailRes.toDto(subTravelogue);
   }
 
   private Travelogue getMyTravelogue(Long travelogueId, Long memberId) {

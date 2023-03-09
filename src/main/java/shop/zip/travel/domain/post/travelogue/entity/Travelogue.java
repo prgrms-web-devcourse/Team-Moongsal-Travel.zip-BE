@@ -31,7 +31,7 @@ import shop.zip.travel.global.error.ErrorCode;
 public class Travelogue extends BaseTimeEntity {
 
 	private static final boolean TEMP = false;
-	private static final int MAKE_IDX = 1;
+	private static final int INDEX_MATCHER = 1;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -187,7 +187,7 @@ public class Travelogue extends BaseTimeEntity {
 		this.country = travelogueUpdate.country();
 		this.cost = travelogueUpdate.cost();
 		this.thumbnail = travelogueUpdate.thumbnail();
-		this.isPublished = false;
+		this.isPublished = TEMP;
 	}
 
 	public void changePublishStatus() {
@@ -218,7 +218,7 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public void updateSubTravelogues(SubTravelogue newSubTravelogue) {
-		removeOldSubTravelogue(newSubTravelogue.getDay() - MAKE_IDX);
+		removeOldSubTravelogue(newSubTravelogue.getDay() - INDEX_MATCHER);
 		List<SubTravelogue> newSubTravelogues = new ArrayList<>(this.subTravelogues);
 		newSubTravelogues.add(newSubTravelogue);
 		changeSubTravelogues(newSubTravelogues);

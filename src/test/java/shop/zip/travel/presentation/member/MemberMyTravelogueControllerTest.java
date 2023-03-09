@@ -211,6 +211,45 @@ class MemberMyTravelogueControllerTest {
   }
 
   @Test
+  @DisplayName("수정을 위해 내가 작성했던 하나의 서브 트래블로그 정보를 가져올 수 있다.")
+  void getDetailSubTravelogueForUpdate() throws Exception {
+
+    Long subTravelogueId = travelogue.getSubTravelogues().get(0).getId();
+
+    mockMvc.perform(
+            get("/api/members/my/travelogues/{travelogueId}/subTravelogues/{subTravelogueId}",
+                travelogue.getId(), subTravelogueId)
+                .header(tokenName, token))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-my-one-sub-travelogue",
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("인증 헤더")
+            ),
+            pathParameters(
+                parameterWithName("travelogueId").description("travelogue pk 값"),
+                parameterWithName("subTravelogueId").description("subTravelogue pk 값")
+            ),
+            responseFields(
+                fieldWithPath("title").type(JsonFieldType.STRING)
+                    .description("SubTravelogue 제목"),
+                fieldWithPath("content").type(JsonFieldType.STRING).description("subTravelogue 내용"),
+                fieldWithPath("day").type(JsonFieldType.NUMBER).description("subTravelogue 일차 정보"),
+                fieldWithPath("addresses[]").type(JsonFieldType.ARRAY).description("방문한 장소 리스트")
+                    .optional(),
+                fieldWithPath("addresses[].region").type(JsonFieldType.STRING)
+                    .description("방문한 장소 정보"),
+                fieldWithPath("transportationSet[]").type(JsonFieldType.ARRAY)
+                    .description("이용한 교통수단 리스트"),
+                fieldWithPath("travelPhotoCreateReqs[]").type(JsonFieldType.ARRAY)
+                    .description("이미지 리스트").optional(),
+                fieldWithPath("travelPhotoCreateReqs[].url").type(JsonFieldType.STRING)
+                    .description("이미지 URL").optional()
+            )));
+  }
+
+  @Test
   @DisplayName("트래블로그를 수정할 수 있다.")
   void updateTravelogue() throws Exception {
     TravelogueUpdateReq travelogueUpdateReq = DummyGenerator.createTravelogueUpdateReq();

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.member.service.MemberMyTravelogueService;
 import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
+import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueUpdateRes;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
@@ -82,6 +83,18 @@ public class MemberMyTravelogueController {
             travelogueUpdateReq);
 
     return ResponseEntity.ok(travelogueUpdateRes);
+  }
+
+  @GetMapping("/{travelogueId}/subTravelogues/{subTravelogueId}")
+  public ResponseEntity<SubTravelogueDetailRes> getMySubTravelogue(
+      @PathVariable Long travelogueId,
+      @PathVariable Long subTravelogueId,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
+  ) {
+    SubTravelogueDetailRes subTravelogueForUpdate = memberMyTravelogueService.getSubTravelogueForUpdate(
+        userPrincipal.getUserId(), travelogueId, subTravelogueId);
+
+    return ResponseEntity.ok(subTravelogueForUpdate);
   }
 
   @PatchMapping("/{travelogueId}/subTravelogues/{subTravelogueId}")

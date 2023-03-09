@@ -8,7 +8,7 @@ public record TempAddress(
 
   public Address toAddress() {
     return new Address(
-        (region.isBlank()) ? DefaultValue.STRING.getValue() : region
+        region.isBlank() ? DefaultValue.STRING.getValue() : region
     );
   }
 }
