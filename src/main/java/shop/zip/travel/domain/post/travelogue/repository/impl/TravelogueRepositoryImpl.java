@@ -192,13 +192,13 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
   }
 
   private NumberTemplate<Integer> getDays() {
-    return Expressions.numberTemplate(Integer.class, "function('datediff', DAY, {0}, {1})",
+    return Expressions.numberTemplate(Integer.class, "DATEDIFF({0}, {1})",
         travelogue.period.endDate, travelogue.period.startDate);
   }
 
   private BooleanExpression TraveloguePeriodDaysBetween(Long minDays, Long maxDays) {
     if (Objects.nonNull(minDays) && Objects.nonNull(maxDays)) {
-      return getDays().between(minDays - 1, maxDays);
+      return getDays().goe(minDays - 1).and(getDays().loe(maxDays - 1));
     }
     return null;
   }

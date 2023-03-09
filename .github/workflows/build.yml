@@ -1,15 +1,35 @@
 name: Build
 
 on:
-
   pull_request:
     branches:
       - main
       - develop
 
 jobs:
+  test_mongo_action:
+    runs-on: ubuntu-latest
+    name: Test mongo-action
+    steps:
+      - name: Create mongo Docker container
+        uses: DigiPie/mongo-action@v2.0.1
+        with:
+          image_version: latest
+          port: 27017
+      - name: Install mongosh command
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget gnupg
+          wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo apt-key add -
+          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+          sudo apt-get update
+          sudo apt-get install -y mongodb-mongosh
+      - name: Test mongo connection
+        run: "sudo mongosh localhost:27017"
+
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -17,11 +37,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.8.0
-        with:
-          mongodb-version: ${{ matrix.mongodb-version }}
 
       - name: application.yml created
         uses: actions/checkout@v3
@@ -32,7 +47,7 @@ jobs:
           name: application.yml
           path: ./src/main/resources/application.yml
 
-      - name: Grant execute permission for gradlew
+      - name: Grant execute permission for gradle
         run: chmod +x gradlew
 
       - name: Build with Gradle

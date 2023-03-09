@@ -39,14 +39,13 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers("/api/auth/**")
         .requestMatchers("/docs/rest-docs.html")
+        .requestMatchers("/api/auth/**")
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/favicon.ico/**")
-        .requestMatchers("/docs/index.html/**")
         .requestMatchers("/favicon.ico")
         ;
   }
