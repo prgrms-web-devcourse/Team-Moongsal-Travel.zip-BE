@@ -39,14 +39,13 @@ public class SecurityConfig {
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
-        .requestMatchers("/api/auth/**")
         .requestMatchers("/docs/rest-docs.html")
+        .requestMatchers("/api/auth/**")
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/favicon.ico/**")
-        .requestMatchers("/docs/rest-docs.html/**")
         .requestMatchers("/favicon.ico")
         ;
   }
@@ -71,7 +70,6 @@ public class SecurityConfig {
         .successHandler(oauth2AuthenticationSuccessHandler)
         .and()
         .authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/docs/rest-docs.html").permitAll()
             .anyRequest().authenticated()
         )
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, objectMapper),
