@@ -7,7 +7,7 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 
 public interface BookmarkRepositoryQuerydsl {
 
-  Boolean exists(Long memberId, Long travelogueId);
+  boolean exists(Long memberId, Long travelogueId);
 
   List<TravelogueSimpleRes> getBookmarkedList(Long memberId, Pageable pageable);
 }

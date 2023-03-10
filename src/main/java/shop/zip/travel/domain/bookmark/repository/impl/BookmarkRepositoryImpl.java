@@ -29,7 +29,7 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
   }
 
   @Override
-  public Boolean exists(Long memberId, Long travelogueId) {
+  public boolean exists(Long memberId, Long travelogueId) {
     Integer bookmarked = jpaQueryFactory
         .selectOne()
         .from(bookmark)
