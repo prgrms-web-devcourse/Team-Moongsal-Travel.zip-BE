@@ -71,7 +71,7 @@ dependencies {
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0-b170201.1204'
 
     // logback
-    implementation 'ca.pjer:logback-awslogs-appender:1.6.0'
+    implementation "ca.pjer:logback-awslogs-appender:1.6.0"
 }
 
 ext {
