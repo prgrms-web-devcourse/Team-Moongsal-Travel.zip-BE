@@ -18,6 +18,7 @@ public record TravelogueDetailRes(
     Long nights,
     Long days,
     Long totalCost,
+    String thumbnail,
     List<SubTravelogueDetailRes> subTravelogues,
     Set<Transportation> transportations,
     Long countLikes,
@@ -37,6 +38,7 @@ public record TravelogueDetailRes(
         travelogue.getPeriod().getNights(),
         travelogue.getPeriod().getNights() + 1,
         travelogue.getCost().getTotal(),
+        travelogue.getThumbnail(),
         travelogue.getSubTravelogues()
             .stream()
             .map(SubTravelogueDetailRes::toDto)
