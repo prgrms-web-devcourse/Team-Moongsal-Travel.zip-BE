@@ -50,6 +50,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
           new ErrorResponse(e.getErrorCode().getMessage()));
     }
 
-    filterChain.doFilter(request, response);
+    filterChain.doFilter(request, response);//
   }
 }
