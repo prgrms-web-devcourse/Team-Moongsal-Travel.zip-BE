@@ -1,5 +1,8 @@
 package shop.zip.travel.domain.post.travelogue.dto.res;
 
+import static shop.zip.travel.domain.post.data.DefaultValue.orGetDefaultImage;
+import static shop.zip.travel.domain.post.data.DefaultValue.orGetStringReturnValue;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -33,12 +36,12 @@ public record TravelogueDetailRes(
         travelogue.getMember().getProfileImageUrl(),
         travelogue.getMember().getNickname(),
         travelogue.getId(),
-        travelogue.getTitle(),
-        travelogue.getCountry().getName(),
+        orGetStringReturnValue(travelogue.getTitle()),
+        orGetStringReturnValue(travelogue.getCountry().getName()),
         travelogue.getPeriod().getNights(),
         travelogue.getPeriod().getNights() + 1,
         travelogue.getCost().getTotal(),
-        travelogue.getThumbnail(),
+        orGetDefaultImage(travelogue.getThumbnail()),
         travelogue.getSubTravelogues()
             .stream()
             .map(SubTravelogueDetailRes::toDto)
