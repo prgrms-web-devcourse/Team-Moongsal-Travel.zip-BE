@@ -22,8 +22,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtTokenProvider jwtTokenProvider;
   private final ObjectMapper objectMapper;
 
-  private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-
   public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, ObjectMapper objectMapper) {
     this.jwtTokenProvider = jwtTokenProvider;
     this.objectMapper = objectMapper;
@@ -42,14 +40,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (BusinessException e) {
-      log.error("filter 타는지 확인");
-      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      response.setStatus(HttpStatus.UNAUTHORIZED.value());
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
       response.setCharacterEncoding("UTF-8");
       objectMapper.writeValue(response.getWriter(),
           new ErrorResponse(e.getErrorCode().getMessage()));
     }
 
-    filterChain.doFilter(request, response);//
+    filterChain.doFilter(request, response);
   }
 }
