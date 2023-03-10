@@ -225,7 +225,7 @@ public class Travelogue extends BaseTimeEntity {
 		changeSubTravelogues(newSubTravelogues);
 	}
 
-	public void isContain(SubTravelogue subTravelogue) {
+	public void contains(SubTravelogue subTravelogue) {
 		if (!this.getSubTravelogues().contains(subTravelogue)) {
 			throw new InvalidAccessSubTravelogueException(
 					ErrorCode.TRAVELOGUE_NOT_CONTAIN_SUB_TRAVELOGUE
