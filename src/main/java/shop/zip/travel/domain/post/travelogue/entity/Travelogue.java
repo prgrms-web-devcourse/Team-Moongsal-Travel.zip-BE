@@ -173,7 +173,7 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	private void verifySubTraveloguesSize() {
-		if (this.subTravelogues.size() > this.period.getNights() + 1) {
+		if (this.subTravelogues.size() >= this.period.getNights() + 1) {
 			throw new IllegalArgumentException("이미 모든 서브 트레블로그가 작성되어 있습니다.");
 		}
 	}
