@@ -26,12 +26,6 @@ public enum DefaultValue {
     return value.equals(request);
   }
 
-  public static LocalDate orGetLocalDateReturnValue(LocalDate requestLocalDate) {
-    if (LOCAL_DATE.isEqual(requestLocalDate.toString())) {
-      return null;
-    }
-    return requestLocalDate;
-  }
 
   public static String orGetStringReturnValue(String requestString) {
     if (STRING.isEqual(requestString)) {
