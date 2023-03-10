@@ -17,11 +17,9 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
-import shop.zip.travel.domain.suggestion.service.SuggestionService;
 import shop.zip.travel.global.error.ErrorCode;
 
 @Service
-@Transactional(readOnly = true)
 public class TravelogueService {
 
   private static final boolean PUBLISH = true;
@@ -29,14 +27,12 @@ public class TravelogueService {
   private final TravelogueRepository travelogueRepository;
   private final MemberService memberService;
 	private final BookmarkRepository bookmarkRepository;
-  private final SuggestionService suggestionService;
 
-	public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
-			BookmarkRepository bookmarkRepository, SuggestionService suggestionService) {
+  public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
+      BookmarkRepository bookmarkRepository) {
     this.travelogueRepository = travelogueRepository;
     this.memberService = memberService;
-		this.bookmarkRepository = bookmarkRepository;
-    this.suggestionService = suggestionService;
+    this.bookmarkRepository = bookmarkRepository;
   }
 
   @Transactional
@@ -47,7 +43,8 @@ public class TravelogueService {
     return TravelogueCreateRes.toDto(travelogue.getId(), nights);
   }
 
-  public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Pageable pageable) {
+  @Transactional(readOnly = true)
+  public TravelogueCustomSlice<TravelogueSimpleRes> findTravelogueList(Pageable pageable) {
     Slice<TravelogueSimple> travelogues =
         travelogueRepository.findAllBySlice(pageable, PUBLISH);
 
@@ -56,26 +53,20 @@ public class TravelogueService {
     );
   }
 
+  @Transactional(readOnly = true)
   public Travelogue getTravelogue(Long id) {
     return travelogueRepository.findById(id)
         .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
   }
 
-  public TravelogueCustomSlice<TravelogueSimpleRes> search(String keyword, Pageable pageable) {
-    return TravelogueCustomSlice.toDto(travelogueRepository.search(keyword, pageable));
-  }
-
   @Transactional
   public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
       Long memberId) {
-//    Member member = memberService.getMember(memberId);
 
     setViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
     Boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
-
-//    suggestionService.save(getTravelogue(travelogueId), member);
 
     return TravelogueDetailRes.toDto(
         travelogueRepository.getTravelogueDetail(travelogueId)
@@ -88,6 +79,10 @@ public class TravelogueService {
       Travelogue findTravelogue = getTravelogue(travelogueId);
       findTravelogue.addViewCount();
     }
+  }
+
+  public TravelogueCustomSlice<TravelogueSimpleRes> search(String keyword, Pageable pageable) {
+    return TravelogueCustomSlice.toDto(travelogueRepository.search(keyword, pageable));
   }
 
   public TravelogueCustomSlice<TravelogueSimpleRes> filtering(String keyword, Pageable pageable,

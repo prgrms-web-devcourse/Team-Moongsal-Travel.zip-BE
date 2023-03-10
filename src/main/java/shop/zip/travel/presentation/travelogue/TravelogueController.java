@@ -67,7 +67,7 @@ public class TravelogueController {
       @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-        travelogueService.getTravelogues(pageable);
+        travelogueService.findTravelogueList(pageable);
 
     return ResponseEntity.ok(travelogueSimpleRes);
   }
@@ -81,7 +81,8 @@ public class TravelogueController {
   ) {
     boolean canAddViewCount = CookieUtil.canAddViewCount(request, response, travelogueId);
     TravelogueDetailRes travelogueDetail =
-        travelogueService.getTravelogueDetail(travelogueId, canAddViewCount, userPrincipal.getUserId());
+        travelogueService.getTravelogueDetail(travelogueId, canAddViewCount,
+            userPrincipal.getUserId());
 
     return ResponseEntity.ok(travelogueDetail);
   }

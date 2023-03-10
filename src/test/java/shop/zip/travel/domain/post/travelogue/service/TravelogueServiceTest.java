@@ -86,7 +86,7 @@ class TravelogueServiceTest {
 
     // when
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-        travelogueService.getTravelogues(pageRequest);
+        travelogueService.findTravelogueList(pageRequest);
 
     // then
     int expectedNights = 1;
