@@ -25,7 +25,6 @@ public class EmailConfig {
   @Bean
   public JavaMailSender javaMailService() {
     JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-
     javaMailSender.setHost(host);
     javaMailSender.setPort(port);
     javaMailSender.setUsername(id);
@@ -44,6 +43,7 @@ public class EmailConfig {
     properties.setProperty("mail.debug", "true");
     properties.setProperty("mail.smtp.ssl.trust", "smtp.naver.com");
     properties.setProperty("mail.smtp.ssl.enable", "true");
+
     return properties;
   }
 }

@@ -1,6 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.dto.res;
 
-import shop.zip.travel.domain.member.dto.MemberSimpleRes;
+import shop.zip.travel.domain.member.dto.response.MemberSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 
 public record TravelogueSimpleRes(

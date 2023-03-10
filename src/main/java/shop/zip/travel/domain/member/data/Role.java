@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.member.entity;
+package shop.zip.travel.domain.member.data;
 
 public enum Role {
   GUEST("ROLE_GUEST", "손님"),
