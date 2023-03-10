@@ -46,7 +46,6 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
         .requestMatchers("/favicon.ico/**")
-        .requestMatchers("/favicon.ico")
         ;
   }
 
@@ -63,7 +62,7 @@ public class SecurityConfig {
         .authorizationEndpoint().baseUri("/oauth2/authorize")
         .and()
         .redirectionEndpoint()
-        .baseUri("/*/*/oauth2/code/*")
+        .baseUri("/api/login/oauth2/code/kakao")
         .and()
         .userInfoEndpoint().userService(customOAuth2UserService)
         .and()

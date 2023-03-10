@@ -259,6 +259,8 @@ class TravelogueControllerTest {
                     .description("Travelogue 여행 기간 중 전체 날짜"),
                 fieldWithPath("totalCost").type(JsonFieldType.NUMBER)
                     .description("Travelogue 여행 전체 경비"),
+                fieldWithPath("thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 게시글 썸네일 URL"),
                 fieldWithPath("countLikes").type(JsonFieldType.NUMBER)
                     .description("좋아요 갯수"),
                 fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN)
