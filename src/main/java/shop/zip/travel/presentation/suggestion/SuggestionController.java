@@ -1,5 +1,7 @@
 package shop.zip.travel.presentation.suggestion;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,8 @@ import shop.zip.travel.global.security.UserPrincipal;
 @RequestMapping("/api/suggestions")
 public class SuggestionController {
 
+  private static final int DEFAULT_SIZE = 5;
+
   private final SuggestionService suggestionService;
 
   public SuggestionController(SuggestionService suggestionService) {
@@ -23,9 +27,13 @@ public class SuggestionController {
 
   @GetMapping
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> suggestion(
-      @AuthenticationPrincipal UserPrincipal userPrincipal) {
-    suggestionService.findAll(userPrincipal.getUserId());
-    return null;
+      @AuthenticationPrincipal UserPrincipal userPrincipal,
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable) {
+
+    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList = suggestionService.findByMemberId(
+        userPrincipal.getUserId(), pageable);
+
+    return ResponseEntity.ok(travelogueSimpleResList);
   }
 
 }

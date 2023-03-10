@@ -4,35 +4,36 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
-@Entity
-public class Suggestion extends BaseTimeEntity {
+@RedisHash(timeToLive = 60 * 60 * 24 * 7)
+public class Suggestion {
 
   @Id
-  private Long id;
+  private String id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
   private Travelogue travelogue;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Member member;
+  @Indexed
+  private Long memberId;
 
   protected Suggestion() {
   }
 
-  public Suggestion(Travelogue travelogue, Member member) {
+  public Suggestion(Travelogue travelogue, Long memberId) {
     this.travelogue = travelogue;
-    this.member = member;
+    this.memberId = memberId;
   }
 
   public Travelogue getTravelogue() {
     return travelogue;
   }
 
-  public Member getMember() {
-    return member;
+  public Long getMemberId() {
+    return memberId;
   }
 }

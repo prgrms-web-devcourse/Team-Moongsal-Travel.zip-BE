@@ -105,9 +105,7 @@ public class TravelogueController {
       TravelogueSearchFilter searchFilter
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> filtered = travelogueService.filtering(keyword,
-        pageable,
-        searchFilter);
+        pageable, searchFilter);
     return ResponseEntity.ok(filtered);
   }
 }
-
