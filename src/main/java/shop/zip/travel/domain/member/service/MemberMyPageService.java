@@ -1,6 +1,5 @@
 package shop.zip.travel.domain.member.service;
 
-import java.util.List;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +9,7 @@ import shop.zip.travel.domain.member.dto.response.MemberInfoRes;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.repository.MemberRepository;
+import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.global.error.ErrorCode;
 
@@ -45,8 +45,9 @@ public class MemberMyPageService {
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
-  public List<TravelogueSimpleRes> getMyBookmarkedList(Long memberId, Pageable pageable) {
-    return bookmarkRepository.getBookmarkedList(memberId, pageable);
+  public TravelogueCustomSlice<TravelogueSimpleRes> getMyBookmarkedList(Long memberId,
+      Pageable pageable) {
+    return TravelogueCustomSlice.toDto(bookmarkRepository.getBookmarkedList(memberId, pageable));
   }
 
 
