@@ -2,7 +2,7 @@ package shop.zip.travel.domain.post.travelogue.dto.res;
 
 import static shop.zip.travel.domain.post.data.DefaultValue.orGetStringReturnValue;
 
-import shop.zip.travel.domain.member.dto.MemberSimpleRes;
+import shop.zip.travel.domain.member.dto.response.MemberSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 
 public record TravelogueSimpleRes(

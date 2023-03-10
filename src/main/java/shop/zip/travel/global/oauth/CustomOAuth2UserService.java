@@ -1,8 +1,6 @@
 package shop.zip.travel.global.oauth;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,9 +11,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import shop.zip.travel.domain.member.entity.Member;
-import shop.zip.travel.domain.member.entity.Role;
-import shop.zip.travel.domain.member.repository.MemberRepository;
+import shop.zip.travel.domain.member.data.Role;
 import shop.zip.travel.global.oauth.dto.OAuth2Attribute;
 
 @Service
