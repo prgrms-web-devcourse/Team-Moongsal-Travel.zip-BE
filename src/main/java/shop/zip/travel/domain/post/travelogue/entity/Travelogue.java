@@ -126,7 +126,7 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public List<SubTravelogue> getSubTravelogues() {
-		return new ArrayList<>(subTravelogues);
+		return sortSubTravelogues(new ArrayList<>(subTravelogues));
 	}
 
 	public Member getMember() {
@@ -173,7 +173,7 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	private void verifySubTraveloguesSize() {
-		if (this.subTravelogues.size() > this.period.getNights() + 1) {
+		if (this.subTravelogues.size() >= this.period.getNights() + 1) {
 			throw new IllegalArgumentException("이미 모든 서브 트레블로그가 작성되어 있습니다.");
 		}
 	}
@@ -239,7 +239,11 @@ public class Travelogue extends BaseTimeEntity {
 
 	private void changeSubTravelogues(List<SubTravelogue> newSubTravelogues) {
 		this.subTravelogues.clear();
-		newSubTravelogues.sort((sub1, sub2) -> {
+		this.subTravelogues.addAll(newSubTravelogues);
+	}
+
+	private List<SubTravelogue> sortSubTravelogues(List<SubTravelogue> requestSubTravelogues) {
+		requestSubTravelogues.sort((sub1, sub2) -> {
 			int day1 = sub1.getDay();
 			int day2 = sub2.getDay();
 
@@ -249,7 +253,8 @@ public class Travelogue extends BaseTimeEntity {
 				return -1;
 			}
 		});
-		this.subTravelogues.addAll(newSubTravelogues);
+
+		return requestSubTravelogues;
 	}
 
 }

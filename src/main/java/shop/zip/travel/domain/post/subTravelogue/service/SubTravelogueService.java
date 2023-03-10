@@ -27,6 +27,7 @@ public class SubTravelogueService {
     public SubTravelogueCreateRes save(SubTravelogueCreateReq createReq, Long travelogueId) {
 
         Travelogue travelogue = travelogueService.getTravelogue(travelogueId);
+        verifyDay(createReq.day(), travelogue.getPeriod().getNights() + 1);
         SubTravelogue subTravelogue = subTravelogueRepository.save(createReq.toSubTravelogue());
 
         addPhotosTo(subTravelogue, createReq);
@@ -49,5 +50,11 @@ public class SubTravelogueService {
                 .stream()
                 .map(TravelPhotoCreateReq::toEntity)
                 .toList());
+    }
+
+    private void verifyDay(int day, Long period) {
+        if (day > period) {
+            throw new IllegalArgumentException("day는 여행한 기간보다 클 수 없습니다.");
+        }
     }
 }
