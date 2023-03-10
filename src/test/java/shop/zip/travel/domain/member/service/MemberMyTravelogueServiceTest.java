@@ -155,7 +155,6 @@ class MemberMyTravelogueServiceTest {
     SubTravelogueUpdateReq subTravelogueUpdateReq = new SubTravelogueUpdateReq(
         "오사카 1일차",
         "오사카 1일차 여행기입니다.",
-        1,
         List.of(DummyGenerator.createTempAddress()),
         Set.of(Transportation.SUBWAY),
         new ArrayList<>()

@@ -82,9 +82,12 @@ class SubTravelogueControllerTest {
         List.of(new TravelPhotoCreateReq("www.google.com"))
     );
 
+    Travelogue tempTravelogue = travelogueRepository.save(
+        DummyGenerator.createTempTravelogue(member));
+
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(post("/api/travelogues/{travelogueId}/subTravelogues", travelogue.getId())
+    mockMvc.perform(post("/api/travelogues/{travelogueId}/subTravelogues", tempTravelogue.getId())
             .header("AccessToken", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(subTravelogueCreateReq)))
@@ -99,7 +102,7 @@ class SubTravelogueControllerTest {
             requestFields(
                 fieldWithPath("title").description("서브 게시물 제목"),
                 fieldWithPath("content").description("서브 게시물 내용"),
-                fieldWithPath("day").description("서브 게시물 일차"),
+                fieldWithPath("day").description("서브 게시물 일차 정보"),
                 fieldWithPath("addresses[]").description("방문한 장소 리스트"),
                 fieldWithPath("addresses[].region").description("방문한 장소"),
                 fieldWithPath("transportationSet[]").description("이용한 이동수단 리스트"),
