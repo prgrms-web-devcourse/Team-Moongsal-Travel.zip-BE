@@ -25,7 +25,6 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
 import shop.zip.travel.domain.post.util.CookieUtil;
-import shop.zip.travel.domain.suggestion.service.SuggestionService;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -44,7 +43,7 @@ public class TravelogueController {
   }
 
   @PostMapping
-  public ResponseEntity<TravelogueCreateRes> createTemp(
+  public ResponseEntity<TravelogueCreateRes> createTempTravelogue(
       @RequestBody @Valid TravelogueCreateReq tempTravelogueCreateReq,
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
@@ -53,8 +52,28 @@ public class TravelogueController {
     return ResponseEntity.ok(travelogueCreateRes);
   }
 
+  @PatchMapping("/{travelogueId}/publish")
+  public ResponseEntity<TraveloguePublishRes> publishTravelogue(
+      @PathVariable Long travelogueId,
+      @AuthenticationPrincipal UserPrincipal userPrincipal
+  ) {
+    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId,
+        userPrincipal.getUserId());
+    return ResponseEntity.ok(traveloguePublishRes);
+  }
+
+  @GetMapping
+  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getTravelogueList(
+      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
+  ) {
+    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
+        travelogueService.getTravelogues(pageable);
+
+    return ResponseEntity.ok(travelogueSimpleRes);
+  }
+
   @PatchMapping("/{travelogueId}")
-  public ResponseEntity<TravelogueDetailRes> get(
+  public ResponseEntity<TravelogueDetailRes> getTravelogueDetail(
       HttpServletRequest request,
       HttpServletResponse response,
       @PathVariable Long travelogueId,
@@ -65,26 +84,6 @@ public class TravelogueController {
         travelogueService.getTravelogueDetail(travelogueId, canAddViewCount, userPrincipal.getUserId());
 
     return ResponseEntity.ok(travelogueDetail);
-  }
-
-  @GetMapping
-  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
-      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
-  ) {
-    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
-        travelogueService.getTravelogues(pageable);
-
-    return ResponseEntity.ok(travelogueSimpleRes);
-  }
-
-  @PatchMapping("/{travelogueId}/publish")
-  public ResponseEntity<TraveloguePublishRes> publish(
-      @PathVariable Long travelogueId,
-      @AuthenticationPrincipal UserPrincipal userPrincipal
-  ) {
-    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId,
-        userPrincipal.getUserId());
-    return ResponseEntity.ok(traveloguePublishRes);
   }
 
   @GetMapping("/search")
