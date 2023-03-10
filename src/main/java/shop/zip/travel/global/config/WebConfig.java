@@ -13,8 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry corsRegistry) {
     corsRegistry.addMapping("/**")
-        // "http://localhost:3000","https://travel-zip.vercel.app"
-//        .allowedOrigins("http://localhost:3000","https://travel-zip.vercel.app")
+        .allowedOrigins("http://localhost:3000","https://travel-zip.vercel.app")
         .allowedOrigins("*")
         .allowedMethods("*")
         .allowedHeaders("*")
