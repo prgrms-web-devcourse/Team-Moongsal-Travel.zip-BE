@@ -72,6 +72,7 @@ class TravelogueControllerTest {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
+  private Travelogue notPublishedTravelogue;
   private Travelogue travelogue;
   private Member member;
 
@@ -79,10 +80,11 @@ class TravelogueControllerTest {
   void setUp() {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
-    travelogue = DummyGenerator.createNotPublishedTravelogue(member);
+    travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
+    notPublishedTravelogue = DummyGenerator.createNotPublishedTravelogue(member);
     travelogueRepository.saveAll(
         List.of(
-            travelogue,
+            notPublishedTravelogue,
             DummyGenerator.createTravelogue(member),
             DummyGenerator.createTravelogue(member))
     );
@@ -91,7 +93,7 @@ class TravelogueControllerTest {
         DummyGenerator.createSubTravelogue(2)
     );
 
-    travelogue.addSubTravelogue(subTravelogue);
+    notPublishedTravelogue.addSubTravelogue(subTravelogue);
   }
 
   @Test
@@ -143,7 +145,7 @@ class TravelogueControllerTest {
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(patch("/api/travelogues/{travelogueId}/publish", travelogue.getId())
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}/publish", notPublishedTravelogue.getId())
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
@@ -236,7 +238,7 @@ class TravelogueControllerTest {
   @DisplayName("게시글의 상세정보를 조회할 수 있다.")
   void test_get_one_travelogue() throws Exception {
 
-    travelogue.changePublishStatus();
+    notPublishedTravelogue.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
@@ -296,7 +298,7 @@ class TravelogueControllerTest {
   @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음", "유니버셜"})
   void test_search(String keyword) throws Exception {
 
-    travelogue.changePublishStatus();
+    notPublishedTravelogue.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/travelogues/search")
@@ -409,12 +411,12 @@ class TravelogueControllerTest {
   @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
   void test_search_with_filter_cost(String keyword) throws Exception {
 
-    travelogue.changePublishStatus();
+    notPublishedTravelogue.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     MultiValueMap<String, String> cost = new LinkedMultiValueMap<>();
     cost.add("minCost", "0");
-    cost.add("maxCost", String.valueOf(travelogue.getCost().getTotal()));
+    cost.add("maxCost", String.valueOf(notPublishedTravelogue.getCost().getTotal()));
 
     mockMvc.perform(get("/api/travelogues/search/filters")
             .header("AccessToken", token)
@@ -542,8 +544,8 @@ class TravelogueControllerTest {
             travelogue2,
             travelogue3));
 
-    changePublishStatus(travelogue, travelogue2, travelogue3);
-    likeService.liking(member.getId(), travelogue.getId());
+    changePublishStatus(notPublishedTravelogue, travelogue2, travelogue3);
+    likeService.liking(member.getId(), notPublishedTravelogue.getId());
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
@@ -555,7 +557,7 @@ class TravelogueControllerTest {
             .header("AccessToken", token)
             .params(filterParam))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("content[0].travelogueId").value(travelogue.getId()))
+        .andExpect(jsonPath("content[0].travelogueId").value(notPublishedTravelogue.getId()))
         .andDo(print())
         .andDo(document("get-travelogues-filtered-with-popular-sort",
             preprocessResponse(prettyPrint()),

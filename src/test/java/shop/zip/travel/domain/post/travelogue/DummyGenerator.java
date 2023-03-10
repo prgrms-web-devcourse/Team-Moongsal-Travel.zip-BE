@@ -216,7 +216,7 @@ public class DummyGenerator {
 
   public static TempCountry createTempCountry() {
     return new TempCountry(
-        "일본"
+        "대한민국"
     );
   }
 
