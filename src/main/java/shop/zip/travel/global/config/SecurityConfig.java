@@ -40,7 +40,7 @@ public class SecurityConfig {
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
         .requestMatchers("/docs/rest-docs.html")
-        .requestMatchers("/api/auth/**")
+        .requestMatchers("/api/members/**")
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")

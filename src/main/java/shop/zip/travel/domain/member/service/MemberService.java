@@ -53,8 +53,10 @@ public class MemberService {
     }
   }
 
-  public boolean validateDuplicatedNickname(String nickname) {
-    return memberRepository.existsByNickname(nickname);
+  public void validateDuplicatedNickname(String nickname) {
+    if (memberRepository.existsByNickname(nickname)) {
+      throw new DuplicatedEmailException(ErrorCode.DUPLICATED_NICKNAME);
+    }
   }
 
   public void verifyCode(String email, String code) {
