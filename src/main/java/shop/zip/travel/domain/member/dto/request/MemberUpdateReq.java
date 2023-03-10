@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record MemberUpdateReq(
     @NotNull
     String profileImageUrl,
+
     @NotBlank
     String nickname
 ) {

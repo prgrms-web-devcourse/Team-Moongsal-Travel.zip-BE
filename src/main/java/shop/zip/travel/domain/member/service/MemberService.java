@@ -11,7 +11,6 @@ import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
-import shop.zip.travel.domain.member.exception.EmailNotMatchException;
 import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.exception.NotVerifiedAuthorizationCodeException;
@@ -68,10 +67,9 @@ public class MemberService {
 
   @Transactional
   public MemberSigninRes login(MemberSigninReq memberSigninReq) {
-    Member member = memberRepository.findByEmail(memberSigninReq.email())
-        .orElseThrow(() -> new EmailNotMatchException(ErrorCode.EMAIL_NOT_MATCH));
+    Member member = findMemberByEmail(memberSigninReq.email());
 
-    if ((passwordEncoder.matches(member.getPassword(), memberSigninReq.password()))) {
+    if (isPasswordMatched(memberSigninReq, member)) {
       throw new PasswordNotMatchException(ErrorCode.PASSWORD_NOT_MATCH);
     }
 
@@ -83,6 +81,8 @@ public class MemberService {
     return new MemberSigninRes(accessToken, refreshToken);
   }
 
+  // jwtTokenProvider, redisUtil 따로 빼기
+  @Transactional
   public MemberSigninRes recreateAccessAndRefreshToken(
       AccessTokenReissueReq accessTokenReissueReq) {
 
@@ -107,5 +107,13 @@ public class MemberService {
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
+  private boolean isPasswordMatched(MemberSigninReq memberSigninReq, Member member) {
+    return passwordEncoder.matches(member.getPassword(), memberSigninReq.password());
+  }
+
+  private Member findMemberByEmail(String email) {
+    return memberRepository.findByEmail(email)
+        .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+  }
 }
 

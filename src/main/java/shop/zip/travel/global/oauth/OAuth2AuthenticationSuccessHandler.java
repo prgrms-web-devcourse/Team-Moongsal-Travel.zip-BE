@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.zip.travel.domain.member.entity.Member;
-import shop.zip.travel.domain.member.entity.Role;
+import shop.zip.travel.domain.member.data.Role;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
