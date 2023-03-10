@@ -166,7 +166,7 @@ public class DummyGenerator {
 
   public static Country createCountry() {
     return new Country(
-        "일본"
+        "대한민국"
     );
   }
 
