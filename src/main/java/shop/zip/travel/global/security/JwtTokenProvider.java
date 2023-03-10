@@ -20,7 +20,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import shop.zip.travel.domain.member.exception.InvalidAccessTokenException;
 import shop.zip.travel.global.error.BusinessException;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.error.exception.JsonNotParsingException;
@@ -33,7 +32,7 @@ public class JwtTokenProvider {
   private final String accessTokenSecretKey;
   private final String refreshTokenSecretKey;
 
-  private final long ACCESS_TOKEN_EXPIRED_TIME = Duration.ofMinutes(60).toMillis();
+  private final long ACCESS_TOKEN_EXPIRED_TIME = Duration.ofMinutes(1).toMillis();
   private final long REFRESH_TOKEN_EXPIRED_TIME = Duration.ofHours(2).toMillis();
 
   private final CustomUserDetailsService customUserDetailsService;
