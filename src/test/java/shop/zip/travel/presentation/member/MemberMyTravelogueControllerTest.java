@@ -60,7 +60,7 @@ class MemberMyTravelogueControllerTest {
   @Autowired
   private MemberRepository memberRepository;
 
-  private ObjectMapper objectMapper = new ObjectMapper();
+  private final ObjectMapper objectMapper = new ObjectMapper();
 
   private Member member;
   private Travelogue travelogue;
@@ -111,7 +111,14 @@ class MemberMyTravelogueControllerTest {
                     .description("작성자 프로필 이미지 URL"),
                 fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
                     .description("게시글 좋아요 수"),
-                fieldWithPath("pageable").description("페이징 객체"),
+                fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
+                fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
+                fieldWithPath("pageable.offset").description("페이징 offset"),
+                fieldWithPath("pageable.pageNumber").description("현재 요청한 페이지 넘버"),
+                fieldWithPath("pageable.pageSize").description("요청한 데이터 갯수"),
+                fieldWithPath("pageable.paged").description("페이징이 된 여부"),
+                fieldWithPath("pageable.unpaged").description("페이징이 되지 않은 여부"),
                 fieldWithPath("size").description("요청된 페이징 사이즈"),
                 fieldWithPath("number").description("페이지 번호"),
                 fieldWithPath("numberOfElements").description("조회된 데이터 갯수"),

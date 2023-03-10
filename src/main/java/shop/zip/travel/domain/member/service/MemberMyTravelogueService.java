@@ -2,7 +2,6 @@ package shop.zip.travel.domain.member.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
@@ -11,6 +10,7 @@ import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueUpdateRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.exception.SubTravelogueNotFoundException;
 import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueUpdate;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
@@ -39,13 +39,11 @@ public class MemberMyTravelogueService {
 
   public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Long memberId,
       Pageable pageable) {
-    Slice<TravelogueSimpleRes> travelogueSimpleRes = new SliceImpl<>(
-        travelogueRepository.getMyTravelogues(memberId, pageable, PUBLISHED)
-            .stream()
-            .map(TravelogueSimpleRes::toDto)
-            .toList());
 
-    return TravelogueCustomSlice.toDto(travelogueSimpleRes);
+    Slice<TravelogueSimple> myTravelogues = travelogueRepository.getMyTravelogues(memberId,
+        pageable, PUBLISHED);
+
+    return TravelogueCustomSlice.toDto(myTravelogues.map(TravelogueSimpleRes::toDto));
   }
 
   public TravelogueDetailForUpdateRes getTravelogueForUpdate(Long memberId, Long travelogueId) {
