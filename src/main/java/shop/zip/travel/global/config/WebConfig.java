@@ -14,7 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry corsRegistry) {
     corsRegistry.addMapping("/**")
         .allowedOrigins("http://localhost:3000","https://travel-zip.vercel.app")
-        .allowedOrigins("*")
         .allowedMethods("GET","POST","PUT","PATCH","DELETE","OPTIONS","HEAD")
         .allowedHeaders("*")
         .allowCredentials(true)
