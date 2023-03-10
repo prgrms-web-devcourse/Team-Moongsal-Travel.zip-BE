@@ -96,6 +96,7 @@ public class MemberService {
       String newAccessToken = jwtTokenProvider.createAccessToken(Long.parseLong(memberId));
       String newRefreshToken = jwtTokenProvider.createRefreshToken();
       redisUtil.setDataWithExpire(memberId, newRefreshToken, 120L);
+
       return new MemberSigninRes(newAccessToken, newRefreshToken);
     } else {
       throw new InvalidRefreshTokenException(ErrorCode.INVALID_REFRESH_TOKEN);

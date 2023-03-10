@@ -34,6 +34,7 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
+import shop.zip.travel.domain.suggestion.repository.SuggestionRepository;
 
 @ExtendWith(MockitoExtension.class)
 @Transactional
@@ -47,6 +48,9 @@ class TravelogueServiceTest {
 
   @Mock
   private BookmarkRepository bookmarkRepository;
+
+  @Mock
+  private SuggestionRepository suggestionRepository;
 
   @Mock
   private MemberService memberService;

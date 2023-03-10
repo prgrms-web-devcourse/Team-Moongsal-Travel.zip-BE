@@ -56,7 +56,7 @@ class SubTravelogueServiceTest {
 
     Member member = DummyGenerator.createMember();
 
-    Travelogue travelogue = new FakeTravelogue(1L, DummyGenerator.createTravelogue(member));
+    Travelogue travelogue = new FakeTravelogue(1L, DummyGenerator.createTempTravelogue(member));
 
     SubTravelogue actual = new FakeSubTravelogue(1L, subTravelogueCreateReq.toSubTravelogue());
 
