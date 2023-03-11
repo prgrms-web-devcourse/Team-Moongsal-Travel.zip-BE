@@ -53,7 +53,18 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
       return new SliceImpl<>(Collections.emptyList());
     }
 
-    List<TravelogueSimple> travelogueSimpleList = jpaQueryFactory.select(
+    List<TravelogueSimple> travelogueSimpleList =
+        getBookmarkedTravelogueSimpleList(pageable, travelogueIds);
+    List<TravelogueSimple> results = new ArrayList<>(travelogueSimpleList);
+
+    return checkLastPage(pageable, results);
+  }
+
+  private List<TravelogueSimple> getBookmarkedTravelogueSimpleList(
+      Pageable pageable,
+      List<Long> travelogueIds
+  ) {
+    return jpaQueryFactory.select(
             Projections.constructor(
                 TravelogueSimple.class,
                 travelogue.id,
@@ -78,10 +89,6 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
         .offset(pageable.getOffset())
         .limit(pageable.getPageSize() + SPARE_PAGE)
         .fetch();
-
-    List<TravelogueSimple> results = new ArrayList<>(travelogueSimpleList);
-
-    return checkLastPage(pageable, results);
   }
 
   private List<Long> getTraveloguesBy(Long memberId) {
@@ -92,10 +99,10 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
         .fetch();
   }
 
-
-  private Slice<TravelogueSimpleRes> checkLastPage(Pageable pageable,
-      List<TravelogueSimple> results) {
-
+  private Slice<TravelogueSimpleRes> checkLastPage(
+      Pageable pageable,
+      List<TravelogueSimple> results
+  ) {
     boolean hasNext = false;
 
     if (results.size() > pageable.getPageSize()) {
@@ -107,4 +114,5 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
         .map(TravelogueSimpleRes::toDto)
         .toList(), pageable, hasNext);
   }
+
 }
