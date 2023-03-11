@@ -1,6 +1,7 @@
 package shop.zip.travel.presentation.member;
 
 import jakarta.validation.Valid;
+import javax.swing.table.TableRowSorter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,11 +53,11 @@ public class MemberController {
       memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
 
     } catch (DuplicatedEmailException e) {
-      nicknameValidateRes = new NicknameValidateRes(false);
+      nicknameValidateRes = new NicknameValidateRes(true);
 
       return ResponseEntity.ok(nicknameValidateRes);
     }
-    nicknameValidateRes = new NicknameValidateRes(true);
+    nicknameValidateRes = new NicknameValidateRes(false);
 
     return ResponseEntity.ok(nicknameValidateRes);
   }
