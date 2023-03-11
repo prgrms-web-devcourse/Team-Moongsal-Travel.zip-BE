@@ -93,6 +93,14 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ErrorResponse> handeIllegalStateException(IllegalStateException e) {
+		log.info("IllegalStateException: ", e);
+		int httpStatus = HttpStatus.BAD_REQUEST.value();
+		String message = e.getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
+	}
+
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
 		log.error("RuntimeException : ", e);
