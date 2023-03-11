@@ -85,6 +85,7 @@ class SuggestionControllerTest {
                     headerWithName("AccessToken").description("토큰")
                 ),
                 responseFields(
+                    fieldWithPath("content[]").type(JsonFieldType.ARRAY).description("배열"),
                     fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
                         .description("Travelogue id").optional(),
                     fieldWithPath("content[].title").type(JsonFieldType.STRING)

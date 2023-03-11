@@ -50,10 +50,10 @@ class TravelogueServiceTest {
   private BookmarkRepository bookmarkRepository;
 
   @Mock
-  private SuggestionRepository suggestionRepository;
+  private MemberService memberService;
 
   @Mock
-  private MemberService memberService;
+  private SuggestionRepository suggestionRepository;
 
   private final Long memberId = 1L;
   private final Long countLikes = 1L;
