@@ -35,7 +35,7 @@ public class Member extends BaseTimeEntity {
   @Column(nullable = false)
   private String profileImageUrl;
 
-  @Column(nullable = false)
+  @Column(name = "is_verified_email", nullable = false)
   private boolean isVerifiedEmail;
 
   @Enumerated(EnumType.STRING)
