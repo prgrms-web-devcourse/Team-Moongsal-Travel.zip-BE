@@ -13,6 +13,7 @@ import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.request.NicknameValidateReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.dto.response.NicknameValidateRes;
+import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.service.MemberService;
 
 @RestController
@@ -45,7 +46,17 @@ public class MemberController {
   public ResponseEntity checkDuplicatedNickname(
       @RequestBody @Valid NicknameValidateReq nicknameValidateReq
   ) {
-    memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
+    NicknameValidateRes nicknameValidateRes;
+
+    try {
+      memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
+
+    } catch (DuplicatedEmailException e) {
+      nicknameValidateRes = new NicknameValidateRes(false);
+
+      return ResponseEntity.ok(nicknameValidateRes);
+    }
+    nicknameValidateRes = new NicknameValidateRes(true);
 
     return ResponseEntity.ok().build();
   }
