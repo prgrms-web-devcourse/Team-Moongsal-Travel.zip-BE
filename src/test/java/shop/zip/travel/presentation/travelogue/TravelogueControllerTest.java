@@ -54,7 +54,6 @@ import shop.zip.travel.global.security.JwtTokenProvider;
 @AutoConfigureRestDocs
 @SpringBootTest
 @Transactional
-@ExtendWith(SpringExtension.class)
 @Import(QuerydslConfig.class)
 class TravelogueControllerTest {
 
