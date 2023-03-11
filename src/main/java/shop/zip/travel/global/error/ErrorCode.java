@@ -32,9 +32,10 @@ public enum ErrorCode {
 	TRAVELOGUE_NOT_CONTAIN_SUB_TRAVELOGUE(HttpStatus.BAD_REQUEST, "잘못된 접근입니다."),
 
 	// scrap
-	STORAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 스크랩 문서를 찾을 수 없습니다");
+	STORAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 스크랩 문서를 찾을 수 없습니다"),
+	NOT_SEND_EMAIL(HttpStatus.NOT_ACCEPTABLE,"email 발송에 실패 했습니다.");
 
-	private final HttpStatus status;
+  private final HttpStatus status;
 	private final String message;
 
 	ErrorCode(HttpStatus status, String message) {

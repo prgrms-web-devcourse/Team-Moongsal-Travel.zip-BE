@@ -1,5 +1,7 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -17,26 +19,29 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
-import shop.zip.travel.domain.suggestion.service.SuggestionService;
+import shop.zip.travel.domain.suggestion.entity.Suggestion;
+import shop.zip.travel.domain.suggestion.repository.SuggestionRepository;
 import shop.zip.travel.global.error.ErrorCode;
 
 @Service
 @Transactional(readOnly = true)
 public class TravelogueService {
 
+  private final Logger log = LoggerFactory.getLogger(TravelogueService.class);
+
   private static final boolean PUBLISH = true;
 
   private final TravelogueRepository travelogueRepository;
   private final MemberService memberService;
 	private final BookmarkRepository bookmarkRepository;
-  private final SuggestionService suggestionService;
+  private final SuggestionRepository suggestionRepository;
 
 	public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
-			BookmarkRepository bookmarkRepository, SuggestionService suggestionService) {
+			BookmarkRepository bookmarkRepository, SuggestionRepository suggestionRepository) {
     this.travelogueRepository = travelogueRepository;
     this.memberService = memberService;
 		this.bookmarkRepository = bookmarkRepository;
-    this.suggestionService = suggestionService;
+    this.suggestionRepository = suggestionRepository;
   }
 
   @Transactional
@@ -68,19 +73,21 @@ public class TravelogueService {
   @Transactional
   public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
       Long memberId) {
-//    Member member = memberService.getMember(memberId);
 
     setViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
     Boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
 
-//    suggestionService.save(getTravelogue(travelogueId), member);
+    Travelogue travelogue = travelogueRepository.getTravelogueDetail(travelogueId)
+        .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
 
-    return TravelogueDetailRes.toDto(
-        travelogueRepository.getTravelogueDetail(travelogueId)
-            .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND))
-        , countLikes, isLiked, isBookmarked);
+    Suggestion suggestion = new Suggestion(travelogue, memberId);
+    suggestionRepository.save(suggestion);
+
+    log.error(String.valueOf(suggestionRepository.getSuggestionByMemberId(memberId).size()));
+
+    return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked);
   }
 
   private void setViewCount(Long travelogueId, boolean canAddViewCount) {

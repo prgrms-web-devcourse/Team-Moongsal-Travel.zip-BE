@@ -1,8 +1,10 @@
 package shop.zip.travel.domain.suggestion.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+import org.springframework.data.repository.CrudRepository;
 import shop.zip.travel.domain.suggestion.entity.Suggestion;
 
-public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
+public interface SuggestionRepository extends CrudRepository<Suggestion, String> {
 
+  List<Suggestion> getSuggestionByMemberId(Long memberId);
 }

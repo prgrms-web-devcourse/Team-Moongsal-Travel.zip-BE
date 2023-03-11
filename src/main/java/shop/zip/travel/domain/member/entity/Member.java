@@ -11,6 +11,7 @@ import jakarta.persistence.Lob;
 import java.time.LocalDate;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
+import shop.zip.travel.domain.member.data.Role;
 
 @Entity
 public class Member extends BaseTimeEntity {
@@ -35,7 +36,7 @@ public class Member extends BaseTimeEntity {
   private String profileImageUrl;
 
   @Column(nullable = false)
-  private boolean isEmail;
+  private boolean isVerifiedEmail;
 
   @Enumerated(EnumType.STRING)
   private Role role;
@@ -47,40 +48,50 @@ public class Member extends BaseTimeEntity {
   private String providerId;
 
   protected Member() {
+
   }
 
   public Member(String email, String password, String nickname, String birthYear,
-      String profileImageUrl, boolean isEmail, Role role, String provider, String providerId) {
+      String profileImageUrl, boolean isVerifiedEmail, Role role, String provider, String providerId) {
+    validateMember(email, password, nickname, birthYear);
     this.email = email;
     this.password = password;
     this.nickname = nickname;
     this.birthYear = birthYear;
     this.profileImageUrl = profileImageUrl;
-    this.isEmail = isEmail;
+    this.isVerifiedEmail = isVerifiedEmail;
     this.role = role;
     this.provider = provider;
     this.providerId = providerId;
   }
 
   public Member(String email, String password, String nickname, String birthYear) {
-    validateMember(email, password, nickname, birthYear);
-    this.email = email;
-    this.password = password;
-    this.nickname = nickname;
-    this.birthYear = birthYear;
-    this.profileImageUrl = "default";
-    this.isEmail = false;
+    this(
+        email,
+        password,
+        nickname,
+        birthYear,
+        "default",
+        false,
+        null,
+        null,
+        null
+    );
   }
 
   public Member(String email, String password, String nickname, String birthYear,
-    String profileImageUrl) {
-    validateMember(email, password, nickname, birthYear);
-    this.email = email;
-    this.password = password;
-    this.nickname = nickname;
-    this.birthYear = birthYear;
-    this.profileImageUrl = profileImageUrl;
-    this.isEmail = false;
+      String profileImageUrl) {
+    this(
+        email,
+        password,
+        nickname,
+        birthYear,
+        profileImageUrl,
+        false,
+        null,
+        null,
+        null
+    );
   }
 
   private void validateMember(String email, String password, String nickname, String birthYear) {
@@ -91,19 +102,19 @@ public class Member extends BaseTimeEntity {
 
   private void validateEmail(String email) {
     String emailPattern = "^[\\w-.]+@[\\w-]+.[\\w.]+$";
-    Assert.isTrue(email.matches(emailPattern),"이메일이 형식에 맞지 않습니다");
+    Assert.isTrue(email.matches(emailPattern), "이메일이 형식에 맞지 않습니다");
   }
 
   private void validateNickname(String nickname) {
     String nicknamePattern = "^[가-힣|a-zA-Z]{2,12}$";
-    Assert.isTrue(nickname.matches(nicknamePattern),"닉네임이 형식에 맞지 않습니다");
+    Assert.isTrue(nickname.matches(nicknamePattern), "닉네임이 형식에 맞지 않습니다");
   }
 
   private void validateBirthYear(String birthYear) {
     int currentYear = LocalDate.now().getYear();
     Assert.isTrue(currentYear - 87 <= Integer.parseInt(birthYear)
-        && Integer.parseInt(birthYear) <= currentYear - 7
-      , "탄생년이 올바르지 않습니다");
+            && Integer.parseInt(birthYear) <= currentYear - 7
+        , "탄생년이 올바르지 않습니다");
   }
 
   public Long getId() {
@@ -130,8 +141,8 @@ public class Member extends BaseTimeEntity {
     return profileImageUrl;
   }
 
-  public boolean isEmail() {
-    return isEmail;
+  public boolean isVerifiedEmail() {
+    return isVerifiedEmail;
   }
 
   public void updateProfileImageUrl(String profileImageUrl) {
@@ -148,6 +159,7 @@ public class Member extends BaseTimeEntity {
     this.profileImageUrl = profileImageUrl;
     return this;
   }
+
   public Role getRole() {
     return role;
   }

@@ -8,5 +8,4 @@ public class DuplicatedNicknameException extends DuplicatedException {
   public DuplicatedNicknameException(ErrorCode errorCode) {
     super(errorCode);
   }
-
 }

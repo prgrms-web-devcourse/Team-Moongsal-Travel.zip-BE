@@ -20,7 +20,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import shop.zip.travel.domain.member.exception.InvalidAccessTokenException;
 import shop.zip.travel.global.error.BusinessException;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.error.exception.JsonNotParsingException;
