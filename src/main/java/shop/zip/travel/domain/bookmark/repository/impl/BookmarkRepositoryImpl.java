@@ -24,6 +24,8 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
     implements BookmarkRepositoryQuerydsl {
 
+  private static final int SPARE_PAGE = 1;
+
   private final JPAQueryFactory jpaQueryFactory;
 
   public BookmarkRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
@@ -65,16 +67,16 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
                 count(like)
             )
         ).from(travelogue)
+        .leftJoin(travelogue.member, member)
         .leftJoin(bookmark)
         .on(bookmark.travelogue.id.eq(travelogue.id))
-        .leftJoin(travelogue.member, member)
         .leftJoin(like)
         .on(like.travelogue.id.eq(travelogue.id))
         .where(travelogue.id.in(travelogueIds))
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize() + 1)
+        .groupBy(travelogue.id, bookmark.createDate)
         .orderBy(bookmark.createDate.asc())
-        .groupBy(travelogue.id)
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize() + SPARE_PAGE)
         .fetch();
 
     List<TravelogueSimple> results = new ArrayList<>(travelogueSimpleList);
