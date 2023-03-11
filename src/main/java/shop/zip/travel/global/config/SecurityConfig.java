@@ -41,7 +41,7 @@ public class SecurityConfig {
     return web -> web.ignoring()
         .requestMatchers("/docs/rest-docs.html")
         .requestMatchers(HttpMethod.OPTIONS, "/api/**")
-        .requestMatchers("api/members/**")
+        .requestMatchers("/api/members/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
