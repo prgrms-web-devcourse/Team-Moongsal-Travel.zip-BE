@@ -25,6 +25,8 @@ public class BookmarkController {
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     bookmarkService.bookmarking(userPrincipal.getUserId(), travelogueId);
+
     return ResponseEntity.ok().build();
   }
+
 }

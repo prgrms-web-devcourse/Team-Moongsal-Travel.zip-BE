@@ -18,8 +18,11 @@ public class BookmarkService {
   private final TravelogueService travelogueService;
   private final MemberService memberService;
 
-  public BookmarkService(BookmarkRepository bookmarkRepository, TravelogueService travelogueService,
-      MemberService memberService) {
+  public BookmarkService(
+      BookmarkRepository bookmarkRepository,
+      TravelogueService travelogueService,
+      MemberService memberService
+  ) {
     this.bookmarkRepository = bookmarkRepository;
     this.travelogueService = travelogueService;
     this.memberService = memberService;
@@ -28,19 +31,16 @@ public class BookmarkService {
   @Transactional
   public void bookmarking(Long memberId, Long travelogueId) {
     Optional<Long> bookmarkId = bookmarkRepository.getBookmarkId(memberId, travelogueId);
-    if (bookmarkId.isPresent()) {
-      cancelBookmark(bookmarkId.get());
 
-      return;
-    }
-    addBookmark(memberId, travelogueId);
+    bookmarkId.ifPresentOrElse(this::cancelBookmark, () -> addBookmark(memberId, travelogueId));
   }
 
   private void addBookmark(Long memberId, Long travelogueId) {
     Member member = memberService.getMember(memberId);
     Travelogue travelogue = travelogueService.getTravelogue(travelogueId);
+    Bookmark bookmark = new Bookmark(travelogue, member);
 
-    bookmarkRepository.save(new Bookmark(travelogue, member));
+    bookmarkRepository.save(bookmark);
   }
 
   private void cancelBookmark(Long bookmarkId) {
