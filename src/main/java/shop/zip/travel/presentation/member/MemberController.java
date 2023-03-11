@@ -58,7 +58,7 @@ public class MemberController {
     }
     nicknameValidateRes = new NicknameValidateRes(true);
 
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(nicknameValidateRes);
   }
 
   @PostMapping("/login")
