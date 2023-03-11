@@ -36,6 +36,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     TravelogueRepositoryQuerydsl {
 
   private static final int SPARE_PAGE = 1;
+  private static final int SPARE_DAY = 1;
   private static final String POPULAR = "popular";
 
   private final JPAQueryFactory jpaQueryFactory;
@@ -159,7 +160,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
             spotContains(keyword).or(contentContains(keyword))
         )
         .offset(pageable.getOffset())
-        .limit(pageable.getPageSize() + 1)
+        .limit(pageable.getPageSize() + SPARE_PAGE)
         .fetch();
   }
 
@@ -199,7 +200,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
 
   private BooleanExpression TraveloguePeriodDaysBetween(Long minDays, Long maxDays) {
     if (Objects.nonNull(minDays) && Objects.nonNull(maxDays)) {
-      return getDays().goe(minDays - 1).and(getDays().loe(maxDays - 1));
+      return getDays().goe(minDays - SPARE_DAY)
+          .and(getDays().loe(maxDays - SPARE_DAY));
     }
 
     return null;
