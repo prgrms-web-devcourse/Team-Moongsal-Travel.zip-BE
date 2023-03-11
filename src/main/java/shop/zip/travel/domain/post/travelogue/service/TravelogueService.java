@@ -85,7 +85,6 @@ public class TravelogueService {
     Suggestion suggestion = new Suggestion(travelogue, memberId);
     suggestionRepository.save(suggestion);
 
-    log.error(String.valueOf(suggestionRepository.getSuggestionByMemberId(memberId).size()));
 
     return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked);
   }

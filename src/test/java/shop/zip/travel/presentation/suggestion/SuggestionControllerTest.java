@@ -85,23 +85,24 @@ class SuggestionControllerTest {
                     headerWithName("AccessToken").description("토큰")
                 ),
                 responseFields(
+                    fieldWithPath("content[]").type(JsonFieldType.ARRAY).description("배열"),
                     fieldWithPath("content[].travelogueId").type(JsonFieldType.NUMBER)
-                        .description("Travelogue id"),
+                        .description("Travelogue id").optional(),
                     fieldWithPath("content[].title").type(JsonFieldType.STRING)
-                        .description("Travelogue 제목"),
-                    fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일"),
-                    fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일"),
+                        .description("Travelogue 제목").optional(),
+                    fieldWithPath("content[].nights").type(JsonFieldType.NUMBER).description("숙박일").optional(),
+                    fieldWithPath("content[].days").type(JsonFieldType.NUMBER).description("전체일").optional(),
                     fieldWithPath("content[].totalCost").type(JsonFieldType.NUMBER)
-                        .description("여행 총 경비"),
-                    fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라"),
+                        .description("여행 총 경비").optional(),
+                    fieldWithPath("content[].country").type(JsonFieldType.STRING).description("여행한 나라").optional(),
                     fieldWithPath("content[].thumbnail").type(JsonFieldType.STRING)
-                        .description("Travelogue 썸네일"),
+                        .description("Travelogue 썸네일").optional(),
                     fieldWithPath("content[].member.nickname").type(JsonFieldType.STRING)
-                        .description("작성자 닉네임"),
+                        .description("작성자 닉네임").optional(),
                     fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
-                        .description("작성자 프로필 이미지 URL"),
+                        .description("작성자 프로필 이미지 URL").optional(),
                     fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
-                        .description("게시글 좋아요 수"),
+                        .description("게시글 좋아요 수").optional(),
                     fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
                     fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
                     fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),

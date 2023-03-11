@@ -16,7 +16,7 @@ import shop.zip.travel.domain.member.dto.response.NicknameValidateRes;
 import shop.zip.travel.domain.member.service.MemberService;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/members")
 public class MemberController {
 
   private final MemberService memberService;
@@ -26,33 +26,39 @@ public class MemberController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<Void> signup(@RequestBody @Valid MemberSignupReq memberSignupReq) {
+  public ResponseEntity<Void> signup(
+      @RequestBody @Valid MemberSignupReq memberSignupReq
+  ) {
     memberService.createMember(memberSignupReq);
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/valid/code")
   public ResponseEntity<Void> validateVerificationCode(
-      @RequestBody @Valid CodeValidateReq codeValidateReq) {
+      @RequestBody @Valid CodeValidateReq codeValidateReq
+  ) {
     memberService.verifyCode(codeValidateReq.email(), codeValidateReq.code());
     return ResponseEntity.ok().build();
   }
 
   @PostMapping("/valid/nickname")
-  public ResponseEntity<NicknameValidateRes> checkDuplicatedNickname(
-      @RequestBody @Valid NicknameValidateReq nicknameValidateReq) {
-    boolean isDuplicated = memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
-    return ResponseEntity.ok(new NicknameValidateRes(isDuplicated));
+  public ResponseEntity checkDuplicatedNickname(
+      @RequestBody @Valid NicknameValidateReq nicknameValidateReq
+  ) {
+    memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
+
+    return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/signin")
-  public ResponseEntity<MemberSigninRes> signin(
-      @RequestBody @Valid MemberSigninReq memberSigninReq) {
+  @PostMapping("/login")
+  public ResponseEntity<MemberSigninRes> login(
+      @RequestBody @Valid MemberSigninReq memberSigninReq
+  ) {
     MemberSigninRes memberSigninRes = memberService.login(memberSigninReq);
     return ResponseEntity.ok(memberSigninRes);
   }
 
-  @PostMapping("/reissue/refresh")
+  @PostMapping("/refresh")
   public ResponseEntity<MemberSigninRes> reissueAccessToken(
       @RequestBody AccessTokenReissueReq accessTokenReissueReq
   ) {

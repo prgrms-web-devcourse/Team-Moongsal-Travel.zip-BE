@@ -53,8 +53,10 @@ public class MemberService {
     }
   }
 
-  public boolean validateDuplicatedNickname(String nickname) {
-    return memberRepository.existsByNickname(nickname);
+  public void validateDuplicatedNickname(String nickname) {
+    if (memberRepository.existsByNickname(nickname)) {
+      throw new DuplicatedEmailException(ErrorCode.DUPLICATED_NICKNAME);
+    }
   }
 
   public void verifyCode(String email, String code) {
@@ -96,6 +98,7 @@ public class MemberService {
       String newAccessToken = jwtTokenProvider.createAccessToken(Long.parseLong(memberId));
       String newRefreshToken = jwtTokenProvider.createRefreshToken();
       redisUtil.setDataWithExpire(memberId, newRefreshToken, 120L);
+
       return new MemberSigninRes(newAccessToken, newRefreshToken);
     } else {
       throw new InvalidRefreshTokenException(ErrorCode.INVALID_REFRESH_TOKEN);

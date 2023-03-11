@@ -67,7 +67,7 @@ class SubTravelogueControllerTest {
     member = new Member("user@naver.com", "password1234!", "nickname", "1999");
     memberRepository.save(member);
 
-    travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
+    travelogue = travelogueRepository.save(DummyGenerator.createTempTravelogue(member));
   }
 
   @Test
