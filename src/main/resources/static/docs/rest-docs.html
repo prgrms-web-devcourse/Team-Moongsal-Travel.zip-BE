@@ -664,7 +664,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/info HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzMiwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.veClKX12qCPo3EtLb7PuJU9N5qfnWvS_E2le8GRIsybs6equmhKDvJYLG89iNgtP22Ssg0whJQVwUx_W7L7Acw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjIsImlhdCI6MTY3ODU0NDQ3OCwiZXhwIjoxNjc4NTQ0Nzc4fQ.CKn6-1vSnL2QAipmSli2V3GQVSSRH_Dlp8EHj7OQz1yc9XYJlmBnrmXtxBgUTLoXxNvISG-_f-YxDslhH5_lhg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -745,7 +745,7 @@ Content-Length: 126
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">PATCH /api/members/my/settings HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzNCwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.3JBeZt6QkoOQeWprkwxPW6zJ5_fraqk_4cGTjxYCglvSye_LjzeW7d3idban5U_9QFIEpRwKXnW1JKEB2rNx2g
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODU0NDQ3OCwiZXhwIjoxNjc4NTQ0Nzc4fQ.puQncFOqmEpFb5_5whB2PMZljUQoL90Rjdt4W1fXu684yyiY1CbBCqdEL4Ti1yGCz1hWQa6RIsYHLemR3j41kQ
 Content-Length: 81
 Host: localhost:8080
 
@@ -860,7 +860,7 @@ Content-Length: 135
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/travelogues/temp?size=2&amp;page=0 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzNywiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.1e6tbjDIGPfNwE2Nh7EJS07f9IBLmTZIMEg7_WvbVam6Srbve73bsb7ykgGg09vuw_pjboAPnhBrAklc7vvLqw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjcsImlhdCI6MTY3ODU0NDQ3OSwiZXhwIjoxNjc4NTQ0Nzc5fQ.96L-4GvNfLwfzoRfs_71K4rgey5bn-1FQUzBgW3ilNLZHoa5Y4MWyAyMpOORYDJfO8C6Fe_l37A8s0ilem-25Q
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -901,11 +901,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 628
+Content-Length: 627
 
 {
   "content" : [ {
-    "travelogueId" : 325,
+    "travelogueId" : 10,
     "title" : "",
     "nights" : 1,
     "days" : 2,
@@ -927,8 +927,8 @@ Content-Length: 628
     "offset" : 0,
     "pageNumber" : 0,
     "pageSize" : 2,
-    "unpaged" : false,
-    "paged" : true
+    "paged" : true,
+    "unpaged" : false
   },
   "size" : 2,
   "number" : 0,
@@ -1089,7 +1089,7 @@ Content-Length: 628
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/travelogues?size=2&amp;page=0 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzOSwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.6LB5NkwmcbPASJik7ZA2i1-KmJas0tJo9ezIlqdovqKxrF6Yjs19-2ckMlp49n5QJPrzybf_josjrWsJJ15Jqw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjksImlhdCI6MTY3ODU0NDQ3OSwiZXhwIjoxNjc4NTQ0Nzc5fQ.wkGctHXq6JfeY6Z31XMbU7zkClknwYw_F-JtOHEOHIRNRaoBqQvHcwdFpF4xBPClmwxvZUlTEJii-KnQ1e1uEg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1155,11 +1155,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 674
+Content-Length: 673
 
 {
   "content" : [ {
-    "travelogueId" : 328,
+    "travelogueId" : 13,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -1181,8 +1181,8 @@ Content-Length: 674
     "offset" : 0,
     "pageNumber" : 0,
     "pageSize" : 2,
-    "unpaged" : false,
-    "paged" : true
+    "paged" : true,
+    "unpaged" : false
   },
   "size" : 2,
   "number" : 0,
@@ -1353,8 +1353,8 @@ Content-Length: 674
 <h3 id="_request_5"><a class="link" href="#_request_5">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/members/my/travelogues/326 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzOCwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9._aVilBdeLjp9zBSFizpjjsW5vlgoAnhDRpqJOelmzIxUcxbHt_tzMS5WUme-xZqcPKZUbkoQHzbFPuuC6a1R6g
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/members/my/travelogues/11 HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjgsImlhdCI6MTY3ODU0NDQ3OSwiZXhwIjoxNjc4NTQ0Nzc5fQ._fHOvZT17_zrWlOrsAEKbIcHdVsvAAkULrVfJN44qDkYXP-lqwaDiUd3q05zB47WldljsuB4iAJWg9_j6L0iiQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1417,7 +1417,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 370
+Content-Length: 368
 
 {
   "title" : "일본 오사카 다녀왔어요.",
@@ -1436,7 +1436,7 @@ Content-Length: 370
     "total" : 500000
   },
   "thumbnail" : "www.naver.com",
-  "subTravelogueIds" : [ 559, 560 ]
+  "subTravelogueIds" : [ 15, 16 ]
 }</code></pre>
 </div>
 </div>
@@ -1524,9 +1524,9 @@ Content-Length: 370
 <h3 id="_request_6"><a class="link" href="#_request_6">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/members/my/travelogues/322 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/members/my/travelogues/7 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzNiwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.57onzTP9zgZHm4lZfFfgcri0dcdywe8X0EnY8BKTpmkrUeVzObaJUC0x2a5KWKFrGccW10GTN5hTWPvdLUSgGg
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjYsImlhdCI6MTY3ODU0NDQ3OSwiZXhwIjoxNjc4NTQ0Nzc5fQ.3zxJgR5edvvQMmbbA6rlcO61AQW9rYaEooWfn5FUht2Iy1oI21rkK7zyqbA4T8xMploeixR5pRNipXbCPSlKhw
 Content-Length: 319
 Host: localhost:8080
 
@@ -1672,10 +1672,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 26
+Content-Length: 24
 
 {
-  "travelogueId" : 322
+  "travelogueId" : 7
 }</code></pre>
 </div>
 </div>
@@ -1713,8 +1713,8 @@ Content-Length: 26
 <h3 id="_reequest"><a class="link" href="#_reequest">Reequest</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/members/my/travelogues/320/subTravelogues/553 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzNSwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.nBIHxJ1YQd93nI0zQX-ExfgrE8ZmoNqI4wnTFM3AkoW4iChd6yRla5dzQzTFVIjHlJie5x8QfHGco-wFoK5aLA
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/members/my/travelogues/5/subTravelogues/9 HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODU0NDQ3OSwiZXhwIjoxNjc4NTQ0Nzc5fQ.SMYchqE6h4rz9QDUpHDXYL5fFZ1hkTk8Fq2BK216BEkW_YZYnlRz9bw2GmosyuDhmTSD3XsCfNJ-YNoCBcoNRA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1864,9 +1864,9 @@ Content-Length: 267
 <h3 id="_request_7"><a class="link" href="#_request_7">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/members/my/travelogues/330/subTravelogues/563 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/members/my/travelogues/15/subTravelogues/19 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0MCwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.m-dmeNzz16EuHT9OtN4dk9Uomyu3SdNdDjkLug0P5U9DaX9XV35aonFhYBFnek94Bbz4LgvZvuHVoQddEusCLQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEwLCJpYXQiOjE2Nzg1NDQ0NzksImV4cCI6MTY3ODU0NDc3OX0.kcoHgWLfTgRptQvSJtiDfQBb7fcXG0-zmuvTT62Ddi39NIF3gUWKUgNhGWzLnWr2aH1t86MsOFDfiMS81MH6sA
 Content-Length: 272
 Host: localhost:8080
 
@@ -1993,10 +1993,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 29
+Content-Length: 28
 
 {
-  "subTravelogueId" : 563
+  "subTravelogueId" : 19
 }</code></pre>
 </div>
 </div>
@@ -2035,7 +2035,7 @@ Content-Length: 29
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/members/my/bookmarks HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzMywiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.VuB4Vbre9gjGgjgsysqdd1gitqWvqgZlQeYt7gGegdrcARG7K1i-9SF3zPWN9-huJTfwht5FEl8Vzug1YqyVvw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjMsImlhdCI6MTY3ODU0NDQ3OCwiZXhwIjoxNjc4NTQ0Nzc4fQ.KQMCjlvm1REy58ixa03lJ3p607Cjrnk1sltNLrRKVknN0y7nvMjJOoC2ZIY0GKzVmFQK4abR0L-tPVPyKyHKYg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2055,11 +2055,11 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 678
+Content-Length: 676
 
 {
   "content" : [ {
-    "travelogueId" : 318,
+    "travelogueId" : 3,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2081,8 +2081,8 @@ Content-Length: 678
     "offset" : 0,
     "pageNumber" : 0,
     "pageSize" : 5,
-    "unpaged" : false,
-    "paged" : true
+    "paged" : true,
+    "unpaged" : false
   },
   "size" : 5,
   "number" : 0,
@@ -2265,7 +2265,7 @@ Content-Length: 678
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/travelogues HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE2MSwiaWF0IjoxNjc4NTM4MTIyLCJleHAiOjE2Nzg1NDE3MjJ9.B4kT8lr3IXzgUrv2nQ9H1Unn3B1bI-79XksvAB4MUIddfboWPDf9BAPtfBYHkr5PDZLcd-Jhzwmcf7JiKy6UFA
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzLCJpYXQiOjE2Nzg1NDQ0ODMsImV4cCI6MTY3ODU0NDc4M30.zODMEL-xtDd8G76Jk3iHXtgjiSaV2uN1oFULyTLmGUkvCTEKYOrgPaV5mCEAQftbHH1bAXhNdD7QitnVl1-Ggw
 Content-Length: 266
 Host: localhost:8080
 
@@ -2373,10 +2373,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 47
+Content-Length: 46
 
 {
-  "id" : 390,
+  "id" : 56,
   "nights" : -1,
   "days" : 0
 }</code></pre>
@@ -2426,9 +2426,9 @@ Content-Length: 47
 <h3 id="_request_10"><a class="link" href="#_request_10">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/travelogues/333/subTravelogues HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/travelogues/2/subTravelogues HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0NywiaWF0IjoxNjc4NTM4MTIwLCJleHAiOjE2Nzg1NDE3MjB9.qrKO9lrJKb-5xHRQWZEeqRv8HM6gQhgAsttdrO5GMlNgAeePZ3aCLP_0Lwh-fF6TQWMuSlZFYoKs2YVhunfLOQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjcsImlhdCI6MTY3ODU0NDQ4MSwiZXhwIjoxNjc4NTQ0NzgxfQ.clcBHlXi5yZmAgQTElrb7icpqWz7OfG_BAR0WfGX7GQ7bmqhHeZrVfujM8NvVJfiwCXVuMOy4R4fpFOzNf73SQ
 Content-Length: 394
 Host: localhost:8080
 
@@ -2538,10 +2538,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 16
+Content-Length: 14
 
 {
-  "id" : 565
+  "id" : 1
 }</code></pre>
 </div>
 </div>
@@ -2583,8 +2583,8 @@ Content-Length: 16
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/travelogues/366/publish HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE1NiwiaWF0IjoxNjc4NTM4MTIyLCJleHAiOjE2Nzg1NDE3MjJ9.IfMJdqn5HVf9uchkgXi3Pn0439QxnCty9qaC5iOJ9uvATixmBZfzLOm4Me-I8Ml_zIbn_-Efok83lSpNamApwg
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/travelogues/32/publish HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjgsImlhdCI6MTY3ODU0NDQ4MywiZXhwIjoxNjc4NTQ0NzgzfQ.xNeLMOQK_vdU-JA9xm7TldWEpAYTPAVk5DsVIjWEjeJw4Mz8zrmSMl8suBqx3b7EnpHrBWUHd908ZVmZHSfJuA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2625,10 +2625,10 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 26
+Content-Length: 25
 
 {
-  "travelogueId" : 366
+  "travelogueId" : 32
 }</code></pre>
 </div>
 </div>
@@ -2705,11 +2705,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 991
+Content-Length: 989
 
 {
   "content" : [ {
-    "travelogueId" : 357,
+    "travelogueId" : 23,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2722,7 +2722,7 @@ Content-Length: 991
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 359,
+    "travelogueId" : 25,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -2744,8 +2744,8 @@ Content-Length: 991
     "offset" : 0,
     "pageNumber" : 0,
     "pageSize" : 2,
-    "unpaged" : false,
-    "paged" : true
+    "paged" : true,
+    "unpaged" : false
   },
   "size" : 2,
   "number" : 0,
@@ -2905,8 +2905,8 @@ Content-Length: 991
 <h3 id="_request_13"><a class="link" href="#_request_13">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/travelogues/361 HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE1NSwiaWF0IjoxNjc4NTM4MTIyLCJleHAiOjE2Nzg1NDE3MjJ9.2HflD2bm9UUsUyefTiCJZLbRv-qUlHe3ZNUc26oq6TZAX6vdm0KA9m1FfFMxpL6s-qdoesz0mu4afkPj7GSieg
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /api/travelogues/27 HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjcsImlhdCI6MTY3ODU0NDQ4MywiZXhwIjoxNjc4NTQ0NzgzfQ.GmplDEXixG8bxe1BJ1LsB6eNVYKBCm_EYk9wfkiUqTYWq_2rRad7x5hCYNsp5lcIiMl2l-79gvty9f7qOntkoQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2919,7 +2919,7 @@ Host: localhost:8080</code></pre>
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Set-Cookie: viewCountCookie_361=361; Max-Age=86400; Expires=Sun, 12 Mar 2023 12:35:22 GMT
+Set-Cookie: viewCountCookie_27=27; Max-Age=86400; Expires=Sun, 12 Mar 2023 14:21:23 GMT
 Content-Type: application/json
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 0
@@ -2927,12 +2927,12 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: DENY
-Content-Length: 958
+Content-Length: 957
 
 {
   "profileImageUrl" : "default",
   "nickname" : "nickname",
-  "id" : 361,
+  "id" : 27,
   "title" : "일본 오사카 다녀왔어요.",
   "country" : "대한민국",
   "nights" : 1,
@@ -3117,7 +3117,7 @@ Content-Length: 958
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search?keyword=%EC%9C%A0%EB%8B%88%EB%B2%84%EC%85%9C HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE1MywiaWF0IjoxNjc4NTM4MTIyLCJleHAiOjE2Nzg1NDE3MjJ9.H8K1D4a6b_FAfH1wRENlGl3JTKIL3R6aI4PmZ6YAhFgWX-H3iDjySQQZNM_aMGQE35AWDIz-iMLlo3YBDOPiTQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODU0NDQ4MywiZXhwIjoxNjc4NTQ0NzgzfQ.YV4DfnCfk3VKh9MdwCDfQQc_dEPRwKCp9crphPqAFJOuOXKc-Vbr_6_mYsXTfqpKr2beyazBUGZjcEelh-I8Sw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3152,11 +3152,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1634
+Content-Length: 1630
 
 {
   "content" : [ {
-    "travelogueId" : 356,
+    "travelogueId" : 22,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3169,7 +3169,7 @@ Content-Length: 1634
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 355,
+    "travelogueId" : 21,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3182,7 +3182,7 @@ Content-Length: 1634
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 354,
+    "travelogueId" : 20,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3195,7 +3195,7 @@ Content-Length: 1634
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 353,
+    "travelogueId" : 19,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3217,8 +3217,8 @@ Content-Length: 1634
     "offset" : 0,
     "pageNumber" : 0,
     "pageSize" : 5,
-    "unpaged" : false,
-    "paged" : true
+    "paged" : true,
+    "unpaged" : false
   },
   "size" : 5,
   "number" : 0,
@@ -3379,7 +3379,7 @@ Content-Length: 1634
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/travelogues/search/filters?keyword=%EC%9D%BC%EB%B3%B8&amp;sort=popular HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0OSwiaWF0IjoxNjc4NTM4MTIxLCJleHAiOjE2Nzg1NDE3MjF9.0XOiuPJrByvbRfR-7eFKRlg5j1zKasmqMETkQh2YoJKn1bunwJuWutI-l_fvo-MlQW4JzpPCKgF8k7xJQWNzLw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODU0NDQ4MiwiZXhwIjoxNjc4NTQ0NzgyfQ.Xivrj4QJEymalo7Y1rgi9ibkjPPnOYWOgvqw51j-q7nq0ldqqqTSJ01yH8k-_z3f7xZ1DqSkrKvAwUMjMktL7A
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3428,11 +3428,11 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 1958
+Content-Length: 1948
 
 {
   "content" : [ {
-    "travelogueId" : 336,
+    "travelogueId" : 2,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3445,7 +3445,7 @@ Content-Length: 1958
     },
     "likeCount" : 1
   }, {
-    "travelogueId" : 340,
+    "travelogueId" : 6,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3458,7 +3458,7 @@ Content-Length: 1958
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 339,
+    "travelogueId" : 5,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3471,7 +3471,7 @@ Content-Length: 1958
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 338,
+    "travelogueId" : 4,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3484,7 +3484,7 @@ Content-Length: 1958
     },
     "likeCount" : 0
   }, {
-    "travelogueId" : 337,
+    "travelogueId" : 3,
     "title" : "일본 오사카 다녀왔어요.",
     "nights" : 1,
     "days" : 2,
@@ -3506,8 +3506,8 @@ Content-Length: 1958
     "offset" : 0,
     "pageNumber" : 0,
     "pageSize" : 5,
-    "unpaged" : false,
-    "paged" : true
+    "paged" : true,
+    "unpaged" : false
   },
   "size" : 5,
   "number" : 0,
@@ -3668,8 +3668,8 @@ Content-Length: 1958
 <h3 id="_request_16"><a class="link" href="#_request_16">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/travelogues/316/bookmarks HTTP/1.1
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEzMSwiaWF0IjoxNjc4NTM4MTE4LCJleHAiOjE2Nzg1NDE3MTh9.hXYHFcZuLlOmB_wTZ0KBlT169pRKvJczskf7QSvQvesHzehMH9LdkHiTvr_ubi2hRvEjbYL6CQbFT--xWTB-Og
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/travelogues/1/bookmarks HTTP/1.1
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODU0NDQ3OCwiZXhwIjoxNjc4NTQ0Nzc4fQ.uTc7tmVDGazkjWG68EcoZBSsyVaoJB175ceQEg_UjiTexhqNaSplkpq6LxS--KH-Q3U7I7_rhqXTwo8KZ-7tKg
 Host: localhost:8080
 Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
@@ -3726,7 +3726,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/storage HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0NiwiaWF0IjoxNjc4NTM4MTIwLCJleHAiOjE2Nzg1NDE3MjB9.qNs_H0tesywMjSbAMgykK7FCsV4ZS7Jl-vL3UnCTqG3NgO0NzSYcoVZrQwcJV3m71QYrjk2X8UNSis4kLlxiVg
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjYsImlhdCI6MTY3ODU0NDQ4MSwiZXhwIjoxNjc4NTQ0NzgxfQ.2ynKJ0a4ewJj076Rg_tWdJ9UVnovgHmiaqSUw9BglixwYfNKDmkCbhGWHOTwAFkOH854KIIvUrH0IFvM77JNGA
 Content-Length: 30
 Host: localhost:8080
 
@@ -3788,12 +3788,12 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/storage/scrap HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0NCwiaWF0IjoxNjc4NTM4MTIwLCJleHAiOjE2Nzg1NDE3MjB9.LARfGU79Qeujox467zXpSLE0zGHPSYTziQFziLkRUgxv3MhIlRmifdeosqpq_la4Y7xiAOp-TPsV3w3rBvMPWA
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjQsImlhdCI6MTY3ODU0NDQ4MCwiZXhwIjoxNjc4NTQ0NzgwfQ.BAefSDdk-yl8yacgax6a4UeTeCv-dJMSqXS8I19l1JScoBDz0VcI6HHmRwSKnSkT6kCndjOMa0I5PpHhZvrqSQ
 Content-Length: 101
 Host: localhost:8080
 
 {
-  "storageObjectId" : "640c75880ec8837c95f92ffb",
+  "storageObjectId" : "640c8e6066b8b033d66f2df6",
   "content" : "Duomo Cathedral",
   "postId" : 1
 }</code></pre>
@@ -3862,7 +3862,7 @@ X-Frame-Options: DENY</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/storage HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0MiwiaWF0IjoxNjc4NTM4MTE5LCJleHAiOjE2Nzg1NDE3MTl9.8jfPY6vcJbw8wraLb8_-497VPBg2VsaB2ELIH6o60feZ-oVhAClOmvljWIeMGT9p8k7nOUmx4bxiGwkNx0Z0FQ
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjIsImlhdCI6MTY3ODU0NDQ4MCwiZXhwIjoxNjc4NTQ0NzgwfQ.9qsX6evficW1b2gNleWvB9reCHsxWCFR36kM0ghP8CLNGITwIHJYUF4B-0_ZuBLGOx81uU3rqArOt5zE31kS9g
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3886,7 +3886,7 @@ Content-Length: 108
 
 {
   "list" : [ {
-    "storageObjectId" : "640c75870ec8837c95f92ff7",
+    "storageObjectId" : "640c8e6066b8b033d66f2df2",
     "title" : "Florence travel"
   } ]
 }</code></pre>
@@ -3931,9 +3931,9 @@ Content-Length: 108
 <h3 id="_request_20"><a class="link" href="#_request_20">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/storage/640c75880ec8837c95f92ffe HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/storage/640c8e6066b8b033d66f2df9 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0NSwiaWF0IjoxNjc4NTM4MTIwLCJleHAiOjE2Nzg1NDE3MjB9.QZ5Ov7BwbPOF2cGkrsUSvISxIkbnyU9Bqzy9DgiBKz6wDtf0jA0jGmJUtUJn98vS4kTA6H-RVwf-hyHbHbT_Fw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjUsImlhdCI6MTY3ODU0NDQ4MCwiZXhwIjoxNjc4NTQ0NzgwfQ.84hJXfJ_IjWC3giECjHrjGiAA9VBeYRVUIKFvKMz75s-yQi7mtbX6YjVdB7esS8urrTp-0M69UfD65RlOcFdTg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3980,7 +3980,7 @@ Content-Length: 163
 {
   "title" : "Florence travel",
   "contents" : [ {
-    "scrapObjectId" : "640c75880ec8837c95f92fff",
+    "scrapObjectId" : "640c8e6166b8b033d66f2dfa",
     "placeName" : "Duomo Cathedral",
     "postId" : 1
   } ]
@@ -4036,9 +4036,9 @@ Content-Length: 163
 <h3 id="_request_21"><a class="link" href="#_request_21">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/storage/640c75870ec8837c95f92ff5 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/storage/640c8e6066b8b033d66f2df0 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0MSwiaWF0IjoxNjc4NTM4MTE5LCJleHAiOjE2Nzg1NDE3MTl9.31BJxsdFyCIfAzjv15bz23VUisyVEnbMzPIV5J_ELvRcoCt_WHbFtbZxP0Zv2eYeFyTSaeBDxsTc9BWMo2Xvkw
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjEsImlhdCI6MTY3ODU0NDQ4MCwiZXhwIjoxNjc4NTQ0NzgwfQ.1Xuws_FSgi1hUOQBtcXq5wLK8sISTdo_mTD-GqTfaoT0gnlRJEgVXWC3-jcL3PV2xn1N-OjO6HvI0UJ-RY11rw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -4091,9 +4091,9 @@ X-Frame-Options: DENY</code></pre>
 <h3 id="_request_22"><a class="link" href="#_request_22">Request</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/storage/640c75880ec8837c95f92ff9/scrap/640c75880ec8837c95f92ffa HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/storage/640c8e6066b8b033d66f2df4/scrap/640c8e6066b8b033d66f2df5 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjE0MywiaWF0IjoxNjc4NTM4MTE5LCJleHAiOjE2Nzg1NDE3MTl9.sL4l-E-SHSz_HSTBc5rhIsfnYwV5URgWMq4dZNW7LxSZmKHLxzKlwEeqr429Z82pclwTsUQQFkomsIv6Dyl97g
+AccessToken: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUcmF2ZWwuemlwIiwibWVtYmVySWQiOjMsImlhdCI6MTY3ODU0NDQ4MCwiZXhwIjoxNjc4NTQ0NzgwfQ.JREWln8oUOJyyUrZ9L-uChq9-k8LSYMsIYgPJv3QTHyDFvEDB8r9dtwPVD5FlYA5pLmJBIr1jC_UT_dKojJ_hg
 Host: localhost:8080</code></pre>
 </div>
 </div>
