@@ -47,4 +47,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean bootJar -Pprofile=dev
+        run: ./gradlew clean jar -Pprofile=dev
