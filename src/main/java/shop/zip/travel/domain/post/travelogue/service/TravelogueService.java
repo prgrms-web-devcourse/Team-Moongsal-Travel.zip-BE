@@ -1,7 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Objects;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,6 @@ import shop.zip.travel.global.error.ErrorCode;
 @Service
 @Transactional(readOnly = true)
 public class TravelogueService {
-
-  private final Logger log = LoggerFactory.getLogger(TravelogueService.class);
 
   private static final boolean PUBLISH = true;
 
@@ -85,8 +82,9 @@ public class TravelogueService {
     Suggestion suggestion = new Suggestion(travelogue, memberId);
     suggestionRepository.save(suggestion);
 
+    boolean isWriter = Objects.equals(travelogue.getMember().getId(), memberId);
 
-    return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked);
+    return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked, isWriter);
   }
 
   private void setViewCount(Long travelogueId, boolean canAddViewCount) {
