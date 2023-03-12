@@ -74,42 +74,42 @@ dependencies {
     implementation "ca.pjer:logback-awslogs-appender:1.6.0"
 }
 
-ext {
-    snippetsDir = file('build/generated-snippets')
-}
+//ext {
+//    snippetsDir = file('build/generated-snippets')
+//}
 
-bootJar {
-    dependsOn asciidoctor
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'BOOT-INF/classes/static/docs'
-    }
-}
+//bootJar {
+//    dependsOn asciidoctor
+//    copy {
+//        from "${asciidoctor.outputDir}"
+//        into 'BOOT-INF/classes/static/docs'
+//    }
+//}
 
-asciidoctor {
-    dependsOn test
-    inputs.dir snippetsDir
-}
+//asciidoctor {
+//    dependsOn test
+//    inputs.dir snippetsDir
+//}
 
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
+//asciidoctor.doFirst {
+//    delete file('src/main/resources/static/docs')
+//}
 
-task copyDocument(type: Copy) {
-    dependsOn asciidoctor
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static/docs")
-}
+//task copyDocument(type: Copy) {
+//    dependsOn asciidoctor
+//    from file("build/docs/asciidoc")
+//    into file("src/main/resources/static/docs")
+//}
 
-test {
-    outputs.dir snippetsDir
-    useJUnitPlatform()
-}
+//test {
+//    outputs.dir snippetsDir
+//    useJUnitPlatform()
+//}
 
-build {
-    test
-    dependsOn copyDocument
-}
+//build {
+//    test
+//    dependsOn copyDocument
+//}
 
 jar {
     enabled = false
