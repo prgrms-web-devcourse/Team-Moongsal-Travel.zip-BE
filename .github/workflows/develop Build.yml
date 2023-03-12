@@ -1,12 +1,16 @@
-name: Deploy
+name: develop Build
 
 on:
   push:
     branches:
-      - main
+      - develop
+
+  pull_request:
+    branches:
+      - develop
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,6 +20,18 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mysql version: '8.0'
+          mysql database: 'testdb'
+          mysql root password: 'test1234'
+          mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+          mysql password: 'test1234'
 
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
@@ -46,31 +62,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test -Pprofile=prod
-
-      - name: Make zip file
-        run: zip -r ./travel.zip .
-        shell: bash
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_IAM_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_IAM_SECRET_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Upload to S3
-        run: aws s3 cp --region ${{ secrets.AWS_REGION }} ./travel.zip s3://${{ secrets.AWS_S3_BUCKET }}/travel.zip
-
-      - name: Deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_IAM_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_IAM_SECRET_KEY }}
-        run: |
-          aws deploy create-deployment \
-          --application-name travel-zip-deploy-group \
-          --deployment-config-name CodeDeployDefault.AllAtOnce \
-          --deployment-group-name travel-zip-deploy-group \
-          --file-exists-behavior OVERWRITE \
-          --s3-location bucket=${{ secrets.AWS_S3_BUCKET }},bundleType=zip,key=travel.zip \
-          --region ${{ secrets.AWS_REGION }}
+        run: ./gradlew clean build -Pprofile=dev
