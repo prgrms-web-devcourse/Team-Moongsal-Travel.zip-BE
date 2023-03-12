@@ -23,7 +23,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -266,6 +264,8 @@ class TravelogueControllerTest {
                     .description("좋아요 여부"),
                 fieldWithPath("bookmarked").type(JsonFieldType.BOOLEAN)
                     .description("북마크 여부"),
+                fieldWithPath("isWriter").type(JsonFieldType.BOOLEAN)
+                    .description("작성자 여부"),
                 fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue 리스트"),
                 fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
