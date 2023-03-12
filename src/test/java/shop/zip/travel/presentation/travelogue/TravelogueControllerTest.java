@@ -268,6 +268,8 @@ class TravelogueControllerTest {
                     .description("작성자 여부"),
                 fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
                     .description("SubTravelogue 리스트"),
+                fieldWithPath("subTravelogues[].subTravelogueId").type(JsonFieldType.NUMBER)
+                    .description("SubTravelogue PK 값"),
                 fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
                     .description("SubTravelogue의 제목"),
                 fieldWithPath("subTravelogues[].content").type(JsonFieldType.STRING)

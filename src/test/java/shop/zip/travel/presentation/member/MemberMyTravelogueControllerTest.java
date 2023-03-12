@@ -239,6 +239,8 @@ class MemberMyTravelogueControllerTest {
                 parameterWithName("subTravelogueId").description("subTravelogue pk 값")
             ),
             responseFields(
+                fieldWithPath("subTravelogueId").type(JsonFieldType.NUMBER)
+                    .description("SubTravelogue PK 값"),
                 fieldWithPath("title").type(JsonFieldType.STRING)
                     .description("SubTravelogue 제목"),
                 fieldWithPath("content").type(JsonFieldType.STRING).description("subTravelogue 내용"),
