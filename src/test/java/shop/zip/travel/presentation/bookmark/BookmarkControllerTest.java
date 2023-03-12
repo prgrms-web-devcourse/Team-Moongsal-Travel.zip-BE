@@ -2,6 +2,8 @@ package shop.zip.travel.presentation.bookmark;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -54,7 +56,7 @@ class BookmarkControllerTest {
 
   @DisplayName("유저는 맘에드는 게시글을 북마크 할 수 있다")
   @Test
-  public void add_bookmark() throws Exception {
+  void add_bookmark() throws Exception {
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
@@ -65,9 +67,11 @@ class BookmarkControllerTest {
         .andDo(document("bookmarking",
             pathParameters(
                 parameterWithName("travelogueId").description("travelogue id")
-            )
-        ));
+            ),
+            responseFields(
+                fieldWithPath("isAdded").description("북마크가 추가되었는 지의 여부 - 북마크가 추가된 것이면 true 반환"),
+                fieldWithPath("isCanceled").description("북마크가 삭제되었는 지의 여부 - 북마크가 삭제된 것이면 true 반환")
+            )));
   }
-
 
 }
