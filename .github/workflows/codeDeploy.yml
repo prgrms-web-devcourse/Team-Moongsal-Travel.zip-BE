@@ -50,7 +50,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test -Pprofile=dev
+#        run: ./gradlew clean build --exclude-task test -Pprofile=dev
+        run: ./gradlew clean test --tests SuggestionControllerTest
 
       - name: Make zip file
         run: zip -r ./travel.zip .
