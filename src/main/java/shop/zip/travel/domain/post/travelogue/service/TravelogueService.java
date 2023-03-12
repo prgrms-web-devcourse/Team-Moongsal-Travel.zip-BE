@@ -82,7 +82,7 @@ public class TravelogueService {
     Suggestion suggestion = new Suggestion(travelogue, memberId);
     suggestionRepository.save(suggestion);
 
-    boolean isWriter = Objects.equals(travelogue.getMember().getId(), memberId);
+    boolean isWriter = isWriter(travelogue.getMember(), memberId);
 
     return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked, isWriter);
   }
@@ -98,5 +98,9 @@ public class TravelogueService {
       TravelogueSearchFilter searchFilter) {
     return TravelogueCustomSlice.toDto(
         travelogueRepository.filtering(keyword, pageable, searchFilter));
+  }
+
+  private boolean isWriter(Member writer, Long requestMemberId) {
+    return Objects.equals(writer.getId(), requestMemberId);
   }
 }
