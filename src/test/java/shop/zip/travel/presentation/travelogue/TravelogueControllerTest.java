@@ -231,64 +231,64 @@ class TravelogueControllerTest {
             )));
   }
 
-//  @Test
-//  @DisplayName("게시글의 상세정보를 조회할 수 있다.")
-//  void test_get_one_travelogue() throws Exception {
-//
-//    travelogue.changePublishStatus();
-//    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
-//
-//    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
-//            .header("AccessToken", token))
-//        .andExpect(status().isOk())
-//        .andDo(print())
-//        .andDo(document("get-one-detail-travelogue",
-//            preprocessResponse(prettyPrint()),
-//            responseFields(
-//                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
-//                    .description("작성자 프로필 이미지"),
-//                fieldWithPath("nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
-//                fieldWithPath("id").type(JsonFieldType.NUMBER).description("Travelogue id"),
-//                fieldWithPath("title").type(JsonFieldType.STRING).description("Travelogue 제목"),
-//                fieldWithPath("country").type(JsonFieldType.STRING)
-//                    .description("Travelogue 방문한 나라"),
-//                fieldWithPath("nights").type(JsonFieldType.NUMBER)
-//                    .description("Travelogue 여행 기간 중 숙박 날짜"),
-//                fieldWithPath("days").type(JsonFieldType.NUMBER)
-//                    .description("Travelogue 여행 기간 중 전체 날짜"),
-//                fieldWithPath("totalCost").type(JsonFieldType.NUMBER)
-//                    .description("Travelogue 여행 전체 경비"),
-//                fieldWithPath("thumbnail").type(JsonFieldType.STRING)
-//                    .description("Travelogue 게시글 썸네일 URL"),
-//                fieldWithPath("countLikes").type(JsonFieldType.NUMBER)
-//                    .description("좋아요 갯수"),
-//                fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN)
-//                    .description("좋아요 여부"),
-//                fieldWithPath("bookmarked").type(JsonFieldType.BOOLEAN)
-//                    .description("북마크 여부"),
-//                fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
-//                    .description("SubTravelogue 리스트"),
-//                fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
-//                    .description("SubTravelogue의 제목"),
-//                fieldWithPath("subTravelogues[].content").type(JsonFieldType.STRING)
-//                    .description("SubTravelogue의 내용"),
-//                fieldWithPath("subTravelogues[].day").type(JsonFieldType.NUMBER)
-//                    .description("SubTravelogue의 일차"),
-//                fieldWithPath("subTravelogues[].addresses[]").type(JsonFieldType.ARRAY)
-//                    .description("SubTravelogue의 방문한 장소 리스트"),
-//                fieldWithPath("subTravelogues[].addresses[].region").type(JsonFieldType.STRING)
-//                    .description("SubTravelogue의 방문한 장소명"),
-//                fieldWithPath("subTravelogues[].transportationSet[]").type(JsonFieldType.ARRAY)
-//                    .description("SubTravelogue 에서 이용한 이동 수단 리스트"),
-//                fieldWithPath("subTravelogues[].travelPhotoCreateReqs[]").type(JsonFieldType.ARRAY)
-//                    .description("SubTravelogue의 이미지 리스트").optional(),
-//                fieldWithPath("subTravelogues[].travelPhotoCreateReqs[].url").type(
-//                    JsonFieldType.STRING).description("SubTravelogue의 이미지 url").optional(),
-//                fieldWithPath("transportations").type(JsonFieldType.ARRAY)
-//                    .description("Travelogue에서의 이용한 이동 수단"),
-//                fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수")
-//            )));
-//  }
+  @Test
+  @DisplayName("게시글의 상세정보를 조회할 수 있다.")
+  void test_get_one_travelogue() throws Exception {
+
+    travelogue.changePublishStatus();
+    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
+
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
+            .header("AccessToken", token))
+        .andExpect(status().isOk())
+        .andDo(print())
+        .andDo(document("get-one-detail-travelogue",
+            preprocessResponse(prettyPrint()),
+            responseFields(
+                fieldWithPath("profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 이미지"),
+                fieldWithPath("nickname").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                fieldWithPath("id").type(JsonFieldType.NUMBER).description("Travelogue id"),
+                fieldWithPath("title").type(JsonFieldType.STRING).description("Travelogue 제목"),
+                fieldWithPath("country").type(JsonFieldType.STRING)
+                    .description("Travelogue 방문한 나라"),
+                fieldWithPath("nights").type(JsonFieldType.NUMBER)
+                    .description("Travelogue 여행 기간 중 숙박 날짜"),
+                fieldWithPath("days").type(JsonFieldType.NUMBER)
+                    .description("Travelogue 여행 기간 중 전체 날짜"),
+                fieldWithPath("totalCost").type(JsonFieldType.NUMBER)
+                    .description("Travelogue 여행 전체 경비"),
+                fieldWithPath("thumbnail").type(JsonFieldType.STRING)
+                    .description("Travelogue 게시글 썸네일 URL"),
+                fieldWithPath("countLikes").type(JsonFieldType.NUMBER)
+                    .description("좋아요 갯수"),
+                fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN)
+                    .description("좋아요 여부"),
+                fieldWithPath("bookmarked").type(JsonFieldType.BOOLEAN)
+                    .description("북마크 여부"),
+                fieldWithPath("subTravelogues[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue 리스트"),
+                fieldWithPath("subTravelogues[].title").type(JsonFieldType.STRING)
+                    .description("SubTravelogue의 제목"),
+                fieldWithPath("subTravelogues[].content").type(JsonFieldType.STRING)
+                    .description("SubTravelogue의 내용"),
+                fieldWithPath("subTravelogues[].day").type(JsonFieldType.NUMBER)
+                    .description("SubTravelogue의 일차"),
+                fieldWithPath("subTravelogues[].addresses[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue의 방문한 장소 리스트"),
+                fieldWithPath("subTravelogues[].addresses[].region").type(JsonFieldType.STRING)
+                    .description("SubTravelogue의 방문한 장소명"),
+                fieldWithPath("subTravelogues[].transportationSet[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue 에서 이용한 이동 수단 리스트"),
+                fieldWithPath("subTravelogues[].travelPhotoCreateReqs[]").type(JsonFieldType.ARRAY)
+                    .description("SubTravelogue의 이미지 리스트").optional(),
+                fieldWithPath("subTravelogues[].travelPhotoCreateReqs[].url").type(
+                    JsonFieldType.STRING).description("SubTravelogue의 이미지 url").optional(),
+                fieldWithPath("transportations").type(JsonFieldType.ARRAY)
+                    .description("Travelogue에서의 이용한 이동 수단"),
+                fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수")
+            )));
+  }
 
   @DisplayName("유저는 나라이름, 게시글 제목, 게시글 내용, 장소로 게시물을 검색할 수 있다")
   @ParameterizedTest
