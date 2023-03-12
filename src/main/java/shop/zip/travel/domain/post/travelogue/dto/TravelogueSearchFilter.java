@@ -37,7 +37,7 @@ public record TravelogueSearchFilter(
 
   private void verifyMaxGreaterThanMin(Long min, Long max, String message) {
     if (max < min) {
-      throw new IllegalStateException(message);
+      throw new IllegalArgumentException(message);
     }
   }
 
