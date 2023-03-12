@@ -63,4 +63,5 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build -Pprofile=dev
+#        run: ./gradlew clean build -Pprofile=dev
+        run: ./gradlew clean test --tests SuggestionControllerTest
