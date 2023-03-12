@@ -1,6 +1,10 @@
 name: Build
 
 on:
+  push:
+    branches:
+      - develop
+
   pull_request:
     branches:
       - main
@@ -17,6 +21,18 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mysql version: '8.0'
+          mysql database: 'testdb'
+          mysql root password: 'test1234'
+          mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+          mysql password: 'test1234'
 
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
@@ -37,7 +53,7 @@ jobs:
       - name: application.yml created
         uses: actions/checkout@v3
       - run: touch ./src/main/resources/application.yml
-      - run: echo "${{ secrets.APPLICATION_YML}}" > ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
       - uses: actions/upload-artifact@v3
         with:
           name: application.yml
