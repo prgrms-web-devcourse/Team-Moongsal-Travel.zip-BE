@@ -2,6 +2,7 @@ package shop.zip.travel.global.error;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanInstantiationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -86,10 +87,27 @@ public class GlobalExceptionHandler {
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<ErrorResponse> handelIllegalArgumentException(IllegalArgumentException e) {
+	public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
 		log.info("IllegalArgumentException: ", e);
 		int httpStatus = HttpStatus.BAD_REQUEST.value();
 		String message = e.getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
+	}
+
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
+		log.info("IllegalStateException: ", e);
+		int httpStatus = HttpStatus.BAD_REQUEST.value();
+		String message = e.getMessage();
+		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
+	}
+
+	@ExceptionHandler(BeanInstantiationException.class)
+	public ResponseEntity<ErrorResponse> handleBeanInstantiationException(
+			BeanInstantiationException e) {
+		log.info("BeanInstantiationException: ", e);
+		int httpStatus = HttpStatus.BAD_REQUEST.value();
+		String message = e.getCause().getMessage();
 		return ResponseEntity.status(httpStatus).body(new ErrorResponse(message));
 	}
 
