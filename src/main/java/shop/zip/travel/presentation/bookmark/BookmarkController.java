@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import shop.zip.travel.domain.bookmark.dto.response.BookmarkRes;
 import shop.zip.travel.domain.bookmark.service.BookmarkService;
 import shop.zip.travel.global.security.UserPrincipal;
 
@@ -20,13 +21,14 @@ public class BookmarkController {
   }
 
   @PutMapping("/{travelogueId}/bookmarks")
-  public ResponseEntity<Void> bookmarking(
+  public ResponseEntity<BookmarkRes> bookmarking(
       @PathVariable Long travelogueId,
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
-    bookmarkService.bookmarking(userPrincipal.getUserId(), travelogueId);
+    BookmarkRes bookmarkResponseMsg =
+        bookmarkService.bookmarking(userPrincipal.getUserId(), travelogueId);
 
-    return ResponseEntity.ok().build();
+    return ResponseEntity.ok(bookmarkResponseMsg);
   }
 
 }
