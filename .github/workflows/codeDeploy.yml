@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - develop
+      - main
 
 jobs:
   deploy:
@@ -46,7 +46,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean jar -Pprofile=dev
+        run: ./gradlew clean build --exclude-task test -Pprofile=prod
 
       - name: Make zip file
         run: zip -r ./travel.zip .

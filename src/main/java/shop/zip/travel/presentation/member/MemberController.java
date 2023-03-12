@@ -1,6 +1,7 @@
 package shop.zip.travel.presentation.member;
 
 import jakarta.validation.Valid;
+import javax.swing.table.TableRowSorter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
 import shop.zip.travel.domain.member.dto.request.NicknameValidateReq;
 import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
 import shop.zip.travel.domain.member.dto.response.NicknameValidateRes;
+import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.service.MemberService;
 
 @RestController
@@ -45,9 +47,19 @@ public class MemberController {
   public ResponseEntity checkDuplicatedNickname(
       @RequestBody @Valid NicknameValidateReq nicknameValidateReq
   ) {
-    memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
+    NicknameValidateRes nicknameValidateRes;
 
-    return ResponseEntity.ok().build();
+    try {
+      memberService.validateDuplicatedNickname(nicknameValidateReq.nickname());
+
+    } catch (DuplicatedEmailException e) {
+      nicknameValidateRes = new NicknameValidateRes(true);
+
+      return ResponseEntity.ok(nicknameValidateRes);
+    }
+    nicknameValidateRes = new NicknameValidateRes(false);
+
+    return ResponseEntity.ok(nicknameValidateRes);
   }
 
   @PostMapping("/login")
