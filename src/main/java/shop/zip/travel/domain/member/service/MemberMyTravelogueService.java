@@ -37,13 +37,17 @@ public class MemberMyTravelogueService {
     this.subTravelogueRepository = subTravelogueRepository;
   }
 
-  public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Long memberId,
-      Pageable pageable) {
-
+  public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(
+      Long memberId,
+      Pageable pageable
+  ) {
     Slice<TravelogueSimple> myTravelogues = travelogueRepository.getMyTravelogues(memberId,
         pageable, PUBLISHED);
 
-    return TravelogueCustomSlice.toDto(myTravelogues.map(TravelogueSimpleRes::toDto));
+    Slice<TravelogueSimpleRes> travelogueSimpleResSlice =
+        myTravelogues.map(TravelogueSimpleRes::toDto);
+
+    return TravelogueCustomSlice.toDto(travelogueSimpleResSlice);
   }
 
   public TravelogueDetailForUpdateRes getTravelogueForUpdate(Long memberId, Long travelogueId) {
@@ -67,7 +71,7 @@ public class MemberMyTravelogueService {
       Long subTravelogueId) {
     Travelogue travelogue = getMyTravelogue(travelogueId, memberId);
     SubTravelogue subTravelogue = getSubTravelogue(subTravelogueId);
-    travelogue.isContain(subTravelogue);
+    travelogue.contains(subTravelogue);
 
     return SubTravelogueDetailRes.toDto(subTravelogue);
   }
@@ -92,7 +96,7 @@ public class MemberMyTravelogueService {
       SubTravelogueUpdateReq subTravelogueUpdateReq) {
     Travelogue travelogue = getMyTravelogue(travelogueId, memberId);
     SubTravelogue subTravelogue = getSubTravelogue(subTravelogueId);
-    travelogue.isContain(subTravelogue);
+    travelogue.contains(subTravelogue);
 
     subTravelogue.update(subTravelogueUpdateReq.toSubTravelogueUpdate());
 

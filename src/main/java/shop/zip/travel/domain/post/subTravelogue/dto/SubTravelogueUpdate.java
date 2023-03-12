@@ -9,7 +9,6 @@ import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 public record SubTravelogueUpdate(
     String title,
     String content,
-    int day,
     List<Address> addresses,
     Set<Transportation> transportationSet,
     List<TravelPhoto> travelPhotoCreateReqs

@@ -326,7 +326,6 @@ class MemberMyTravelogueControllerTest {
             requestFields(
                 fieldWithPath("title").type(JsonFieldType.STRING).description("소제목"),
                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                fieldWithPath("day").type(JsonFieldType.NUMBER).description("서브 게시물의 일차 정보"),
                 fieldWithPath("addresses[].region").type(JsonFieldType.STRING)
                     .description("방문한 장소명"),
                 fieldWithPath("transportationSet").type(JsonFieldType.ARRAY)

@@ -61,7 +61,7 @@ public class Period {
 
 
     public boolean cannotPublish() {
-        return DefaultValue.LOCAL_DATE.isEqual(startDate.toString()) ||
-            DefaultValue.LOCAL_DATE.isEqual(endDate.toString());
+        return DefaultValue.isBefore(startDate) ||
+            DefaultValue.isBefore(endDate);
     }
 }

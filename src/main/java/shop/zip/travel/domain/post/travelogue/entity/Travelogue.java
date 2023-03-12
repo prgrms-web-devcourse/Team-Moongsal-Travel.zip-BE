@@ -126,7 +126,7 @@ public class Travelogue extends BaseTimeEntity {
 	}
 
 	public List<SubTravelogue> getSubTravelogues() {
-		return new ArrayList<>(subTravelogues);
+		return sortSubTravelogues(new ArrayList<>(subTravelogues));
 	}
 
 	public Member getMember() {
@@ -225,7 +225,7 @@ public class Travelogue extends BaseTimeEntity {
 		changeSubTravelogues(newSubTravelogues);
 	}
 
-	public void isContain(SubTravelogue subTravelogue) {
+	public void contains(SubTravelogue subTravelogue) {
 		if (!this.getSubTravelogues().contains(subTravelogue)) {
 			throw new InvalidAccessSubTravelogueException(
 					ErrorCode.TRAVELOGUE_NOT_CONTAIN_SUB_TRAVELOGUE
@@ -239,7 +239,11 @@ public class Travelogue extends BaseTimeEntity {
 
 	private void changeSubTravelogues(List<SubTravelogue> newSubTravelogues) {
 		this.subTravelogues.clear();
-		newSubTravelogues.sort((sub1, sub2) -> {
+		this.subTravelogues.addAll(newSubTravelogues);
+	}
+
+	private List<SubTravelogue> sortSubTravelogues(List<SubTravelogue> requestSubTravelogues) {
+		requestSubTravelogues.sort((sub1, sub2) -> {
 			int day1 = sub1.getDay();
 			int day2 = sub2.getDay();
 
@@ -249,7 +253,8 @@ public class Travelogue extends BaseTimeEntity {
 				return -1;
 			}
 		});
-		this.subTravelogues.addAll(newSubTravelogues);
+
+		return requestSubTravelogues;
 	}
 
 }

@@ -216,7 +216,7 @@ public class DummyGenerator {
 
   public static TempCountry createTempCountry() {
     return new TempCountry(
-        "일본"
+        "대한민국"
     );
   }
 
@@ -267,7 +267,6 @@ public class DummyGenerator {
     return new SubTravelogueUpdateReq(
         "일본 오사카 1일차입니다.",
         "오사카 1일차인데 눌러앉고 싶네요.",
-        1,
         List.of(createTempAddress()),
         Set.of(Transportation.BUS),
         new ArrayList<>()

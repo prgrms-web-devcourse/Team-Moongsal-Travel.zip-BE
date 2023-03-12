@@ -1,5 +1,7 @@
 package shop.zip.travel.domain.post.travelogue.dto.res;
 
+import static shop.zip.travel.domain.post.data.DefaultValue.orGetStringReturnValue;
+
 import shop.zip.travel.domain.member.dto.response.MemberSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 
@@ -23,12 +25,12 @@ public record TravelogueSimpleRes(
 
 		return new TravelogueSimpleRes(
 				travelogueSimple.travelogueId(),
-				travelogueSimple.title(),
+				orGetStringReturnValue(travelogueSimple.title()),
 				nights,
 				nights + 1,
 				travelogueSimple.totalCost(),
-				travelogueSimple.country(),
-				travelogueSimple.thumbnail(),
+				orGetStringReturnValue(travelogueSimple.country()),
+				orGetStringReturnValue(travelogueSimple.thumbnail()),
 				MemberSimpleRes.toDto(travelogueSimple),
 				likeCount
 		);

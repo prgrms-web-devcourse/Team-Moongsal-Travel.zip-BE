@@ -16,7 +16,6 @@ import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueUpdate;
 public record SubTravelogueUpdateReq(
     String title,
     String content,
-    int day,
     List<TempAddress> addresses,
     Set<Transportation> transportationSet,
     List<TravelPhotoCreateReq> travelPhotoCreateReqs
@@ -26,7 +25,6 @@ public record SubTravelogueUpdateReq(
         return new SubTravelogueUpdate(
             title.isBlank() ? DefaultValue.STRING.getValue() : title,
             content.isBlank() ? DefaultValue.STRING.getValue() : content,
-            day,
             toAddresses(),
             transportationSet,
             toTravelPhotos()
