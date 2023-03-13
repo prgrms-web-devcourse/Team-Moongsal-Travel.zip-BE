@@ -23,7 +23,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Redis 설치
+      - name: Redis create
         uses: shogo82148/actions-setup-redis@v1
         with:
           redis-version: '6.x'

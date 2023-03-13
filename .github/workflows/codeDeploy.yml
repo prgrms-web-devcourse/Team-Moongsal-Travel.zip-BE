@@ -17,6 +17,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Redis create
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '6.x'
+          run: redis-cli ping
+
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
         with:
