@@ -23,6 +23,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Start Redis v${{ matrix.redis-version }}
+        uses: superchargejs/redis-github-action@1.1.0
+        with:
+          redis-version: ${{ matrix.redis-version }}
+
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
         with:
