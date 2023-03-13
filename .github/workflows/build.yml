@@ -15,6 +15,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      # Label used to access the service container
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -23,10 +35,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Start Redis v${{ matrix.redis-version }}
-        uses: superchargejs/redis-github-action@1.1.0
-        with:
-          redis-version: ${{ matrix.redis-version }}
+      - name: Connect to Redis
+        # Runs a script that creates a Redis client, populates
+        # the client with data, and retrieves data
+        run: node client.js
+        # Environment variable used by the `client.js` script to create a new Redis client.
+        env:
+          # The hostname used to communicate with the Redis service container
+          REDIS_HOST: redis
+          # The default Redis port
+          REDIS_PORT: 6379
 
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
