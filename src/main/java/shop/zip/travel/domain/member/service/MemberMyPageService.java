@@ -1,6 +1,7 @@
 package shop.zip.travel.domain.member.service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
@@ -21,8 +22,10 @@ public class MemberMyPageService {
   private final MemberRepository memberRepository;
   private final BookmarkRepository bookmarkRepository;
 
-  public MemberMyPageService(MemberRepository memberRepository,
-      BookmarkRepository bookmarkRepository) {
+  public MemberMyPageService(
+      MemberRepository memberRepository,
+      BookmarkRepository bookmarkRepository
+  ) {
     this.memberRepository = memberRepository;
     this.bookmarkRepository = bookmarkRepository;
   }
@@ -34,8 +37,7 @@ public class MemberMyPageService {
   @Transactional
   public MemberInfoRes updateMemberProfile(Long memberId, MemberUpdateReq memberUpdateReq) {
     Member member = getMember(memberId);
-    member.updateProfileImageUrl(memberUpdateReq.profileImageUrl());
-    member.updateNickname(memberUpdateReq.nickname());
+    member.update(memberUpdateReq.nickname(), memberUpdateReq.profileImageUrl());
 
     return MemberInfoRes.toDto(memberRepository.save(member));
   }
@@ -45,11 +47,15 @@ public class MemberMyPageService {
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
-  public TravelogueCustomSlice<TravelogueSimpleRes> getMyBookmarkedList(Long memberId,
-      Pageable pageable) {
-    return TravelogueCustomSlice.toDto(bookmarkRepository.getBookmarkedList(memberId, pageable));
-  }
+  public TravelogueCustomSlice<TravelogueSimpleRes> getMyBookmarkedList(
+      Long memberId,
+      Pageable pageable
+  ) {
+    Slice<TravelogueSimpleRes> bookmarkedList =
+        bookmarkRepository.getBookmarkedList(memberId, pageable);
 
+    return TravelogueCustomSlice.toDto(bookmarkedList);
+  }
 
 }
 

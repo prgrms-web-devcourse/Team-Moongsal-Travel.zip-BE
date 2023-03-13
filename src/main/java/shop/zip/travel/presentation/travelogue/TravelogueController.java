@@ -25,7 +25,6 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
 import shop.zip.travel.domain.post.util.CookieUtil;
-import shop.zip.travel.domain.suggestion.service.SuggestionService;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
@@ -37,8 +36,10 @@ public class TravelogueController {
   private final TravelogueService travelogueService;
   private final TraveloguePublishService traveloguePublishService;
 
-  public TravelogueController(TravelogueService travelogueService,
-      TraveloguePublishService traveloguePublishService) {
+  public TravelogueController(
+      TravelogueService travelogueService,
+      TraveloguePublishService traveloguePublishService
+  ) {
     this.travelogueService = travelogueService;
     this.traveloguePublishService = traveloguePublishService;
   }
@@ -62,7 +63,11 @@ public class TravelogueController {
   ) {
     boolean canAddViewCount = CookieUtil.canAddViewCount(request, response, travelogueId);
     TravelogueDetailRes travelogueDetail =
-        travelogueService.getTravelogueDetail(travelogueId, canAddViewCount, userPrincipal.getUserId());
+        travelogueService.getTravelogueDetail(
+            travelogueId,
+            canAddViewCount,
+            userPrincipal.getUserId()
+        );
 
     return ResponseEntity.ok(travelogueDetail);
   }
@@ -89,7 +94,7 @@ public class TravelogueController {
 
   @GetMapping("/search")
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> search(
-      @RequestParam(name = "keyword", required = false) String keyword,
+      @RequestParam(name = "keyword") String keyword,
       @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
@@ -104,8 +109,10 @@ public class TravelogueController {
       @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
       TravelogueSearchFilter searchFilter
   ) {
-    TravelogueCustomSlice<TravelogueSimpleRes> filtered = travelogueService.filtering(keyword,
-        pageable, searchFilter);
+    TravelogueCustomSlice<TravelogueSimpleRes> filtered =
+        travelogueService.filtering(keyword, pageable, searchFilter);
+
     return ResponseEntity.ok(filtered);
   }
+
 }
