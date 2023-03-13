@@ -402,4 +402,18 @@ include::{snippets}/scrap/delete-one-scrap/path-parameters.adoc[]
 === Response
 include::{snippets}/scrap/delete-one-scrap/http-response.adoc[]
 
+== 추천
+
+=== Request
+include::{snippets}/suggestion/http-request.adoc[]
+
+=== Path Parameter
+include::{snippets}/suggestion/query-parameters.adoc[]
+
+=== Response
+include::{snippets}/suggestion/http-response.adoc[]
+
+=== Response
+include::{snippets}/suggestion/response-body.adoc[]
+
 
