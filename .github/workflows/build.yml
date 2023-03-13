@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - develop
+      - main
 
   pull_request:
     branches:
@@ -63,4 +64,4 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test -Pprofile=dev
+        run: ./gradlew clean build -Pprofile=dev

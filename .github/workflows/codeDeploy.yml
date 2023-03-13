@@ -46,7 +46,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test -Pprofile=prod
+        run: ./gradlew clean build -Pprofile=prod
 
       - name: Make zip file
         run: zip -r ./travel.zip .
