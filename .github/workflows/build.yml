@@ -1,13 +1,10 @@
-name: develop Build
+name: build
 
 on:
-  push:
-    branches:
-      - develop
-
   pull_request:
     branches:
       - develop
+      - main
 
 jobs:
   build:
