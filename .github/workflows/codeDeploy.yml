@@ -22,6 +22,7 @@ jobs:
         with:
           image_version: latest
           port: 27017
+
       - name: Install mongosh command
         run: |
           sudo apt-get update
@@ -30,6 +31,7 @@ jobs:
           echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
           sudo apt-get update
           sudo apt-get install -y mongodb-mongosh
+
       - name: Test mongo connection
         run: "sudo mongosh localhost:27017"
 
