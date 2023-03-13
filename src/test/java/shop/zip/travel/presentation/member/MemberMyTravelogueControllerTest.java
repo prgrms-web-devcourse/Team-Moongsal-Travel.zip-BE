@@ -203,9 +203,8 @@ class MemberMyTravelogueControllerTest {
             responseFields(
                 fieldWithPath("title").type(JsonFieldType.STRING)
                     .description("Travelogue 제목"),
-                fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작일"),
-                fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료일"),
-                fieldWithPath("period.nights").type(JsonFieldType.NUMBER).description("숙박일"),
+                fieldWithPath("period.startDate").type(JsonFieldType.STRING).description("여행 시작일"),
+                fieldWithPath("period.endDate").type(JsonFieldType.STRING).description("여행 종료일"),
                 fieldWithPath("country.name").type(JsonFieldType.STRING).description("방문한 나라"),
                 fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER).description("교통비"),
                 fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박비"),
