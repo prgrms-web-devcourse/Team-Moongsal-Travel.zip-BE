@@ -403,4 +403,3 @@ include::{snippets}/scrap/delete-one-scrap/path-parameters.adoc[]
 include::{snippets}/scrap/delete-one-scrap/http-response.adoc[]
 
 
-
