@@ -1,7 +1,6 @@
-name: develop Build
+name: build
 
 on:
-
   pull_request:
     branches:
       - develop
