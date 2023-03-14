@@ -71,7 +71,7 @@ public class MemberService {
   public MemberSigninRes login(MemberSigninReq memberSigninReq) {
     Member member = findMemberByEmail(memberSigninReq.email());
 
-    if (isPasswordMatched(memberSigninReq, member)) {
+    if (member.matchPassword(passwordEncoder, memberSigninReq.password())) {
       throw new PasswordNotMatchException(ErrorCode.PASSWORD_NOT_MATCH);
     }
 
@@ -108,10 +108,6 @@ public class MemberService {
   public Member getMember(Long id) {
     return memberRepository.findById(id)
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
-  }
-
-  private boolean isPasswordMatched(MemberSigninReq memberSigninReq, Member member) {
-    return passwordEncoder.matches(member.getPassword(), memberSigninReq.password());
   }
 
   private Member findMemberByEmail(String email) {
