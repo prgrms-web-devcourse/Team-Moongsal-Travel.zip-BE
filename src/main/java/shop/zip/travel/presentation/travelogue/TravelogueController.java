@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,6 +33,7 @@ import shop.zip.travel.global.security.UserPrincipal;
 public class TravelogueController {
 
   private static final int DEFAULT_SIZE = 5;
+  private static final String DEFAULT_SORT_FIELD = "createDate";
 
   private final TravelogueService travelogueService;
   private final TraveloguePublishService traveloguePublishService;
@@ -74,7 +76,7 @@ public class TravelogueController {
 
   @GetMapping
   public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getAll(
-      @PageableDefault(size = DEFAULT_SIZE) Pageable pageable
+      @PageableDefault(size = DEFAULT_SIZE, sort = DEFAULT_SORT_FIELD, direction = Direction.DESC) Pageable pageable
   ) {
     TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleRes =
         travelogueService.getTravelogues(pageable);
