@@ -20,9 +20,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
-import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.TempTravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.res.TempTravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 
@@ -42,9 +42,9 @@ class TravelogueMyTempServiceTest {
     Member member = DummyGenerator.createMember();
     Travelogue travelogue = DummyGenerator.createTravelogue(member);
 
-    List<TravelogueSimple> travelogues = List.of(
-        DummyGenerator.createTravelogueSimple(travelogue),
-        DummyGenerator.createTravelogueSimple(travelogue)
+    List<TempTravelogueSimple> travelogues = List.of(
+        DummyGenerator.createTempTravelogueSimple(travelogue),
+        DummyGenerator.createTempTravelogueSimple(travelogue)
     );
 
     PageRequest pageRequest = PageRequest.of(
@@ -53,7 +53,7 @@ class TravelogueMyTempServiceTest {
         Sort.by(Direction.DESC, "createDate")
     );
 
-    Slice<TravelogueSimple> actual = new SliceImpl<>(
+    Slice<TempTravelogueSimple> actual = new SliceImpl<>(
         travelogues,
         pageRequest,
         pageRequest.next().isPaged()
@@ -65,7 +65,7 @@ class TravelogueMyTempServiceTest {
 
     // when
     Long memberId = 1L;
-    TravelogueCustomSlice<TravelogueSimpleRes> result =
+    TravelogueCustomSlice<TempTravelogueSimpleRes> result =
         travelogueTempService.getMyTempTravelogues(memberId, pageRequest);
 
     // then
