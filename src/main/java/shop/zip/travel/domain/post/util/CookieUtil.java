@@ -34,5 +34,4 @@ public class CookieUtil {
     }
     return !cookie.getValue().equals(String.valueOf(travelogueId));
   }
-
 }
