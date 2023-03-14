@@ -19,6 +19,7 @@ import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
+import shop.zip.travel.domain.post.travelogue.dto.TempTravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -187,6 +188,21 @@ public class DummyGenerator {
         travelogue.getMember().getNickname(),
         travelogue.getMember().getProfileImageUrl(),
         256L
+    );
+  }
+
+  public static TempTravelogueSimple createTempTravelogueSimple(Travelogue travelogue) {
+    return new TempTravelogueSimple(
+        travelogue.getId(),
+        travelogue.getTitle(),
+        travelogue.getPeriod(),
+        travelogue.getCost().getTotal(),
+        travelogue.getCountry().getName(),
+        travelogue.getThumbnail(),
+        travelogue.getMember().getNickname(),
+        travelogue.getMember().getProfileImageUrl(),
+        256L,
+        travelogue.getSubTravelogues()
     );
   }
 
