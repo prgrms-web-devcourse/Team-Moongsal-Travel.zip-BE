@@ -1,5 +1,5 @@
 # Team-Moongsal-Travel.zip-BE
-![travelzip 메인 이미지](https://user-images.githubusercontent.com/43260658/224620248-40be6a8f-c35d-4091-8623-b6111ef6b652.png)
+![KakaoTalk_Photo_2023-03-14-23-10-09](https://user-images.githubusercontent.com/86584887/225027850-6837caad-cb6f-4802-8f9b-cc5a89fe93db.png)
 
 
 ### <div align="center">"내가 가진 여행 기억의 모음집" ✈️</div>
