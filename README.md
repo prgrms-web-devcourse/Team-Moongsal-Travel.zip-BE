@@ -26,7 +26,8 @@
 </div>
 
 ## ⚙️ Infrastructure
-![Travelzip-infrastructure drawio](https://user-images.githubusercontent.com/43260658/224739245-a8352b1d-587a-4a1f-b40f-afec439c2839.svg)
+![Travelzip-infrastructure drawio (2)](https://user-images.githubusercontent.com/43260658/224867922-1ca9597e-2c97-4968-9e35-c8239e84540c.svg)
+
 
 ## 🔀 CI/CD
 ![CI_CD](https://user-images.githubusercontent.com/43260658/224636634-0626fb73-fd6d-429a-a9ce-16f102d82930.svg)
