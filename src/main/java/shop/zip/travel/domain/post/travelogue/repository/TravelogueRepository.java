@@ -23,7 +23,7 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
       + "left join Like l "
       + "on l.travelogue.id = t.id "
       + "where t.isPublished = :isPublished "
-      + "group by t.id")
+      + "group by t.id ")
   Slice<TravelogueSimple> findAllBySlice(
       @Param("pageable") Pageable pageable,
       @Param("isPublished") boolean isPublished);
