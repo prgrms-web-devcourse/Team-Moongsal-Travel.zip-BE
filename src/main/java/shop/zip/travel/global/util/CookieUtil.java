@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.util;
+package shop.zip.travel.global.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

@@ -24,7 +24,7 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TraveloguePublishRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
-import shop.zip.travel.domain.post.util.CookieUtil;
+import shop.zip.travel.global.util.CookieUtil;
 import shop.zip.travel.global.security.UserPrincipal;
 
 @RestController
