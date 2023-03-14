@@ -8,6 +8,7 @@ import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 
 public record SubTravelogueDetailRes(
+    Long subTravelogueId,
     String title,
     String content,
     int day,
@@ -18,6 +19,7 @@ public record SubTravelogueDetailRes(
 
     public static SubTravelogueDetailRes toDto(SubTravelogue subTravelogue) {
         return new SubTravelogueDetailRes(
+            subTravelogue.getId(),
             subTravelogue.getTitle(),
             subTravelogue.getContent(),
             subTravelogue.getDay(),
