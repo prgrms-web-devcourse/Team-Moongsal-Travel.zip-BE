@@ -50,6 +50,7 @@ public class TravelogueService {
   }
 
   public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Pageable pageable) {
+
     Slice<TravelogueSimple> travelogues =
         travelogueRepository.findAllBySlice(pageable, PUBLISH);
 
