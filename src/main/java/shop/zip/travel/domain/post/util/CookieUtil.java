@@ -8,8 +8,8 @@ import org.springframework.web.util.WebUtils;
 
 public class CookieUtil {
 
-  public static final String VIEW_COUNT = "viewCountCookie_";
-  public static final int DAY = 60 * 60 * 24;
+  private static final String VIEW_COUNT = "viewCountCookie_";
+  private static final int DAY = 60 * 60 * 24;
 
   private CookieUtil() {
   }
@@ -26,7 +26,6 @@ public class CookieUtil {
   }
 
   private static boolean hasNotViewCountCookie(HttpServletRequest request, Long travelogueId) {
-
     Cookie cookie = WebUtils.getCookie(request, VIEW_COUNT + travelogueId);
 
     if (Objects.isNull(cookie)) {
