@@ -1,7 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Objects;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,6 @@ import shop.zip.travel.global.error.ErrorCode;
 @Transactional(readOnly = true)
 public class TravelogueService {
 
-  private final Logger log = LoggerFactory.getLogger(TravelogueService.class);
-
   private static final boolean PUBLISH = true;
 
   private final TravelogueRepository travelogueRepository;
@@ -53,6 +50,7 @@ public class TravelogueService {
   }
 
   public TravelogueCustomSlice<TravelogueSimpleRes> getTravelogues(Pageable pageable) {
+
     Slice<TravelogueSimple> travelogues =
         travelogueRepository.findAllBySlice(pageable, PUBLISH);
 
@@ -85,8 +83,9 @@ public class TravelogueService {
     Suggestion suggestion = new Suggestion(travelogue, memberId);
     suggestionRepository.save(suggestion);
 
+    boolean isWriter = isWriter(travelogue.getMember(), memberId);
 
-    return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked);
+    return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked, isWriter);
   }
 
   private void setViewCount(Long travelogueId, boolean canAddViewCount) {
@@ -100,5 +99,9 @@ public class TravelogueService {
       TravelogueSearchFilter searchFilter) {
     return TravelogueCustomSlice.toDto(
         travelogueRepository.filtering(keyword, pageable, searchFilter));
+  }
+
+  private boolean isWriter(Member writer, Long requestMemberId) {
+    return Objects.equals(writer.getId(), requestMemberId);
   }
 }

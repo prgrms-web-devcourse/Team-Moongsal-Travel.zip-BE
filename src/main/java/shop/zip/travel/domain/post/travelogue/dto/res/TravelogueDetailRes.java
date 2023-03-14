@@ -24,11 +24,17 @@ public record TravelogueDetailRes(
     Long countLikes,
     boolean isLiked,
     Long viewCount,
-    Boolean bookmarked
+    Boolean bookmarked,
+    boolean isWriter
 ) {
 
-  public static TravelogueDetailRes toDto(Travelogue travelogue, Long countLikes, Boolean isLiked,  Boolean isBookmarked) {
-
+  public static TravelogueDetailRes toDto(
+      Travelogue travelogue,
+      Long countLikes,
+      Boolean isLiked,
+      Boolean isBookmarked,
+      boolean isWriter
+  ) {
     return new TravelogueDetailRes(
         travelogue.getMember().getProfileImageUrl(),
         travelogue.getMember().getNickname(),
@@ -51,7 +57,8 @@ public record TravelogueDetailRes(
         countLikes,
         isLiked,
         travelogue.getViewCount(),
-        isBookmarked
+        isBookmarked,
+        isWriter
     );
 
   }
