@@ -157,7 +157,7 @@ class TravelogueServiceTest {
         true,
         memberId);
     TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue, countLikes,
-        isLiked, isBookmarked);
+        isLiked, isBookmarked, false);
 
     assertThat(actualTravelogueDetail).isEqualTo(expectedTravelogueDetail);
   }
