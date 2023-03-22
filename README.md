@@ -3,8 +3,8 @@
 
 
 ### <div align="center">"내가 가진 여행 기억의 모음집" ✈️</div>
-### <div align="center">[<img src="https://img.shields.io/badge/realease-v0.0.1-4285F4?style=flat-square&logo=Google Chrome&logoColor=white">](https://travel-zip.vercel.app/)</div>
-
+<!-- ### <div align="center">[<img src="https://img.shields.io/badge/realease-v0.0.1-4285F4?style=flat-square&logo=Google Chrome&logoColor=white">](https://travel-zip.vercel.app/)</div> -->
+### <div align="center">[✈️ Travel.zip](https://travel-zip.vercel.app)</div>
 
 
 
