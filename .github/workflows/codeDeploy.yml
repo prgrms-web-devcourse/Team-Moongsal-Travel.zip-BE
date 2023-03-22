@@ -17,11 +17,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Redis create
+        uses: shogo82148/actions-setup-redis@v1
+        with:
+          redis-version: '6.x'
+          run: redis-cli ping
+
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
         with:
           image_version: latest
           port: 27017
+
       - name: Install mongosh command
         run: |
           sudo apt-get update
@@ -30,6 +37,7 @@ jobs:
           echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
           sudo apt-get update
           sudo apt-get install -y mongodb-mongosh
+
       - name: Test mongo connection
         run: "sudo mongosh localhost:27017"
 
@@ -46,7 +54,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build --exclude-task test -Pprofile=prod
+        run: ./gradlew clean build -Pprofile=prod
 
       - name: Make zip file
         run: zip -r ./travel.zip .
