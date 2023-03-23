@@ -42,6 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
       response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+      response.addHeader("Access-Control-Allow-Origin", "https://travel-zip.vercel.app");
       response.setCharacterEncoding("UTF-8");
       objectMapper.writeValue(response.getWriter(),
           new ErrorResponse(e.getErrorCode().getMessage()));
