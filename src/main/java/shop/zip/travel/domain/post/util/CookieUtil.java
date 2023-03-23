@@ -20,6 +20,7 @@ public class CookieUtil {
       Cookie cookie = new Cookie(VIEW_COUNT + travelogueId, String.valueOf(travelogueId));
       cookie.setMaxAge(DAY);
       response.addCookie(cookie);
+      response.addHeader("Set-Cookie", cookie.toString());
       return true;
     }
     return false;
