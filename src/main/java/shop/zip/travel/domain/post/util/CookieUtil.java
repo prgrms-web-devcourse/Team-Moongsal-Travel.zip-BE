@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Objects;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.util.WebUtils;
 
 public class CookieUtil {
@@ -17,9 +18,13 @@ public class CookieUtil {
   public static boolean canAddViewCount(HttpServletRequest request, HttpServletResponse response,
       Long travelogueId) {
     if (hasNotViewCountCookie(request, travelogueId)) {
-      Cookie cookie = new Cookie(VIEW_COUNT + travelogueId, String.valueOf(travelogueId));
-      cookie.setMaxAge(DAY);
-      response.addCookie(cookie);
+      ResponseCookie cookie = ResponseCookie.from(VIEW_COUNT + travelogueId, String.valueOf(travelogueId))
+          .path("/")
+          .maxAge(DAY)
+          .secure(true)
+          .sameSite("None")
+          .build();
+
       response.addHeader("Set-Cookie", cookie.toString());
       return true;
     }
