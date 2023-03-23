@@ -44,7 +44,7 @@ public class SecurityConfig {
         .requestMatchers("/api/members/login")
         .requestMatchers("/api/members/signup")
         .requestMatchers("/api/members/valid/**")
-        .requestMatchers("/api/member/refresh")
+        .requestMatchers("/api/members/refresh")
         .requestMatchers("/api/emails/**")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
