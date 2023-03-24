@@ -13,7 +13,6 @@ import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
-import shop.zip.travel.domain.member.exception.NotVerifiedAuthorizationCodeException;
 import shop.zip.travel.domain.member.exception.PasswordNotMatchException;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.error.ErrorCode;
@@ -56,14 +55,6 @@ public class MemberService {
   public void validateDuplicatedNickname(String nickname) {
     if (memberRepository.existsByNickname(nickname)) {
       throw new DuplicatedEmailException(ErrorCode.DUPLICATED_NICKNAME);
-    }
-  }
-
-  public void verifyCode(String email, String code) {
-    if (redisUtil.getData(email) != null && redisUtil.getData(email).equals(code)) {
-      redisUtil.deleteData(email);
-    } else {
-      throw new NotVerifiedAuthorizationCodeException(ErrorCode.NOT_VERIFIED_CODE);
     }
   }
 

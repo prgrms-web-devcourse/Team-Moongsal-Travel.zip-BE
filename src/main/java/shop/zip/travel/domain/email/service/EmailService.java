@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Random;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import shop.zip.travel.domain.email.exception.NotValidatedVerificationCodeException;
 import shop.zip.travel.domain.email.exception.SendEmailException;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.util.RedisUtil;
@@ -18,15 +19,15 @@ public class EmailService {
   private final JavaMailSender javaMailSender;
   private final RedisUtil redisUtil;
 
-  private static String messages = """
+  private final String messages = """
       메일 주소 확인
       아래 확인 코드를 회원가입 화면에서 입력해주세요 
-      
+
       """;
   private final String ADDRESS = "travelzip@naver.com";
-  private final long DURATION = 3L;
+  private final long EXPIRED_DURATION = 3L;
   private final int CODE_LENGTH = 6;
-  private static Random random = new Random();
+  private final Random random = new Random();
 
   public EmailService(JavaMailSender javaMailSender, RedisUtil redisUtil) {
     this.javaMailSender = javaMailSender;
@@ -55,8 +56,16 @@ public class EmailService {
   public void sendMail(String toEmail) {
     String code = createVerificationCode();
     MimeMessage message = createMail(toEmail, code);
-    redisUtil.setDataWithExpire(toEmail, code, DURATION);
+    redisUtil.setDataWithExpire(toEmail, code, EXPIRED_DURATION);
     javaMailSender.send(message);
+  }
+
+  public void validateVerificationCode(String email, String verificationCode) {
+    if (redisUtil.getData(email) != null && redisUtil.getData(email).equals(verificationCode)) {
+      redisUtil.deleteData(email);
+    } else {
+      throw new NotValidatedVerificationCodeException(ErrorCode.NOT_VALIDATED_VERIFICATION_CODE);
+    }
   }
 
   private String createVerificationCode() {
