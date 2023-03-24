@@ -164,8 +164,12 @@ class MemberMyTravelogueControllerTest {
                     .description("작성자 닉네임"),
                 fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
                     .description("작성자 프로필 이미지 URL"),
+                fieldWithPath("content[].member.profileImageUrl").type(JsonFieldType.STRING)
+                    .description("작성자 프로필 이미지 URL"),
                 fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER)
-                    .description("게시글 좋아요 수"),
+                    .description("좋아요 수"),
+                fieldWithPath("content[].subTravelogueId[]").type(JsonFieldType.ARRAY)
+                    .description("Travelogue 가 가진 subTravelogue Id 리스트"),
                 fieldWithPath("pageable.sort.empty").description("데이터가 비어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.sorted").description("데이터가 정렬되어있는지에 대한 여부"),
                 fieldWithPath("pageable.sort.unsorted").description("데이터가 정렬되어 있지 않은지에 대한 여부"),
@@ -239,6 +243,8 @@ class MemberMyTravelogueControllerTest {
                 parameterWithName("subTravelogueId").description("subTravelogue pk 값")
             ),
             responseFields(
+                fieldWithPath("subTravelogueId").type(JsonFieldType.NUMBER)
+                    .description("SubTravelogue PK 값"),
                 fieldWithPath("title").type(JsonFieldType.STRING)
                     .description("SubTravelogue 제목"),
                 fieldWithPath("content").type(JsonFieldType.STRING).description("subTravelogue 내용"),

@@ -4,9 +4,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.TempTravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.res.TempTravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 
 @Service
@@ -22,13 +22,13 @@ public class TravelogueMyTempService {
     this.travelogueRepository = travelogueRepository;
   }
 
-  public TravelogueCustomSlice<TravelogueSimpleRes> getMyTempTravelogues(Long memberId,
+  public TravelogueCustomSlice<TempTravelogueSimpleRes> getMyTempTravelogues(Long memberId,
       Pageable pageable) {
-    Slice<TravelogueSimple> travelogues =
+    Slice<TempTravelogueSimple> travelogues =
         travelogueRepository.getMyTempTravelogues(memberId, pageable, TEMP);
 
     return TravelogueCustomSlice.toDto(
-        travelogues.map(TravelogueSimpleRes::toDto)
+        travelogues.map(TempTravelogueSimpleRes::toDto)
     );
   }
 }

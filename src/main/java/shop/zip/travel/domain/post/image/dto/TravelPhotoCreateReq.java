@@ -15,7 +15,7 @@ public record TravelPhotoCreateReq(
 
     public static TravelPhotoCreateReq toDto(TravelPhoto travelPhoto) {
         return new TravelPhotoCreateReq(
-            travelPhoto.getUrl()
+            DefaultValue.STRING.isEqual(travelPhoto.getUrl()) ? "" : travelPhoto.getUrl()
         );
     }
 }

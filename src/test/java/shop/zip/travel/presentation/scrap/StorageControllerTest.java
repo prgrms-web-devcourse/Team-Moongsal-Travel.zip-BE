@@ -64,7 +64,7 @@ class StorageControllerTest {
 
   @BeforeEach
   void setup() {
-    member = new Member("user@gamil.com", "qwe123!@#", "One", "1996");
+    member = new Member("user1@gamil.com", "qwe123!@#", "Ones", "1996");
     memberRepository.save(member);
     accessToken = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 

@@ -16,6 +16,7 @@ import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueUpdateRes;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
+import shop.zip.travel.domain.post.travelogue.dto.res.TempTravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailForUpdateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -50,10 +51,10 @@ public class MemberMyTravelogueController {
   }
 
   @GetMapping("/temp")
-  public ResponseEntity<TravelogueCustomSlice<TravelogueSimpleRes>> getTempAll(
+  public ResponseEntity<TravelogueCustomSlice<TempTravelogueSimpleRes>> getTempAll(
       @PageableDefault(size = DEFAULT_SIZE) Pageable pageable,
       @AuthenticationPrincipal UserPrincipal userPrincipal) {
-    TravelogueCustomSlice<TravelogueSimpleRes> travelogueSimpleResList =
+    TravelogueCustomSlice<TempTravelogueSimpleRes> travelogueSimpleResList =
         travelogueTempService.getMyTempTravelogues(userPrincipal.getUserId(), pageable);
 
     return ResponseEntity.ok(travelogueSimpleResList);

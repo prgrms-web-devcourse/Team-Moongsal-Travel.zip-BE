@@ -41,6 +41,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     } catch (BusinessException e) {
       response.setStatus(HttpStatus.UNAUTHORIZED.value());
       response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+      response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
       response.setCharacterEncoding("UTF-8");
       objectMapper.writeValue(response.getWriter(),
           new ErrorResponse(e.getErrorCode().getMessage()));

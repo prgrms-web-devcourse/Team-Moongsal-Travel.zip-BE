@@ -19,6 +19,7 @@ import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
+import shop.zip.travel.domain.post.travelogue.dto.TempTravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
@@ -276,5 +277,9 @@ public class DummyGenerator {
 
   public static SubTravelogue createFakeSubTravelogue(Long id, int day) {
     return new FakeSubTravelogue(id, createSubTravelogue(day));
+  }
+
+  public static TempTravelogueSimple createTempTravelogueSimple(Travelogue travelogue) {
+    return new TempTravelogueSimple(travelogue, 256L);
   }
 }
