@@ -4,6 +4,8 @@ import java.time.Duration;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import shop.zip.travel.global.error.ErrorCode;
+import shop.zip.travel.global.error.exception.NotMatchingValueForKey;
 
 @Service
 public class RedisUtil {
@@ -16,6 +18,9 @@ public class RedisUtil {
 
   public String getData(String key) {
     ValueOperations<String, String> valueOperations = stringRedisTemplate.opsForValue();
+    if (valueOperations.get(key) == null) {
+      throw new NotMatchingValueForKey(ErrorCode.NOT_MATCHING_VALUE_FOR_KEY);
+    }
     return valueOperations.get(key);
   }
 

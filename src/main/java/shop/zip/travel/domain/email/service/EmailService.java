@@ -61,11 +61,10 @@ public class EmailService {
   }
 
   public void validateVerificationCode(String email, String verificationCode) {
-    if (redisUtil.getData(email) != null && redisUtil.getData(email).equals(verificationCode)) {
-      redisUtil.deleteData(email);
-    } else {
+    if (!redisUtil.getData(email).equals(verificationCode)) {
       throw new NotValidatedVerificationCodeException(ErrorCode.NOT_VALIDATED_VERIFICATION_CODE);
     }
+    redisUtil.deleteData(email);
   }
 
   private String createVerificationCode() {

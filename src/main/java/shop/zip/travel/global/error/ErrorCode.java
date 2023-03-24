@@ -14,6 +14,9 @@ public enum ErrorCode {
 	TOKEN_EXCEPTION(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 	NOT_LOGGED_IN(HttpStatus.UNAUTHORIZED, "로그인후 이용이 가능합니다"),
 
+	// redis
+	NOT_MATCHING_VALUE_FOR_KEY(HttpStatus.BAD_REQUEST,"해당 key 에 해당하는 값이 없습니다"),
+
 	// email
 	NOT_SEND_EMAIL(HttpStatus.NOT_ACCEPTABLE,"email 발송에 실패 했습니다."),
 	NOT_VALIDATED_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "잘못된 인증 코드입니다"),

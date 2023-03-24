@@ -1,13 +1,11 @@
 package shop.zip.travel.presentation.member;
 
 import jakarta.validation.Valid;
-import javax.swing.table.TableRowSorter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import shop.zip.travel.domain.email.dto.request.CodeValidateReq;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
 import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
 import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
@@ -32,14 +30,6 @@ public class MemberController {
       @RequestBody @Valid MemberSignupReq memberSignupReq
   ) {
     memberService.createMember(memberSignupReq);
-    return ResponseEntity.ok().build();
-  }
-
-  @PostMapping("/valid/code")
-  public ResponseEntity<Void> validateVerificationCode(
-      @RequestBody @Valid CodeValidateReq codeValidateReq
-  ) {
-    memberService.verifyCode(codeValidateReq.email(), codeValidateReq.code());
     return ResponseEntity.ok().build();
   }
 
