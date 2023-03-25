@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -35,6 +36,10 @@ import shop.zip.travel.domain.post.travelogue.repository.querydsl.TravelogueRepo
 public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implements
     TravelogueRepositoryQuerydsl {
 
+  private static final int SPARE_PAGE = 1;
+  private static final int SPARE_DAY = 1;
+  private static final String POPULAR = "popular";
+
   private final JPAQueryFactory jpaQueryFactory;
 
   public TravelogueRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
@@ -44,8 +49,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
 
   @Override
   public Slice<TravelogueSimpleRes> search(String keyword, Pageable pageable) {
-    List<Long> subTravelogueIds = getSubTravelogueIds(keyword, pageable);
-    List<Long> travelogueIds = getTravelogueIds(keyword, pageable, subTravelogueIds);
+    List<Long> subTravelogueIds = getSubTravelogueIds(keyword);
+    List<Long> travelogueIds = getTravelogueIds(keyword, subTravelogueIds);
 
     if (travelogueIds.isEmpty()) {
       return new SliceImpl<>(Collections.emptyList());
@@ -67,9 +72,9 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
             )
         )
         .from(travelogue)
-        .where(travelogue.id.in(travelogueIds).and(travelogue.isPublished.isTrue()))
+        .where(travelogue.id.in(travelogueIds).and(publishedIsTrue()))
         .offset(pageable.getOffset())
-        .limit(pageable.getPageSize() + 1)
+        .limit(pageable.getPageSize() + SPARE_PAGE)
         .leftJoin(travelogue.member, member)
         .leftJoin(like)
         .on(like.travelogue.id.eq(travelogue.id))
@@ -86,8 +91,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
   public Slice<TravelogueSimpleRes> filtering(String keyword, Pageable pageable,
       TravelogueSearchFilter searchFilter) {
 
-    List<Long> subTravelogueIds = getSubTravelogueIds(keyword, pageable);
-    List<Long> travelogueIds = getTravelogueIds(keyword, pageable, subTravelogueIds);
+    List<Long> subTravelogueIds = getSubTravelogueIds(keyword);
+    List<Long> travelogueIds = getTravelogueIds(keyword, subTravelogueIds);
 
     if (travelogueIds.isEmpty()) {
       return new SliceImpl<>(Collections.emptyList());
@@ -114,52 +119,100 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
             totalCostBetween(searchFilter.minCost(), searchFilter.maxCost()),
             travelogue.isPublished.isTrue()
         )
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize() + 1)
         .leftJoin(travelogue.member, member)
         .leftJoin(like)
         .on(like.travelogue.id.eq(travelogue.id))
         .orderBy(getOrder(pageable.getSort()), travelogue.createDate.desc())
         .groupBy(travelogue.id)
+        .offset(pageable.getOffset())
+        .limit(pageable.getPageSize() + SPARE_PAGE)
         .fetch();
 
     List<TravelogueSimple> results = new ArrayList<>();
     results.addAll(travelogueSimpleList);
 
     return checkLastPage(pageable, results);
-
   }
 
-  private List<Long> getTravelogueIds(String keyword, Pageable pageable,
-      List<Long> subTravelogueIds) {
+  private static BooleanExpression publishedIsTrue() {
+    return travelogue.isPublished.isTrue();
+  }
 
+  private List<Long> getTravelogueIds(String keyword, List<Long> subTravelogueIds) {
+    return Stream.concat(getTravelogueIds_containsSubTravelogues(subTravelogueIds).stream(),
+            Stream.concat(getTravelogueIds_searchCountryName(keyword).stream(),
+                getTravelogueIds_containsTitleName(keyword).stream()))
+        .distinct()
+        .toList();
+  }
+
+  private List<Long> getTravelogueIds_containsSubTravelogues(
+      List<Long> subTravelogueIds
+  ) {
     return jpaQueryFactory
         .select(travelogue.id)
         .from(travelogue)
-        .innerJoin(travelogue.subTravelogues, subTravelogue)
+        .leftJoin(travelogue.subTravelogues, subTravelogue)
         .where(
-            countryContains(keyword)
-                .or(titleContains(keyword))
-                .or(subTravelogue.id.in(subTravelogueIds))
+            publishedIsTrue(),
+            subTravelogue.id.in(subTravelogueIds)
         )
-        .offset(pageable.getOffset())
         .fetch();
   }
 
-  private List<Long> getSubTravelogueIds(String keyword, Pageable pageable) {
+  private List<Long> getTravelogueIds_containsTitleName(String keyword) {
+    return jpaQueryFactory
+        .select(travelogue.id)
+        .from(travelogue)
+        .where(
+            publishedIsTrue(),
+            titleContains(keyword)
+        )
+        .fetch();
+  }
+
+  private List<Long> getTravelogueIds_searchCountryName(
+      String keyword
+  ) {
+    return jpaQueryFactory
+        .select(travelogue.id)
+        .from(travelogue)
+        .where(
+            publishedIsTrue(),
+            countryContains(keyword)
+        )
+        .fetch();
+  }
+
+  private List<Long> getSubTravelogueIds(String keyword) {
+    return Stream.concat(getSubTravelogueIds_containsContent(keyword).stream(),
+            getSubTravelogueIds_containsSpot(keyword).stream())
+        .distinct()
+        .toList();
+  }
+
+  private List<Long> getSubTravelogueIds_containsSpot(String keyword) {
     return jpaQueryFactory
         .select(subTravelogue.id)
         .from(subTravelogue)
         .innerJoin(subTravelogue.addresses, address)
         .where(
             spotContains(keyword)
-                .or(contentContains(keyword))
-
         )
-        .offset(pageable.getOffset())
-        .limit(pageable.getPageSize() + 1)
         .fetch();
   }
+
+  private List<Long> getSubTravelogueIds_containsContent(String keyword) {
+    return jpaQueryFactory
+        .select(subTravelogue.id)
+        .from(subTravelogue)
+        .innerJoin(subTravelogue.addresses, address)
+        .where(
+            contentContains(keyword)
+        )
+        .fetch();
+  }
+
 
   private BooleanExpression titleContains(String keyword) {
     return hasText(keyword) ? travelogue.title.contains(keyword) : null;
@@ -182,24 +235,25 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
 
     if (!sort.isEmpty()) {
       for (Sort.Order order : sort) {
-        return switch (order.getProperty()) {
-          case "popular" -> like.count().desc();
-          default -> travelogue.createDate.desc();
-        };
+        return POPULAR.equals(order.getProperty()) ?
+            like.count().desc() : travelogue.createDate.desc();
       }
     }
+
     return travelogue.createDate.desc();
   }
 
   private NumberTemplate<Integer> getDays() {
-    return Expressions.numberTemplate(Integer.class, "DATEDIFF({0}, {1})",
+    return Expressions.numberTemplate(Integer.class, "datediff({0}, {1})",
         travelogue.period.endDate, travelogue.period.startDate);
   }
 
   private BooleanExpression TraveloguePeriodDaysBetween(Long minDays, Long maxDays) {
     if (Objects.nonNull(minDays) && Objects.nonNull(maxDays)) {
-      return getDays().goe(minDays - 1).and(getDays().loe(maxDays - 1));
+      return getDays().goe(minDays - SPARE_DAY)
+          .and(getDays().loe(maxDays - SPARE_DAY));
     }
+
     return null;
   }
 
@@ -215,6 +269,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     if (isAllNonNull(maximumCostLoe(maximum), lowestCostGoe(lowest))) {
       return maximumCostLoe(maximum).and(lowestCostGoe(lowest));
     }
+
     return null;
   }
 
@@ -257,5 +312,6 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .map(TravelogueSimpleRes::toDto)
         .toList(), pageable, hasNext);
   }
+
 }
 
