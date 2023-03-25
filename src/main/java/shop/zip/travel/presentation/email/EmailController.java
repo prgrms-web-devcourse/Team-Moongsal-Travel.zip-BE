@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.email.dto.request.EmailValidateReq;
 import shop.zip.travel.domain.email.service.EmailService;
-import shop.zip.travel.domain.member.service.MemberService;
 
 @RestController
 @RequestMapping("/api/emails")
