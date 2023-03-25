@@ -19,7 +19,7 @@ public class EmailService {
   private final JavaMailSender javaMailSender;
   private final RedisUtil redisUtil;
 
-  private final String messages = """
+  private final String MEESAGE = """
       메일 주소 확인
       아래 확인 코드를 회원가입 화면에서 입력해주세요 
 
@@ -34,26 +34,7 @@ public class EmailService {
     this.redisUtil = redisUtil;
   }
 
-  private MimeMessage createMail(String toAddress, String verificationCode) {
-
-    MimeMessage message = javaMailSender.createMimeMessage();
-
-    try {
-      message.addRecipients(RecipientType.TO, toAddress);
-      message.setSubject("Travel.zip 회원가입 인증 코드");
-
-      String msg = messages + verificationCode;
-
-      message.setText(msg, "utf-8", "plain");
-      message.setFrom(new InternetAddress(ADDRESS, "Travel.zip"));
-    } catch (MessagingException | UnsupportedEncodingException exception) {
-      throw new SendEmailException(ErrorCode.NOT_SEND_EMAIL);
-    }
-
-    return message;
-  }
-
-  public void sendMail(String toEmail) {
+  public void sendEmail(String toEmail) {
     String code = createVerificationCode();
     MimeMessage message = createMail(toEmail, code);
     redisUtil.setDataWithExpire(toEmail, code, EXPIRED_DURATION);
@@ -75,5 +56,24 @@ public class EmailService {
     }
 
     return code.toString();
+  }
+
+  private MimeMessage createMail(String toAddress, String verificationCode) {
+
+    MimeMessage message = javaMailSender.createMimeMessage();
+
+    try {
+      message.addRecipients(RecipientType.TO, toAddress);
+      message.setSubject("Travel.zip 회원가입 인증 코드");
+
+      String msg = MEESAGE + verificationCode;
+
+      message.setText(msg, "utf-8", "plain");
+      message.setFrom(new InternetAddress(ADDRESS, "Travel.zip"));
+    } catch (MessagingException | UnsupportedEncodingException exception) {
+      throw new SendEmailException(ErrorCode.NOT_SEND_EMAIL);
+    }
+
+    return message;
   }
 }
