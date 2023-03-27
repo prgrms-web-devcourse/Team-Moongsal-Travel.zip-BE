@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import java.time.LocalDate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.member.data.Role;
@@ -161,19 +160,4 @@ public class Member extends BaseTimeEntity {
     return this;
   }
 
-  public Role getRole() {
-    return role;
-  }
-
-  public String getProvider() {
-    return provider;
-  }
-
-  public String getProviderId() {
-    return providerId;
-  }
-
-  public boolean matchPassword(PasswordEncoder passwordEncoder, String password) {
-    return !passwordEncoder.matches(password, this.password);
-  }
 }
