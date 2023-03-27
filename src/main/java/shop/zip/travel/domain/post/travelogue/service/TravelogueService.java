@@ -72,10 +72,10 @@ public class TravelogueService {
   public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
       Long memberId) {
 
-    setViewCount(travelogueId, canAddViewCount);
+    updateViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
-    Boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
+    boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
 
     Travelogue travelogue = travelogueRepository.getTravelogueDetail(travelogueId)
         .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
@@ -88,10 +88,9 @@ public class TravelogueService {
     return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked, isWriter);
   }
 
-  private void setViewCount(Long travelogueId, boolean canAddViewCount) {
+  private void updateViewCount(Long travelogueId, boolean canAddViewCount) {
     if (canAddViewCount) {
-      Travelogue findTravelogue = getTravelogue(travelogueId);
-      findTravelogue.addViewCount();
+      travelogueRepository.updateViewCount(travelogueId);
     }
   }
 
