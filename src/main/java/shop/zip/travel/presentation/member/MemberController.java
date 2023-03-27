@@ -26,7 +26,7 @@ public class MemberController {
     this.memberService = memberService;
   }
 
-  @PostMapping("/signup")
+  @PostMapping("/register")
   public ResponseEntity<Void> signup(
       @RequestBody @Valid MemberSignupReq memberSignupReq
   ) {
