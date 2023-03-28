@@ -10,6 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import shop.zip.travel.domain.email.exception.NotValidatedVerificationCodeException;
 import shop.zip.travel.domain.email.exception.SendEmailException;
+import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
+import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.util.RedisUtil;
 
@@ -18,6 +20,7 @@ public class EmailService {
 
   private final JavaMailSender javaMailSender;
   private final RedisUtil redisUtil;
+  private final MemberRepository memberRepository;
 
   private final String MEESAGE = """
       메일 주소 확인
@@ -29,12 +32,15 @@ public class EmailService {
   private final int CODE_LENGTH = 6;
   private final Random random = new Random();
 
-  public EmailService(JavaMailSender javaMailSender, RedisUtil redisUtil) {
+  public EmailService(JavaMailSender javaMailSender, RedisUtil redisUtil,
+      MemberRepository memberRepository) {
     this.javaMailSender = javaMailSender;
     this.redisUtil = redisUtil;
+    this.memberRepository = memberRepository;
   }
 
   public void sendEmail(String toEmail) {
+    checkDuplicatedEmail(toEmail);
     String code = createVerificationCode();
     MimeMessage message = createMail(toEmail, code);
     redisUtil.setDataWithExpire(toEmail, code, EXPIRED_DURATION);
@@ -46,6 +52,12 @@ public class EmailService {
       throw new NotValidatedVerificationCodeException(ErrorCode.NOT_VALIDATED_VERIFICATION_CODE);
     }
     redisUtil.deleteData(email);
+  }
+
+  private void checkDuplicatedEmail(String email) {
+    if (memberRepository.existsByEmail(email)) {
+      throw new DuplicatedEmailException(ErrorCode.DUPLICATED_EMAIL);
+    }
   }
 
   private String createVerificationCode() {

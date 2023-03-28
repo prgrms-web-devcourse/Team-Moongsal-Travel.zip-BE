@@ -21,11 +21,11 @@ public class EmailController {
   }
 
   @PostMapping
-  public ResponseEntity<String> sendEmail(
+  public ResponseEntity<Void> sendEmail(
       @RequestBody @Valid EmailValidateReq emailValidateReq
   ) {
       emailService.sendEmail(emailValidateReq.email());
-    return ResponseEntity.ok().body("이메일 발송 성공");
+    return ResponseEntity.ok().build();
   }
 
   @PostMapping("/code")

@@ -10,7 +10,6 @@ import shop.zip.travel.domain.member.dto.request.MemberLoginReq;
 import shop.zip.travel.domain.member.dto.request.MemberRegisterReq;
 import shop.zip.travel.domain.member.dto.response.MemberLoginRes;
 import shop.zip.travel.domain.member.entity.Member;
-import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.exception.PasswordNotMatchException;
@@ -42,11 +41,7 @@ public class MemberService {
 
   @Transactional
   public void createMember(MemberRegisterReq memberRegisterReq) {
-//    validateDuplicatedEmail(memberRegisterReq.email());
-//    validateDuplicatedNickname(memberRegisterReq.nickname());
-
     Member member = toMember(memberRegisterReq, passwordEncoder);
-
     memberRepository.save(member);
   }
 
@@ -84,12 +79,6 @@ public class MemberService {
       return new MemberLoginRes(newAccessToken, newRefreshToken);
     } else {
       throw new InvalidRefreshTokenException(ErrorCode.INVALID_REFRESH_TOKEN);
-    }
-  }
-
-  public void validateDuplicatedEmail(String email) {
-    if (memberRepository.existsByEmail(email)) {
-      throw new DuplicatedEmailException(ErrorCode.DUPLICATED_EMAIL);
     }
   }
 
