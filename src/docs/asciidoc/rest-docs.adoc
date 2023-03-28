@@ -90,6 +90,17 @@ include::{snippets}/member/reissue/http-response.adoc[]
 === ResponseFields
 include::{snippets}/member/reissue/response-fields.adoc[]
 
+== 로그아웃
+
+=== Request
+include::{snippets}/member/logout/http-request.adoc[]
+
+=== Request Header
+include::{snippets}/member/logout/request-headers.adoc[]
+
+== Response
+include::{snippets}/member/logout/http-response.adoc[]
+
 = 마이페이지
 
 == 유저 프로필 조회
