@@ -82,6 +82,9 @@ class MemberControllerTest {
             preprocessResponse(prettyPrint()),
             requestFields(
                 fieldWithPath("nickname").type(JsonFieldType.STRING).description("닉네임")
+            ),
+            responseFields(
+                fieldWithPath("isDuplicated").type(JsonFieldType.BOOLEAN).description("중복 되었는지 여부")
             )
         ));
   }
@@ -127,6 +130,10 @@ class MemberControllerTest {
             requestFields(
                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
                 fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+            ),
+            responseFields(
+                fieldWithPath("accessToken").type(JsonFieldType.STRING).description("발급된 액세스 토큰"),
+                fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("발급된 리프레시 토큰")
             )
         ));
   }
