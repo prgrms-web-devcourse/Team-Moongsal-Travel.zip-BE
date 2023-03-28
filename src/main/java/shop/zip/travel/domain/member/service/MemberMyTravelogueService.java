@@ -75,7 +75,7 @@ public class MemberMyTravelogueService {
   private Travelogue getMyTravelogue(Long travelogueId, Long memberId) {
     Travelogue travelogue = travelogueRepository.findById(travelogueId)
         .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
-    travelogue.validateWriter(memberId);
+    travelogue.validWriter(memberId);
     return travelogue;
   }
 

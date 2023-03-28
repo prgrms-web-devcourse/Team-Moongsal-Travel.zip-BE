@@ -47,7 +47,7 @@ public class TravelogueController {
   }
 
   @PostMapping
-  public ResponseEntity<TravelogueCreateRes> createTemp(
+  public ResponseEntity<TravelogueCreateRes> create(
       @RequestBody @Valid TravelogueCreateReq tempTravelogueCreateReq,
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
