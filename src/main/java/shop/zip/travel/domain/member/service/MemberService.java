@@ -82,6 +82,10 @@ public class MemberService {
     }
   }
 
+  public void deleteRefreshToken(Long memberId) {
+    redisUtil.deleteData(String.valueOf(memberId));
+  }
+
   public Member getMember(Long id) {
     return memberRepository.findById(id)
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
