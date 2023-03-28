@@ -1,6 +1,9 @@
 package shop.zip.travel.presentation.member;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -56,11 +59,14 @@ class MemberControllerTest {
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
+  Long memberId;
+
   @BeforeEach
   public void setup() {
     Member member = new Member("user123@gmail.com", passwordEncoder.encode("qwe123!@#"), "Nick",
         "1994");
-    memberRepository.save(member);
+    Member savedMember = memberRepository.save(member);
+    memberId = savedMember.getId();
   }
 
   @AfterEach
@@ -164,6 +170,27 @@ class MemberControllerTest {
                 fieldWithPath("accessToken").type(JsonFieldType.STRING).description("재발급 된 액세스 토큰"),
                 fieldWithPath("refreshToken").type(JsonFieldType.STRING)
                     .description("재발급 된 리프레시 토큰")
+            )
+        ));
+  }
+
+  @Test
+  @DisplayName("유저는 정상적으로 로그아웃 할 수 있다")
+  @Transactional
+  public void logout_success() throws Exception {
+    String accessToken = "Bearer " + jwtTokenProvider.createAccessToken(memberId);
+    String refreshToken = jwtTokenProvider.createRefreshToken();
+    redisUtil.setDataWithExpire(String.valueOf(memberId), refreshToken, 1L);
+
+    mockMvc.perform(delete("/api/members/logout")
+            .header("AccessToken", accessToken)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andDo(document("member/logout",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            requestHeaders(
+                headerWithName("AccessToken").description("액세스 토큰")
             )
         ));
   }

@@ -25,7 +25,7 @@ class EmailServiceTest {
   @InjectMocks
   private EmailService emailService;
 
-  // email 보내는 메서드 테스트를 어떻게 해야할까?w
+  // email 보내는 메서드 테스트를 어떻게 해야할까?
 //  @Test
 //  public void sendEmail_success() {
 //    emailService.sendEmail("superstring77@gmail.com");
