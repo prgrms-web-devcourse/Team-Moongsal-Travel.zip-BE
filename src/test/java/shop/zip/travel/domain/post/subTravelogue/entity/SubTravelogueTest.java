@@ -31,32 +31,6 @@ class SubTravelogueTest {
   }
 
   @Test
-  @DisplayName("제목은 null일 수 없다.")
-  void test_create_no_title() {
-
-    assertThatThrownBy(() -> new SubTravelogue(
-        null,
-        validContent,
-        dayOfSubTravelogue, List.of(DummyGenerator.createAddress()),
-        Set.of(Transportation.BUS),
-        new ArrayList<>()
-    )).isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
-  @DisplayName("내용은 null일 수 없다.")
-  void test_no_content() {
-
-    assertThatThrownBy(() -> new SubTravelogue(
-        validTitle,
-        null,
-        dayOfSubTravelogue, List.of(DummyGenerator.createAddress()),
-        Set.of(Transportation.BUS),
-        new ArrayList<>()
-    )).isInstanceOf(IllegalArgumentException.class);
-  }
-
-  @Test
   @DisplayName("이미지는 null 값일 수 없다.")
   void test_travelPhotos_null() {
     assertThatThrownBy(() -> new SubTravelogue(

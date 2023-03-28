@@ -182,11 +182,11 @@ class TravelogueControllerTest {
   void test_temp_save_travelogue() throws Exception {
     // given
     TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
-        DummyGenerator.createTempPeriod(),
+        DummyGenerator.createPeriodCreateReq(),
         null,
-        DummyGenerator.createTempCountry(),
+        DummyGenerator.createCountry(),
         "www.naver.com",
-        DummyGenerator.createTempCost()
+        DummyGenerator.createCreateReq()
     );
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());

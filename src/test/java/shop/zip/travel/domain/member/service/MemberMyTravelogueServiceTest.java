@@ -55,19 +55,12 @@ class MemberMyTravelogueServiceTest {
   @BeforeEach
   void setUp() {
     member = DummyGenerator.createFakeMember();
-    travelogue = new FakeTravelogue(1L, DummyGenerator.createTravelogueWithSubTravelogues(
-        List.of(
-            DummyGenerator.createFakeSubTravelogue(1L, 1),
-            DummyGenerator.createFakeSubTravelogue(2L, 2)
-        ),
-        member
-    ));
+    travelogue = new FakeTravelogue(1L, DummyGenerator.createTravelogue(member));
   }
 
   @Test
   @DisplayName("자신이 작성한 게시물들을 가져올 수 있다.")
   void test_get_travelogues() {
-    boolean isPublished = true;
 
     Member member = DummyGenerator.createMember();
     Travelogue travelogue = DummyGenerator.createTravelogue(member);
@@ -167,9 +160,10 @@ class MemberMyTravelogueServiceTest {
     when(subTravelogueRepository.findById(any(Long.class)))
         .thenReturn(Optional.of(subTravelogue));
 
+    Long subTravelogueId = 1L;
     SubTravelogueUpdateRes subTravelogueUpdateRes =
         memberMyTravelogueService.updateSubTravelogue(travelogue.getId(),
-            subTravelogue.getId(),
+            subTravelogueId,
             member.getId(),
             subTravelogueUpdateReq
         );

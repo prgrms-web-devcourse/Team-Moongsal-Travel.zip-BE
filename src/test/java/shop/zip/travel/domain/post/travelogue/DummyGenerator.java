@@ -21,6 +21,8 @@ import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
 import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
 import shop.zip.travel.domain.post.travelogue.dto.TempTravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.req.CostCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.req.PeriodCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -201,6 +203,22 @@ public class DummyGenerator {
     );
   }
 
+  public static PeriodCreateReq createPeriodCreateReq() {
+    return new PeriodCreateReq(
+        LocalDate.of(2022, 2, 10),
+        LocalDate.of(2022, 2, 11)
+    );
+  }
+
+  public static CostCreateReq createCreateReq() {
+    return new CostCreateReq(
+        null,
+        null,
+        null,
+        100000L
+    );
+  }
+
   public static Member createFakeMember() {
     return new FakeMember(
         1L,
@@ -233,17 +251,6 @@ public class DummyGenerator {
         0L,
         0L,
         10000000L
-    );
-  }
-
-  public static SubTravelogue createTempSubTravelogue(int dayOfSubTravelogue) {
-    return new SubTravelogue(
-        "일본 오사카 재밌음",
-        DefaultValue.STRING.getValue(),
-        dayOfSubTravelogue,
-        List.of(createAddress()),
-        Set.of(Transportation.BUS),
-        new ArrayList<>()
     );
   }
 

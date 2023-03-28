@@ -35,6 +35,7 @@ class TraveloguePublishServiceTest {
   private Travelogue tempTravelogue;
   private List<SubTravelogue> subTravelogues;
   private SubTravelogue tempSubTravelogues;
+  private Travelogue notPublishedTravelogue;
   private Member member;
 
   @BeforeEach
@@ -42,9 +43,8 @@ class TraveloguePublishServiceTest {
     member = memberRepository.save(DummyGenerator.createMember());
     travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
     tempTravelogue = travelogueRepository.save(DummyGenerator.createTempTravelogue(member));
-
-    tempSubTravelogues = DummyGenerator.createTempSubTravelogue(1);
-    tempTravelogue.addSubTravelogue(tempSubTravelogues);
+    notPublishedTravelogue = travelogueRepository.save(
+        DummyGenerator.createNotPublishedTravelogue(member));
   }
 
   @Test
@@ -56,11 +56,13 @@ class TraveloguePublishServiceTest {
   }
 
   @Test
-  @DisplayName("작성이 완료한 게시물을 발행 시도하면 성공한다.")
+  @DisplayName("작성을 완료한 게시물을 발행 시도하면 성공한다.")
   void test_success_publish() {
-    traveloguePublishService.publish(travelogue.getId(), member.getId());
+    notPublishedTravelogue.addSubTravelogue(DummyGenerator.createSubTravelogue(2));
 
-    Travelogue findTravelogue = travelogueRepository.findById(travelogue.getId()).
+    traveloguePublishService.publish(notPublishedTravelogue.getId(), member.getId());
+
+    Travelogue findTravelogue = travelogueRepository.findById(notPublishedTravelogue.getId()).
         get();
 
     boolean actualPublishStatus = true;

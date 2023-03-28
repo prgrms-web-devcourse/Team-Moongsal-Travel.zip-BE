@@ -49,7 +49,7 @@ class SubTravelogueServiceTest {
         "유니버셜 스튜디오 다녀옴.",
         "유니버셜 스튜디오에서는 해리포터 테마가 필수임.",
         day,
-        List.of(DummyGenerator.createTempAddress()),
+        List.of(DummyGenerator.createAddress()),
         Set.of(Transportation.SUBWAY),
         List.of(new TravelPhotoCreateReq("www.naver.com"))
     );

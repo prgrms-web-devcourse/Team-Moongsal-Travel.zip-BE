@@ -5,6 +5,8 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
@@ -108,11 +110,11 @@ class TravelogueServiceTest {
   void test_temp_save() {
     // given
     TravelogueCreateReq tempTravelogueCreateReq = new TravelogueCreateReq(
-        DummyGenerator.createTempPeriod(),
+        DummyGenerator.createPeriodCreateReq(),
         "일본 여행은 2박 3일은 짧아요.",
-        DummyGenerator.createTempCountry(),
+        DummyGenerator.createCountry(),
         "www.google.com",
-        DummyGenerator.createTempCost()
+        DummyGenerator.createCreateReq()
     );
 
     Travelogue travelogue = new FakeTravelogue(
@@ -245,7 +247,9 @@ class TravelogueServiceTest {
     SubTravelogue subTravelogue = DummyGenerator.createSubTravelogueWithContent(content);
     Travelogue travelogue = new FakeTravelogue(
         1L,
-        DummyGenerator.createTravelogueWithSubTravelogues(List.of(subTravelogue), member)
+        DummyGenerator.createTravelogueWithSubTravelogues(new ArrayList<>(Arrays.asList(
+            subTravelogue
+        )), member)
     );
 
     Pageable pageable = PageRequest.of(0, 1);
@@ -268,9 +272,12 @@ class TravelogueServiceTest {
     Member member = DummyGenerator.createMember();
     String region = "디즈니랜드";
     SubTravelogue subTravelogue = DummyGenerator.createSubTravelogueWithRegion(region);
+
     Travelogue travelogue = new FakeTravelogue(
         1L,
-        DummyGenerator.createTravelogueWithSubTravelogues(List.of(subTravelogue), member)
+        DummyGenerator.createTravelogueWithSubTravelogues(new ArrayList<>(Arrays.asList(
+            subTravelogue
+        )), member)
     );
 
     Pageable pageable = PageRequest.of(0, 1);
