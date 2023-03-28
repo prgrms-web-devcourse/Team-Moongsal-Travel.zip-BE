@@ -37,10 +37,10 @@ public class SubTravelogue extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String title;
 
-    @Column(columnDefinition = "LONGTEXT", nullable = false)
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @Column(name = "day_seq", nullable = false)
@@ -63,10 +63,14 @@ public class SubTravelogue extends BaseTimeEntity {
     protected SubTravelogue() {
     }
 
-    public SubTravelogue(String title, String content, int day,
+    public SubTravelogue(String title,
+        String content, int day,
         List<Address> addresses,
-        Set<Transportation> transportationSet, List<TravelPhoto> photos) {
-        verify(title, content, day, addresses, transportationSet, photos);
+        Set<Transportation> transportationSet,
+        List<TravelPhoto> photos
+    ) {
+        verify(title, day, addresses, transportationSet, photos);
+
         this.title = title;
         this.content = content;
         this.day = day;
@@ -103,12 +107,19 @@ public class SubTravelogue extends BaseTimeEntity {
         return new ArrayList<>(photos);
     }
 
-    private void verify(String title, String content, int day,
+    private void verify(String title,
+        int day,
         List<Address> addresses,
-        Set<Transportation> transportationSet, List<TravelPhoto> photos) {
-        nullCheck(title, content, addresses, transportationSet, photos);
+        Set<Transportation> transportationSet,
+        List<TravelPhoto> photos
+    ) {
+        nullCheck(addresses, transportationSet, photos);
+
+        if (!title.isBlank()) {
+            verifyTitle(title);
+        }
+
         verifyDay(day);
-        verifyTitle(title);
     }
 
 
@@ -118,10 +129,8 @@ public class SubTravelogue extends BaseTimeEntity {
         }
     }
 
-    private void nullCheck(String title, String content, List<Address> addresses,
+    private void nullCheck(List<Address> addresses,
         Set<Transportation> transportationSet, List<TravelPhoto> photos) {
-        Assert.notNull(title, "제목을 확인해주세요");
-        Assert.notNull(content, "내용을 확인해주세요");
         Assert.notNull(addresses, "주소를 확인해주세요");
         Assert.notNull(transportationSet, "이동수단을 확인해주세요");
         Assert.notNull(photos, "이미지를 확인해주세요");

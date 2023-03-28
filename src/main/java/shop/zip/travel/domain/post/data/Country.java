@@ -2,14 +2,12 @@ package shop.zip.travel.domain.post.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.Objects;
 
 @Embeddable
 public class Country {
 
-	@Column(name = "country_name", nullable = false)
+	@Column(name = "country_name")
 	private String name;
 
 	public Country(String name) {
@@ -24,6 +22,6 @@ public class Country {
 	}
 
 	public boolean cannotPublish() {
-		return DefaultValue.STRING.isEqual(name);
+		return Objects.isNull(name) || name.isBlank();
 	}
 }
