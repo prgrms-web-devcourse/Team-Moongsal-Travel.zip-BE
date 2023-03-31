@@ -1,4 +1,4 @@
-package shop.zip.travel.presentation.scrap;
+package shop.zip.travel.presentation.storage;
 
 import java.util.List;
 import org.bson.types.ObjectId;
