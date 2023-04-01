@@ -21,10 +21,10 @@ public class EmailController {
   }
 
   @PostMapping
-  public ResponseEntity<Void> sendEmail(
+  public ResponseEntity<Void> sendEmailForRegister(
       @RequestBody @Valid EmailValidateReq emailValidateReq
   ) {
-      emailService.sendEmail(emailValidateReq.email());
+      emailService.sendEmailForRegister(emailValidateReq.email());
     return ResponseEntity.ok().build();
   }
 
@@ -33,6 +33,14 @@ public class EmailController {
       @RequestBody @Valid CodeValidateReq codeValidateReq
   ) {
     emailService.validateVerificationCode(codeValidateReq.email(), codeValidateReq.code());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/find/password")
+  public ResponseEntity<Void> sendEmailForFindingPassword(
+      @RequestBody @Valid EmailValidateReq emailValidateReq
+  ) {
+    emailService.sendEmailForFindingPassword(emailValidateReq.email());
     return ResponseEntity.ok().build();
   }
 }
