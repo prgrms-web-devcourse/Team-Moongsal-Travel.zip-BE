@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import java.time.LocalDate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 import shop.zip.travel.domain.base.BaseTimeEntity;
 import shop.zip.travel.domain.member.data.Role;
@@ -152,6 +153,10 @@ public class Member extends BaseTimeEntity {
   public void updateNickname(String nickname) {
     validateNickname(nickname);
     this.nickname = nickname;
+  }
+
+  public void changePassword(String password, PasswordEncoder passwordEncoder) {
+    this.password = passwordEncoder.encode(password);
   }
 
   public Member update(String nickname, String profileImageUrl) {
