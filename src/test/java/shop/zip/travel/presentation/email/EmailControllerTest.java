@@ -19,8 +19,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.email.dto.request.CodeValidateReq;
 import shop.zip.travel.domain.email.dto.request.EmailValidateReq;
+import shop.zip.travel.domain.member.entity.Member;
+import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.util.RedisUtil;
 
 
@@ -37,6 +40,9 @@ class EmailControllerTest {
 
   @Autowired
   private RedisUtil redisUtil;
+
+  @Autowired
+  private MemberRepository memberRepository;
 
   @Test
   @DisplayName("유저는 이메일 인증을 위해 이메일을 받을 수 있다")
@@ -72,6 +78,28 @@ class EmailControllerTest {
             requestFields(
                 fieldWithPath("email").type(JsonFieldType.STRING).description("인증하려는 이메일"),
                 fieldWithPath("code").type(JsonFieldType.STRING).description("인증 코드")
+            )
+        ));
+  }
+
+  @Test
+  @DisplayName("유저는 비밀번호를 찾기 위해 이메일 인증을 받을 수 있다")
+  @Transactional
+  public void sendEmailForFindingPassword_success() throws Exception {
+    Member member = new Member("user123@gmail.com", "qwe123!@#", "Nickname", "1996");
+    memberRepository.save(member);
+    EmailValidateReq emailValidateReq = new EmailValidateReq("user123@gmail.com");
+
+    mockMvc.perform(post("/api/emails/find/password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(emailValidateReq)))
+        .andExpect(status().isOk())
+        .andDo(document("email/find_password",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            requestFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("인증하려는 이메일")
+
             )
         ));
   }
