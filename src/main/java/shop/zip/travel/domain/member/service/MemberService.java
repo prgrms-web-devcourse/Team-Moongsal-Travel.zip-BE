@@ -99,7 +99,7 @@ public class MemberService {
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
-  private Member findMemberByEmail(String email) {
+  public Member findMemberByEmail(String email) {
     return memberRepository.findByEmail(email)
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
