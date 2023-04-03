@@ -46,6 +46,7 @@ public class SecurityConfig {
         .requestMatchers("/api/members/register")
         .requestMatchers("/api/members/login")
         .requestMatchers("/api/members/refresh")
+        .requestMatchers("/api/members/change/password")
         .requestMatchers(HttpMethod.GET, "/api/travelogues/**")
         .requestMatchers(HttpMethod.GET, "/api/healths/**")
         .requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
