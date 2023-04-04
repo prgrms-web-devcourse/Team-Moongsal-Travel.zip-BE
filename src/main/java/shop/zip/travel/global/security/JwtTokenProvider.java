@@ -32,8 +32,8 @@ public class JwtTokenProvider {
   private final String accessTokenSecretKey;
   private final String refreshTokenSecretKey;
 
-  private final long ACCESS_TOKEN_EXPIRED_TIME = Duration.ofDays(7).toMillis();
-  private final long REFRESH_TOKEN_EXPIRED_TIME = Duration.ofHours(2).toMillis();
+  private final long ACCESS_TOKEN_EXPIRED_TIME = Duration.ofMinutes(1).toMillis();
+  private final long REFRESH_TOKEN_EXPIRED_TIME = Duration.ofMinutes(5).toMillis();
 
   private final CustomUserDetailsService customUserDetailsService;
 

@@ -1,19 +1,17 @@
 package shop.zip.travel.domain.member.service;
 
-import static shop.zip.travel.domain.member.dto.request.MemberSignupReq.toMember;
+import static shop.zip.travel.domain.member.dto.request.MemberRegisterReq.toMember;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
-import shop.zip.travel.domain.member.dto.request.MemberSigninReq;
-import shop.zip.travel.domain.member.dto.request.MemberSignupReq;
-import shop.zip.travel.domain.member.dto.response.MemberSigninRes;
+import shop.zip.travel.domain.member.dto.request.MemberLoginReq;
+import shop.zip.travel.domain.member.dto.request.MemberRegisterReq;
+import shop.zip.travel.domain.member.dto.response.MemberLoginRes;
 import shop.zip.travel.domain.member.entity.Member;
-import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
 import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.domain.member.exception.MemberNotFoundException;
-import shop.zip.travel.domain.member.exception.NotVerifiedAuthorizationCodeException;
 import shop.zip.travel.domain.member.exception.PasswordNotMatchException;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.error.ErrorCode;
@@ -21,7 +19,6 @@ import shop.zip.travel.global.security.JwtTokenProvider;
 import shop.zip.travel.global.util.RedisUtil;
 
 @Service
-@Transactional(readOnly = true)
 public class MemberService {
 
   private final MemberRepository memberRepository;
@@ -37,41 +34,22 @@ public class MemberService {
     this.passwordEncoder = passwordEncoder;
   }
 
+  @Transactional(readOnly = true)
+  public boolean checkDuplicatedNickname(String nickname) {
+    return memberRepository.existsByNickname(nickname);
+  }
+
   @Transactional
-  public void createMember(MemberSignupReq memberSignupReq) {
-    validateDuplicatedEmail(memberSignupReq.email());
-    validateDuplicatedNickname(memberSignupReq.nickname());
-
-    Member member = toMember(memberSignupReq, passwordEncoder);
-
+  public void createMember(MemberRegisterReq memberRegisterReq) {
+    Member member = toMember(memberRegisterReq, passwordEncoder);
     memberRepository.save(member);
   }
 
-  public void validateDuplicatedEmail(String email) {
-    if (memberRepository.existsByEmail(email)) {
-      throw new DuplicatedEmailException(ErrorCode.DUPLICATED_EMAIL);
-    }
-  }
-
-  public void validateDuplicatedNickname(String nickname) {
-    if (memberRepository.existsByNickname(nickname)) {
-      throw new DuplicatedEmailException(ErrorCode.DUPLICATED_NICKNAME);
-    }
-  }
-
-  public void verifyCode(String email, String code) {
-    if (redisUtil.getData(email) != null && redisUtil.getData(email).equals(code)) {
-      redisUtil.deleteData(email);
-    } else {
-      throw new NotVerifiedAuthorizationCodeException(ErrorCode.NOT_VERIFIED_CODE);
-    }
-  }
-
   @Transactional
-  public MemberSigninRes login(MemberSigninReq memberSigninReq) {
-    Member member = findMemberByEmail(memberSigninReq.email());
+  public MemberLoginRes login(MemberLoginReq memberLoginReq) {
+    Member member = findMemberByEmail(memberLoginReq.email());
 
-    if (isPasswordMatched(memberSigninReq, member)) {
+    if (!passwordEncoder.matches(memberLoginReq.password(), member.getPassword())) {
       throw new PasswordNotMatchException(ErrorCode.PASSWORD_NOT_MATCH);
     }
 
@@ -80,13 +58,12 @@ public class MemberService {
 
     redisUtil.setDataWithExpire(String.valueOf(member.getId()), refreshToken, 120L);
 
-    return new MemberSigninRes(accessToken, refreshToken);
+    return new MemberLoginRes(accessToken, refreshToken);
   }
 
-  // jwtTokenProvider, redisUtil 따로 빼기
+  // TODO accessToken 에서 memberId 를 가져오는 방법을 refactoring 해보기
   @Transactional
-  public MemberSigninRes recreateAccessAndRefreshToken(
-      AccessTokenReissueReq accessTokenReissueReq) {
+  public MemberLoginRes recreateAccessAndRefreshToken(AccessTokenReissueReq accessTokenReissueReq) {
 
     String accessToken = accessTokenReissueReq.accessToken();
     String refreshToken = accessTokenReissueReq.refreshToken();
@@ -99,19 +76,19 @@ public class MemberService {
       String newRefreshToken = jwtTokenProvider.createRefreshToken();
       redisUtil.setDataWithExpire(memberId, newRefreshToken, 120L);
 
-      return new MemberSigninRes(newAccessToken, newRefreshToken);
+      return new MemberLoginRes(newAccessToken, newRefreshToken);
     } else {
       throw new InvalidRefreshTokenException(ErrorCode.INVALID_REFRESH_TOKEN);
     }
   }
 
+  public void deleteRefreshToken(Long memberId) {
+    redisUtil.deleteData(String.valueOf(memberId));
+  }
+
   public Member getMember(Long id) {
     return memberRepository.findById(id)
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
-  }
-
-  private boolean isPasswordMatched(MemberSigninReq memberSigninReq, Member member) {
-    return passwordEncoder.matches(member.getPassword(), memberSigninReq.password());
   }
 
   private Member findMemberByEmail(String email) {

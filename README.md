@@ -1,15 +1,16 @@
 # Team-Moongsal-Travel.zip-BE
-![travelzip 메인 이미지](https://user-images.githubusercontent.com/43260658/224620248-40be6a8f-c35d-4091-8623-b6111ef6b652.png)
+![KakaoTalk_Photo_2023-03-14-23-10-09](https://user-images.githubusercontent.com/86584887/225027850-6837caad-cb6f-4802-8f9b-cc5a89fe93db.png)
 
 
 ### <div align="center">"내가 가진 여행 기억의 모음집" ✈️</div>
-### <div align="center">[<img src="https://img.shields.io/badge/realease-v0.0.1-4285F4?style=flat-square&logo=Google Chrome&logoColor=white">](https://travel-zip.vercel.app/)</div>
-
+<!-- ### <div align="center">[<img src="https://img.shields.io/badge/realease-v0.0.1-4285F4?style=flat-square&logo=Google Chrome&logoColor=white">](https://travel-zip.vercel.app/)</div> -->
+### <div align="center">[✈️ Travel.zip](https://travel-zip.vercel.app)</div>
 
 
 
 ## ✈️ 프로젝트 소개
-내가 가진 좋은 여행 기억을 공유하고 다른 사람의 여행 기록을 볼 수 있는 플랫폼입니다
+나의 여행기를 다른 사람에게 공유할 수 있고 
+다른 사람의 여행기를 볼 수 있는 여행기 공유 플랫폼 입니다.
 
 ## 팀 소개
 ![yewon]|![dongjun]|![surin]|![juyoung]|

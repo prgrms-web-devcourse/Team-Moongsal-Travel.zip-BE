@@ -14,9 +14,15 @@ public enum ErrorCode {
 	TOKEN_EXCEPTION(HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 	NOT_LOGGED_IN(HttpStatus.UNAUTHORIZED, "로그인후 이용이 가능합니다"),
 
+	// redis
+	NOT_MATCHING_VALUE_FOR_KEY(HttpStatus.BAD_REQUEST,"해당 key 에 해당하는 값이 없습니다"),
+
+	// email
+	NOT_SEND_EMAIL(HttpStatus.NOT_ACCEPTABLE,"email 발송에 실패 했습니다."),
+	NOT_VALIDATED_VERIFICATION_CODE(HttpStatus.BAD_REQUEST, "잘못된 인증 코드입니다"),
+
 	// member
 	DUPLICATED_EMAIL(HttpStatus.CONFLICT, "이메일이 중복입니다"),
-	NOT_VERIFIED_CODE(HttpStatus.BAD_REQUEST, "잘못된 인증 코드입니다"),
 	DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "닉네임이 중복입니다"),
 	EMAIL_NOT_MATCH(HttpStatus.BAD_REQUEST, "이메일이 일치하지 않습니다"),
 	PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "패스워드가 일치하지 않습니다"),
@@ -32,8 +38,7 @@ public enum ErrorCode {
 	TRAVELOGUE_NOT_CONTAIN_SUB_TRAVELOGUE(HttpStatus.BAD_REQUEST, "잘못된 접근입니다."),
 
 	// scrap
-	STORAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 스크랩 문서를 찾을 수 없습니다"),
-	NOT_SEND_EMAIL(HttpStatus.NOT_ACCEPTABLE,"email 발송에 실패 했습니다.");
+	STORAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 스크랩 문서를 찾을 수 없습니다");
 
   private final HttpStatus status;
 	private final String message;

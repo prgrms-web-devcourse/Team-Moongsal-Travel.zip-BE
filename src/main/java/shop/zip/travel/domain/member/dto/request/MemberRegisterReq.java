@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import shop.zip.travel.domain.member.entity.Member;
 
-public record MemberSignupReq(
+public record MemberRegisterReq(
     @NotBlank
     @Email
     String email,
@@ -24,11 +24,11 @@ public record MemberSignupReq(
     String birthYear
 ) {
 
-  public static Member toMember(MemberSignupReq memberSignupReq, PasswordEncoder passwordEncoder) {
+  public static Member toMember(MemberRegisterReq memberRegisterReq, PasswordEncoder passwordEncoder) {
     return new Member(
-        memberSignupReq.email(),
-        passwordEncoder.encode(memberSignupReq.password()),
-        memberSignupReq.nickname(),
-        memberSignupReq.birthYear());
+        memberRegisterReq.email(),
+        passwordEncoder.encode(memberRegisterReq.password()),
+        memberRegisterReq.nickname(),
+        memberRegisterReq.birthYear());
   }
 }

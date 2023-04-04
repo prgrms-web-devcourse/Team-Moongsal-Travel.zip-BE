@@ -160,15 +160,4 @@ public class Member extends BaseTimeEntity {
     return this;
   }
 
-  public Role getRole() {
-    return role;
-  }
-
-  public String getProvider() {
-    return provider;
-  }
-
-  public String getProviderId() {
-    return providerId;
-  }
 }
