@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import shop.zip.travel.domain.email.exception.NotValidatedVerificationCodeException;
 import shop.zip.travel.domain.email.exception.SendEmailException;
 import shop.zip.travel.domain.member.exception.DuplicatedEmailException;
+import shop.zip.travel.domain.member.exception.MemberNotFoundException;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.util.RedisUtil;
@@ -39,7 +40,7 @@ public class EmailService {
     this.memberRepository = memberRepository;
   }
 
-  public void sendEmail(String toEmail) {
+  public void sendEmailForRegister(String toEmail) {
     checkDuplicatedEmail(toEmail);
     String code = createVerificationCode();
     MimeMessage message = createMail(toEmail, code);
@@ -52,6 +53,16 @@ public class EmailService {
       throw new NotValidatedVerificationCodeException(ErrorCode.NOT_VALIDATED_VERIFICATION_CODE);
     }
     redisUtil.deleteData(email);
+  }
+
+  public void sendEmailForFindingPassword(String email) {
+    if (!memberRepository.existsByEmail(email)) {
+      throw new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND);
+    }
+    String code = createVerificationCode();
+    MimeMessage message = createMail(email, code);
+    redisUtil.setDataWithExpire(email, code, EXPIRED_DURATION);
+    javaMailSender.send(message);
   }
 
   private void checkDuplicatedEmail(String email) {

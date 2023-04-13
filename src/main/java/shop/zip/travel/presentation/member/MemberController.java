@@ -5,11 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
 import shop.zip.travel.domain.member.dto.request.MemberLoginReq;
+import shop.zip.travel.domain.member.dto.request.MemberPasswordChangeReq;
 import shop.zip.travel.domain.member.dto.request.MemberRegisterReq;
 import shop.zip.travel.domain.member.dto.request.DuplicatedNicknameCheckReq;
 import shop.zip.travel.domain.member.dto.response.MemberLoginRes;
@@ -69,4 +71,11 @@ public class MemberController {
     return ResponseEntity.ok().build();
   }
 
+  @PutMapping("/change/password")
+  public ResponseEntity<Void> changePassword(
+      @RequestBody @Valid MemberPasswordChangeReq memberPasswordChangeReq
+  ) {
+    memberService.changePassword(memberPasswordChangeReq);
+    return ResponseEntity.ok().build();
+  }
 }

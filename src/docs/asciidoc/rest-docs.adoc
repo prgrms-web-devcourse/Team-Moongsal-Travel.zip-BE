@@ -35,6 +35,17 @@ include::{snippets}/email/code/request-fields.adoc[]
 === Response
 include::{snippets}/email/code/http-response.adoc[]
 
+== 비밀번호 변경을 위한 이메일 전송
+
+=== Request
+include::{snippets}/email/find_password/http-request.adoc[]
+
+=== RequestFields
+include::{snippets}/email/find_password/request-fields.adoc[]
+
+=== Response
+include::{snippets}/email/find_password/http-response.adoc[]
+
 = 멤버
 
 == 닉네임 중복 검사
@@ -98,8 +109,19 @@ include::{snippets}/member/logout/http-request.adoc[]
 === Request Header
 include::{snippets}/member/logout/request-headers.adoc[]
 
-== Response
+=== Response
 include::{snippets}/member/logout/http-response.adoc[]
+
+== 비밀번호 변경
+
+=== Request
+include::{snippets}/member/change_password/http-request.adoc[]
+
+=== RequestFields
+include::{snippets}/member/change_password/request-fields.adoc[]
+
+=== Response
+include::{snippets}/member/change_password/http-response.adoc[]
 
 = 마이페이지
 
@@ -220,7 +242,7 @@ include::{snippets}/update-published-travelogue/response-fields.adoc[]
 
 == 자신이 작성했던 SubTravelogue 수정을 위한 조회
 
-=== Reequest
+=== Request
 
 include::{snippets}/get-my-one-sub-travelogue/http-request.adoc[]
 

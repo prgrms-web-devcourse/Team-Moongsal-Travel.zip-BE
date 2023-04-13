@@ -5,6 +5,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
@@ -30,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
 import shop.zip.travel.domain.member.dto.request.DuplicatedNicknameCheckReq;
 import shop.zip.travel.domain.member.dto.request.MemberLoginReq;
+import shop.zip.travel.domain.member.dto.request.MemberPasswordChangeReq;
 import shop.zip.travel.domain.member.dto.request.MemberRegisterReq;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
@@ -193,5 +195,25 @@ class MemberControllerTest {
                 headerWithName("AccessToken").description("액세스 토큰")
             )
         ));
+  }
+
+  @Test
+  @DisplayName("유저는 비밀번호를 바꿀 수 있다")
+  public void changePassword_success() throws Exception {
+    MemberPasswordChangeReq memberPasswordChangeReq = new MemberPasswordChangeReq(
+        "user123@gmail.com", "rty456$%^");
+
+    mockMvc.perform(put("/api/members/change/password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(memberPasswordChangeReq)))
+        .andExpect(status().isOk())
+        .andDo(document("member/change_password",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            requestFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("바꾸려는 비밀번호")
+            ))
+        );
   }
 }

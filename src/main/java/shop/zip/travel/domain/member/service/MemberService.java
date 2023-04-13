@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.dto.request.AccessTokenReissueReq;
 import shop.zip.travel.domain.member.dto.request.MemberLoginReq;
+import shop.zip.travel.domain.member.dto.request.MemberPasswordChangeReq;
 import shop.zip.travel.domain.member.dto.request.MemberRegisterReq;
 import shop.zip.travel.domain.member.dto.response.MemberLoginRes;
 import shop.zip.travel.domain.member.entity.Member;
@@ -82,6 +83,13 @@ public class MemberService {
     }
   }
 
+  @Transactional
+  public void changePassword(MemberPasswordChangeReq memberPasswordChangeReq) {
+    Member member = memberRepository.findByEmail(memberPasswordChangeReq.email())
+        .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+    member.changePassword(memberPasswordChangeReq.password(), passwordEncoder);
+  }
+
   public void deleteRefreshToken(Long memberId) {
     redisUtil.deleteData(String.valueOf(memberId));
   }
@@ -91,7 +99,7 @@ public class MemberService {
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
-  private Member findMemberByEmail(String email) {
+  public Member findMemberByEmail(String email) {
     return memberRepository.findByEmail(email)
         .orElseThrow(() -> new MemberNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
   }
