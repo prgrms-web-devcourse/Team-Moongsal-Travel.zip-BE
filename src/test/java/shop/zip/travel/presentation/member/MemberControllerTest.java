@@ -14,7 +14,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +37,7 @@ import shop.zip.travel.global.util.RedisUtil;
 
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
+@Transactional
 @SpringBootTest
 class MemberControllerTest {
 
@@ -69,11 +69,6 @@ class MemberControllerTest {
     memberId = savedMember.getId();
   }
 
-  @AfterEach
-  public void clear() {
-    memberRepository.deleteAll();
-  }
-
   @Test
   @DisplayName("유저는 닉네임 중복확인을 할 수 있다")
   public void checkDuplicatedNickname_success() throws Exception {
@@ -97,7 +92,6 @@ class MemberControllerTest {
 
   @Test
   @DisplayName("유저는 회원가입 할 수 있다")
-  @Transactional
   public void register_success() throws Exception {
     MemberRegisterReq memberRegisterReq = new MemberRegisterReq("superstring77@gmail.com",
         "qwe123!@#",
@@ -122,7 +116,6 @@ class MemberControllerTest {
 
   @Test
   @DisplayName("유저는 로그인할 수 있다")
-  @Transactional
   public void login_success() throws Exception {
     MemberLoginReq memberLoginReq = new MemberLoginReq("user123@gmail.com", "qwe123!@#");
 
@@ -146,7 +139,6 @@ class MemberControllerTest {
 
   @Test
   @DisplayName("유저는 AccessToken 과 RefreshToken 을 재발급 받을 수 있다")
-  @Transactional
   public void reissue_success() throws Exception {
     String accessToken = jwtTokenProvider.createAccessToken(1L);
     String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -176,7 +168,6 @@ class MemberControllerTest {
 
   @Test
   @DisplayName("유저는 정상적으로 로그아웃 할 수 있다")
-  @Transactional
   public void logout_success() throws Exception {
     String accessToken = "Bearer " + jwtTokenProvider.createAccessToken(memberId);
     String refreshToken = jwtTokenProvider.createRefreshToken();
