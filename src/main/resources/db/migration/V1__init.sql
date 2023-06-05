@@ -3,16 +3,16 @@
        id bigint not null auto_increment,
         create_date datetime(6),
         birth_year varchar(4) not null,
-        email varchar(255) not null,
+        email varchar(255) not null unique,
         is_verified_email bit not null,
-        nickname varchar(255) not null,
+        nickname varchar(255) not null unique,
         password varchar(255) not null,
         profile_image_url varchar(255) not null,
         provider varchar(255),
         provider_id tinytext,
         role varchar(255),
         primary key (id)
-    )
+    );
 
     create table travelogue (
        id bigint not null auto_increment,
@@ -31,7 +31,7 @@
         member_id bigint,
         primary key (id),
         foreign key (member_id) references member (id)
-    )
+    );
 
     create table sub_travelogue (
        id bigint not null auto_increment,
@@ -42,13 +42,14 @@
         travelogue_id bigint,
         primary key (id),
         foreign key (travelogue_id) references travelogue (id)
-    )
+    );
 
     create table address (
        sub_travelogue_id bigint not null,
-        region varchar(255) not null,
-        foreign key (sub_travelogue_id) references sub_travelogue (id)
-    )
+       region varchar(255) not null,
+       primary key (sub_travelogue_id, region),
+       foreign key (sub_travelogue_id) references sub_travelogue (id)
+    );
 
     create table bookmark (
        id bigint not null auto_increment,
@@ -58,7 +59,7 @@
         primary key (id),
         foreign key (member_id) references member (id) on delete cascade,
         foreign key (travelogue_id) references travelogue (id) on delete cascade
-    )
+    );
 
     create table likes (
       id bigint not null auto_increment,
@@ -68,14 +69,14 @@
       primary key (id),
       foreign key (member_id) references member (id) on delete cascade,
       foreign key (travelogue_id) references travelogue (id) on delete cascade
-    )
+    );
 
     create table transportation (
        sub_travelogue_id bigint not null,
         transportation_set varchar(255) not null,
         primary key (sub_travelogue_id, transportation_set),
         foreign key (sub_travelogue_id) references sub_travelogue (id)
-    )
+    );
 
     create table travel_photo (
        id bigint not null auto_increment,
@@ -83,5 +84,5 @@
         sub_travelogue_id bigint,
         primary key (id),
         foreign key (sub_travelogue_id) references sub_travelogue (id)
-    )
+    );
 
