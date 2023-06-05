@@ -77,6 +77,10 @@ dependencies {
 
     // logback
     implementation "ca.pjer:logback-awslogs-appender:1.6.0"
+
+    //fly-way
+    implementation 'org.flywaydb:flyway-core:9.16.0'
+    implementation 'org.flywaydb:flyway-mysql'
 }
 
 ext {
