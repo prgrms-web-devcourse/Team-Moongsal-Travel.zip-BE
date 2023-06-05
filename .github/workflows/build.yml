@@ -58,8 +58,12 @@ jobs:
 
       - name: application-test.yml created
         uses: actions/checkout@v3
-      - run: mkdir /src/test/resources
-      - run: touch ./src/test/resources/application.yml
+
+#      - run: mkdir /src/test/resources
+#      - run: touch ./src/test/resources/application.yml
+      - run:  mkdir ./src/test/resources
+      - run:  cd ./src/test/resources
+      - run:  touch ./application.yml
       - run: echo "${{ secrets.APPLICATION_TEST_YML }}" > ./src/test/resources/application.yml
       - uses: actions/upload-artifact@v3
         with:
