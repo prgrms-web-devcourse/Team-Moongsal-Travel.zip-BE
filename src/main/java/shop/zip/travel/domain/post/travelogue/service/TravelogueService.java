@@ -30,14 +30,14 @@ public class TravelogueService {
 
   private final TravelogueRepository travelogueRepository;
   private final MemberService memberService;
-	private final BookmarkRepository bookmarkRepository;
+  private final BookmarkRepository bookmarkRepository;
   private final SuggestionRepository suggestionRepository;
 
-	public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
-			BookmarkRepository bookmarkRepository, SuggestionRepository suggestionRepository) {
+  public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
+      BookmarkRepository bookmarkRepository, SuggestionRepository suggestionRepository) {
     this.travelogueRepository = travelogueRepository;
     this.memberService = memberService;
-		this.bookmarkRepository = bookmarkRepository;
+    this.bookmarkRepository = bookmarkRepository;
     this.suggestionRepository = suggestionRepository;
   }
 
@@ -71,15 +71,14 @@ public class TravelogueService {
   @Transactional
   public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
       Long memberId) {
-
-    setViewCount(travelogueId, canAddViewCount);
     Long countLikes = travelogueRepository.countLikes(travelogueId);
     boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
-    Boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
+    boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
 
     Travelogue travelogue = travelogueRepository.getTravelogueDetail(travelogueId)
         .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
 
+    updateViewCount(travelogueId, canAddViewCount);
     Suggestion suggestion = new Suggestion(travelogue, memberId);
     suggestionRepository.save(suggestion);
 
@@ -88,10 +87,9 @@ public class TravelogueService {
     return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked, isWriter);
   }
 
-  private void setViewCount(Long travelogueId, boolean canAddViewCount) {
+  private void updateViewCount(Long travelogueId, boolean canAddViewCount) {
     if (canAddViewCount) {
-      Travelogue findTravelogue = getTravelogue(travelogueId);
-      findTravelogue.addViewCount();
+      getTravelogue(travelogueId).addViewCount();
     }
   }
 

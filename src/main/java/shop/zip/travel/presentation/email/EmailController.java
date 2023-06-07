@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import shop.zip.travel.domain.email.dto.request.CodeValidateReq;
 import shop.zip.travel.domain.email.dto.request.EmailValidateReq;
 import shop.zip.travel.domain.email.service.EmailService;
 
@@ -20,10 +21,18 @@ public class EmailController {
   }
 
   @PostMapping
-  public ResponseEntity<String> sendMail(
+  public ResponseEntity<Void> sendEmail(
       @RequestBody @Valid EmailValidateReq emailValidateReq
   ) {
-      emailService.sendMail(emailValidateReq.email());
-    return ResponseEntity.ok().body("이메일 발송 성공");
+      emailService.sendEmail(emailValidateReq.email());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/code")
+  public ResponseEntity<Void> validateVerificationCode(
+      @RequestBody @Valid CodeValidateReq codeValidateReq
+  ) {
+    emailService.validateVerificationCode(codeValidateReq.email(), codeValidateReq.code());
+    return ResponseEntity.ok().build();
   }
 }

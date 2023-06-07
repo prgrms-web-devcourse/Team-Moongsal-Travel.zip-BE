@@ -1,4 +1,4 @@
-package shop.zip.travel.presentation.scrap;
+package shop.zip.travel.presentation.storage;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;

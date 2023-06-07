@@ -1,4 +1,4 @@
-package shop.zip.travel.domain.post.util;
+package shop.zip.travel.global.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,8 +9,8 @@ import org.springframework.web.util.WebUtils;
 
 public class CookieUtil {
 
-  public static final String VIEW_COUNT = "viewCountCookie_";
-  public static final int DAY = 60 * 60 * 24;
+  private static final String VIEW_COUNT = "viewCountCookie_";
+  private static final int DAY = 60 * 60 * 24;
 
   private CookieUtil() {
   }
@@ -32,7 +32,6 @@ public class CookieUtil {
   }
 
   private static boolean hasNotViewCountCookie(HttpServletRequest request, Long travelogueId) {
-
     Cookie cookie = WebUtils.getCookie(request, VIEW_COUNT + travelogueId);
 
     if (Objects.isNull(cookie)) {

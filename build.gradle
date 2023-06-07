@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'jacoco'
 }
 
 group = 'shop.zip'
@@ -14,6 +15,10 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+}
+
+jacoco {
+    toolVersion = "0.8.8"
 }
 
 repositories {
@@ -72,6 +77,10 @@ dependencies {
 
     // logback
     implementation "ca.pjer:logback-awslogs-appender:1.6.0"
+
+    //fly-way
+    implementation 'org.flywaydb:flyway-core:9.16.0'
+    implementation 'org.flywaydb:flyway-mysql'
 }
 
 ext {
@@ -104,6 +113,67 @@ task copyDocument(type: Copy) {
 test {
     outputs.dir snippetsDir
     useJUnitPlatform()
+    jacoco {
+        destinationFile = file("$buildDir/jacoco/jacoco.exec")
+    }
+
+    finalizedBy 'jacocoTestReport'
+}
+
+jacocoTestReport {
+
+    reports {
+        csv.enabled true
+        html.enabled true
+
+        csv.destination file("${buildDir}/jacoco/index.csv")
+        html.destination file("${buildDir}/jacoco/index.html")
+    }
+
+    def Qdomains = []
+    for (qPattern in "**/QA".."**/QZ") {
+        Qdomains.add(qPattern + "*")
+    }
+
+    afterEvaluate {
+
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, excludes: [
+                    '**/*Application*',
+                    '**/*Exception*',
+                    '**/dto/**',
+                    '**/global/**',
+                    '**/health/**',
+                    '**/test/**',
+                    '**/base/**'
+            ] + Qdomains)
+        }))
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    def Qdomains = []
+    // 패키지 + 클래스명
+    for (qPattern in '*.QA'..'*.QZ') { // qPattern = '*.QA', '*.QB', ... '*.QZ'
+        Qdomains.add(qPattern + '*')
+    }
+
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+
+            excludes = ['**/*Application*',
+                        '**/*Exception*',
+                        '**/dto/**',
+                        '**/global/**',
+                        '**/health/**',
+                        '**/test/**',
+                        '**/base/**'] + Qdomains // 제외할 Qdomains 패턴 추가
+        }
+    }
 }
 
 build {
