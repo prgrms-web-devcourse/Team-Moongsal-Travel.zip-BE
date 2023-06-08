@@ -36,7 +36,7 @@ public class TempTravelogueController {
   @PutMapping("/{travelogueId}")
   public ResponseEntity<TravelogueUpdateRes> updateTravelogue(
       @PathVariable Long travelogueId,
-      @RequestBody @Valid TravelogueUpdateReq travelogueUpdateReq,
+      @RequestBody TravelogueUpdateReq travelogueUpdateReq,
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     TravelogueUpdateRes travelogueUpdateRes =

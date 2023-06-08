@@ -7,7 +7,6 @@ import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueUpdateRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.exception.SubTravelogueNotFoundException;
 import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
-import shop.zip.travel.domain.post.travelogue.dto.TravelogueUpdate;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueUpdateRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -33,9 +32,8 @@ public class TempTravelogueService {
   public TravelogueUpdateRes updateTravelogue(Long travelogueId, Long memberId,
       TravelogueUpdateReq travelogueUpdateReq) {
     Travelogue travelogue = getMyTravelogue(travelogueId, memberId);
-    TravelogueUpdate travelogueUpdate = travelogueUpdateReq.toTravelogueUpdate();
 
-    travelogue.update(travelogueUpdate);
+    travelogue.update(travelogueUpdateReq);
 
     return TravelogueUpdateRes.toDto(travelogue.getId());
   }

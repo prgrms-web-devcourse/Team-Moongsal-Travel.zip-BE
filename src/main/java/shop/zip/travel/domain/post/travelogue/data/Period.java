@@ -55,6 +55,8 @@ public class Period {
   }
 
   public boolean cannotPublish() {
+    verifyEndDateIsBeforeToday(endDate);
+    verifyStartDateIsBeforeEndDate(startDate, endDate);
     return hasNull();
   }
 

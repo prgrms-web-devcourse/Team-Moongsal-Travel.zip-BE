@@ -24,7 +24,7 @@ import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.exception.InvalidAccessSubTravelogueException;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
-import shop.zip.travel.domain.post.travelogue.dto.TravelogueUpdate;
+import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.domain.post.travelogue.exception.NoAuthorizationException;
 import shop.zip.travel.global.error.ErrorCode;
@@ -86,7 +86,7 @@ public class Travelogue extends BaseTimeEntity {
 
   public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
       boolean isPublished, Long viewCount, List<SubTravelogue> subTravelogues, Member member) {
-    validMember(member);
+    checkNull(member);
     this.period = period;
     this.title = title;
     this.country = country;
@@ -138,9 +138,6 @@ public class Travelogue extends BaseTimeEntity {
     return viewCount;
   }
 
-  private void validMember(Member member) {
-    Assert.notNull(member, "사용자를 확인해주세요");
-  }
 
   public void addSubTravelogue(SubTravelogue subTravelogue) {
     verifySubTravelogueDuplicate(subTravelogue);
@@ -156,12 +153,12 @@ public class Travelogue extends BaseTimeEntity {
     Assert.isTrue(!subTravelogues.contains(subTravelogue), "이미 존재하는 서브게시물 입니다.");
   }
 
-  public void update(TravelogueUpdate travelogueUpdate) {
-    this.period = travelogueUpdate.period();
-    this.title = travelogueUpdate.title();
-    this.country = travelogueUpdate.country();
-    this.cost = travelogueUpdate.cost();
-    this.thumbnail = travelogueUpdate.thumbnail();
+  public void update(TravelogueUpdateReq travelogueUpdateReq) {
+    this.period = travelogueUpdateReq.getPeriod();
+    this.title = travelogueUpdateReq.getTitle();
+    this.country = travelogueUpdateReq.getCountry();
+    this.cost = travelogueUpdateReq.getCost();
+    this.thumbnail = travelogueUpdateReq.getThumbnail();
     this.isPublished = TEMP;
   }
 
@@ -173,23 +170,6 @@ public class Travelogue extends BaseTimeEntity {
     this.isPublished = true;
   }
 
-  private boolean cannotPublish() {
-    return hasNull() ||
-        !hasAllSubTravelogues() ||
-        period.cannotPublish() ||
-        cost.cannotPublish() ||
-        country.cannotPublish();
-  }
-
-  private boolean hasNull() {
-    return Objects.isNull(title) ||
-        Objects.isNull(thumbnail);
-  }
-
-  private boolean hasAllSubTravelogues() {
-    return subTravelogues.size() == period.getNights() + 1;
-  }
-
   public void validWriter(Long memberId) {
     if (!this.member.getId().equals(memberId)) {
       throw new NoAuthorizationException(ErrorCode.NO_AUTHORIZATION_TO_TRAVELOGUE);
@@ -199,16 +179,6 @@ public class Travelogue extends BaseTimeEntity {
   public void addViewCount() {
     this.viewCount++;
   }
-
-//  public void updateSubTravelogues(SubTravelogue newSubTravelogue) {
-//    removeOldSubTravelogue(newSubTravelogue.getDay() - INDEX_MATCHER);
-//
-//    List<SubTravelogue> newSubTravelogues = new ArrayList<>(this.subTravelogues);
-//    newSubTravelogues.add(newSubTravelogue);
-//
-//    this.subTravelogues.clear();
-//    this.subTravelogues.addAll(newSubTravelogues);
-//  }
 
   public void updateSubTravelogues(SubTravelogue newSubTravelogue) {
     removeOldSubTravelogue(newSubTravelogue.getDay() - INDEX_MATCHER);
@@ -229,4 +199,24 @@ public class Travelogue extends BaseTimeEntity {
     this.subTravelogues.remove(idx);
   }
 
+  private boolean hasAllSubTravelogues() {
+    return subTravelogues.size() == period.getNights() + 1;
+  }
+
+  private boolean cannotPublish() {
+    return hasNull() ||
+        !hasAllSubTravelogues() ||
+        period.cannotPublish() ||
+        cost.cannotPublish() ||
+        country.cannotPublish();
+  }
+
+  private boolean hasNull() {
+    return Objects.isNull(title) ||
+        Objects.isNull(thumbnail);
+  }
+
+  private void checkNull(Member member) {
+    Assert.notNull(member, "사용자를 확인해주세요");
+  }
 }
