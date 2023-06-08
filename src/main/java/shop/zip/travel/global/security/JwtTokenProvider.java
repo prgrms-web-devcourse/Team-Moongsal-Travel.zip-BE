@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import shop.zip.travel.domain.member.exception.InvalidRefreshTokenException;
 import shop.zip.travel.global.error.BusinessException;
 import shop.zip.travel.global.error.ErrorCode;
 import shop.zip.travel.global.error.exception.JsonNotParsingException;
@@ -112,7 +113,7 @@ public class JwtTokenProvider {
       throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);
     } catch (ExpiredJwtException ex) {
       log.info("만료된 JWT 토큰");
-      throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);
+      throw new InvalidRefreshTokenException(ErrorCode.INVALID_REFRESH_TOKEN);
     } catch (UnsupportedJwtException ex) {
       log.info("지원하지 않는 JWT 토큰");
       throw new BusinessException(ErrorCode.TOKEN_EXCEPTION);

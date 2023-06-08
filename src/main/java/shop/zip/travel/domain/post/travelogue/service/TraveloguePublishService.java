@@ -21,7 +21,7 @@ public class TraveloguePublishService {
   @Transactional
   public TraveloguePublishRes publish(Long travelogueId, Long memberId) {
     Travelogue travelogue = findBy(travelogueId);
-    travelogue.validateWriter(memberId);
+    travelogue.validWriter(memberId);
 
     travelogue.changePublishStatus();
     return new TraveloguePublishRes(travelogue.getId());

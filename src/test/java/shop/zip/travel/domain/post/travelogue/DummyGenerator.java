@@ -7,42 +7,27 @@ import java.util.Set;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.fake.FakeMember;
 import shop.zip.travel.domain.post.data.Country;
-import shop.zip.travel.domain.post.data.DefaultValue;
-import shop.zip.travel.domain.post.data.TempCountry;
 import shop.zip.travel.domain.post.fake.FakeSubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
-import shop.zip.travel.domain.post.subTravelogue.data.TempAddress;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
-import shop.zip.travel.domain.post.travelogue.data.temp.TempCost;
-import shop.zip.travel.domain.post.travelogue.data.temp.TempPeriod;
 import shop.zip.travel.domain.post.travelogue.dto.TempTravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.req.CostCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.req.CountryCreateReq;
+import shop.zip.travel.domain.post.travelogue.dto.req.PeriodCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 
 public class DummyGenerator {
 
-  public static Travelogue createTempTravelogue(Member member) {
-    return new Travelogue(
-        createPeriod(),
-        DefaultValue.STRING.getValue(),
-        createCountry(),
-        DefaultValue.STRING.getValue(),
-        createCost(),
-        false,
-        member
-    );
-  }
-
-  public static Travelogue createNotPublishedTravelogue(Member member) {
-    ArrayList<SubTravelogue> subTravelogues = new ArrayList<>();
-    subTravelogues.add(createSubTravelogue(1));
-
+  public static Travelogue createNotPublishedTravelogueWithSubTravelogues(
+      List<SubTravelogue> subTravelogues, Member member
+  ) {
     return new Travelogue(
         createPeriod(),
         "일본 오사카 다녀왔어요.",
@@ -201,6 +186,22 @@ public class DummyGenerator {
     );
   }
 
+  public static PeriodCreateReq createPeriodCreateReq() {
+    return new PeriodCreateReq(
+        LocalDate.of(2022, 2, 10),
+        LocalDate.of(2022, 2, 11)
+    );
+  }
+
+  public static CostCreateReq createCostCreateReq() {
+    return new CostCreateReq(
+        null,
+        null,
+        null,
+        100000L
+    );
+  }
+
   public static Member createFakeMember() {
     return new FakeMember(
         1L,
@@ -208,42 +209,23 @@ public class DummyGenerator {
     );
   }
 
-  public static TempPeriod createTempPeriod() {
-    return new TempPeriod(
-        null,
-        null
-    );
-  }
-
-  public static TempCountry createTempCountry() {
-    return new TempCountry(
-        "일본"
-    );
-  }
-
-  public static TempAddress createTempAddress() {
-    return new TempAddress(
-        "일본 오사카 유니버셜 스튜디오"
-    );
-  }
-
-  public static TempCost createTempCost() {
-    return new TempCost(
-        0L,
-        0L,
-        0L,
-        10000000L
-    );
-  }
-
-  public static SubTravelogue createTempSubTravelogue(int dayOfSubTravelogue) {
-    return new SubTravelogue(
-        "일본 오사카 재밌음",
-        DefaultValue.STRING.getValue(),
-        dayOfSubTravelogue,
-        List.of(createAddress()),
-        Set.of(Transportation.BUS),
-        new ArrayList<>()
+  public static TravelogueUpdateReq createTravelogueUpdateReq() {
+    return new TravelogueUpdateReq(
+        new PeriodCreateReq(
+            null,
+            null
+        ),
+        "게시글 제목",
+        new CountryCreateReq(
+            "일본"
+        ),
+        "www.google.com",
+        new CostCreateReq(
+            0L,
+            0L,
+            0L,
+            10000000L
+        )
     );
   }
 
@@ -251,25 +233,12 @@ public class DummyGenerator {
     return TravelogueSimpleRes.toDto(createTravelogueSimple(travelogue));
   }
 
-  public static TravelogueUpdateReq createTravelogueUpdateReq() {
-    return new TravelogueUpdateReq(
-        new TempPeriod(
-            LocalDate.of(2022, 2, 13),
-            LocalDate.of(2022, 2, 14)
-        ),
-        "일본 오사카 방문했어요.",
-        createTempCountry(),
-        "www.naver.com",
-        createTempCost()
-    );
-  }
-
   public static SubTravelogueUpdateReq createSubTravelogueUpdateReq() {
     return new SubTravelogueUpdateReq(
         "일본 오사카 1일차입니다.",
         "오사카 1일차인데 눌러앉고 싶네요.",
         1,
-        List.of(createTempAddress()),
+        new ArrayList<>(),
         Set.of(Transportation.BUS),
         new ArrayList<>()
     );

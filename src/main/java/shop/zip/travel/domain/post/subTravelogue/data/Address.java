@@ -2,7 +2,6 @@ package shop.zip.travel.domain.post.subTravelogue.data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.global.error.ErrorCode;
 
@@ -24,7 +23,7 @@ public class Address {
     }
 
     public boolean cannotPublish() {
-        return DefaultValue.STRING.isEqual(region);
+        return region.isBlank();
     }
 
     public void verifyPublish() {

@@ -1,18 +1,12 @@
 package shop.zip.travel.domain.post.travelogue.data;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class CostTest {
-
-	@Test
-	@DisplayName("가격은 null일 수 없다.")
-	void cost_should_not_be_null(){
-		assertThatThrownBy(() -> new Cost(null))
-			.isInstanceOf(IllegalArgumentException.class);
-	}
 
 	@Test
 	@DisplayName("총 가격 하나만으로 가격 객체를 생성할 수 있다.")

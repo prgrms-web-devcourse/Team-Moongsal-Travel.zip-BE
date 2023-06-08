@@ -11,7 +11,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -19,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,8 +38,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
-import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
-import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -61,8 +59,6 @@ class TravelogueControllerTest {
   @Autowired
   private TravelogueRepository travelogueRepository;
   @Autowired
-  private SubTravelogueRepository subTravelogueRepository;
-  @Autowired
   private TravelogueLikeService likeService;
   @Autowired
   private MemberRepository memberRepository;
@@ -76,19 +72,13 @@ class TravelogueControllerTest {
   void setUp() {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
-    travelogue = DummyGenerator.createNotPublishedTravelogue(member);
+    travelogue = DummyGenerator.createTravelogue(member);
     travelogueRepository.saveAll(
         List.of(
             travelogue,
             DummyGenerator.createTravelogue(member),
             DummyGenerator.createTravelogue(member))
     );
-
-    SubTravelogue subTravelogue = subTravelogueRepository.save(
-        DummyGenerator.createSubTravelogue(2)
-    );
-
-    travelogue.addSubTravelogue(subTravelogue);
   }
 
   @Test
@@ -135,32 +125,13 @@ class TravelogueControllerTest {
   }
 
   @Test
-  @DisplayName("임시 저장된 게시글을 발행할 수 있다.")
-  void test_publish_travelogue() throws Exception {
-
-    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
-
-    mockMvc.perform(patch("/api/travelogues/{travelogueId}/publish", travelogue.getId())
-            .header("AccessToken", token))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andDo(document("publish-travelogue-success",
-            preprocessRequest(prettyPrint()),
-            preprocessResponse(prettyPrint()),
-            pathParameters(
-                parameterWithName("travelogueId").description("travelogue id")
-            ),
-            responseFields(
-                fieldWithPath("travelogueId").description("공개된 게시글 PK")
-            )));
-  }
-
-  @Test
   @DisplayName("작성이 완료되지 않은 게시글은 발행할 수 없다.")
   void test_fail_publish_travelogue() throws Exception {
 
     Travelogue cannotPublishTravelogue =
-        travelogueRepository.save(DummyGenerator.createNotPublishedTravelogue(member));
+        travelogueRepository.save(
+            DummyGenerator.createNotPublishedTravelogueWithSubTravelogues(new ArrayList<>(), member)
+        );
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
@@ -182,11 +153,11 @@ class TravelogueControllerTest {
   void test_temp_save_travelogue() throws Exception {
     // given
     TravelogueCreateReq travelogueCreateReq = new TravelogueCreateReq(
-        DummyGenerator.createTempPeriod(),
+        DummyGenerator.createPeriodCreateReq(),
         null,
-        DummyGenerator.createTempCountry(),
+        DummyGenerator.createCountry(),
         "www.naver.com",
-        DummyGenerator.createTempCost()
+        DummyGenerator.createCostCreateReq()
     );
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());

@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,9 +48,9 @@ class MemberMyPageServiceTest {
   void setUp() {
     member = DummyGenerator.createFakeMember();
     travelogue = new FakeTravelogue(1L, DummyGenerator.createTravelogueWithSubTravelogues(
-        List.of(
+        new ArrayList<>(Arrays.asList(
             DummyGenerator.createFakeSubTravelogue(1L, 1),
-            DummyGenerator.createFakeSubTravelogue(2L, 2)
+            DummyGenerator.createFakeSubTravelogue(2L, 2))
         ),
         member
     ));

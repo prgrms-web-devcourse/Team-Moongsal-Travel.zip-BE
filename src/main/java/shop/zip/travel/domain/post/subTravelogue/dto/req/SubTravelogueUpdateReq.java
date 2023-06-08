@@ -9,7 +9,6 @@ import shop.zip.travel.domain.post.data.DefaultValue;
 import shop.zip.travel.domain.post.image.dto.TravelPhotoCreateReq;
 import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
-import shop.zip.travel.domain.post.subTravelogue.data.TempAddress;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueUpdate;
 
@@ -17,7 +16,7 @@ public record SubTravelogueUpdateReq(
     String title,
     String content,
     int day,
-    List<TempAddress> addresses,
+    List<AddressCreateReq> addresses,
     Set<Transportation> transportationSet,
     List<TravelPhotoCreateReq> travelPhotoCreateReqs
 ) {
@@ -39,7 +38,7 @@ public record SubTravelogueUpdateReq(
         }
 
         return addresses.stream()
-            .map(TempAddress::toAddress)
+            .map(AddressCreateReq::toAddress)
             .collect(Collectors.toList());
     }
 
