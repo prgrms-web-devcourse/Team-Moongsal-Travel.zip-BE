@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -93,16 +94,25 @@ class TempTravelogueControllerTest {
                 parameterWithName("travelogueId").description("travelogue pk 값")
             ),
             requestFields(
-                fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작일"),
-                fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료일"),
-                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                fieldWithPath("country.name").type(JsonFieldType.STRING).description("방문한 나라"),
-                fieldWithPath("thumbnail").type(JsonFieldType.STRING).description("썸네일 URL"),
-                fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER).description("교통비"),
-                fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박비"),
-                fieldWithPath("cost.etc").type(JsonFieldType.NUMBER).description("기타 비용"),
+                fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작일")
+                    .optional(),
+                fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료일")
+                    .optional(),
+                fieldWithPath("period.nights").type(JsonFieldType.NUMBER).description("총 여행 날짜")
+                    .optional(),
+                fieldWithPath("title").type(JsonFieldType.STRING).description("제목").optional(),
+                fieldWithPath("country.name").type(JsonFieldType.STRING).description("방문한 나라")
+                    .optional(),
+                fieldWithPath("thumbnail").type(JsonFieldType.STRING).description("썸네일 URL")
+                    .optional(),
+                fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER).description("교통비")
+                    .optional(),
+                fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박비")
+                    .optional(),
+                fieldWithPath("cost.etc").type(JsonFieldType.NUMBER).description("기타 비용")
+                    .optional(),
                 fieldWithPath("cost.total").type(JsonFieldType.NUMBER)
-                    .description("전체 경비 (전체 경비는 다른 비용의 합보다 작으면 안됩니다.)")
+                    .description("전체 경비 (전체 경비는 다른 비용의 합보다 작으면 안됩니다.)").optional()
             ),
             responseFields(
                 fieldWithPath("travelogueId").type(JsonFieldType.NUMBER)
@@ -141,14 +151,17 @@ class TempTravelogueControllerTest {
                 fieldWithPath("title").type(JsonFieldType.STRING).description("소제목"),
                 fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
                 fieldWithPath("day").type(JsonFieldType.NUMBER).description("서브 게시물의 일차 정보"),
+                fieldWithPath("addresses[]").type(JsonFieldType.ARRAY)
+                    .description("방문한 장소 리스트(장소 리스트가 비어있는 경우 빈 배열로 전달되는 필드입니다.")
+                    .optional(),
                 fieldWithPath("addresses[].region").type(JsonFieldType.STRING)
-                    .description("방문한 장소명"),
+                    .description("방문한 장소명").optional(),
                 fieldWithPath("transportationSet").type(JsonFieldType.ARRAY)
                     .description("이용한 교통수단"),
                 fieldWithPath("travelPhotoCreateReqs[]").type(JsonFieldType.ARRAY)
                     .description("이미지가 없을 경우 반환되는 빈 이미지 리스트").optional(),
                 fieldWithPath("travelPhotoCreateReqs[].url").type(JsonFieldType.STRING)
-                    .description("업로드 된 이미지 url")
+                    .description("업로드 된 이미지 url").optional()
             ),
             responseFields(
                 fieldWithPath("subTravelogueId").type(JsonFieldType.NUMBER)
@@ -190,16 +203,27 @@ class TempTravelogueControllerTest {
                 parameterWithName("travelogueId").description("travelogue pk 값")
             ),
             requestFields(
-                fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작일"),
-                fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료일"),
-                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                fieldWithPath("country.name").type(JsonFieldType.STRING).description("방문한 나라"),
-                fieldWithPath("thumbnail").type(JsonFieldType.STRING).description("썸네일 URL"),
-                fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER).description("교통비"),
-                fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박비"),
-                fieldWithPath("cost.etc").type(JsonFieldType.NUMBER).description("기타 비용"),
+                fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작일")
+                    .optional(),
+                fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료일")
+                    .optional(),
+                fieldWithPath("period.nights").type(JsonFieldType.NUMBER).description("여행 총 날짜")
+                    .optional(),
+                fieldWithPath("title").type(JsonFieldType.STRING).description("제목")
+                    .optional(),
+                fieldWithPath("country.name").type(JsonFieldType.STRING).description("방문한 나라")
+                    .optional(),
+                fieldWithPath("thumbnail").type(JsonFieldType.STRING).description("썸네일 URL")
+                    .optional(),
+                fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER).description("교통비")
+                    .optional(),
+                fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박비")
+                    .optional(),
+                fieldWithPath("cost.etc").type(JsonFieldType.NUMBER).description("기타 비용")
+                    .optional(),
                 fieldWithPath("cost.total").type(JsonFieldType.NUMBER)
                     .description("전체 경비 (전체 경비는 다른 비용의 합보다 작으면 안됩니다.)")
+                    .optional()
             ),
             responseFields(
                 fieldWithPath("message").type(JsonFieldType.STRING)
@@ -213,7 +237,13 @@ class TempTravelogueControllerTest {
   void test_publish_travelogue() throws Exception {
 
     Travelogue notPublished = travelogueRepository.save(
-        DummyGenerator.createNotPublishedTravelogue(member));
+        DummyGenerator.createNotPublishedTravelogueWithSubTravelogues(
+            List.of(
+                DummyGenerator.createSubTravelogue(1),
+                DummyGenerator.createSubTravelogue(2)
+            ),
+            member)
+    );
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 

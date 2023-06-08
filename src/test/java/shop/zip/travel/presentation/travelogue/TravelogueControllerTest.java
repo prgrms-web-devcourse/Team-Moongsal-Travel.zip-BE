@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,8 +38,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
-import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
-import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -60,8 +59,6 @@ class TravelogueControllerTest {
   @Autowired
   private TravelogueRepository travelogueRepository;
   @Autowired
-  private SubTravelogueRepository subTravelogueRepository;
-  @Autowired
   private TravelogueLikeService likeService;
   @Autowired
   private MemberRepository memberRepository;
@@ -75,19 +72,13 @@ class TravelogueControllerTest {
   void setUp() {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
-    travelogue = DummyGenerator.createNotPublishedTravelogue(member);
+    travelogue = DummyGenerator.createTravelogue(member);
     travelogueRepository.saveAll(
         List.of(
             travelogue,
             DummyGenerator.createTravelogue(member),
             DummyGenerator.createTravelogue(member))
     );
-
-    SubTravelogue subTravelogue = subTravelogueRepository.save(
-        DummyGenerator.createSubTravelogue(2)
-    );
-
-    travelogue.addSubTravelogue(subTravelogue);
   }
 
   @Test
@@ -138,7 +129,9 @@ class TravelogueControllerTest {
   void test_fail_publish_travelogue() throws Exception {
 
     Travelogue cannotPublishTravelogue =
-        travelogueRepository.save(DummyGenerator.createNotPublishedTravelogue(member));
+        travelogueRepository.save(
+            DummyGenerator.createNotPublishedTravelogueWithSubTravelogues(new ArrayList<>(), member)
+        );
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
@@ -164,7 +157,7 @@ class TravelogueControllerTest {
         null,
         DummyGenerator.createCountry(),
         "www.naver.com",
-        DummyGenerator.createCreateReq()
+        DummyGenerator.createCostCreateReq()
     );
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());

@@ -114,7 +114,7 @@ class TravelogueServiceTest {
         "일본 여행은 2박 3일은 짧아요.",
         DummyGenerator.createCountry(),
         "www.google.com",
-        DummyGenerator.createCreateReq()
+        DummyGenerator.createCostCreateReq()
     );
 
     Travelogue travelogue = new FakeTravelogue(

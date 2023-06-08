@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,7 +68,8 @@ class SubTravelogueControllerTest {
     member = new Member("user@naver.com", "password1234!", "nickname", "1999");
     memberRepository.save(member);
 
-    travelogue = travelogueRepository.save(DummyGenerator.createTempTravelogue(member));
+    travelogue = travelogueRepository.save(
+        DummyGenerator.createTravelogueWithSubTravelogues(new ArrayList<>(), member));
   }
 
   @Test

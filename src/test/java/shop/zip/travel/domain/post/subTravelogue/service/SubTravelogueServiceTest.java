@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
@@ -56,7 +57,10 @@ class SubTravelogueServiceTest {
 
     Member member = DummyGenerator.createMember();
 
-    Travelogue travelogue = new FakeTravelogue(1L, DummyGenerator.createTempTravelogue(member));
+    Travelogue travelogue = new FakeTravelogue(
+        1L,
+        DummyGenerator.createTravelogueWithSubTravelogues(new ArrayList<>(), member)
+    );
 
     SubTravelogue actual = new FakeSubTravelogue(1L, subTravelogueCreateReq.toSubTravelogue());
 

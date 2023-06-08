@@ -9,12 +9,11 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
-import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 import shop.zip.travel.global.security.JwtTokenProvider;
 
@@ -53,17 +51,15 @@ class MemberMyTravelogueControllerTest {
   @Autowired
   private MemberRepository memberRepository;
 
-  private final ObjectMapper objectMapper = new ObjectMapper();
-
-  private Member member;
-  private Travelogue travelogue;
   private String token;
 
   @BeforeEach
   void setUp() {
-    member = memberRepository.save(DummyGenerator.createMember());
-    travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
-    travelogueRepository.save(DummyGenerator.createTempTravelogue(member));
+    Member member = memberRepository.save(DummyGenerator.createMember());
+    travelogueRepository.save(DummyGenerator.createTravelogue(member));
+    travelogueRepository.save(
+        DummyGenerator.createNotPublishedTravelogueWithSubTravelogues(new ArrayList<>(), member)
+    );
     token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
   }
 
@@ -180,38 +176,4 @@ class MemberMyTravelogueControllerTest {
             )
         ));
   }
-
-  @Test
-  @DisplayName("내가 작성했던 하나의 트래블로그 정보를 가져올 수 있다.")
-  void getDetailForUpdate() throws Exception {
-
-    mockMvc.perform(get("/api/members/my/travelogues/{travelogueId}", travelogue.getId())
-            .header(tokenName, token))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andDo(document("get-my-one-travelogue",
-            preprocessResponse(prettyPrint()),
-            requestHeaders(
-                headerWithName("AccessToken").description("인증 헤더")
-            ),
-            pathParameters(
-                parameterWithName("travelogueId").description("travelogue pk 값")
-            ),
-            responseFields(
-                fieldWithPath("title").type(JsonFieldType.STRING)
-                    .description("Travelogue 제목"),
-                fieldWithPath("period.startDate").type(JsonFieldType.STRING).description("여행 시작일"),
-                fieldWithPath("period.endDate").type(JsonFieldType.STRING).description("여행 종료일"),
-                fieldWithPath("country.name").type(JsonFieldType.STRING).description("방문한 나라"),
-                fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER).description("교통비"),
-                fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박비"),
-                fieldWithPath("cost.etc").type(JsonFieldType.NUMBER).description("기타 비용"),
-                fieldWithPath("cost.total").type(JsonFieldType.NUMBER).description("총 경비"),
-                fieldWithPath("thumbnail").type(JsonFieldType.STRING)
-                    .description("Travelogue 썸네일"),
-                fieldWithPath("subTravelogueIds[]").type(JsonFieldType.ARRAY)
-                    .description("서브트레블로그 아이디 리스트")
-            )));
-  }
-
 }

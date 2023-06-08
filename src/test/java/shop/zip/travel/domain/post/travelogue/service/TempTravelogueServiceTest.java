@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,13 +55,7 @@ class TempTravelogueServiceTest {
   @Test
   @DisplayName("트래블로그를 수정할 수 있다.")
   void test_update_travelogue() {
-    TravelogueUpdateReq travelogueUpdateReq = new TravelogueUpdateReq(
-        DummyGenerator.createTempPeriod(),
-        "오사카 여행기",
-        DummyGenerator.createTempCountry(),
-        "www.naver.com",
-        DummyGenerator.createTempCost()
-    );
+    TravelogueUpdateReq travelogueUpdateReq = DummyGenerator.createTravelogueUpdateReq();
 
     when(travelogueRepository.findById(any(Long.class)))
         .thenReturn(Optional.of(travelogue));
@@ -87,7 +80,7 @@ class TempTravelogueServiceTest {
         "오사카 1일차",
         "오사카 1일차 여행기입니다.",
         1,
-        List.of(DummyGenerator.createTempAddress()),
+        new ArrayList<>(),
         Set.of(Transportation.SUBWAY),
         new ArrayList<>()
     );
