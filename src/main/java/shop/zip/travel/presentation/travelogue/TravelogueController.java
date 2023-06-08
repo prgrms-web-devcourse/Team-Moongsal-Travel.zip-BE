@@ -21,12 +21,10 @@ import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
-import shop.zip.travel.domain.post.travelogue.dto.res.TraveloguePublishRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
-import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
-import shop.zip.travel.global.util.CookieUtil;
 import shop.zip.travel.global.security.UserPrincipal;
+import shop.zip.travel.global.util.CookieUtil;
 
 @RestController
 @RequestMapping("/api/travelogues")
@@ -36,14 +34,9 @@ public class TravelogueController {
   private static final String DEFAULT_SORT_FIELD = "createDate";
 
   private final TravelogueService travelogueService;
-  private final TraveloguePublishService traveloguePublishService;
 
-  public TravelogueController(
-      TravelogueService travelogueService,
-      TraveloguePublishService traveloguePublishService
-  ) {
+  public TravelogueController(TravelogueService travelogueService) {
     this.travelogueService = travelogueService;
-    this.traveloguePublishService = traveloguePublishService;
   }
 
   @PostMapping
@@ -82,16 +75,6 @@ public class TravelogueController {
         travelogueService.getTravelogues(pageable);
 
     return ResponseEntity.ok(travelogueSimpleRes);
-  }
-
-  @PatchMapping("/{travelogueId}/publish")
-  public ResponseEntity<TraveloguePublishRes> publish(
-      @PathVariable Long travelogueId,
-      @AuthenticationPrincipal UserPrincipal userPrincipal
-  ) {
-    TraveloguePublishRes traveloguePublishRes = traveloguePublishService.publish(travelogueId,
-        userPrincipal.getUserId());
-    return ResponseEntity.ok(traveloguePublishRes);
   }
 
   @GetMapping("/search")

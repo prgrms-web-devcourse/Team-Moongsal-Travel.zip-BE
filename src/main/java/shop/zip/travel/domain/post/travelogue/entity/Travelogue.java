@@ -13,6 +13,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import org.springframework.util.Assert;
@@ -126,7 +127,6 @@ public class Travelogue extends BaseTimeEntity {
   }
 
   public List<SubTravelogue> getSubTravelogues() {
-    sortSubTravelogues(subTravelogues);
     return new ArrayList<>(subTravelogues);
   }
 
@@ -200,14 +200,21 @@ public class Travelogue extends BaseTimeEntity {
     this.viewCount++;
   }
 
+//  public void updateSubTravelogues(SubTravelogue newSubTravelogue) {
+//    removeOldSubTravelogue(newSubTravelogue.getDay() - INDEX_MATCHER);
+//
+//    List<SubTravelogue> newSubTravelogues = new ArrayList<>(this.subTravelogues);
+//    newSubTravelogues.add(newSubTravelogue);
+//
+//    this.subTravelogues.clear();
+//    this.subTravelogues.addAll(newSubTravelogues);
+//  }
+
   public void updateSubTravelogues(SubTravelogue newSubTravelogue) {
     removeOldSubTravelogue(newSubTravelogue.getDay() - INDEX_MATCHER);
 
-    List<SubTravelogue> newSubTravelogues = new ArrayList<>(this.subTravelogues);
-    newSubTravelogues.add(newSubTravelogue);
-
-    this.subTravelogues.clear();
-    this.subTravelogues.addAll(newSubTravelogues);
+    this.subTravelogues.add(newSubTravelogue);
+    subTravelogues.sort(Comparator.comparingInt(SubTravelogue::getDay));
   }
 
   public void isContain(SubTravelogue subTravelogue) {
@@ -220,19 +227,6 @@ public class Travelogue extends BaseTimeEntity {
 
   private void removeOldSubTravelogue(int idx) {
     this.subTravelogues.remove(idx);
-  }
-
-  private void sortSubTravelogues(List<SubTravelogue> requestList) {
-    requestList.sort((sub1, sub2) -> {
-      int day1 = sub1.getDay();
-      int day2 = sub2.getDay();
-
-      if (day1 > day2) {
-        return 1;
-      } else {
-        return -1;
-      }
-    });
   }
 
 }
