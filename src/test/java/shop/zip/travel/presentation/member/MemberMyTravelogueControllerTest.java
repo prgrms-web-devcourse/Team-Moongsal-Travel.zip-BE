@@ -4,12 +4,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -18,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,15 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
-import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
-import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 import shop.zip.travel.global.security.JwtTokenProvider;
@@ -221,130 +214,4 @@ class MemberMyTravelogueControllerTest {
             )));
   }
 
-  @Test
-  @DisplayName("수정을 위해 내가 작성했던 하나의 서브 트래블로그 정보를 가져올 수 있다.")
-  void getDetailSubTravelogueForUpdate() throws Exception {
-
-    Long subTravelogueId = travelogue.getSubTravelogues().get(0).getId();
-
-    mockMvc.perform(
-            get("/api/members/my/travelogues/{travelogueId}/subTravelogues/{subTravelogueId}",
-                travelogue.getId(), subTravelogueId)
-                .header(tokenName, token))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andDo(document("get-my-one-sub-travelogue",
-            preprocessResponse(prettyPrint()),
-            requestHeaders(
-                headerWithName("AccessToken").description("인증 헤더")
-            ),
-            pathParameters(
-                parameterWithName("travelogueId").description("travelogue pk 값"),
-                parameterWithName("subTravelogueId").description("subTravelogue pk 값")
-            ),
-            responseFields(
-                fieldWithPath("subTravelogueId").type(JsonFieldType.NUMBER)
-                    .description("SubTravelogue PK 값"),
-                fieldWithPath("title").type(JsonFieldType.STRING)
-                    .description("SubTravelogue 제목"),
-                fieldWithPath("content").type(JsonFieldType.STRING).description("subTravelogue 내용"),
-                fieldWithPath("day").type(JsonFieldType.NUMBER).description("subTravelogue 일차 정보"),
-                fieldWithPath("addresses[]").type(JsonFieldType.ARRAY).description("방문한 장소 리스트")
-                    .optional(),
-                fieldWithPath("addresses[].region").type(JsonFieldType.STRING)
-                    .description("방문한 장소 정보"),
-                fieldWithPath("transportationSet[]").type(JsonFieldType.ARRAY)
-                    .description("이용한 교통수단 리스트"),
-                fieldWithPath("travelPhotoCreateReqs[]").type(JsonFieldType.ARRAY)
-                    .description("이미지 리스트").optional(),
-                fieldWithPath("travelPhotoCreateReqs[].url").type(JsonFieldType.STRING)
-                    .description("이미지 URL").optional()
-            )));
-  }
-
-  @Test
-  @DisplayName("트래블로그를 수정할 수 있다.")
-  void updateTravelogue() throws Exception {
-    TravelogueUpdateReq travelogueUpdateReq = DummyGenerator.createTravelogueUpdateReq();
-
-    mockMvc.perform(patch("/api/members/my/travelogues/{travelogueId}", travelogue.getId())
-            .header(tokenName, token)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.registerModule(new JavaTimeModule())
-                .writeValueAsString(travelogueUpdateReq)))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andDo(document("update-published-travelogue",
-            preprocessRequest(prettyPrint()),
-            preprocessResponse(prettyPrint()),
-            requestHeaders(
-                headerWithName("AccessToken").description("인증 토큰")
-            ),
-            pathParameters(
-                parameterWithName("travelogueId").description("travelogue pk 값")
-            ),
-            requestFields(
-                fieldWithPath("period.startDate").type(JsonFieldType.ARRAY).description("여행 시작일"),
-                fieldWithPath("period.endDate").type(JsonFieldType.ARRAY).description("여행 종료일"),
-                fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
-                fieldWithPath("country.name").type(JsonFieldType.STRING).description("방문한 나라"),
-                fieldWithPath("thumbnail").type(JsonFieldType.STRING).description("썸네일 URL"),
-                fieldWithPath("cost.transportation").type(JsonFieldType.NUMBER).description("교통비"),
-                fieldWithPath("cost.lodge").type(JsonFieldType.NUMBER).description("숙박비"),
-                fieldWithPath("cost.etc").type(JsonFieldType.NUMBER).description("기타 비용"),
-                fieldWithPath("cost.total").type(JsonFieldType.NUMBER)
-                    .description("전체 경비 (전체 경비는 다른 비용의 합보다 작으면 안됩니다.)")
-            ),
-            responseFields(
-                fieldWithPath("travelogueId").type(JsonFieldType.NUMBER)
-                    .description("업데이트 된 게시글 PK")
-            )
-        ));
-  }
-
-  @Test
-  @DisplayName("서브 트래블로그를 수정할 수 있다.")
-  void updateSubTravelogue() throws Exception {
-    SubTravelogueUpdateReq subTravelogueUpdateReq = DummyGenerator.createSubTravelogueUpdateReq();
-
-    Long subTravelogueId = travelogue.getSubTravelogues().get(0).getId();
-
-    mockMvc.perform(
-            patch("/api/members/my/travelogues/{travelogueId}/subTravelogues/{subTravelogueId}",
-                travelogue.getId(), subTravelogueId)
-                .header(tokenName, token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.registerModule(new JavaTimeModule())
-                    .writeValueAsString(subTravelogueUpdateReq)))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andDo(document("update-published-sub-travelogue",
-            preprocessRequest(prettyPrint()),
-            preprocessResponse(prettyPrint()),
-            requestHeaders(
-                headerWithName("AccessToken").description("인증 토큰")
-            ),
-            pathParameters(
-                parameterWithName("travelogueId").description("travelogue pk 값"),
-                parameterWithName("subTravelogueId").description("subTravelogue pk 값")
-            ),
-            requestFields(
-                fieldWithPath("title").type(JsonFieldType.STRING).description("소제목"),
-                fieldWithPath("content").type(JsonFieldType.STRING).description("내용"),
-                fieldWithPath("day").type(JsonFieldType.NUMBER).description("서브 게시물의 일차 정보"),
-                fieldWithPath("addresses[].region").type(JsonFieldType.STRING)
-                    .description("방문한 장소명"),
-                fieldWithPath("transportationSet").type(JsonFieldType.ARRAY)
-                    .description("이용한 교통수단"),
-                fieldWithPath("travelPhotoCreateReqs[]").type(JsonFieldType.ARRAY)
-                    .description("이미지가 없을 경우 반환되는 빈 이미지 리스트").optional(),
-                fieldWithPath("travelPhotoCreateReqs[].url").type(JsonFieldType.STRING)
-                    .description("업로드 된 이미지 url")
-            ),
-            responseFields(
-                fieldWithPath("subTravelogueId").type(JsonFieldType.NUMBER)
-                    .description("업데이트 된 서브 게시글 PK")
-            )
-        ));
-  }
 }

@@ -1,12 +1,11 @@
-package shop.zip.travel.domain.member.service;
+package shop.zip.travel.domain.post.travelogue.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -17,9 +16,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.SliceImpl;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.post.fake.FakeTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
@@ -28,17 +24,13 @@ import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueUpdateRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
-import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailForUpdateRes;
-import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueUpdateRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
 
 @ExtendWith(MockitoExtension.class)
-class MemberMyTravelogueServiceTest {
+class TempTravelogueServiceTest {
 
   @Mock
   private TravelogueRepository travelogueRepository;
@@ -47,7 +39,7 @@ class MemberMyTravelogueServiceTest {
   private SubTravelogueRepository subTravelogueRepository;
 
   @InjectMocks
-  private MemberMyTravelogueService memberMyTravelogueService;
+  private TempTravelogueService tempTravelogueService;
 
   private Member member;
   private Travelogue travelogue;
@@ -55,64 +47,10 @@ class MemberMyTravelogueServiceTest {
   @BeforeEach
   void setUp() {
     member = DummyGenerator.createFakeMember();
-    travelogue = new FakeTravelogue(1L, DummyGenerator.createTravelogue(member));
-  }
-
-  @Test
-  @DisplayName("자신이 작성한 게시물들을 가져올 수 있다.")
-  void test_get_travelogues() {
-
-    Member member = DummyGenerator.createMember();
-    Travelogue travelogue = DummyGenerator.createTravelogue(member);
-
-    PageRequest pageRequest = PageRequest.of(0, 2);
-
-    SliceImpl<TravelogueSimple> travelogues = new SliceImpl<>(
-        List.of(DummyGenerator.createTravelogueSimple(travelogue),
-            DummyGenerator.createTravelogueSimple(travelogue)),
-        pageRequest,
-        pageRequest.next().isPaged()
-    );
-
-    when(travelogueRepository.getMyTravelogues(any(Long.class), any(Pageable.class),
-        any(Boolean.class)))
-        .thenReturn(travelogues);
-
-    // when
-    Long memberId = 1L;
-    TravelogueCustomSlice<TravelogueSimpleRes> expect =
-        memberMyTravelogueService.getTravelogues(memberId, pageRequest);
-
-    int traveloguesSize = travelogues.getSize();
-    int expectSize = expect.content().size();
-
-    assertThat(traveloguesSize).isEqualTo(expectSize);
-
-    verify(travelogueRepository, atLeastOnce())
-        .getMyTravelogues(any(Long.class), any(Pageable.class), any(Boolean.class));
-
-  }
-
-  @Test
-  @DisplayName("수정을 위한 하나의 트래블로그 정보와 서브 트래블로그 id 들을 가져올 수 있다.")
-  void test_get_travelogue_for_update() {
-    when(travelogueRepository.findById(any(Long.class)))
-        .thenReturn(Optional.of(travelogue));
-
-    List<Long> subTraveloguesId = travelogue.getSubTravelogues()
-        .stream()
-        .map(SubTravelogue::getId)
-        .toList();
-
-    TravelogueDetailForUpdateRes travelogueDetailForUpdateRes =
-        memberMyTravelogueService.getTravelogueForUpdate(member.getId(), travelogue.getId());
-
-    assertThat(travelogueDetailForUpdateRes.subTravelogueIds())
-        .usingRecursiveComparison()
-        .isEqualTo(subTraveloguesId);
-
-    verify(travelogueRepository, atLeastOnce())
-        .findById(any(Long.class));
+    SubTravelogue subTravelogue1 = DummyGenerator.createFakeSubTravelogue(1L, 1);
+    SubTravelogue subTravelogue2 = DummyGenerator.createFakeSubTravelogue(2L, 2);
+    travelogue = new FakeTravelogue(1L, DummyGenerator.createTravelogueWithSubTravelogues(
+        Arrays.asList(subTravelogue1, subTravelogue2), member));
   }
 
   @Test
@@ -130,7 +68,7 @@ class MemberMyTravelogueServiceTest {
         .thenReturn(Optional.of(travelogue));
 
     TravelogueUpdateRes travelogueUpdateRes =
-        memberMyTravelogueService.updateTravelogue(
+        tempTravelogueService.updateTravelogue(
             travelogue.getId(),
             member.getId(),
             travelogueUpdateReq
@@ -162,7 +100,7 @@ class MemberMyTravelogueServiceTest {
 
     Long subTravelogueId = 1L;
     SubTravelogueUpdateRes subTravelogueUpdateRes =
-        memberMyTravelogueService.updateSubTravelogue(travelogue.getId(),
+        tempTravelogueService.updateSubTravelogue(travelogue.getId(),
             subTravelogueId,
             member.getId(),
             subTravelogueUpdateReq

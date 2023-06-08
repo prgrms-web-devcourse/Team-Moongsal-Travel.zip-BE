@@ -11,7 +11,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -131,27 +130,6 @@ class TravelogueControllerTest {
                 fieldWithPath("first").description("첫번째 페이지인지의 여부"),
                 fieldWithPath("last").description("마지막 페이지인지의 여부"),
                 fieldWithPath("empty").description("데이터가 없는지의 여부")
-            )));
-  }
-
-  @Test
-  @DisplayName("임시 저장된 게시글을 발행할 수 있다.")
-  void test_publish_travelogue() throws Exception {
-
-    String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
-
-    mockMvc.perform(patch("/api/travelogues/{travelogueId}/publish", travelogue.getId())
-            .header("AccessToken", token))
-        .andExpect(status().isOk())
-        .andDo(print())
-        .andDo(document("publish-travelogue-success",
-            preprocessRequest(prettyPrint()),
-            preprocessResponse(prettyPrint()),
-            pathParameters(
-                parameterWithName("travelogueId").description("travelogue id")
-            ),
-            responseFields(
-                fieldWithPath("travelogueId").description("공개된 게시글 PK")
             )));
   }
 
