@@ -79,7 +79,8 @@ public class TravelogueService {
         .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
 
     updateViewCount(travelogueId, canAddViewCount);
-    Suggestion suggestion = new Suggestion(travelogue, memberId);
+
+    Suggestion suggestion = new Suggestion(travelogue.getCountry().getName(), memberId);
     suggestionRepository.save(suggestion);
 
     boolean isWriter = isWriter(travelogue.getMember(), memberId);

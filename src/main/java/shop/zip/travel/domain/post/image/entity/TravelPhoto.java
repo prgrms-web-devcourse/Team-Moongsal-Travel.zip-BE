@@ -2,10 +2,14 @@ package shop.zip.travel.domain.post.image.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import org.springframework.util.Assert;
+import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 
 @Entity
 public class TravelPhoto {
@@ -19,12 +23,20 @@ public class TravelPhoto {
     @Column(nullable = false)
     private String url;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sub_travelogue_id")
+    private SubTravelogue subTravelogue;
+
     protected TravelPhoto() {
     }
 
     public TravelPhoto(String url) {
         verify(url);
         this.url = url;
+    }
+
+    public void updateSubTravelogue(SubTravelogue subTravelogue) {
+        this.subTravelogue = subTravelogue;
     }
 
     public Long getId() {

@@ -1,6 +1,5 @@
 package shop.zip.travel.domain.post.subTravelogue.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -12,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +23,7 @@ import shop.zip.travel.domain.post.image.entity.TravelPhoto;
 import shop.zip.travel.domain.post.subTravelogue.data.Address;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.dto.SubTravelogueUpdate;
+import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.InvalidPublishTravelogueException;
 import shop.zip.travel.global.error.ErrorCode;
 
@@ -56,9 +57,12 @@ public class SubTravelogue extends BaseTimeEntity {
     @Column(nullable = false)
     private Set<Transportation> transportationSet = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "sub_travelogue_id")
+    @OneToMany(mappedBy = "subTravelogue")
     private List<TravelPhoto> photos = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "travelogue_id")
+    private Travelogue travelogue;
 
     protected SubTravelogue() {
     }
@@ -77,6 +81,10 @@ public class SubTravelogue extends BaseTimeEntity {
         this.addresses = addresses;
         this.transportationSet = transportationSet;
         this.photos = photos;
+    }
+
+    public Travelogue getTravelogue() {
+        return travelogue;
     }
 
     public Long getId() {
@@ -105,6 +113,25 @@ public class SubTravelogue extends BaseTimeEntity {
 
     public List<TravelPhoto> getPhotos() {
         return new ArrayList<>(photos);
+    }
+
+
+    public void updateTravelogue(Travelogue travelogue) {
+        if(travelogue!=null) {
+            this.travelogue = travelogue;
+            travelogue.addSubTravelogue(this);
+        }
+    }
+
+    public void addTravelPhotos(List<TravelPhoto> travelPhotos) {
+        travelPhotos.forEach(this::addTraveloguePhoto);
+    }
+
+    public void addTraveloguePhoto(TravelPhoto travelPhoto) {
+        if(travelPhoto!= null) {
+            travelPhoto.updateSubTravelogue(this);
+            this.photos.add(travelPhoto);
+        }
     }
 
     private void verify(String title,
