@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +39,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
+import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -59,25 +62,42 @@ class TravelogueControllerTest {
   @Autowired
   private TravelogueRepository travelogueRepository;
   @Autowired
+  private SubTravelogueRepository subTravelogueRepository;
+  @Autowired
   private TravelogueLikeService likeService;
   @Autowired
   private MemberRepository memberRepository;
   @Autowired
   private JwtTokenProvider jwtTokenProvider;
 
-  private Travelogue travelogue;
+  private Travelogue travelogue1;
+  private Travelogue travelogue2;
+  private Travelogue travelogue3;
   private Member member;
 
   @BeforeEach
   void setUp() {
     member = new Member("user@gmail.com", "password123!", "nickname", "1998");
     memberRepository.save(member);
-    travelogue = DummyGenerator.createTravelogue(member);
+
+    List<SubTravelogue> subTravelogues = Arrays.asList(DummyGenerator.createSubTravelogue(1), DummyGenerator.createSubTravelogue(2));
+    subTravelogueRepository.saveAll(subTravelogues);
+    travelogue1 = travelogueRepository.save(DummyGenerator.createTravelogueWithSubTravelogues(subTravelogues, member));
+
+    List<SubTravelogue> subTravelogues2 = Arrays.asList(DummyGenerator.createSubTravelogue(1), DummyGenerator.createSubTravelogue(2));
+    subTravelogueRepository.saveAll(subTravelogues2);
+    travelogue2 = travelogueRepository.save(DummyGenerator.createTravelogueWithSubTravelogues(subTravelogues2, member));
+
+    List<SubTravelogue> subTravelogues3 = Arrays.asList(DummyGenerator.createSubTravelogue(1), DummyGenerator.createSubTravelogue(2));
+    subTravelogueRepository.saveAll(subTravelogues3);
+    travelogue3 = travelogueRepository.save(DummyGenerator.createTravelogueWithSubTravelogues(subTravelogues3, member));
+
+
     travelogueRepository.saveAll(
         List.of(
-            travelogue,
-            DummyGenerator.createTravelogue(member),
-            DummyGenerator.createTravelogue(member))
+            travelogue1,
+            travelogue2,
+            travelogue3)
     );
   }
 
@@ -204,10 +224,10 @@ class TravelogueControllerTest {
   @DisplayName("게시글의 상세정보를 조회할 수 있다.")
   void test_get_one_travelogue() throws Exception {
 
-    travelogue.changePublishStatus();
+    travelogue1.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
-    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue.getId())
+    mockMvc.perform(patch("/api/travelogues/{travelogueId}", travelogue1.getId())
             .header("AccessToken", token))
         .andExpect(status().isOk())
         .andDo(print())
@@ -268,7 +288,7 @@ class TravelogueControllerTest {
   @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음", "유니버셜"})
   void test_search(String keyword) throws Exception {
 
-    travelogue.changePublishStatus();
+    travelogue1.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     mockMvc.perform(get("/api/travelogues/search")
@@ -321,7 +341,7 @@ class TravelogueControllerTest {
   @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
   void test_search_with_filter_period(String keyword) throws Exception {
 
-    travelogue.changePublishStatus();
+    travelogue1.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     MultiValueMap<String, String> period = new LinkedMultiValueMap<>();
@@ -381,12 +401,12 @@ class TravelogueControllerTest {
   @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
   void test_search_with_filter_cost(String keyword) throws Exception {
 
-    travelogue.changePublishStatus();
+    travelogue1.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     MultiValueMap<String, String> cost = new LinkedMultiValueMap<>();
     cost.add("minCost", "0");
-    cost.add("maxCost", String.valueOf(travelogue.getCost().getTotal()));
+    cost.add("maxCost", String.valueOf(travelogue1.getCost().getTotal()));
 
     mockMvc.perform(get("/api/travelogues/search/filters")
             .header("AccessToken", token)
@@ -441,7 +461,7 @@ class TravelogueControllerTest {
   @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
   void test_search_with_filter(String keyword) throws Exception {
 
-    travelogue.changePublishStatus();
+    travelogue1.changePublishStatus();
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
     MultiValueMap<String, String> period = new LinkedMultiValueMap<>();
@@ -450,7 +470,7 @@ class TravelogueControllerTest {
 
     MultiValueMap<String, String> cost = new LinkedMultiValueMap<>();
     cost.add("minCost", "0");
-    cost.add("maxCost", String.valueOf(travelogue.getCost().getTotal()));
+    cost.add("maxCost", String.valueOf(travelogue1.getCost().getTotal()));
 
     mockMvc.perform(get("/api/travelogues/search/filters")
             .header("AccessToken", token)
@@ -514,8 +534,8 @@ class TravelogueControllerTest {
             travelogue2,
             travelogue3));
 
-    changePublishStatus(travelogue, travelogue2, travelogue3);
-    likeService.liking(member.getId(), travelogue.getId());
+    changePublishStatus(travelogue1, travelogue2, travelogue3);
+    likeService.liking(member.getId(), travelogue1.getId());
 
     String token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
 
@@ -527,7 +547,7 @@ class TravelogueControllerTest {
             .header("AccessToken", token)
             .params(filterParam))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("content[0].travelogueId").value(travelogue.getId()))
+        .andExpect(jsonPath("content[0].travelogueId").value(travelogue1.getId()))
         .andDo(print())
         .andDo(document("get-travelogues-filtered-with-popular-sort",
             preprocessResponse(prettyPrint()),
