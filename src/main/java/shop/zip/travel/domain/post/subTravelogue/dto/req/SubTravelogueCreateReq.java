@@ -33,7 +33,7 @@ public record SubTravelogueCreateReq(
         );
     }
 
-    private List<TravelPhoto> toTravelPhotos() {
+    public List<TravelPhoto> toTravelPhotos() {
         if (Objects.isNull(travelPhotoCreateReqs)) {
             return new ArrayList<>();
         }

@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.repository.MemberRepository;
 import shop.zip.travel.domain.post.subTravelogue.dto.req.SubTravelogueUpdateReq;
+import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
+import shop.zip.travel.domain.post.subTravelogue.repository.SubTravelogueRepository;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
@@ -55,6 +58,9 @@ class TempTravelogueControllerTest {
   private TravelogueRepository travelogueRepository;
 
   @Autowired
+  private SubTravelogueRepository subTravelogueRepository;
+
+  @Autowired
   private MemberRepository memberRepository;
 
   @Autowired
@@ -67,7 +73,9 @@ class TempTravelogueControllerTest {
   @BeforeEach
   void setUp() {
     member = memberRepository.save(DummyGenerator.createMember());
-    travelogue = travelogueRepository.save(DummyGenerator.createTravelogue(member));
+    List<SubTravelogue> subTravelogues = Arrays.asList(DummyGenerator.createSubTravelogue(1), DummyGenerator.createSubTravelogue(2));
+    subTravelogueRepository.saveAll(subTravelogues);
+    travelogue = travelogueRepository.save(DummyGenerator.createTravelogueWithSubTravelogues(subTravelogues, member));
     token = "Bearer " + jwtTokenProvider.createAccessToken(member.getId());
   }
 

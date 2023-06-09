@@ -1,6 +1,5 @@
 package shop.zip.travel.domain.post.travelogue.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -63,8 +62,7 @@ public class Travelogue extends BaseTimeEntity {
   @Column(nullable = false)
   private Long viewCount;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JoinColumn(name = "travelogue_id")
+  @OneToMany(mappedBy = "travelogue")
   private List<SubTravelogue> subTravelogues = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)

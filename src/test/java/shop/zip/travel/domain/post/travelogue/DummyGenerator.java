@@ -59,16 +59,19 @@ public class DummyGenerator {
 
   public static Travelogue createTravelogueWithSubTravelogues(List<SubTravelogue> subTravelogues,
       Member member) {
-    return new Travelogue(
+    Travelogue travelogue1 = new Travelogue(
         createPeriod(),
         "일본 오사카 다녀왔어요.",
         createCountry(),
         "www.naver.com",
         createCost(),
         true,
-        subTravelogues,
         member
     );
+
+    subTravelogues.forEach(i-> i.updateTravelogue(travelogue1));
+
+    return travelogue1;
   }
 
 
