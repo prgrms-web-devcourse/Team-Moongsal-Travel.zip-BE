@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
+import shop.zip.travel.domain.suggestion.SuggestionCreateDto;
 import shop.zip.travel.domain.suggestion.entity.Suggestion;
 import shop.zip.travel.domain.suggestion.repository.SuggestionRepository;
 
@@ -23,8 +23,14 @@ public class SuggestionService {
   }
 
   @Transactional
-  public void save(Travelogue travelogue, Long memberId) {
-    Suggestion suggestion = new Suggestion(travelogue, memberId);
+  public void save(SuggestionCreateDto suggestionDto) {
+    Suggestion suggestion = new Suggestion(
+        suggestionDto.travelogueId(),
+        suggestionDto.countryName(),
+        suggestionDto.title(),
+        suggestionDto.thumbnail(),
+        suggestionDto.totalCost(),
+        suggestionDto.memberId());
 
     suggestionRepository.save(suggestion);
   }
@@ -39,4 +45,5 @@ public class SuggestionService {
         .map(Entry::getKey)
         .orElse(DEFAULT_COUNTRY);
   }
+
 }

@@ -25,6 +25,8 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TraveloguePublishRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.service.TraveloguePublishService;
 import shop.zip.travel.domain.post.travelogue.service.TravelogueService;
+import shop.zip.travel.domain.suggestion.SuggestionCreateDto;
+import shop.zip.travel.domain.suggestion.service.SuggestionService;
 import shop.zip.travel.global.util.CookieUtil;
 import shop.zip.travel.global.security.UserPrincipal;
 
@@ -37,13 +39,13 @@ public class TravelogueController {
 
   private final TravelogueService travelogueService;
   private final TraveloguePublishService traveloguePublishService;
+  private final SuggestionService suggestionService;
 
-  public TravelogueController(
-      TravelogueService travelogueService,
-      TraveloguePublishService traveloguePublishService
-  ) {
+  public TravelogueController(TravelogueService travelogueService,
+      TraveloguePublishService traveloguePublishService, SuggestionService suggestionService) {
     this.travelogueService = travelogueService;
     this.traveloguePublishService = traveloguePublishService;
+    this.suggestionService = suggestionService;
   }
 
   @PostMapping
@@ -64,12 +66,15 @@ public class TravelogueController {
       @AuthenticationPrincipal UserPrincipal userPrincipal
   ) {
     boolean canAddViewCount = CookieUtil.canAddViewCount(request, response, travelogueId);
+
     TravelogueDetailRes travelogueDetail =
         travelogueService.getTravelogueDetail(
             travelogueId,
             canAddViewCount,
             userPrincipal.getUserId()
         );
+
+    suggestionService.save(SuggestionCreateDto.of(travelogueDetail, userPrincipal.getUserId()));
 
     return ResponseEntity.ok(travelogueDetail);
   }
