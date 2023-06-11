@@ -18,7 +18,6 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
-import shop.zip.travel.domain.suggestion.repository.SuggestionRepository;
 import shop.zip.travel.global.error.ErrorCode;
 
 @Service
@@ -30,14 +29,12 @@ public class TravelogueService {
   private final TravelogueRepository travelogueRepository;
   private final MemberService memberService;
   private final BookmarkRepository bookmarkRepository;
-  private final SuggestionRepository suggestionRepository;
 
   public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
-      BookmarkRepository bookmarkRepository, SuggestionRepository suggestionRepository) {
+      BookmarkRepository bookmarkRepository) {
     this.travelogueRepository = travelogueRepository;
     this.memberService = memberService;
     this.bookmarkRepository = bookmarkRepository;
-    this.suggestionRepository = suggestionRepository;
   }
 
   @Transactional
