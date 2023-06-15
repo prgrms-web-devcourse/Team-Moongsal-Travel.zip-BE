@@ -1,0 +1,3 @@
+[submodule "Travelzip_yml_importer"]
+	path = Travelzip_yml_importer
+	url = https://github.com/Tnfls99/Travelzip_yml_importer.git

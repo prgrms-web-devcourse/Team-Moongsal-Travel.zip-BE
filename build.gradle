@@ -110,7 +110,22 @@ task copyDocument(type: Copy) {
     into file("src/main/resources/static/docs")
 }
 
+task copyYML(type: Copy) {
+    from file('./Travelzip_yml_importer')
+    include "application.yml"
+    into file('./src/main/resources')
+}
+
+task copyTestYml(type: Copy) {
+    from file('./Travelzip_yml_importer')
+    include "application-test.yml"
+    rename 'application-test', 'application'
+    into file('./src/test/resources')
+
+}
+
 test {
+    dependsOn copyTestYml
     outputs.dir snippetsDir
     useJUnitPlatform()
     jacoco {
@@ -179,6 +194,7 @@ jacocoTestCoverageVerification {
 build {
     test
     dependsOn copyDocument
+    dependsOn copyYML
 }
 
 jar {
