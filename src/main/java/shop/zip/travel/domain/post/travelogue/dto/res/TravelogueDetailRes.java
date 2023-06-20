@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import shop.zip.travel.domain.post.subTravelogue.data.Transportation;
 import shop.zip.travel.domain.post.subTravelogue.dto.res.SubTravelogueDetailRes;
 import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
-import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimpleDetail;
 
 public record TravelogueDetailRes(
     String profileImageUrl,
@@ -21,46 +21,42 @@ public record TravelogueDetailRes(
     String thumbnail,
     List<SubTravelogueDetailRes> subTravelogues,
     Set<Transportation> transportations,
-    Long countLikes,
+    long countLikes,
     boolean isLiked,
-    Long viewCount,
-    Boolean bookmarked,
+    long viewCount,
+    boolean bookmarked,
     boolean isWriter
 ) {
 
-  public static TravelogueDetailRes toDto(
-      Travelogue travelogue,
-      Long countLikes,
-      Boolean isLiked,
-      Boolean isBookmarked,
+  public static TravelogueDetailRes toDto(TravelogueSimpleDetail simpleDetailDto,
       boolean isWriter
   ) {
+
     return new TravelogueDetailRes(
-        travelogue.getMember().getProfileImageUrl(),
-        travelogue.getMember().getNickname(),
-        travelogue.getId(),
-        travelogue.getTitle(),
-        travelogue.getCountry().getName(),
-        travelogue.getPeriod().getNights(),
-        travelogue.getPeriod().getNights() + 1,
-        travelogue.getCost().getTotal(),
-        travelogue.getThumbnail(),
-        travelogue.getSubTravelogues()
+        simpleDetailDto.profileImageUrl(),
+        simpleDetailDto.nickName(),
+        simpleDetailDto.travelogue().getId(),
+        simpleDetailDto.travelogue().getTitle(),
+        simpleDetailDto.travelogue().getCountry().getName(),
+        simpleDetailDto.travelogue().getPeriod().getNights(),
+        simpleDetailDto.travelogue().getPeriod().getNights() + 1,
+        simpleDetailDto.travelogue().getCost().getTotal(),
+        simpleDetailDto.travelogue().getThumbnail(),
+        simpleDetailDto.travelogue().getSubTravelogues()
             .stream()
             .map(SubTravelogueDetailRes::toDto)
             .toList(),
-        travelogue.getSubTravelogues()
+        simpleDetailDto.travelogue().getSubTravelogues()
             .stream()
             .map(SubTravelogue::getTransportationSet)
             .flatMap(Collection::stream)
             .collect(Collectors.toSet()),
-        countLikes,
-        isLiked,
-        travelogue.getViewCount(),
-        isBookmarked,
+        simpleDetailDto.countLikes(),
+        simpleDetailDto.isLiked(),
+        simpleDetailDto.travelogue().getViews().getCount(),
+        simpleDetailDto.isBookmarked(),
         isWriter
     );
-
   }
 
 }
