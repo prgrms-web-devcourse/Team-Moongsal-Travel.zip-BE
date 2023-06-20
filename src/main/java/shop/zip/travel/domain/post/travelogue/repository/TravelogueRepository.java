@@ -1,11 +1,8 @@
 package shop.zip.travel.domain.post.travelogue.repository;
 
-import jakarta.persistence.LockModeType;
-import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -30,13 +27,6 @@ public interface TravelogueRepository extends JpaRepository<Travelogue, Long>,
   Slice<TravelogueSimple> findAllBySlice(
       @Param("pageable") Pageable pageable,
       @Param("isPublished") boolean isPublished);
-
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
-  @Query("select t "
-      + "from Travelogue t "
-      + "left join fetch t.member "
-      + "where t.id = :travelogueId and t.isPublished = true")
-  Optional<Travelogue> getTravelogueDetail(@Param("travelogueId") Long travelogueId);
 
   @Query(
       "select new shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple("

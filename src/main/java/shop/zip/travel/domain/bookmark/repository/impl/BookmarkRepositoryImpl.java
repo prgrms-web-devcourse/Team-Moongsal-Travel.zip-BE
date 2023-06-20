@@ -34,18 +34,6 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
   }
 
   @Override
-  public boolean exists(Long memberId, Long travelogueId) {
-    Integer bookmarked = jpaQueryFactory
-        .selectOne()
-        .from(bookmark)
-        .where(bookmark.travelogue.id.eq(travelogueId)
-            .and(bookmark.member.id.eq(memberId)))
-        .fetchFirst();
-
-    return bookmarked != null;
-  }
-
-  @Override
   public Slice<TravelogueSimpleRes> getBookmarkedList(Long memberId, Pageable pageable) {
     List<Long> travelogueIds = getTraveloguesBy(memberId);
 
@@ -114,5 +102,6 @@ public class BookmarkRepositoryImpl extends QuerydslRepositorySupport
         .map(TravelogueSimpleRes::toDto)
         .toList(), pageable, hasNext);
   }
+
 
 }
