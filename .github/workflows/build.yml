@@ -14,22 +14,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    services: # 서비스할 목록들 (ex. Redis, Postgresql ...)
-      mysql: # 사용할 서비스 명
-        image: mysql:8.0  # 사용할 서비스의 이미지(도커 개념 기반)
-        env: # 사용할 서비스의 환경설정
-          MYSQL_USER: root
-          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          MYSQL_DATABASE: testdb
-        ports: # 열어줄 포트, 8080:3306 형태로도 가능
-          - 3306
-    #        options: >-  # 서비스에 걸어줄 옵션
-    #          --health-cmd="mysqladmin ping"
-    #          --health-interval=10s
-    #          --health-timeout=5s
-    #          --health-retries=3
-
     steps:
       - uses: actions/checkout@v3
         with:
@@ -42,14 +26,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: verify MySQL connection from host
-        # 아래는 실행문, cli에 입력하듯이 명령어를 작성하면 된다.
-        run: |
-          mysql --version
-          sudo apt-get install -y mysql-client
-          sudo service mysql start
-          mysql -uroot -proot -e "CREATE DATABASE testdb"
-          mysql -uroot -proot -e "SHOW DATABASES"
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          container port: 3306
+          mysql database: 'testdb'
+          mysql root password: ${{ secrets.DB_PASSWORD }} # Required if "mysql user" is empty, default is empty. The root superuser password
+
 
       - name: Redis 설치
         uses: shogo82148/actions-setup-redis@v1
