@@ -32,12 +32,17 @@ jobs:
           redis-version: '6.x'
           run: redis-cli ping
 
+      - uses: samin/mysql-action@v1
+        with:
+          mysql database: 'testdb'
+          mysql user: 'root'
+          mysql root password: ${{ secrets.DB_PASSWORD }}
+
       - name: Create mongo Docker container
         uses: DigiPie/mongo-action@v2.0.1
         with:
           image_version: latest
           port: 27017
-
       - name: Install mongosh command
         run: |
           sudo apt-get update
@@ -47,11 +52,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y mongodb-mongosh
 
-      - uses: samin/mysql-action@v1
-        with:
-          mysql database: 'testdb' # Optional, default value is "test". The specified database which will be create
-          #          mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql root password: ${{ secrets.DB_PASSWORD }} # Required if "mysql user" exists. The password for the "mysql user"
 
       - name: Test mongo connection
         run: "sudo mongosh localhost:27017"
