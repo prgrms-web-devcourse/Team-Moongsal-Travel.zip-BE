@@ -42,6 +42,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: verify MySQL connection from host
+        # 아래는 실행문, cli에 입력하듯이 명령어를 작성하면 된다.
+        run: |
+          mysql --version
+          sudo apt-get install -y mysql-client
+          sudo service mysql start
+          mysql -uroot -proot -e "CREATE DATABASE testdb"
+          mysql -uroot -proot -e "SHOW DATABASES"
+
       - name: Redis 설치
         uses: shogo82148/actions-setup-redis@v1
         with:
