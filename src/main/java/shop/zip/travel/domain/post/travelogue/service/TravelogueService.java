@@ -72,10 +72,7 @@ public class TravelogueService {
     TravelogueDetailRes travelogueDetailRes =
         TravelogueDetailRes.toDto(simpleDetail, isWriter(simpleDetail.memberId(), memberId));
 
-    travelogueViewService.increase(simpleDetail.travelogue()
-            .getViews()
-            .getId(),
-        canAddViewCount);
+    travelogueViewService.increase(simpleDetail.viewsId(), canAddViewCount);
 
     return travelogueDetailRes;
   }

@@ -1,6 +1,7 @@
 package shop.zip.travel.domain.post.travelogue.repository.impl;
 
 import static com.querydsl.core.types.ExpressionUtils.count;
+import static com.querydsl.core.types.Projections.list;
 import static org.springframework.util.StringUtils.hasText;
 import static shop.zip.travel.domain.bookmark.entity.QBookmark.bookmark;
 import static shop.zip.travel.domain.member.entity.QMember.member;
@@ -8,6 +9,7 @@ import static shop.zip.travel.domain.post.subTravelogue.data.QAddress.address;
 import static shop.zip.travel.domain.post.subTravelogue.entity.QSubTravelogue.subTravelogue;
 import static shop.zip.travel.domain.post.travelogue.entity.QLike.like;
 import static shop.zip.travel.domain.post.travelogue.entity.QTravelogue.travelogue;
+import static shop.zip.travel.domain.post.travelogue.entity.QViews.views;
 
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.OrderSpecifier;
@@ -34,7 +36,6 @@ import shop.zip.travel.domain.post.travelogue.dto.TravelogueSearchFilter;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimpleDetail;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
-import shop.zip.travel.domain.post.travelogue.entity.QLike;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.querydsl.TravelogueRepositoryQuerydsl;
 
@@ -282,26 +283,6 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return Objects.nonNull(booleanExpression1) && Objects.nonNull(booleanExpression2);
   }
 
-  public boolean isLiked(Long travelogueId, Long memberId) {
-    Integer countLike = jpaQueryFactory.selectOne()
-        .from(QLike.like)
-        .where(QLike.like.travelogue.id.eq(travelogueId)
-            .and(QLike.like.member.id.eq(memberId)))
-        .fetchFirst();
-
-    return countLike != null;
-  }
-
-  public Long countLikes(Long travelogueId) {
-    Long countLikes = jpaQueryFactory.select(count(like))
-        .from(like)
-        .where(like.travelogue.id.eq(travelogueId))
-        .groupBy(like.travelogue.id)
-        .fetchOne();
-
-    return (countLikes == null) ? 0 : countLikes;
-  }
-
   private Slice<TravelogueSimpleRes> checkLastPage(Pageable pageable,
       List<TravelogueSimple> results) {
 
@@ -335,7 +316,9 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
                     .as("isLiked"),
                 new CaseBuilder()
                     .when(bookmark.member.id.eq(memberId)).then(true).otherwise(false)
-                    .as("isBookmarked")
+                    .as("isBookmarked"),
+                travelogue.views.id,
+                list(travelogue.subTravelogues)
             ))
         .from(travelogue)
         .leftJoin(travelogue.member, member)
@@ -343,6 +326,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .on(like.travelogue.id.eq(travelogue.id))
         .leftJoin(bookmark)
         .on(bookmark.travelogue.id.eq(travelogue.id))
+        .leftJoin(travelogue.views, views).fetchJoin()
+        .leftJoin(travelogue.subTravelogues, subTravelogue)
         .where(travelogue.id.eq(travelogueId))
         .fetchOne());
   }

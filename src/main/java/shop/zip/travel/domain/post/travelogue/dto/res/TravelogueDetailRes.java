@@ -42,11 +42,11 @@ public record TravelogueDetailRes(
         simpleDetailDto.travelogue().getPeriod().getNights() + 1,
         simpleDetailDto.travelogue().getCost().getTotal(),
         simpleDetailDto.travelogue().getThumbnail(),
-        simpleDetailDto.travelogue().getSubTravelogues()
+        simpleDetailDto.subTravelogues()
             .stream()
             .map(SubTravelogueDetailRes::toDto)
             .toList(),
-        simpleDetailDto.travelogue().getSubTravelogues()
+        simpleDetailDto.subTravelogues()
             .stream()
             .map(SubTravelogue::getTransportationSet)
             .flatMap(Collection::stream)

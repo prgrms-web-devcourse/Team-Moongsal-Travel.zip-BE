@@ -78,7 +78,7 @@ public class Travelogue extends BaseTimeEntity {
   public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
       boolean isPublished, Member member) {
     this(period, title, country, thumbnail, cost, isPublished, new ArrayList<>(), member,
-        new Views(0L));
+        new Views(1L));
   }
 
   public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
