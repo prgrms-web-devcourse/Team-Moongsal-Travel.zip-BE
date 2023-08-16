@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -56,8 +55,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
 
   @Override
   public Slice<TravelogueSimpleRes> search(String keyword, Pageable pageable) {
-    List<Long> subTravelogueIds = getSubTravelogueIds(keyword);
-    List<Long> travelogueIds = getTravelogueIds(keyword, subTravelogueIds);
+    List<Long> travelogueIds = getTravelogueIds(keyword);
 
     if (travelogueIds.isEmpty()) {
       return new SliceImpl<>(Collections.emptyList());
@@ -97,8 +95,7 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
   public Slice<TravelogueSimpleRes> filtering(String keyword, Pageable pageable,
       TravelogueSearchFilter searchFilter) {
 
-    List<Long> subTravelogueIds = getSubTravelogueIds(keyword);
-    List<Long> travelogueIds = getTravelogueIds(keyword, subTravelogueIds);
+    List<Long> travelogueIds = getTravelogueIds(keyword);
 
     if (travelogueIds.isEmpty()) {
       return new SliceImpl<>(Collections.emptyList());
@@ -143,97 +140,90 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return travelogue.isPublished.isTrue();
   }
 
-  private List<Long> getTravelogueIds(String keyword, List<Long> subTravelogueIds) {
-    return Stream.concat(getTravelogueIds_containsSubTravelogues(subTravelogueIds).stream(),
-            Stream.concat(getTravelogueIds_searchCountryName(keyword).stream(),
-                getTravelogueIds_containsTitleName(keyword).stream()))
-        .distinct()
-        .toList();
-  }
+//  private List<Long> getTravelogueIds(String keyword, List<Long> subTravelogueIds) {
+//    return Stream.concat(getTravelogueIds_containsSubTravelogues(subTravelogueIds).stream(),
+//            Stream.concat(getTravelogueIds_searchCountryName(keyword).stream(),
+//                getTravelogueIds_containsTitleName(keyword).stream()))
+//        .distinct()
+//        .toList();
+//  }
 
-  private List<Long> getTravelogueIds_containsSubTravelogues(
-      List<Long> subTravelogueIds
+  private List<Long> getTravelogueIds(
+      String keyword
   ) {
     return jpaQueryFactory
         .select(travelogue.id)
         .from(travelogue)
         .leftJoin(travelogue.subTravelogues, subTravelogue)
         .where(
-            publishedIsTrue(),
-            subTravelogue.id.in(subTravelogueIds)
+            publishedIsTrue().and(
+                subTravelogue.id.in(getSubTravelogueIds(keyword))
+                    .or(titleContains(keyword))
+                    .or(countryContains(keyword))
+            )
         )
+        .distinct()
         .fetch();
   }
 
-  private List<Long> getTravelogueIds_containsTitleName(String keyword) {
-    return jpaQueryFactory
-        .select(travelogue.id)
-        .from(travelogue)
-        .where(
-            publishedIsTrue(),
-            titleContains(keyword)
-        )
-        .fetch();
-  }
+//  private List<Long> getTravelogueIds_containsTitleName(String keyword) {
+//    return jpaQueryFactory
+//        .select(travelogue.id)
+//        .from(travelogue)
+//        .where(
+//            publishedIsTrue(),
+//            titleContains(keyword)
+//        )
+//        .fetch();
+//  }
 
-  private List<Long> getTravelogueIds_searchCountryName(
-      String keyword
-  ) {
-    return jpaQueryFactory
-        .select(travelogue.id)
-        .from(travelogue)
-        .where(
-            publishedIsTrue(),
-            countryContains(keyword)
-        )
-        .fetch();
-  }
+//  private List<Long> getTravelogueIds_searchCountryName(
+//      String keyword
+//  ) {
+//    return jpaQueryFactory
+//        .select(travelogue.id)
+//        .from(travelogue)
+//        .where(
+//            publishedIsTrue(),
+//            countryContains(keyword)
+//        )
+//        .fetch();
+//  }
 
   private List<Long> getSubTravelogueIds(String keyword) {
-    return Stream.concat(getSubTravelogueIds_containsContent(keyword).stream(),
-            getSubTravelogueIds_containsSpot(keyword).stream())
-        .distinct()
-        .toList();
-  }
-
-  private List<Long> getSubTravelogueIds_containsSpot(String keyword) {
     return jpaQueryFactory
         .select(subTravelogue.id)
         .from(subTravelogue)
         .innerJoin(subTravelogue.addresses, address)
         .where(
-            spotContains(keyword)
+            publishedIsTrue()
+                .and(spotContains(keyword)
+                    .or(subTitleContains(keyword))
+                    .or(contentContains(keyword))
+                )
         )
         .fetch();
   }
-
-  private List<Long> getSubTravelogueIds_containsContent(String keyword) {
-    return jpaQueryFactory
-        .select(subTravelogue.id)
-        .from(subTravelogue)
-        .innerJoin(subTravelogue.addresses, address)
-        .where(
-            contentContains(keyword)
-        )
-        .fetch();
-  }
-
 
   private BooleanExpression titleContains(String keyword) {
-    return hasText(keyword) ? travelogue.title.contains(keyword) : null;
+    return hasText(keyword) ? travelogue.title.startsWith(keyword) : null;
+  }
+
+  private BooleanExpression subTitleContains(String keyword) {
+    return hasText(keyword) ? subTravelogue.title.startsWith(keyword) : null;
   }
 
   private BooleanExpression countryContains(String keyword) {
-    return hasText(keyword) ? travelogue.country.name.contains(keyword) : null;
+    return hasText(keyword) ? travelogue.country.name.startsWith(keyword) : null;
   }
 
   private BooleanExpression contentContains(String keyword) {
-    return hasText(keyword) ? subTravelogue.content.contains(keyword) : null;
+    return hasText(keyword) ? subTravelogue.content.startsWith(keyword) : null;
   }
 
   private BooleanExpression spotContains(String keyword) {
     return hasText(keyword) ?
-        address.region.contains(keyword) : null;
+        address.region.startsWith(keyword) : null;
   }
 
   private OrderSpecifier<?> getOrder(Sort sort) {
@@ -326,7 +316,8 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .on(like.travelogue.id.eq(travelogue.id))
         .leftJoin(bookmark)
         .on(bookmark.travelogue.id.eq(travelogue.id))
-        .leftJoin(travelogue.views, views).fetchJoin()
+        .leftJoin(travelogue.views, views)
+        .fetchJoin()
         .leftJoin(travelogue.subTravelogues, subTravelogue)
         .where(travelogue.id.eq(travelogueId))
         .fetchOne());

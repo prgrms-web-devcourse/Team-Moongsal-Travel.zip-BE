@@ -14,7 +14,7 @@ public class FakeTravelogue extends Travelogue {
         travelogue.getCountry(),
         travelogue.getThumbnail(),
         travelogue.getCost(),
-        travelogue.getIsPublished(),
+        travelogue.isPublished(),
         travelogue.getSubTravelogues(),
         travelogue.getMember(),
         new Views(0L)

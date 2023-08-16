@@ -138,7 +138,7 @@ public class DummyGenerator {
   public static SubTravelogue createSubTravelogueWithRegion(String region) {
     return new SubTravelogue(
         "일본 오사카 재밌음",
-        "오사카 갔는데 또 가고 싶음",
+        "또 가고 싶음",
         1,
         List.of(new Address(region)),
         Set.of(Transportation.BUS),
@@ -148,7 +148,7 @@ public class DummyGenerator {
 
   public static Address createAddress() {
     return new Address(
-        "일본 오사카 유니버셜 스튜디오"
+        "유니버셜"
     );
   }
 
@@ -269,7 +269,9 @@ public class DummyGenerator {
         member.getNickname(),
         0L,
         false,
-        false
+        false,
+        1L,
+        List.of(createSubTravelogue(2))
     );
   }
 }
