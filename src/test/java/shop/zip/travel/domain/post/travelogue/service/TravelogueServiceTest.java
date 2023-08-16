@@ -2,6 +2,7 @@ package shop.zip.travel.domain.post.travelogue.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.transaction.annotation.Transactional;
 import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
 import shop.zip.travel.domain.member.entity.Member;
@@ -29,6 +31,7 @@ import shop.zip.travel.domain.post.subTravelogue.entity.SubTravelogue;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSearchFilter;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimpleDetail;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
@@ -36,6 +39,7 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueDetailRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
+import shop.zip.travel.domain.post.travelogue.repository.TravelogueViewRepository;
 import shop.zip.travel.domain.suggestion.repository.SuggestionRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,7 +53,7 @@ class TravelogueServiceTest {
   private TravelogueRepository travelogueRepository;
 
   @Mock
-  private BookmarkRepository bookmarkRepository;
+  private TravelogueViewService viewService;
 
   @Mock
   private MemberService memberService;
@@ -58,16 +62,13 @@ class TravelogueServiceTest {
   private SuggestionRepository suggestionRepository;
 
   private final Long memberId = 1L;
-  private final Long countLikes = 1L;
-  private final boolean isLiked = true;
-  private final boolean isBookmarked = false;
 
   private static final Member member = new Member("user@gmail.com", "password1!", "nickname",
       "1998");
 
   @Test
   @DisplayName("페이지로 가져온 게시글 목록을 TravelogueSimpleRes로 변경해서 전달할 수 있다.")
-  public void test_get_all() {
+  void test_get_all() {
     // given
     Travelogue travelogue = DummyGenerator.createTravelogue(member);
 
@@ -147,46 +148,18 @@ class TravelogueServiceTest {
         DummyGenerator.createTravelogue(member)
     );
 
-    when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
-    when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
-        Optional.of(travelogue));
-    when(travelogueRepository.isLiked(travelogue.getId(), memberId))
-        .thenReturn(isLiked);
-    when(travelogueRepository.countLikes(travelogue.getId())).thenReturn(countLikes);
+    TravelogueSimpleDetail fakeSimpleDetail = DummyGenerator.createTravelogueSimpleDetail(travelogue, member);
+
+    when(travelogueRepository.getTravelogueDetail(travelogue.getId(), memberId)).thenReturn(
+        Optional.ofNullable(fakeSimpleDetail));
 
     TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
         travelogue.getId(),
         true,
         memberId);
-    TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(travelogue, countLikes,
-        isLiked, isBookmarked, false);
+    TravelogueDetailRes actualTravelogueDetail = TravelogueDetailRes.toDto(fakeSimpleDetail, false);
 
     assertThat(actualTravelogueDetail).isEqualTo(expectedTravelogueDetail);
-  }
-
-  @Test
-  @DisplayName("게시물을 상세조회 할 경우 조회수가 올라간다")
-  void test_view_count() {
-    Member member = DummyGenerator.createMember();
-
-    Travelogue travelogue = new FakeTravelogue(
-        1L,
-        DummyGenerator.createTravelogue(member)
-    );
-
-    when(travelogueRepository.findById(travelogue.getId())).thenReturn(Optional.of(travelogue));
-    when(travelogueRepository.getTravelogueDetail(travelogue.getId())).thenReturn(
-        Optional.of(travelogue));
-    when(bookmarkRepository.exists(any(), any())).thenReturn(isBookmarked);
-
-		TravelogueDetailRes expectedTravelogueDetail = travelogueService.getTravelogueDetail(
-				travelogue.getId(),
-				true,
-				memberId);
-
-    long actualViewCount = 1L;
-
-    assertThat(actualViewCount).isEqualTo(expectedTravelogueDetail.viewCount());
   }
 
   @Test

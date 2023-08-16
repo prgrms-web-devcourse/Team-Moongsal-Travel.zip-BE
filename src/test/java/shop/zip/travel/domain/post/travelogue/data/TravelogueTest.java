@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import shop.zip.travel.domain.post.travelogue.DummyGenerator;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
+import shop.zip.travel.domain.post.travelogue.entity.Views;
 
 class TravelogueTest {
 
@@ -25,7 +26,8 @@ class TravelogueTest {
 				DummyGenerator.createCost(),
 				isPublished,
 				List.of(DummyGenerator.createSubTravelogue(1)),
-				null
+				null,
+				new Views(0L)
 		)).isInstanceOf(IllegalArgumentException.class);
 	}
 }

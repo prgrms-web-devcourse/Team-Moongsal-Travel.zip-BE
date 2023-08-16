@@ -69,6 +69,6 @@ class TraveloguePublishServiceTest {
         get();
 
     boolean actualPublishStatus = true;
-    assertThat(actualPublishStatus).isEqualTo(findTravelogue.getIsPublished());
+    assertThat(actualPublishStatus).isEqualTo(findTravelogue.isPublished());
   }
 }

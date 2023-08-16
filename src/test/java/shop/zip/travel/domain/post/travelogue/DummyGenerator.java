@@ -16,12 +16,14 @@ import shop.zip.travel.domain.post.travelogue.data.Cost;
 import shop.zip.travel.domain.post.travelogue.data.Period;
 import shop.zip.travel.domain.post.travelogue.dto.TempTravelogueSimple;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimpleDetail;
 import shop.zip.travel.domain.post.travelogue.dto.req.CostCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.req.CountryCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.req.PeriodCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueUpdateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
+import shop.zip.travel.domain.post.travelogue.entity.Views;
 
 public class DummyGenerator {
 
@@ -36,7 +38,8 @@ public class DummyGenerator {
         createCost(),
         false,
         subTravelogues,
-        member
+        member,
+        new Views(0L)
     );
   }
 
@@ -53,7 +56,8 @@ public class DummyGenerator {
         createCost(),
         true,
         subTravelogues,
-        member
+        member,
+        new Views(0L)
     );
   }
 
@@ -87,7 +91,8 @@ public class DummyGenerator {
         createCost(),
         true,
         subTravelogues,
-        member
+        member,
+        new Views(0L)
     );
   }
 
@@ -103,7 +108,8 @@ public class DummyGenerator {
         createCost(),
         true,
         subTravelogues,
-        member
+        member,
+        new Views(0L)
     );
   }
 
@@ -132,7 +138,7 @@ public class DummyGenerator {
   public static SubTravelogue createSubTravelogueWithRegion(String region) {
     return new SubTravelogue(
         "일본 오사카 재밌음",
-        "오사카 갔는데 또 가고 싶음",
+        "또 가고 싶음",
         1,
         List.of(new Address(region)),
         Set.of(Transportation.BUS),
@@ -142,7 +148,7 @@ public class DummyGenerator {
 
   public static Address createAddress() {
     return new Address(
-        "일본 오사카 유니버셜 스튜디오"
+        "유니버셜"
     );
   }
 
@@ -253,5 +259,19 @@ public class DummyGenerator {
 
   public static TempTravelogueSimple createTempTravelogueSimple(Travelogue travelogue) {
     return new TempTravelogueSimple(travelogue, 256L);
+  }
+
+  public static TravelogueSimpleDetail createTravelogueSimpleDetail(Travelogue travelogue, Member member) {
+    return new TravelogueSimpleDetail(
+        travelogue,
+        member.getId(),
+        member.getProfileImageUrl(),
+        member.getNickname(),
+        0L,
+        false,
+        false,
+        1L,
+        List.of(createSubTravelogue(2))
+    );
   }
 }

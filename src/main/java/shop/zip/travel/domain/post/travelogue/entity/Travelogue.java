@@ -1,5 +1,6 @@
 package shop.zip.travel.domain.post.travelogue.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -11,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -59,9 +61,6 @@ public class Travelogue extends BaseTimeEntity {
   @Column(nullable = false)
   private boolean isPublished;
 
-  @Column(nullable = false)
-  private Long viewCount;
-
   @OneToMany(mappedBy = "travelogue")
   private List<SubTravelogue> subTravelogues = new ArrayList<>();
 
@@ -69,21 +68,21 @@ public class Travelogue extends BaseTimeEntity {
   @JoinColumn(name = "member_id")
   private Member member;
 
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "views_id", referencedColumnName = "id")
+  private Views views;
+
   protected Travelogue() {
   }
 
   public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
       boolean isPublished, Member member) {
-    this(period, title, country, thumbnail, cost, isPublished, 0L, new ArrayList<>(), member);
+    this(period, title, country, thumbnail, cost, isPublished, new ArrayList<>(), member,
+        new Views(1L));
   }
 
   public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-      boolean isPublished, List<SubTravelogue> subTravelogues, Member member) {
-    this(period, title, country, thumbnail, cost, isPublished, 0L, subTravelogues, member);
-  }
-
-  public Travelogue(Period period, String title, Country country, String thumbnail, Cost cost,
-      boolean isPublished, Long viewCount, List<SubTravelogue> subTravelogues, Member member) {
+      boolean isPublished, List<SubTravelogue> subTravelogues, Member member, Views views) {
     checkNull(member);
     this.period = period;
     this.title = title;
@@ -91,10 +90,11 @@ public class Travelogue extends BaseTimeEntity {
     this.thumbnail = thumbnail;
     this.cost = cost;
     this.isPublished = isPublished;
-    this.viewCount = viewCount;
     this.subTravelogues = subTravelogues;
     this.member = member;
+    this.views = views;
   }
+
 
   public Long getId() {
     return id;
@@ -120,10 +120,6 @@ public class Travelogue extends BaseTimeEntity {
     return thumbnail;
   }
 
-  public boolean getIsPublished() {
-    return isPublished;
-  }
-
   public List<SubTravelogue> getSubTravelogues() {
     return new ArrayList<>(subTravelogues);
   }
@@ -132,10 +128,13 @@ public class Travelogue extends BaseTimeEntity {
     return member;
   }
 
-  public Long getViewCount() {
-    return viewCount;
+  public Views getViews() {
+    return views;
   }
 
+  public boolean isPublished() {
+    return isPublished;
+  }
 
   public void addSubTravelogue(SubTravelogue subTravelogue) {
     verifySubTravelogueDuplicate(subTravelogue);
@@ -172,10 +171,6 @@ public class Travelogue extends BaseTimeEntity {
     if (!this.member.getId().equals(memberId)) {
       throw new NoAuthorizationException(ErrorCode.NO_AUTHORIZATION_TO_TRAVELOGUE);
     }
-  }
-
-  public void addViewCount() {
-    this.viewCount++;
   }
 
   public void updateSubTravelogues(SubTravelogue newSubTravelogue) {

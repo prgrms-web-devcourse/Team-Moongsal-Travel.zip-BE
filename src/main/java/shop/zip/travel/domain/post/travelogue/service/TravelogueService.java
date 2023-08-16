@@ -5,11 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import shop.zip.travel.domain.bookmark.repository.BookmarkRepository;
 import shop.zip.travel.domain.member.entity.Member;
 import shop.zip.travel.domain.member.service.MemberService;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSearchFilter;
 import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimple;
+import shop.zip.travel.domain.post.travelogue.dto.TravelogueSimpleDetail;
 import shop.zip.travel.domain.post.travelogue.dto.req.TravelogueCreateReq;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCreateRes;
 import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueCustomSlice;
@@ -18,8 +18,6 @@ import shop.zip.travel.domain.post.travelogue.dto.res.TravelogueSimpleRes;
 import shop.zip.travel.domain.post.travelogue.entity.Travelogue;
 import shop.zip.travel.domain.post.travelogue.exception.TravelogueNotFoundException;
 import shop.zip.travel.domain.post.travelogue.repository.TravelogueRepository;
-import shop.zip.travel.domain.suggestion.entity.Suggestion;
-import shop.zip.travel.domain.suggestion.repository.SuggestionRepository;
 import shop.zip.travel.global.error.ErrorCode;
 
 @Service
@@ -29,16 +27,14 @@ public class TravelogueService {
   private static final boolean PUBLISH = true;
 
   private final TravelogueRepository travelogueRepository;
+  private final TravelogueViewService travelogueViewService;
   private final MemberService memberService;
-  private final BookmarkRepository bookmarkRepository;
-  private final SuggestionRepository suggestionRepository;
 
-  public TravelogueService(TravelogueRepository travelogueRepository, MemberService memberService,
-      BookmarkRepository bookmarkRepository, SuggestionRepository suggestionRepository) {
+  public TravelogueService(TravelogueRepository travelogueRepository,
+      TravelogueViewService travelogueViewService, MemberService memberService) {
     this.travelogueRepository = travelogueRepository;
+    this.travelogueViewService = travelogueViewService;
     this.memberService = memberService;
-    this.bookmarkRepository = bookmarkRepository;
-    this.suggestionRepository = suggestionRepository;
   }
 
   @Transactional
@@ -71,27 +67,19 @@ public class TravelogueService {
   @Transactional
   public TravelogueDetailRes getTravelogueDetail(Long travelogueId, boolean canAddViewCount,
       Long memberId) {
-    Long countLikes = travelogueRepository.countLikes(travelogueId);
-    boolean isLiked = travelogueRepository.isLiked(memberId, travelogueId);
-    boolean isBookmarked = bookmarkRepository.exists(memberId, travelogueId);
 
-    Travelogue travelogue = travelogueRepository.getTravelogueDetail(travelogueId)
-        .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
+    TravelogueSimpleDetail simpleDetail = getSimpleDetail(travelogueId, memberId);
+    TravelogueDetailRes travelogueDetailRes =
+        TravelogueDetailRes.toDto(simpleDetail, isWriter(simpleDetail.memberId(), memberId));
 
-    updateViewCount(travelogueId, canAddViewCount);
+    travelogueViewService.increase(simpleDetail.viewsId(), canAddViewCount);
 
-    Suggestion suggestion = new Suggestion(travelogue.getCountry().getName(), memberId);
-    suggestionRepository.save(suggestion);
-
-    boolean isWriter = isWriter(travelogue.getMember(), memberId);
-
-    return TravelogueDetailRes.toDto(travelogue, countLikes, isLiked, isBookmarked, isWriter);
+    return travelogueDetailRes;
   }
 
-  private void updateViewCount(Long travelogueId, boolean canAddViewCount) {
-    if (canAddViewCount) {
-      getTravelogue(travelogueId).addViewCount();
-    }
+  private TravelogueSimpleDetail getSimpleDetail(Long travelogueId, Long memberId) {
+    return travelogueRepository.getTravelogueDetail(travelogueId, memberId)
+        .orElseThrow(() -> new TravelogueNotFoundException(ErrorCode.TRAVELOGUE_NOT_FOUND));
   }
 
   public TravelogueCustomSlice<TravelogueSimpleRes> filtering(String keyword, Pageable pageable,
@@ -100,7 +88,8 @@ public class TravelogueService {
         travelogueRepository.filtering(keyword, pageable, searchFilter));
   }
 
-  private boolean isWriter(Member writer, Long requestMemberId) {
-    return Objects.equals(writer.getId(), requestMemberId);
+  private boolean isWriter(Long writerMemberId, Long requestMemberId) {
+    return Objects.equals(writerMemberId, requestMemberId);
   }
+
 }

@@ -283,9 +283,9 @@ class TravelogueControllerTest {
             )));
   }
 
-  @DisplayName("유저는 나라이름, 게시글 제목, 게시글 내용, 장소로 게시물을 검색할 수 있다")
+  @DisplayName("유저는 나라이름, 게시글 제목, 장소로 게시물을 검색할 수 있다")
   @ParameterizedTest
-  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음", "유니버셜"})
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "유니버셜"})
   void test_search(String keyword) throws Exception {
 
     travelogue1.changePublishStatus();
@@ -338,7 +338,7 @@ class TravelogueControllerTest {
 
   @DisplayName("유저는 기간으로 필터링하여 검색 할 수 있다")
   @ParameterizedTest
-  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본"})
   void test_search_with_filter_period(String keyword) throws Exception {
 
     travelogue1.changePublishStatus();
@@ -398,7 +398,7 @@ class TravelogueControllerTest {
 
   @DisplayName("유저는 가격범위로 필터링하여 검색 할 수 있다")
   @ParameterizedTest
-  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본"})
   void test_search_with_filter_cost(String keyword) throws Exception {
 
     travelogue1.changePublishStatus();
@@ -458,7 +458,7 @@ class TravelogueControllerTest {
 
   @DisplayName("유저는 가격과 기간으로 필터링 검색을 할 수 있다")
   @ParameterizedTest
-  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본", "또 가고 싶음"})
+  @ValueSource(strings = {"일본 오사카 다녀왔어요.", "일본"})
   void test_search_with_filter(String keyword) throws Exception {
 
     travelogue1.changePublishStatus();

@@ -56,7 +56,7 @@ class TravelogueTest {
     assertThat(travelogue.getThumbnail())
         .isEqualTo(travelogueUpdate.getThumbnail());
 
-    assertThat(travelogue.getIsPublished()).isFalse();
+    assertThat(travelogue.isPublished()).isFalse();
   }
 
   @Test
