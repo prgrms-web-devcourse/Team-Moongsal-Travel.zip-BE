@@ -140,14 +140,6 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
     return travelogue.isPublished.isTrue();
   }
 
-//  private List<Long> getTravelogueIds(String keyword, List<Long> subTravelogueIds) {
-//    return Stream.concat(getTravelogueIds_containsSubTravelogues(subTravelogueIds).stream(),
-//            Stream.concat(getTravelogueIds_searchCountryName(keyword).stream(),
-//                getTravelogueIds_containsTitleName(keyword).stream()))
-//        .distinct()
-//        .toList();
-//  }
-
   private List<Long> getTravelogueIds(
       String keyword
   ) {
@@ -165,30 +157,6 @@ public class TravelogueRepositoryImpl extends QuerydslRepositorySupport implemen
         .distinct()
         .fetch();
   }
-
-//  private List<Long> getTravelogueIds_containsTitleName(String keyword) {
-//    return jpaQueryFactory
-//        .select(travelogue.id)
-//        .from(travelogue)
-//        .where(
-//            publishedIsTrue(),
-//            titleContains(keyword)
-//        )
-//        .fetch();
-//  }
-
-//  private List<Long> getTravelogueIds_searchCountryName(
-//      String keyword
-//  ) {
-//    return jpaQueryFactory
-//        .select(travelogue.id)
-//        .from(travelogue)
-//        .where(
-//            publishedIsTrue(),
-//            countryContains(keyword)
-//        )
-//        .fetch();
-//  }
 
   private List<Long> getSubTravelogueIds(String keyword) {
     return jpaQueryFactory
